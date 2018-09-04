@@ -14,5 +14,12 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "electron.ts",
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

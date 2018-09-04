@@ -1,5 +1,6 @@
 {
   "productName": "woleet-gui",
+  "asar": true,
   "directories": {
     "output": "release/"
   },
@@ -16,7 +17,8 @@
         "!_config.yml",
         "!karma.conf.js",
         "!tsconfig.json",
-        "!tslint.json"
+        "!tslint.json",
+        "!*.sh"
     ],
   "win": {
     "icon": "./src/assets/images/woleet.png",

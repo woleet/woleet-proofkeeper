@@ -2,11 +2,14 @@ import { app, BrowserWindow, Tray, Menu } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-let win, reload, tray;
+let win, liveenv, tray;
 const args = process.argv.slice(1);
-reload = args.some(val => val === '--reload');
+liveenv = args.some(val => val === '--liveenv');
+declare var global:any;
 
-if (reload) {
+global.liveenv = liveenv
+
+if (liveenv) {
   require('electron-reload')([__dirname], {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
   });
