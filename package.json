@@ -4,7 +4,7 @@
   "private": true,
   "main": "electron.js",
   "scripts": {
-    "ng": "ng",
+    "ng": "npx @angular/cli",
     "start": "npm run electron:serve",
     "angular:buildandwatch": "ng build --watch",
     "build": "ng build",

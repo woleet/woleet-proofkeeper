@@ -1,8 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Tray, Menu } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-let win, reload;
+let win, reload, tray;
 const args = process.argv.slice(1);
 reload = args.some(val => val === '--reload');
 
@@ -13,7 +13,11 @@ if (reload) {
 }
 
 function createWindow () {
-  win = new BrowserWindow({width: 800, height: 600})
+  win = new BrowserWindow({
+    width: 800, 
+    height: 600,
+    icon: path.join(__dirname, './dist/woleet-gui/assets/images/woleet.png')
+  })
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, './dist/woleet-gui/index.html'),
@@ -26,7 +30,17 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  tray = new Tray(path.join(__dirname, './dist/woleet-gui/assets/images/woleet.png'))
+  var contextMenu = Menu.buildFromTemplate([
+    { label: 'Exit', click: function() {
+      app.quit()
+    }}
+  ]);
+  tray.setToolTip('WoleetGui');
+  tray.setContextMenu(contextMenu);
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
