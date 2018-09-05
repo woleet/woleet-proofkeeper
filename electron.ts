@@ -1,12 +1,13 @@
-import { app, BrowserWindow, Tray, Menu } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-let win, liveenv, tray;
+let win, liveenv, tray, nativcon;
+
 const args = process.argv.slice(1);
 liveenv = args.some(val => val === '--liveenv');
-declare var global: any;
 
+declare var global: any;
 global.liveenv = liveenv;
 
 if (liveenv) {
@@ -15,11 +16,13 @@ if (liveenv) {
   });
 }
 
+nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png'))
+
 function createWindow () {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png')
+    icon: nativcon
   });
 
   win.loadURL(url.format({
@@ -35,7 +38,7 @@ function createWindow () {
 
 app.on('ready', () => {
   createWindow();
-  tray = new Tray(path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png'));
+  tray = new Tray(nativcon);
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Exit', click: function() {
       app.quit();
