@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { remote } from 'electron'; 
-import { FoldersConfigService } from './services/foldersconfig.service';
+import { Component } from '@angular/core';
+import { remote } from 'electron';
 
 @Component({
   selector: 'app-root',
@@ -8,17 +7,13 @@ import { FoldersConfigService } from './services/foldersconfig.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'woleet-gui';
   test = remote.getGlobal('liveenv');
 
   folders: any[];
 
-  constructor(private foldersconfig: FoldersConfigService) {
+  constructor() {
 
-  }
-
-  ngOnInit() {
-    // Import saved folders
   }
 }

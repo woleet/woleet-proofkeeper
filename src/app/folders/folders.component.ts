@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FoldersComponent implements OnInit {
 
-  
+
   constructor() { }
 
   ngOnInit() {
+    // Fill folders from service
   }
 
 }
