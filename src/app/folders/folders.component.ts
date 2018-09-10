@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { WoleetCli } from '../services/woleetcli.service'
 @Component({
   selector: 'app-folders',
   templateUrl: './folders.component.html',
@@ -7,11 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FoldersComponent implements OnInit {
 
+  cli: WoleetCli;
+  out: string;
 
-  constructor() { }
+  constructor() {
+   }
 
   ngOnInit() {
     // Fill folders from service
+    this.cli = new WoleetCli();
+    this.out = this.cli.createProcess('--test')
   }
 
 }

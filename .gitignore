@@ -5,6 +5,7 @@
 /tmp
 /release
 /electron.js
+/src/assets/bin
 
 # dependencies
 /node_modules

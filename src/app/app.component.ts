@@ -9,7 +9,6 @@ import { remote } from 'electron';
 
 export class AppComponent {
   title = 'woleet-gui';
-  test = remote.getGlobal('liveenv');
 
   folders: any[];
 

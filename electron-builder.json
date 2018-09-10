@@ -1,41 +1,36 @@
 {
   "productName": "woleet-gui",
-  "asar": true,
+  "asar": false,
   "directories": {
     "output": "release/"
   },
     "files": [
         "**/*",
+        "!dist/woleet-gui/assets/bin${/*}",
         "!*.ts",
         "!*.code-workspace",
         "!LICENSE.md",
         "!package.json",
         "!package-lock.json",
         "!src/",
-        "!hooks/",
         "!.angular-cli.json",
-        "!_config.yml",
-        "!karma.conf.js",
         "!tsconfig.json",
         "!tslint.json",
         "!*.sh"
     ],
   "win": {
     "icon": "./src/assets/images/woleet.png",
-    "target": [
-      "portable"
-    ]
+    "target": [ "portable" ],
+    "files": [ "dist/woleet-gui/assets/bin/windows" ]
   },
   "mac": {
     "icon": "./src/assets/images/woleet.png",
-    "target": [
-      "dmg"
-    ]
+    "target": [ "dmg" ],
+    "files": [ "dist/woleet-gui/assets/bin/darwin" ]
   },
   "linux": {
     "icon": "./src/assets/images/woleet.png",
-    "target": [
-      "AppImage"
-    ]
+    "target": [ "AppImage" ],
+    "files": [ "dist/woleet-gui/assets/bin/linux" ]
   }
 }
