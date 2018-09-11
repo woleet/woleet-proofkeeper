@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
 import { FoldersConfigService } from './services/foldersconfig.service';
+import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { FoldersConfigService } from './services/foldersconfig.service';
     BrowserModule
   ],
   providers: [
-    FoldersConfigService
+    FoldersConfigService,
+    WoleetCliParametersService
   ],
   bootstrap: [
     AppComponent

@@ -16,7 +16,7 @@ if (liveenv) {
   });
 }
 
-nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png'))
+nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png'));
 
 function createWindow () {
   win = new BrowserWindow({

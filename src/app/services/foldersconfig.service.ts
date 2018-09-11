@@ -1,97 +1,145 @@
 import { Injectable } from '@angular/core';
-import * as log from 'loglevel'
+import * as log from 'loglevel';
+import * as store from 'electron-store';
 
 Injectable({
   providedIn: 'root',
-})
+});
 export class FoldersConfigService {
-  
-  private folders: folderParam[];
 
-  getFolders(): folderParam[] {
-    var foldersRet: folderParam[];
+  private folders: FolderParam[] = [];
+  private persistentStorage: store;
+
+  public getFolders(): FolderParam[] {
+    const foldersRet: FolderParam[] = [];
     this.folders.forEach(folderParam => {
-      if ( ( folderParam.path != null ) && ( folderParam.action == ( 'anchor' || 'sign' ) ) ) {
-        foldersRet.push(folderParam)
-      }
-      else {
-        log.warn("Configuration of folder "+folderParam.path+" is invalid")
+      if ( ( folderParam.path != null ) && ( folderParam.action === ( 'anchor' || 'sign' ) ) ) {
+        foldersRet.push(folderParam);
+      } else {
+        log.warn('Configuration of folder ' + folderParam.path + ' is invalid');
       }
     });
     return foldersRet;
   }
-  public constructor() { }
+
+  public addFolder(action: string,
+            path: string,
+            privateparam?: boolean,
+            strict?: boolean,
+            strictPrune?: boolean,
+            backendkitSignURL?: string,
+            backendkitToken?: string,
+            backendkitUnsecureSSL?: boolean,
+            backendkitPubKey?: string) {
+    const newFolderParam = new FolderParam(action,
+                                           path,
+                                           privateparam,
+                                           strict,
+                                           strictPrune,
+                                           backendkitSignURL,
+                                           backendkitToken,
+                                           backendkitUnsecureSSL,
+                                           backendkitPubKey);
+    this.folders.push(newFolderParam);
+    this.persistentStorage.set('folders', this.folders);
+  }
+
+  public deleteFolder(folder: FolderParam) {
+    const index = this.folders.lastIndexOf(folder);
+    if (index === -1) {
+      throw new Error ('Unable to find the folder to delete');
+    } else {
+      this.folders.splice(index, 1);
+      this.persistentStorage.set('folders', this.folders);
+    }
+  }
+
+  public constructor() {
+    // Fill folders from saved file
+    this.persistentStorage = new store();
+    if (this.persistentStorage.has('folders')) {
+      this.folders = this.persistentStorage.get('folders');
+    }
+  }
 }
 
-class folderParam {
+class FolderParam {
   path: string = null;
   action: string = null;
-  private: boolean = false;
-  strict: boolean = false;
-  strictPrune: boolean = false;
+  private = false;
+  strict = false;
+  strictPrune = false;
   backendkitSignURL: string = null;
   backendkitToken: string = null;
-  backendkitUnsecureSSL: boolean = false;
+  backendkitUnsecureSSL = false;
   backendkitPubKey: string = null;
 
   public getParametersAsString() {
-    let folderParameters: string = '';
-    if (this.action != null){
+    let folderParameters = '';
+    if (this.action != null) {
       folderParameters = folderParameters.concat(`${this.action} `);
     }
-    if (this.path != null){
+    if (this.path != null) {
       folderParameters = folderParameters.concat(`--directory ${this.path} `);
     }
-    if (this.private != false){
+    if (this.private !== false) {
       folderParameters = folderParameters.concat(`--private `);
-    }     
-    if (this.strict != false){
+    }
+    if (this.strict !== false) {
       folderParameters = folderParameters.concat(`--strict `);
-    }    
-    if (this.strictPrune != false){
+    }
+    if (this.strictPrune !== false) {
       folderParameters = folderParameters.concat(`--strictPrune `);
     }
-    if ((this.backendkitSignURL != null) && this.action == 'sign'){
+    if ((this.backendkitSignURL != null) && this.action === 'sign') {
       folderParameters = folderParameters.concat(`--backendkitSignURL ${this.backendkitSignURL} `);
     }
-    if ((this.backendkitToken != null) && this.action == 'sign'){
+    if ((this.backendkitToken != null) && this.action === 'sign') {
       folderParameters = folderParameters.concat(`--backendkitToken ${this.backendkitToken} `);
-    }    
-    if ((this.backendkitUnsecureSSL != false) && this.action == 'sign'){
+    }
+    if ((this.backendkitUnsecureSSL !== false) && this.action === 'sign') {
       folderParameters = folderParameters.concat(`--unsecureSSL `);
     }
-    if ((this.backendkitPubKey != null) && this.action == 'sign'){
+    if ((this.backendkitPubKey != null) && this.action === 'sign') {
       folderParameters = folderParameters.concat(`--backendkitPubKey ${this.backendkitPubKey} `);
     }
     return folderParameters;
   }
 
-  public constructor(action:string, path:string, privateparam?:boolean, strict?:boolean, strictPrune?:boolean, backendkitSignURL?:string, backendkitToken?:string, backendkitUnsecureSSL?:boolean, backendkitPubKey?:string) {
-    if (action == ('anchor'||'sign')){
+  public constructor(action: string,
+                     path: string,
+                     privateparam?: boolean,
+                     strict?: boolean,
+                     strictPrune?: boolean,
+                     backendkitSignURL?: string,
+                     backendkitToken?: string,
+                     backendkitUnsecureSSL?: boolean,
+                     backendkitPubKey?: string) {
+    if (action === ('anchor' || 'sign')) {
       this.action = action;
     } else {
       throw new Error(`Invalid action, must be anchor or sign current: ${action}`);
     }
     this.path = path;
-    if (privateparam != undefined) {
+    if (privateparam !== undefined) {
       this.private = privateparam;
     }
-    if (strict != undefined){
+    if (strict !== undefined) {
       this.strict = strict;
-    }    
-    if (strictPrune != undefined){
+    }
+    if (strictPrune !== undefined) {
       this.strictPrune = strictPrune;
     }
-    if (backendkitSignURL != undefined){
+    if (backendkitSignURL !== undefined) {
       this.backendkitSignURL = backendkitSignURL;
     }
-    if (backendkitToken != undefined){
+    if (backendkitToken !== undefined) {
       this.backendkitToken = backendkitToken;
     }
-    if (backendkitUnsecureSSL != undefined){
+    if (backendkitUnsecureSSL !== undefined) {
       this.backendkitUnsecureSSL = backendkitUnsecureSSL;
     }
-    if (backendkitPubKey != undefined){
+    if (backendkitPubKey !== undefined) {
       this.backendkitPubKey = backendkitPubKey;
     }
   }

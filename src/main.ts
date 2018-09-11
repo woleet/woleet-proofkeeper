@@ -1,8 +1,8 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { remote } from 'electron';
-import * as log from 'loglevel'
-import 'bootstrap'
+import * as log from 'loglevel';
+import 'bootstrap';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
@@ -12,9 +12,9 @@ if (environment.production) {
 }
 
 if (remote.getGlobal('liveenv')) {
-  log.setLevel('debug')
+  log.setLevel('debug');
 } else {
-  log.setLevel('error')
+  log.setLevel('error');
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)

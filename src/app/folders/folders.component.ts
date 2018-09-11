@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { WoleetCli } from '../services/woleetcli.service'
+import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
+import { FoldersConfigService } from '../services/foldersconfig.service';
+import * as log from 'loglevel';
+
 @Component({
   selector: 'app-folders',
   templateUrl: './folders.component.html',
   styleUrls: ['./folders.component.scss']
 })
+
 export class FoldersComponent implements OnInit {
 
-  cli: WoleetCli;
+  cli: WoleetCliParametersService;
   out: string;
-
-  constructor() {
-   }
+  folders: FoldersConfigService;
 
   ngOnInit() {
-    // Fill folders from service
-    this.cli = new WoleetCli();
-    this.out = this.cli.createProcess('--test')
+    // this.folders.addFolder('anchor', '/Users/pierrelecorre/Desktop');
+    log.info(this.folders.getFolders());
+    this.out = this.cli.woleetCli.createProcess('--test');
   }
 
+  constructor(woleetCliService: WoleetCliParametersService, foldersConfigService: FoldersConfigService) {
+    this.cli = woleetCliService;
+    this.folders = foldersConfigService;
+  }
 }
