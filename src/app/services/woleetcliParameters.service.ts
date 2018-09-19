@@ -81,15 +81,13 @@ export class WoleetCliExecutable {
     return this.woleetCli;
   }
 
-  public createProcess(parameters: string): string {
-    let out: string;
-    try {
-      out = require('child_process').execFileSync(this.woleetCli, [parameters], {stdio: 'pipe', windowsHide: true});
-    } catch (error) {
-      log.error(error);
-      out = error;
+  public createProcess(parameters: string) {
+    require('child_process').exec(this.woleetCli + ' ' + parameters, {stdio: 'pipe', windowsHide: true}, (error, stdout, stderr) => {
+    if (error) {
+      log.error(stderr);
     }
-    return out;
+    log.info(stdout);
+    });
   }
 
   public constructor() {
