@@ -41,7 +41,7 @@
       <input type="text" class="form-control" id="inputBackendkitPubKey" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
     </div>
   </div>
-  <button type="button" class="btn btn-default" [disabled]="!(formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL))" (click)="onClickAdd();">Add folder</button>
+  <button type="button" class="btn btn-default" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL)))" (click)="onClickAdd();">Add folder</button>
 </form>
 <div class="watchedFolders">
   <ul class="list-group">

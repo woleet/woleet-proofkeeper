@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { remote} from 'electron';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
+import * as Store from 'electron-store';
 
 @Component({
   selector: 'app-settings',
@@ -13,6 +15,11 @@ export class SettingsComponent {
 
   saveSettings() {
     this.cli.setWoleetCliParameters(this.token, this.url);
+  }
+
+  clearSavedSettings() {
+    this.cli.store.clear();
+    remote.getCurrentWebContents().reload();
   }
 
   constructor(woleetCliService: WoleetCliParametersService) {

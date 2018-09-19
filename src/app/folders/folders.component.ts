@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { FoldersConfigService, FolderParam } from '../services/foldersconfig.service';
 import { remote } from 'electron';
-
 import * as log from 'loglevel';
 import * as nodepath from 'path';
 
@@ -18,6 +17,13 @@ export class FoldersComponent {
   public out: string;
   public formFolderParam: FolderParam;
   private cli: WoleetCliParametersService;
+  private defaultFolderParam: FolderParam = new FolderParam({action: 'anchor', path: ''});
+
+  constructor(woleetCliService: WoleetCliParametersService, foldersConfigService: FoldersConfigService) {
+    this.cli = woleetCliService;
+    this.folders = foldersConfigService;
+    this.formFolderParam = new FolderParam(this.defaultFolderParam);
+  }
 
   onClickPopUpDirectory() {
     let path: string;
@@ -39,7 +45,7 @@ export class FoldersComponent {
 
   onClickAdd() {
     this.folders.addFolderFromClass(this.formFolderParam);
-    this.formFolderParam = new FolderParam('anchor', '');
+    this.formFolderParam = new FolderParam(this.defaultFolderParam);
   }
 
   onClickDelete(folder: FolderParam) {
@@ -48,11 +54,5 @@ export class FoldersComponent {
     } catch (error) {
       log.error(error);
     }
-  }
-
-  constructor(woleetCliService: WoleetCliParametersService, foldersConfigService: FoldersConfigService) {
-    this.cli = woleetCliService;
-    this.folders = foldersConfigService;
-    this.formFolderParam = new FolderParam('anchor', '');
   }
 }

@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as log from 'loglevel';
 import * as fs from 'fs';
 import * as Store from 'electron-store';
+import { FolderParam } from './foldersconfig.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class WoleetCliParametersService {
   public woleetCli: WoleetCliExecutable = null;
   private url: string = null;
   private token: string = null;
-  private store: Store;
+  public store: Store;
 
   public constructor(storeService: StoreService) {
     this.store = storeService.store;
@@ -26,17 +27,18 @@ export class WoleetCliParametersService {
     if (this.store.has('url')) {
       this.url = this.store.get('url');
     }
-    log.info('FoldersCli ' + this.token);
   }
 
-  public getParametersAsString() {
+  public getActionParametersAsString(folderParam: FolderParam) {
     let globalParameters = '';
+    globalParameters = globalParameters.concat(`${folderParam.action} `);
     if (this.url !== null) {
       globalParameters = globalParameters.concat(`--url ${this.url} `);
     }
     if (this.token !== null) {
       globalParameters = globalParameters.concat(`--token ${this.token} `);
     }
+    globalParameters = globalParameters.concat(folderParam.getParametersAsString());
     return globalParameters;
   }
 
