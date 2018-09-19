@@ -1,3 +1,57 @@
-<li class="list-group-item">
-  <h4>Fodler : {{out}}</h4>
-</li>
+<form class="folderAddForm">
+  <div class="form-group">
+    <select class="custom-select" required [(ngModel)]="formFolderParam.action" name="action">
+      <option value="anchor" selected>anchor files</option>
+      <option value="sign">sign files</option>
+    </select>
+  </div>
+  <div class="form-group custom-file">
+    <label *ngIf="formFolderParam.path == ''" class="custom-file-label alert-danger" for="customFile" (click)="onClickPopUpDirectory();">Choose folder</label>
+    <label *ngIf="formFolderParam.path != ''" class="custom-file-label" for="customFile" (click)="onClickPopUpDirectory();">{{formFolderParam.path}}</label>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-4">
+      <input type="checkbox" name="private" [(ngModel)]="formFolderParam.private">
+      <span class="checkmark"> Private </span>
+    </div>
+    <div class="form-group col-4">
+      <input type="checkbox" name="strict" [(ngModel)]="formFolderParam.strict">
+      <span class="checkmark"> Strict </span>
+    </div>
+    <div class="form-group col-4">
+      <input type="checkbox" name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">
+      <span class="checkmark"> StrictPrune </span>
+    </div>
+  </div>
+  <div class="form-group" *ngIf="formFolderParam.action == 'sign'">
+    <div class="form-group">
+      <input type="checkbox" name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">
+      <span class="checkmark"> Backendkit UnsecureSSL </span>
+    </div>
+    <div class="form-group">
+      <label for="inputBackendkitToken">Backendkit Token</label>
+      <input type="text" class="form-control" id="inputBackendkitToken" name="backendkitToken" [(ngModel)]="formFolderParam.backendkitToken">
+    </div>
+    <div class="form-group">
+      <label for="inputBackendkitSignURL">Backendkit URL</label>
+      <input type="text" class="form-control" id="inputBackendkitSignURL" name="backendkitSignURL" [(ngModel)]="formFolderParam.backendkitSignURL">
+    </div>
+    <div class="form-group">
+      <label for="inputBackendkitPubKey">Backendkit Public key (optional)</label>
+      <input type="text" class="form-control" id="inputBackendkitPubKey" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
+    </div>
+  </div>
+  <button type="button" class="btn btn-default" [disabled]="!(formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL))" (click)="onClickAdd();">Add folder</button>
+</form>
+<div class="watchedFolders">
+  <ul class="list-group">
+    <li *ngFor="let folder of folders.folders" class="list-group-item d-flex justify-content-between align-items-center">
+      {{folder.action}}: {{folder.path}}
+      <span class="pull-right">
+        <button type="button" class="btn btn-xs btn-danger" (click)="onClickDelete(folder);">
+          <span class="fas fa-trash-alt"></span>
+        </button>
+      </span>
+    </li>
+  </ul>
+</div>

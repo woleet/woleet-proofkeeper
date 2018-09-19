@@ -1,0 +1,43 @@
+.body {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0px;
+}
+
+.row {
+  margin: 0px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  min-width: 100px;
+  max-width: 100px;
+  background: aqua;
+  display: block;
+  text-align: center;
+  padding: 10px;
+  font-size: 50px;
+  color: rgb(40, 140, 143);
+}
+.sidebar i:hover {
+  color: rgb(40, 100, 143);
+}
+
+.active {
+  color: rgb(0, 0, 0);
+}
+
+.screenContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  min-width: calc(100vw - 100px);
+  max-width: calc(100vw - 100px);
+  background: aquamarine;
+  overflow: auto;
+}

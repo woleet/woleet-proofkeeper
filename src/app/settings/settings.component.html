@@ -1,0 +1,11 @@
+<form class="settingsForm">
+  <div class="form-group">
+    <label for="inputToken">Token</label>
+    <input type="text" class="form-control" id="inputToken" name="Token" [(ngModel)]="token">
+  </div>
+  <div class="form-group">
+    <label for="inputURL">Override URL</label>
+    <input type="text" class="form-control" id="inputURL" name="URL" [(ngModel)]="url">
+  </div>
+  <button type="button" class="btn btn-default" [disabled]="" (click)="saveSettings();">Save settings</button>
+</form>

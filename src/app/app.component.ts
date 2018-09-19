@@ -4,15 +4,20 @@ import { remote } from 'electron';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 
 export class AppComponent {
   title = 'woleet-gui';
+  public active: string;
 
-  folders: any[];
+  setActiveFolders () { this.active = 'folders'; }
+
+  setActiveSettings () { this.active = 'settings'; }
+
+  setActiveTerm () { this.active = 'term'; }
 
   constructor() {
-
+    this.setActiveFolders();
   }
 }

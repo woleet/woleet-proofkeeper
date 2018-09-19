@@ -1,25 +1,40 @@
 import { Injectable } from '@angular/core';
+import { StoreService } from './store.service';
 import * as path from 'path';
 import * as log from 'loglevel';
 import * as fs from 'fs';
-import * as store from 'electron-store';
+import * as Store from 'electron-store';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class WoleetCliParametersService {
   public woleetCli: WoleetCliExecutable = null;
   private url: string = null;
   private token: string = null;
-  private persistentStorage: store;
+  private store: Store;
 
+  public constructor(storeService: StoreService) {
+    this.store = storeService.store;
+    this.woleetCli = new WoleetCliExecutable();
+    if (this.store.has('token')) {
+      this.token = this.store.get('token');
+    } else {
+      log.warn('There is no token set, you must set one to use the application');
+    }
+    if (this.store.has('url')) {
+      this.url = this.store.get('url');
+    }
+    log.info('FoldersCli ' + this.token);
+  }
 
   public getParametersAsString() {
     let globalParameters = '';
-    if (this.url != null) {
+    if (this.url !== null) {
       globalParameters = globalParameters.concat(`--url ${this.url} `);
     }
-    if (this.token != null) {
+    if (this.token !== null) {
       globalParameters = globalParameters.concat(`--token ${this.token} `);
     }
     return globalParameters;
@@ -27,10 +42,13 @@ export class WoleetCliParametersService {
 
   public setWoleetCliParameters(token: string, url?: string) {
     this.token = token;
-    this.persistentStorage.set('token', token);
-    if (url !== undefined) {
+    this.store.set('token', token);
+    if (url) {
       this.url = url;
-      this.persistentStorage.set('url', url);
+      this.store.set('url', url);
+    }
+    if (url === null ) {
+      this.deleteUrl();
     }
   }
 
@@ -44,25 +62,12 @@ export class WoleetCliParametersService {
 
   public deleteUrl() {
     this.url = null;
-    this.persistentStorage.delete('url');
+    this.store.delete('url');
   }
 
   public deleteToken() {
     this.token = null;
-    this.persistentStorage.delete('token');
-  }
-
-  public constructor() {
-    this.woleetCli = new WoleetCliExecutable();
-    this.persistentStorage = new store();
-    if (store.has('token')) {
-      this.token = store.get('token');
-    } else {
-      log.warn('There is no token set, you must set one to use the application');
-    }
-    if (store.has('url')) {
-      this.url = store.get('url');
-    }
+    this.store.delete('token');
   }
 }
 

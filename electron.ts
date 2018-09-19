@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 
 let win, liveenv, tray, nativcon;
+let willQuitApp = false;
 
 const args = process.argv.slice(1);
 liveenv = args.some(val => val === '--liveenv');
@@ -13,17 +14,35 @@ global.liveenv = liveenv;
 if (liveenv) {
   require('electron-reload')([__dirname], {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+    hardResetMethod: 'exit'
   });
 }
 
 nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png'));
 
-function createWindow () {
+function createWindowTray () {
   win = new BrowserWindow({
     width: 800,
     height: 600,
+    minWidth: 400,
+    minHeight: 300,
     icon: nativcon
   });
+
+  if (process.platform === 'darwin') {
+    tray = new Tray(nativcon.resize({width: 20, height: 20}));
+  } else {
+    tray = new Tray(nativcon);
+  }
+
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Show', click: function() {
+      win.show();
+    }},
+    { label: 'Exit', click: function() {
+      app.quit();
+    }}
+  ]);
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'dist/woleet-gui/index.html'),
@@ -31,21 +50,25 @@ function createWindow () {
     slashes: true
   }));
 
-  win.on('closed', () => {
-    win = null;
+  tray.setToolTip('WoleetGui');
+  tray.setContextMenu(contextMenu);
+
+  win.on('minimize', () => {
+    win.hide();
+  });
+
+  win.on('close', (event) => {
+    if (willQuitApp) {
+      win = null;
+    } else {
+      event.preventDefault();
+      win.hide();
+    }
   });
 }
 
 app.on('ready', () => {
-  createWindow();
-  tray = new Tray(nativcon);
-  const contextMenu = Menu.buildFromTemplate([
-    { label: 'Exit', click: function() {
-      app.quit();
-    }}
-  ]);
-  tray.setToolTip('WoleetGui');
-  tray.setContextMenu(contextMenu);
+  createWindowTray();
 });
 
 app.on('window-all-closed', () => {
@@ -56,6 +79,12 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (win === null) {
-    createWindow();
+    createWindowTray();
+  } else {
+    win.show();
   }
+});
+
+app.on('before-quit', () => {
+  willQuitApp = true;
 });
