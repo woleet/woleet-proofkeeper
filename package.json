@@ -13,8 +13,8 @@
     "electron:serve": "npm run electron:TStoJS && npm-run-all -p angular:buildandwatch electron:serveandreload",
     "electron:serveandreload": "wait-on dist/woleet-gui/index.html && electron . --liveenv",
     "electron:TStoJS": "node postinstall && npx tsc --target 'ES5' --typeRoots 'node_modules/@types' --moduleResolution 'node' --lib 'DOM,ES5,ES6' electron.ts",
-    "electron:linux": "npm run build:prod && npx electron-builder build --linux",
-    "electron:mac": "npm run build:prod && npx electron-builder build --mac",
+    "electron:linux": "npm run build:prod && chmod +x dist/woleet-gui/assets/bin/linux/woleet-cli && npx electron-builder build --linux",
+    "electron:mac": "npm run build:prod && chmod +x dist/woleet-gui/assets/bin/darwin/woleet-cli && npx electron-builder build --mac",
     "electron:windows": "npm run build:prod && npx electron-builder build --windows"
   },
   "devDependencies": {

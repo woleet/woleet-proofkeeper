@@ -82,35 +82,39 @@ export class WoleetCliExecutable {
   }
 
   public createProcess(parameters: string) {
-    require('child_process').exec(this.woleetCli + ' ' + parameters, {stdio: 'pipe', windowsHide: true}, (error, stdout, stderr) => {
-    if (error) {
-      log.error(stderr);
+    require('child_process').execFile(this.woleetCli,
+      parameters.split(' '),
+      {stdio: 'pipe', windowsHide: true},
+      (error, stdout, stderr) => {
+        if (error) {
+          log.error(stderr);
+        }
+        log.info(stdout);
+      });
     }
-    log.info(stdout);
-    });
+
+    public constructor() {
+      let platform: string = process.platform;
+      if ( platform === 'win32' ) {
+        platform = 'windows';
+      }
+      this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
+      if (fs.lstatSync(this.woleetCli).isFile()) {
+        if ( platform !== 'windows' ) {
+          let executable = true;
+          try {
+            fs.accessSync(this.woleetCli, fs.constants.X_OK);
+          } catch (err) {
+            executable = false;
+          }
+          if (!executable) {
+            // tslint:disable-next-line:no-bitwise
+            fs.chmodSync(this.woleetCli, fs.lstatSync(this.woleetCli).mode | fs.constants.S_IXUSR);
+          }
+        }
+      } else {
+        log.error(`Unable to find: ${this.woleetCli}`);
+      }
+    }
   }
 
-  public constructor() {
-    let platform: string = process.platform;
-    if ( platform === 'win32' ) {
-      platform = 'windows';
-    }
-    this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
-    if (fs.lstatSync(this.woleetCli).isFile()) {
-      if ( platform !== 'windows' ) {
-        let executable = true;
-        try {
-          fs.accessSync(this.woleetCli, fs.constants.X_OK);
-        } catch (err) {
-          executable = false;
-        }
-        if (!executable) {
-          // tslint:disable-next-line:no-bitwise
-          fs.chmodSync(this.woleetCli, fs.lstatSync(this.woleetCli).mode | fs.constants.S_IXUSR);
-        }
-      }
-    } else {
-      log.error(`Unable to find: ${this.woleetCli}`);
-    }
-  }
-}

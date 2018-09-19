@@ -1,6 +1,5 @@
 {
   "productName": "woleet-gui",
-  "asar": false,
   "directories": {
     "output": "release/"
   },
