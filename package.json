@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "npx ng",
     "start": "npm run electron:serve",
+    "clean": "rm -rf release dist node_modules",
     "angular:buildandwatch": "ng build --watch",
     "build": "npm run electron:TStoJS && ng build",
     "build:dev": "npm run build -- -c dev",

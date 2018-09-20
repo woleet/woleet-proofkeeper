@@ -117,7 +117,7 @@ export class FolderParam {
   }
 
   public getParametersArray(): [string] {
-    const parametersArray: [string] = [null];
+    const parametersArray: [string] = [] as any;
     if (this.path != null) {
       parametersArray.push('--directory');
       parametersArray.push(this.path);

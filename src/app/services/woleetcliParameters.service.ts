@@ -31,7 +31,7 @@ export class WoleetCliParametersService {
   }
 
   public getActionParametersArray(folderParam: FolderParam): [string] {
-    const actionParametersArray: [string] = [null];
+    const actionParametersArray: [string] = [] as any;
     actionParametersArray.push(folderParam.action);
     if (this.url !== null) {
       actionParametersArray.push('--url');
@@ -41,8 +41,7 @@ export class WoleetCliParametersService {
       actionParametersArray.push('--token');
       actionParametersArray.push(this.token);
     }
-    actionParametersArray.concat(folderParam.getParametersArray());
-    return actionParametersArray;
+    return actionParametersArray.concat(folderParam.getParametersArray()) as any;
   }
 
   public setWoleetCliParameters(token: string, url?: string) {
