@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
+import { FolderParam } from './foldersconfig.service';
+import { remote } from 'electron';
 import * as path from 'path';
 import * as log from 'loglevel';
 import * as fs from 'fs';
 import * as Store from 'electron-store';
-import { FolderParam } from './foldersconfig.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,17 +30,19 @@ export class WoleetCliParametersService {
     }
   }
 
-  public getActionParametersAsString(folderParam: FolderParam) {
-    let globalParameters = '';
-    globalParameters = globalParameters.concat(`${folderParam.action} `);
+  public getActionParametersArray(folderParam: FolderParam): [string] {
+    const actionParametersArray: [string] = [null];
+    actionParametersArray.push(folderParam.action);
     if (this.url !== null) {
-      globalParameters = globalParameters.concat(`--url ${this.url} `);
+      actionParametersArray.push('--url');
+      actionParametersArray.push(this.url);
     }
     if (this.token !== null) {
-      globalParameters = globalParameters.concat(`--token ${this.token} `);
+      actionParametersArray.push('--token');
+      actionParametersArray.push(this.token);
     }
-    globalParameters = globalParameters.concat(folderParam.getParametersAsString());
-    return globalParameters;
+    actionParametersArray.concat(folderParam.getParametersArray());
+    return actionParametersArray;
   }
 
   public setWoleetCliParameters(token: string, url?: string) {
@@ -81,25 +84,23 @@ export class WoleetCliExecutable {
     return this.woleetCli;
   }
 
-  public createProcess(parameters: string) {
-    require('child_process').execFile(this.woleetCli,
-      parameters.split(' '),
-      {stdio: 'pipe', windowsHide: true},
-      (error, stdout, stderr) => {
-        if (error) {
-          log.error(stderr);
-        }
-        log.info(stdout);
-      });
-    }
-
-    public constructor() {
-      let platform: string = process.platform;
-      if ( platform === 'win32' ) {
-        platform = 'windows';
+  public createProcess(parameters: [string]) {
+    require('child_process').execFile(this.woleetCli, parameters, {stdio: 'pipe', windowsHide: true}, (error, stdout, stderr) => {
+      if (error) {
+        log.error(stderr);
       }
-      this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
-      if (fs.lstatSync(this.woleetCli).isFile()) {
+      log.info(stdout);
+    });
+  }
+
+  public constructor() {
+    let platform: string = process.platform;
+    if ( platform === 'win32' ) {
+      platform = 'windows';
+    }
+    this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
+    if (fs.lstatSync(this.woleetCli).isFile()) {
+      if (remote.getGlobal('liveenv')) {
         if ( platform !== 'windows' ) {
           let executable = true;
           try {
@@ -112,9 +113,10 @@ export class WoleetCliExecutable {
             fs.chmodSync(this.woleetCli, fs.lstatSync(this.woleetCli).mode | fs.constants.S_IXUSR);
           }
         }
-      } else {
-        log.error(`Unable to find: ${this.woleetCli}`);
       }
+    } else {
+      log.error(`Unable to find: ${this.woleetCli}`);
     }
   }
+}
 

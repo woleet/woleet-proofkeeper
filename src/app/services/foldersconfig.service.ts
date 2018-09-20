@@ -116,33 +116,37 @@ export class FolderParam {
     }
   }
 
-  public getParametersAsString() {
-    let folderParameters = '';
+  public getParametersArray(): [string] {
+    const parametersArray: [string] = [null];
     if (this.path != null) {
-      folderParameters = folderParameters.concat(`--directory ${this.path} `);
+      parametersArray.push('--directory');
+      parametersArray.push(this.path);
     }
     if (this.private !== false) {
-      folderParameters = folderParameters.concat(`--private `);
+      parametersArray.push('--private');
     }
     if (this.strict !== false) {
-      folderParameters = folderParameters.concat(`--strict `);
+      parametersArray.push('--strict');
     }
     if (this.strictPrune !== false) {
-      folderParameters = folderParameters.concat(`--strictPrune `);
+      parametersArray.push('--strictPrune');
     }
     if ((this.backendkitSignURL != null) && this.action === 'sign') {
-      folderParameters = folderParameters.concat(`--backendkitSignURL ${this.backendkitSignURL} `);
+      parametersArray.push('--backendkitSignURL');
+      parametersArray.push(this.backendkitSignURL);
     }
     if ((this.backendkitToken != null) && this.action === 'sign') {
-      folderParameters = folderParameters.concat(`--backendkitToken ${this.backendkitToken} `);
+      parametersArray.push('--backendkitToken ');
+      parametersArray.push(this.backendkitToken);
     }
     if ((this.backendkitUnsecureSSL !== false) && this.action === 'sign') {
-      folderParameters = folderParameters.concat(`--unsecureSSL `);
+      parametersArray.push('--unsecureSSL');
     }
     if ((this.backendkitPubKey != null) && this.action === 'sign') {
-      folderParameters = folderParameters.concat(`--backendkitPubKey ${this.backendkitPubKey} `);
+      parametersArray.push('--backendkitPubKey');
+      parametersArray.push(this.backendkitPubKey);
     }
-    return folderParameters;
+    return parametersArray;
   }
 }
 

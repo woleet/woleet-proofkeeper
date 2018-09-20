@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { FoldersConfigService, FolderParam } from '../services/foldersconfig.service';
 import { remote } from 'electron';
 import * as log from 'loglevel';
@@ -16,11 +15,9 @@ export class FoldersComponent {
   public folders: FoldersConfigService;
   public out: string;
   public formFolderParam: FolderParam;
-  private cli: WoleetCliParametersService;
   private defaultFolderParam: FolderParam = new FolderParam({action: 'anchor', path: ''});
 
-  constructor(woleetCliService: WoleetCliParametersService, foldersConfigService: FoldersConfigService) {
-    this.cli = woleetCliService;
+  constructor(foldersConfigService: FoldersConfigService) {
     this.folders = foldersConfigService;
     this.formFolderParam = new FolderParam(this.defaultFolderParam);
   }

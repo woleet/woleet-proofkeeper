@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { remote } from 'electron';
-import { Observable, Subscription, timer, of, from } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { FoldersConfigService, FolderParam } from './services/foldersconfig.service';
 import * as log from 'loglevel';
@@ -25,8 +24,8 @@ export class AppComponent {
 
     this.timer.subscribe( () => {
       for (const folder of this.folders.folders) {
-        log.info(this.cli.getActionParametersAsString(folder));
-        this.cli.woleetCli.createProcess(this.cli.getActionParametersAsString(folder));
+        log.info(this.cli.getActionParametersArray(folder));
+        this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
       }
     } );
   }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { remote} from 'electron';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import * as Store from 'electron-store';
 
 @Component({
   selector: 'app-settings',
