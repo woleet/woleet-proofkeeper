@@ -129,7 +129,7 @@ export class FolderParam {
       parametersArray.push('--strict');
     }
     if (this.strictPrune !== false) {
-      parametersArray.push('--strictPrune');
+      parametersArray.push('--strict-prune');
     }
     if ((this.backendkitSignURL != null) && this.action === 'sign') {
       parametersArray.push('--backendkitSignURL');
