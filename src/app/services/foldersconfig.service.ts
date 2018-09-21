@@ -83,7 +83,7 @@ export class FolderParam {
   backendkitPubKey: string = null;
 
   public constructor(folderDesc: FolderDesc) {
-    if (folderDesc.action === ('anchor' || 'sign')) {
+    if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {
       this.action = folderDesc.action;
     } else {
       throw new Error(`Invalid action, must be anchor or sign current: ${folderDesc.action}`);
@@ -136,7 +136,7 @@ export class FolderParam {
       parametersArray.push(this.backendkitSignURL);
     }
     if ((this.backendkitToken != null) && this.action === 'sign') {
-      parametersArray.push('--backendkitToken ');
+      parametersArray.push('--backendkitToken');
       parametersArray.push(this.backendkitToken);
     }
     if ((this.backendkitUnsecureSSL !== false) && this.action === 'sign') {
