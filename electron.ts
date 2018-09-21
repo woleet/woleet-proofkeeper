@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, globalShortcut } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -67,8 +67,37 @@ function createWindowTray () {
   });
 }
 
+function setShortcuts() {
+  globalShortcut.register('CommandOrControl+Q', () => {
+    app.quit();
+  });
+  globalShortcut.register('CommandOrControl+R', () => {
+    win.reload();
+  });
+  globalShortcut.register('CommandOrControl+Alt+I', () => {
+    win.webContents.openDevTools();
+  });
+  if (process.platform === 'darwin') {
+    Menu.setApplicationMenu(Menu.buildFromTemplate([
+      {
+        label: 'Edit',
+        submenu: [
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'selectall' }
+        ]
+      }
+    ]));
+  }
+}
+
 app.on('ready', () => {
   createWindowTray();
+  setShortcuts();
 });
 
 app.on('window-all-closed', () => {
