@@ -16,19 +16,22 @@
   height: 100vh;
   min-width: 100px;
   max-width: 100px;
-  background: aqua;
+  background: #000000;
   display: block;
   text-align: center;
   padding: 10px;
   font-size: 50px;
-  color: rgb(40, 140, 143);
+  //color: rgb(40, 140, 143);
+  color: rgb(255, 255, 255);
+
 }
 .sidebar i:hover {
   color: rgb(40, 100, 143);
 }
 
 .active {
-  color: rgb(0, 0, 0);
+  //color: rgb(40, 200, 143);;
+  color: rgb(40, 140, 143);
 }
 
 .screenContainer {
@@ -38,6 +41,6 @@
   height: 100vh;
   min-width: calc(100vw - 100px);
   max-width: calc(100vw - 100px);
-  background: aquamarine;
+  background: #e4e7ea;
   overflow: auto;
 }

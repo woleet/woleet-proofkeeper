@@ -9,24 +9,25 @@
     <label *ngIf="formFolderParam.path == ''" class="custom-file-label alert-danger" for="customFile" (click)="onClickPopUpDirectory();">Choose folder</label>
     <label *ngIf="formFolderParam.path != ''" class="custom-file-label" for="customFile" (click)="onClickPopUpDirectory();">{{formFolderParam.path}}</label>
   </div>
+  <label> Options: </label>
   <div class="form-row">
-    <div class="form-group col-4">
-      <input type="checkbox" name="private" [(ngModel)]="formFolderParam.private">
-      <span class="checkmark"> Private </span>
+    <div class="form-group col-12">
+      <input type="checkbox" class="checkbox-margin-left" name="private" [(ngModel)]="formFolderParam.private">
+      <span class="checkmark"> Private (Prevents anchors to be  discovered) </span>
     </div>
-    <div class="form-group col-4">
-      <input type="checkbox" name="strict" [(ngModel)]="formFolderParam.strict">
-      <span class="checkmark"> Strict </span>
+    <div class="form-group col-6">
+      <input type="checkbox" class="checkbox-margin-left" name="strict" [(ngModel)]="formFolderParam.strict">
+      <span class="checkmark"> Strict (Re-anchor any file that has changed since last anchoring) </span>
     </div>
-    <div class="form-group col-4">
+    <div class="form-group col-6">
       <input type="checkbox" name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">
-      <span class="checkmark"> StrictPrune </span>
+      <span class="checkmark"> StrictPrune (Same as --strict, plus delete the previous anchoring receipt) </span>
     </div>
   </div>
   <div class="form-group" *ngIf="formFolderParam.action == 'sign'">
     <div class="form-group">
-      <input type="checkbox" name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">
-      <span class="checkmark"> Backendkit UnsecureSSL </span>
+      <input type="checkbox" class="checkbox-margin-left" name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">
+      <span class="checkmark"> Backendkit UnsecureSSL (Do not check the ssl certificate validity for the backendkit (only use in developpement) )</span>
     </div>
     <div class="form-group">
       <label for="inputBackendkitToken">Backendkit Token</label>
@@ -43,10 +44,18 @@
   </div>
   <button type="button" class="btn btn-default" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL)))" (click)="onClickAdd();">Add folder</button>
 </form>
+<hr>
+<label>Configured Folders: </label>
 <div class="watchedFolders">
   <ul class="list-group">
     <li *ngFor="let folder of folders.folders" class="list-group-item d-flex justify-content-between align-items-center">
-      {{folder.action}}: {{folder.path}}
+      <span class="pull-left">
+        <span [ngClass]="{
+          'alert-primary': folder.action === 'anchor',
+          'alert-info': folder.action === 'sign'
+      }" class="alert">{{folder.action}}</span>
+        {{folder.path}}
+      </span>
       <span class="pull-right">
         <button type="button" class="btn btn-xs btn-danger" (click)="onClickDelete(folder);">
           <span class="fas fa-trash-alt"></span>
