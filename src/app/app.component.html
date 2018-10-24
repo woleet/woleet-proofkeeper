@@ -1,22 +1,25 @@
-<div class="row">
-  <nav class="col sidebar">
-    <a (click)="setActiveFolders();">
-      <i class="fas fa-folder-open" [ngClass]="{'active' : active === 'folders'}" ></i>
-    </a> 
-    <a (click)="setActiveSettings();">
-      <i class="fas fa-cog" [ngClass]="{'active' : active === 'settings'}" ></i>
-    </a> 
-    <a  (click)="setActiveTerm();">
-      <i class="fas fa-terminal" [ngClass]="{'active' : active === 'term'}"></i>
-    </a> 
-  </nav>
-  <div class="col screenContainer" *ngIf="active === 'folders'">
-    <app-folders></app-folders>
-  </div>
-  <div class="col screenContainer" *ngIf="active === 'settings'">
-    <app-settings></app-settings>
-  </div>
-  <div class="col screenContainer" *ngIf="active === 'term'">
-
-  </div>
-</div>
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+    <mat-nav-list>
+      <a (click)="setActiveFolders();" class="menubutton">
+        <i class="fas fa-folder-open menubutton-icon" [ngClass]="{'active' : active === 'folders'}" ></i>
+      </a>
+      <a (click)="setActiveSettings();" class="menubutton">
+        <i class="fas fa-cog menubutton-icon" [ngClass]="{'active' : active === 'settings'}" ></i>
+      </a>
+      <a (click)="setActiveTerm();" class="menubutton">
+        <i class="fas fa-terminal menubutton-icon" [ngClass]="{'active' : active === 'term'}"></i>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="container mainscreen">
+    <div class="screen-container" *ngIf="active === 'folders'">
+      <app-folders></app-folders>
+    </div>
+    <div class="screen-container" *ngIf="active === 'settings'">
+      <app-settings></app-settings>
+    </div>
+    <div class="screen-container" *ngIf="active === 'term'">
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

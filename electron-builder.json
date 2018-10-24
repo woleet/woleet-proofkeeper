@@ -1,5 +1,9 @@
 {
   "productName": "woleet-gui",
+  "asar": true,
+  "asarUnpack": [
+    "dist/woleet-gui/assets/bin"
+  ],
   "directories": {
     "output": "release/"
   },

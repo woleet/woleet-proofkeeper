@@ -1,32 +1,17 @@
-.body {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  margin: 0px;
-}
-
-.row {
-  margin: 0px;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
+.container {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
   left: 0;
-  height: 100vh;
-  min-width: 100px;
-  max-width: 100px;
-  background: #000000;
-  display: block;
-  text-align: center;
-  padding: 10px;
-  font-size: 50px;
-  //color: rgb(40, 140, 143);
-  color: rgb(255, 255, 255);
-
+  right: 0;
 }
-.sidebar i:hover {
-  color: rgb(40, 100, 143);
+
+.sidenav {
+  display: flex;
+  text-align: center;
+  width: 80px;
+  color: rgb(255, 255, 255);
+  background: rgb(0, 0, 0);
 }
 
 .active {
@@ -34,13 +19,37 @@
   color: rgb(40, 140, 143);
 }
 
-.screenContainer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  min-width: calc(100vw - 100px);
-  max-width: calc(100vw - 100px);
+.menubutton {
+  background-color: rgb(65, 65, 65);
+  border: none;
+  color: white;
+  padding: 5px;
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 35px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.menubutton i:hover {
+  color: rgb(40, 100, 143);
+}
+
+.menubutton-icon {
+  vertical-align: middle;
+}
+
+.mainscreen {
   background: #e4e7ea;
   overflow: auto;
+}
+
+.screen-container {
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
 }

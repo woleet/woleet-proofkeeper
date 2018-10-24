@@ -1,14 +1,16 @@
+<mat-card>
+
 <form class="settingsForm">
-  <div class="form-group">
-    <label for="inputToken">Token</label>
-    <input type="text" class="form-control" id="inputToken" name="Token" [(ngModel)]="token">
-  </div>
-  <div class="form-group">
-    <label for="inputURL">Override URL</label>
-    <input type="text" class="form-control" id="inputURL" name="URL" [(ngModel)]="url">
-  </div>
-  <button type="button" class="btn btn-default" [disabled]="" (click)="saveSettings();">Save settings</button>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Token" id="inputToken" name="Token" [(ngModel)]="token">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="text" matInput placeholder="Override API URL" class="form-control" id="inputURL" name="URL" [(ngModel)]="url">
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="" (click)="saveSettings();">Save settings</button>
 </form>
+</mat-card>
+
 <div class="clearButton">
-  <button type="button" class="btn btn-danger" (click)="clearSavedSettings();">Clear saved folders and configuration</button>
+  <button mat-raised-button color="warn" (click)="clearSavedSettings();">Clear saved folders and configuration</button>
 </div>

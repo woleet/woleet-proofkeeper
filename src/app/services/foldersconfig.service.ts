@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { WoleetCliParametersService } from './woleetcliParameters.service';
 import { StoreService } from './store.service';
 import * as log from 'loglevel';
 import * as Store from 'electron-store';

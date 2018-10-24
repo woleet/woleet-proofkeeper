@@ -83,13 +83,8 @@ export class WoleetCliExecutable {
     return this.woleetCli;
   }
 
-  public createProcess(parameters: [string]) {
-    require('child_process').execFile(this.woleetCli, parameters, {stdio: 'pipe', windowsHide: true}, (error, stdout, stderr) => {
-      if (error) {
-        log.error(stderr);
-      }
-      log.info(stdout);
-    });
+  public createProcess(parameters: [string]): any {
+    return require('child_process').spawn(this.woleetCli, parameters, {stdio: 'pipe', windowsHide: true});
   }
 
   public constructor() {
@@ -98,6 +93,11 @@ export class WoleetCliExecutable {
       platform = 'windows';
     }
     this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
+
+    if ( this.woleetCli.includes('app.asar') ) {
+      this.woleetCli = this.woleetCli.replace('app.asar', 'app.asar.unpacked');
+    }
+
     if (fs.lstatSync(this.woleetCli).isFile()) {
       if (remote.getGlobal('liveenv')) {
         if ( platform !== 'windows' ) {

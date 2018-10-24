@@ -1,66 +1,57 @@
-<form class="folderAddForm">
-  <div class="form-group">
-    <select class="custom-select" required [(ngModel)]="formFolderParam.action" name="action">
-      <option value="anchor" selected>anchor files</option>
-      <option value="sign">sign files</option>
-    </select>
-  </div>
-  <div class="form-group custom-file">
-    <label *ngIf="formFolderParam.path == ''" class="custom-file-label alert-danger" for="customFile" (click)="onClickPopUpDirectory();">Choose folder</label>
-    <label *ngIf="formFolderParam.path != ''" class="custom-file-label" for="customFile" (click)="onClickPopUpDirectory();">{{formFolderParam.path}}</label>
-  </div>
-  <label> Options: </label>
-  <div class="form-row">
-    <div class="form-group col-12">
-      <input type="checkbox" class="checkbox-margin-left" name="private" [(ngModel)]="formFolderParam.private">
-      <span class="checkmark"> Private (Prevents anchors to be  discovered) </span>
+<div class="folderAddForm">
+  <mat-card>
+    <mat-form-field>
+      <mat-select class="custom-select" required [(ngModel)]="formFolderParam.action" name="action">
+        <mat-option value="anchor" selected>anchor files</mat-option>
+        <mat-option value="sign">sign files</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="custom-file">
+      <label *ngIf="formFolderParam.path == ''" class="custom-file-label alert-danger" for="customFile" (click)="onClickPopUpDirectory();">Choose folder</label>
+      <label *ngIf="formFolderParam.path != ''" class="custom-file-label" for="customFile" (click)="onClickPopUpDirectory();">{{formFolderParam.path}}</label>
     </div>
-    <div class="form-group col-6">
-      <input type="checkbox" class="checkbox-margin-left" name="strict" [(ngModel)]="formFolderParam.strict">
-      <span class="checkmark"> Strict (Re-anchor any file that has changed since last anchoring) </span>
+    <h3 class="mat-h3"> Options: </h3>
+    <div><mat-slide-toggle name="private" [(ngModel)]="formFolderParam.private">
+      Private (Prevents anchors to be discovered)
+    </mat-slide-toggle></div>
+    <div><mat-checkbox name="strict" [(ngModel)]="formFolderParam.strict">
+      Strict (Re-anchor any file that has changed since last anchoring)
+    </mat-checkbox></div>
+    <div><mat-checkbox name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">
+      StrictPrune (Same as --strict, plus delete the previous anchoring receipt)
+    </mat-checkbox></div>
+    <div *ngIf="formFolderParam.action == 'sign'">
+      <div><mat-checkbox name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">
+        Backendkit UnsecureSSL (Do not check the ssl certificate validity for the backendkit (only use in developpement) )
+      </mat-checkbox></div>
+      <div><mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Backendkit Token" name="backendkitToken" [(ngModel)]="formFolderParam.backendkitToken">
+      </mat-form-field></div>
+      <div><mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Backendkit URL" name="backendkitSignURL" [(ngModel)]="formFolderParam.backendkitSignURL">
+      </mat-form-field></div>
+      <div><mat-form-field class="full-width">
+        <input type="text" matInput placeholder="Backendkit Public key (optional)" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
+      </mat-form-field></div>
     </div>
-    <div class="form-group col-6">
-      <input type="checkbox" name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">
-      <span class="checkmark"> StrictPrune (Same as --strict, plus delete the previous anchoring receipt) </span>
+    <div>
+      <button mat-raised-button color="primary" class="add-button" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL)))" (click)="onClickAdd();">Add folder</button>
     </div>
-  </div>
-  <div class="form-group" *ngIf="formFolderParam.action == 'sign'">
-    <div class="form-group">
-      <input type="checkbox" class="checkbox-margin-left" name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">
-      <span class="checkmark"> Backendkit UnsecureSSL (Do not check the ssl certificate validity for the backendkit (only use in developpement) )</span>
-    </div>
-    <div class="form-group">
-      <label for="inputBackendkitToken">Backendkit Token</label>
-      <input type="text" class="form-control" id="inputBackendkitToken" name="backendkitToken" [(ngModel)]="formFolderParam.backendkitToken">
-    </div>
-    <div class="form-group">
-      <label for="inputBackendkitSignURL">Backendkit URL</label>
-      <input type="text" class="form-control" id="inputBackendkitSignURL" name="backendkitSignURL" [(ngModel)]="formFolderParam.backendkitSignURL">
-    </div>
-    <div class="form-group">
-      <label for="inputBackendkitPubKey">Backendkit Public key (optional)</label>
-      <input type="text" class="form-control" id="inputBackendkitPubKey" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
-    </div>
-  </div>
-  <button type="button" class="btn btn-default" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL)))" (click)="onClickAdd();">Add folder</button>
-</form>
-<hr>
-<label>Configured Folders: </label>
-<div class="watchedFolders">
-  <ul class="list-group">
-    <li *ngFor="let folder of folders.folders" class="list-group-item d-flex justify-content-between align-items-center">
-      <span class="pull-left">
-        <span [ngClass]="{
-          'alert-primary': folder.action === 'anchor',
-          'alert-info': folder.action === 'sign'
-      }" class="alert">{{folder.action}}</span>
-        {{folder.path}}
-      </span>
-      <span class="pull-right">
-        <button type="button" class="btn btn-xs btn-danger" (click)="onClickDelete(folder);">
+  </mat-card>
+</div>
+<hr style="border: 0px">
+<mat-card>
+  <h3 class="mat-h3">Configured Folders: </h3>
+  <div class="watchedFolders">
+    <mat-list role="list" class="folders-list"> 
+      <mat-list-item class="folders-item-container full-width" *ngFor="let folder of folders.folders; last as last" role="listitem">
+        <a [ngClass]="{'action-type-anchor': folder.action === 'anchor', 'action-type-sign': folder.action === 'sign'}">{{folder.action}}</a>
+        <span class="mat-line folder-path">{{folder.path}}</span>
+        <button mat-raised-button color="warn" class="remove-button" (click)="onClickDelete(folder);">
           <span class="fas fa-trash-alt"></span>
         </button>
-      </span>
-    </li>
-  </ul>
-</div>
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</mat-card>

@@ -1,16 +1,46 @@
-.folderAddForm {
-  margin-top: 5vh
+.full-width {
+  width: 100%;
 }
 
-.watchedFolders {
-  margin-top: 5vh;
-  margin-bottom: 5vh;
+.action-type {
+  color: rgb(255, 255, 255);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 60px;
+  height: 18px;
+  border-radius: 8px;
 }
 
-.alert {
-  margin-bottom: 0px;
-  border: 0px;
+.action-type-anchor {
+  @extend .action-type;
+  background: rgb(40, 100, 143);
 }
-.checkbox-margin-left {
-  margin-left: 2vh;
+
+.action-type-sign {
+  @extend .action-type;
+  background: rgb(143, 136, 40);
+}
+
+.add-button {
+  margin-top: 20px;
+}
+
+.folder-path {
+  margin-left: 20px;
+  margin-right: 70px;
+  width: 100%;
+  text-overflow: initial !important;
+  overflow: auto !important;
+}
+
+.remove-button {
+  justify-self: flex-end;
+  position: absolute;
+  right: 0%;
 }
