@@ -1,7 +1,4 @@
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-$fa-font-path: '~@fortawesome/fontawesome-free/webfonts'; 
-@import '~@fortawesome/fontawesome-free/scss/fontawesome'; 
-@import '~@fortawesome/fontawesome-free/scss/solid'; 
-@import '~@fortawesome/fontawesome-free/scss/regular'; 
-@import '~@fortawesome/fontawesome-free/scss/brands'; 
-@import "custom";
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+$material-icons-font-path: '~material-design-icons/iconfont/';
+@import '~material-design-icons/iconfont/material-icons.css';
+@import 'custom';

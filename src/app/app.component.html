@@ -2,13 +2,13 @@
   <mat-sidenav #sidenav mode="side" opened class="sidenav" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
     <mat-nav-list>
       <a (click)="setActiveFolders();" class="menubutton">
-        <i class="fas fa-folder-open menubutton-icon" [ngClass]="{'active' : active === 'folders'}" ></i>
+        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'folders'}">folder</i>
       </a>
       <a (click)="setActiveSettings();" class="menubutton">
-        <i class="fas fa-cog menubutton-icon" [ngClass]="{'active' : active === 'settings'}" ></i>
+        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'settings'}">settings</i>
       </a>
       <a (click)="setActiveTerm();" class="menubutton">
-        <i class="fas fa-terminal menubutton-icon" [ngClass]="{'active' : active === 'term'}"></i>
+        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'term'}">code</i>
       </a>
     </mat-nav-list>
   </mat-sidenav>

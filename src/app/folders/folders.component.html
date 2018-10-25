@@ -6,33 +6,57 @@
         <mat-option value="sign">sign files</mat-option>
       </mat-select>
     </mat-form-field>
-    <div class="custom-file">
-      <label *ngIf="formFolderParam.path == ''" class="custom-file-label alert-danger" for="customFile" (click)="onClickPopUpDirectory();">Choose folder</label>
-      <label *ngIf="formFolderParam.path != ''" class="custom-file-label" for="customFile" (click)="onClickPopUpDirectory();">{{formFolderParam.path}}</label>
+    <div>
+      <mat-form-field class="full-width">
+        <input matInput type="text" placeholder="Folder to scan" [(ngModel)]="formFolderParam.path">
+        <button mat-icon-button matSuffix *ngIf="formFolderParam.path" (click)="formFolderParam.path=''">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">Choose folder</button>
+      </mat-form-field>      
     </div>
+    
     <h3 class="mat-h3"> Options: </h3>
-    <div><mat-slide-toggle name="private" [(ngModel)]="formFolderParam.private">
-      Private (Prevents anchors to be discovered)
-    </mat-slide-toggle></div>
-    <div><mat-checkbox name="strict" [(ngModel)]="formFolderParam.strict">
-      Strict (Re-anchor any file that has changed since last anchoring)
-    </mat-checkbox></div>
-    <div><mat-checkbox name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">
-      StrictPrune (Same as --strict, plus delete the previous anchoring receipt)
-    </mat-checkbox></div>
+    <div>
+      <mat-slide-toggle name="private" [(ngModel)]="formFolderParam.private">Private</mat-slide-toggle>
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <mat-icon class="help-icon">help</mat-icon>
+      </button>
+    </div>
+    <div>
+      <mat-checkbox name="strict" [(ngModel)]="formFolderParam.strict">Strict</mat-checkbox>
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Re-anchor any file that has changed since last anchoring" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <mat-icon class="help-icon">help</mat-icon>
+      </button>
+    </div>
+    <div>
+      <mat-checkbox name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">StrictPrune</mat-checkbox>
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Same as --strict, plus delete the previous anchoring receipt" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <mat-icon class="help-icon">help</mat-icon>
+      </button>
+    </div>
     <div *ngIf="formFolderParam.action == 'sign'">
-      <div><mat-checkbox name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">
-        Backendkit UnsecureSSL (Do not check the ssl certificate validity for the backendkit (only use in developpement) )
-      </mat-checkbox></div>
-      <div><mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Backendkit Token" name="backendkitToken" [(ngModel)]="formFolderParam.backendkitToken">
-      </mat-form-field></div>
-      <div><mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Backendkit URL" name="backendkitSignURL" [(ngModel)]="formFolderParam.backendkitSignURL">
-      </mat-form-field></div>
-      <div><mat-form-field class="full-width">
-        <input type="text" matInput placeholder="Backendkit Public key (optional)" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
-      </mat-form-field></div>
+      <div>
+        <mat-checkbox name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">Backendkit UnsecureSSL</mat-checkbox>
+        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check the ssl certificate validity for the backendkit (only use in developpement)" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+          <mat-icon class="help-icon">help</mat-icon>
+        </button>
+      </div>
+      <div>
+        <mat-form-field class="full-width">
+          <input type="text" matInput placeholder="Backendkit Token" name="backendkitToken" [(ngModel)]="formFolderParam.backendkitToken">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width">
+          <input type="text" matInput placeholder="Backendkit URL" name="backendkitSignURL" [(ngModel)]="formFolderParam.backendkitSignURL">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width">
+          <input type="text" matInput placeholder="Backendkit Public key (optional)" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
+        </mat-form-field>
+      </div>
     </div>
     <div>
       <button mat-raised-button color="primary" class="add-button" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL)))" (click)="onClickAdd();">Add folder</button>
@@ -45,10 +69,10 @@
   <div class="watchedFolders">
     <mat-list role="list" class="folders-list"> 
       <mat-list-item class="folders-item-container full-width" *ngFor="let folder of folders.folders; last as last" role="listitem">
-        <a [ngClass]="{'action-type-anchor': folder.action === 'anchor', 'action-type-sign': folder.action === 'sign'}">{{folder.action}}</a>
+        <button mat-flat-button [disableRipple]="true" color="primary" class="action-type">{{folder.action}}</button>
         <span class="mat-line folder-path">{{folder.path}}</span>
         <button mat-raised-button color="warn" class="remove-button" (click)="onClickDelete(folder);">
-          <span class="fas fa-trash-alt"></span>
+          <mat-icon>delete</mat-icon>
         </button>
         <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
       </mat-list-item>

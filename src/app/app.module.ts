@@ -13,6 +13,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -41,7 +43,9 @@ import { WoleetCliParametersService } from './services/woleetcliParameters.servi
     MatSlideToggleModule,
     MatButtonModule,
     MatInputModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTooltipModule,
+    MatIconModule
   ],
   providers: [
     StoreService,

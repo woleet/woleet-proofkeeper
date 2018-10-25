@@ -11,7 +11,7 @@
   text-align: center;
   width: 80px;
   color: rgb(255, 255, 255);
-  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .active {
@@ -20,9 +20,9 @@
 }
 
 .menubutton {
-  background-color: rgb(65, 65, 65);
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(0, 0, 0, 0.245);
   border: none;
-  color: white;
   padding: 5px;
   width: 45px;
   height: 45px;
@@ -32,14 +32,14 @@
   font-size: 35px;
   border-radius: 8px;
   margin-bottom: 10px;
-}
-
-.menubutton i:hover {
-  color: rgb(40, 100, 143);
+  :hover {
+    color: rgb(40, 100, 143);
+  }
 }
 
 .menubutton-icon {
   vertical-align: middle;
+  font-size: 35px;
 }
 
 .mainscreen {

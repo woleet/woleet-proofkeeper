@@ -2,29 +2,13 @@
   width: 100%;
 }
 
+.unclickable-button {
+  pointer-events: none;
+}
+
 .action-type {
-  color: rgb(255, 255, 255);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  width: 60px;
-  height: 18px;
-  border-radius: 8px;
-}
-
-.action-type-anchor {
-  @extend .action-type;
-  background: rgb(40, 100, 143);
-}
-
-.action-type-sign {
-  @extend .action-type;
-  background: rgb(143, 136, 40);
+  @extend .unclickable-button;
+  padding: 0px;
 }
 
 .add-button {
@@ -43,4 +27,8 @@
   justify-self: flex-end;
   position: absolute;
   right: 0%;
+}
+
+.help-icon {
+  font-size: 20px;
 }
