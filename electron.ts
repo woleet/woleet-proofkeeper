@@ -18,7 +18,7 @@ if (liveenv) {
   });
 }
 
-nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/woleet-gui/assets/images/woleet.png'));
+nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/ProofKeeper/assets/images/woleet.png'));
 
 function createWindowTray () {
   win = new BrowserWindow({
@@ -45,12 +45,12 @@ function createWindowTray () {
   ]);
 
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/woleet-gui/index.html'),
+    pathname: path.join(__dirname, 'dist/ProofKeeper/index.html'),
     protocol: 'file:',
     slashes: true
   }));
 
-  tray.setToolTip('WoleetGui');
+  tray.setToolTip('ProofKeeper');
   tray.setContextMenu(contextMenu);
 
   win.on('minimize', () => {

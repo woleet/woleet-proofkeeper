@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "woleet-gui": {
+    "ProofKeeper": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/woleet-gui",
+            "outputPath": "dist/ProofKeeper",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -53,18 +53,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "woleet-gui:build"
+            "browserTarget": "ProofKeeper:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "woleet-gui:build:production"
+              "browserTarget": "ProofKeeper:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "woleet-gui:build"
+            "browserTarget": "ProofKeeper:build"
           }
         },
         "lint": {
@@ -81,5 +81,5 @@
       }
     }
   },
-  "defaultProject": "woleet-gui"
+  "defaultProject": "ProofKeeper"
 }

@@ -1,15 +1,15 @@
 {
-  "productName": "woleet-gui",
+  "productName": "ProofKeeper",
   "asar": true,
   "asarUnpack": [
-    "dist/woleet-gui/assets/bin"
+    "dist/ProofKeeper/assets/bin"
   ],
   "directories": {
     "output": "release/"
   },
     "files": [
         "**/*",
-        "!dist/woleet-gui/assets/bin${/*}",
+        "!dist/ProofKeeper/assets/bin${/*}",
         "!*.ts",
         "!*.code-workspace",
         "!LICENSE.md",
@@ -24,16 +24,16 @@
   "win": {
     "icon": "./src/assets/images/woleet.png",
     "target": [ "portable", "nsis" ],
-    "files": [ "dist/woleet-gui/assets/bin/windows" ]
+    "files": [ "dist/ProofKeeper/assets/bin/windows" ]
   },
   "mac": {
     "icon": "./src/assets/images/woleet.png",
     "target": [ "dmg" ],
-    "files": [ "dist/woleet-gui/assets/bin/darwin" ]
+    "files": [ "dist/ProofKeeper/assets/bin/darwin" ]
   },
   "linux": {
     "icon": "./src/assets/images/woleet.png",
     "target": [ "AppImage" ],
-    "files": [ "dist/woleet-gui/assets/bin/linux" ]
+    "files": [ "dist/ProofKeeper/assets/bin/linux" ]
   }
 }
