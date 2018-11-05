@@ -26,11 +26,11 @@ Use these commands to build the packaged apps for each OS, you will be able to f
 
 ``` bash
 # Linux
-rpm run electron:linux
+npm run electron:linux
 
 # MacOS
-rpm run electron:mac
+npm run electron:mac
 
 # Windows
-rpm run electron:windows
+npm run electron:windows
 ```
