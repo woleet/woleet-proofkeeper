@@ -1,4 +1,49 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~@angular/material/theming';
 $material-icons-font-path: '~material-design-icons/iconfont/';
 @import '~material-design-icons/iconfont/material-icons.css';
 @import 'custom';
+
+@include mat-core();
+
+// Generated with: http://mcg.mbitson.com/#!?wol=%23288c8f&themename=mcgtheme
+$woleet-palette: (
+    50 : #e5f1f2,
+    100 : #bfdddd,
+    200 : #94c6c7,
+    300 : #69afb1,
+    400 : #489da0,
+    500 : #288c8f,
+    600 : #248487,
+    700 : #1e797c,
+    800 : #186f72,
+    900 : #0f5c60,
+    A100 : #96f9ff,
+    A200 : #63f7ff,
+    A400 : #30f4ff,
+    A700 : #16f2ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$primary: mat-palette($woleet-palette);
+$warn:    mat-palette($mat-red);
+$accent:  mat-palette($mat-red, 400);
+@include angular-material-theme(mat-light-theme($primary, $accent));
+
+.dark-theme {
+  @include angular-material-theme(mat-dark-theme($primary, $accent));
+}

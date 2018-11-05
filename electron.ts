@@ -70,7 +70,7 @@ function createWindowTray () {
 function setShortcuts() {
   const menu = Menu.buildFromTemplate([
     {
-      label: 'Edit',
+      label: 'Menu',
       submenu: [
         { role: 'undo' },
         { role: 'redo' },
