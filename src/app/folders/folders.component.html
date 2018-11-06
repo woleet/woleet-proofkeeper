@@ -18,26 +18,26 @@
     
     <h3 class="mat-h3"> Options: </h3>
     <div>
-      <mat-slide-toggle name="private" [(ngModel)]="formFolderParam.private">Private</mat-slide-toggle>
+      <mat-slide-toggle color="primary" name="private" [(ngModel)]="formFolderParam.private">Private</mat-slide-toggle>
       <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
     <div>
-      <mat-checkbox name="strict" [(ngModel)]="formFolderParam.strict">Strict</mat-checkbox>
+      <mat-checkbox color="primary" name="strict" [(ngModel)]="formFolderParam.strict">Strict</mat-checkbox>
       <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Re-anchor any file that has changed since last anchoring" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
     <div>
-      <mat-checkbox name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">StrictPrune</mat-checkbox>
+      <mat-checkbox color="primary" name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">StrictPrune</mat-checkbox>
       <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Same as --strict, plus delete the previous anchoring receipt" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
     <div *ngIf="formFolderParam.action == 'sign'">
       <div>
-        <mat-checkbox name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">Backendkit UnsecureSSL</mat-checkbox>
+        <mat-checkbox color="primary" name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">Backendkit UnsecureSSL</mat-checkbox>
         <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check the ssl certificate validity for the backendkit (only use in developpement)" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
