@@ -41,6 +41,7 @@ export class WoleetCliParametersService {
       actionParametersArray.push('--token');
       actionParametersArray.push(this.token);
     }
+    actionParametersArray.push('--json');
     return actionParametersArray.concat(folderParam.getParametersArray()) as any;
   }
 
@@ -118,4 +119,3 @@ export class WoleetCliExecutable {
     }
   }
 }
-

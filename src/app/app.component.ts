@@ -14,9 +14,8 @@ export class AppComponent {
   public active: string;
   public folders: FoldersConfigService;
   private cli: WoleetCliParametersService;
-  private timer: Observable<number> = timer(30 * 1000, 15 * 60 * 1000);
+  private timer: Observable<number> = timer(10 * 1000, 15 * 60 * 1000);
   private running = false;
-
 
   constructor(woleetCliService: WoleetCliParametersService, foldersConfigService: FoldersConfigService) {
     this.setActiveFolders();
@@ -26,7 +25,7 @@ export class AppComponent {
     this.timer.subscribe( () => { if (! this.running ) {
       this.running = true;
       const folderToUse = this.folders.folders.slice();
-      this.execCli(folderToUse);
+      this.execAllCli(folderToUse);
     }
   });
 }
@@ -37,23 +36,31 @@ setActiveSettings () { this.active = 'settings'; }
 
 setActiveTerm () { this.active = 'term'; }
 
-execCli (folders: FolderParam[]) {
-  const folder = folders.shift();
+async execCli (folder: FolderParam) {
+  return new Promise((resolve, reject) => {
   log.info(this.cli.getActionParametersArray(folder));
+  folder.logs = [];
   const exec = this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
   exec.stdout.on('data', (data) => {
-    log.info(data.toString('utf8'));
-  });
-  exec.stderr.on('data', (data) => {
-    log.error(data.toString('utf8'));
+    folder.logs.push(data.toString('utf8'));
   });
   exec.on('close', (code) => {
     log.info(`woleet-cli exited with code ${code}`);
-    if ( folders.length !== 0 ) {
-      this.execCli(folders);
-    } else {
-      this.running = false;
-    }
+    resolve(code);
   });
+});
 }
+
+async execAllCli (folders: FolderParam[]) {
+  for ( let i = 0; i < folders.length; i++ ) {
+    const folder = folders[i];
+    await this.execCli(folder);
+    folder.logs.forEach(logArray => {
+      log.info(logArray);
+      const jsonLogArray = JSON.parse(logArray);
+      log.info(jsonLogArray);
+    });
+  }
+}
+
 }

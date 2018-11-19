@@ -8,11 +8,11 @@ declare interface FolderDesc {
   path: string;
   privateparam?: boolean;
   strict?: boolean;
-  strictPrune?: boolean;
-  backendkitSignURL?: string;
-  backendkitToken?: string;
-  backendkitUnsecureSSL?: boolean;
-  backendkitPubKey?: string;
+  prune?: boolean;
+  iDServerSignURL?: string;
+  iDServerToken?: string;
+  iDServerUnsecureSSL?: boolean;
+  iDServerPubKey?: string;
 }
 
 @Injectable({
@@ -50,13 +50,13 @@ export class FoldersConfigService {
 
   public addFolderFromClass(folder: FolderParam) {
     if (folder.action === 'anchor') {
-      folder.backendkitSignURL = null;
-      folder.backendkitToken = null;
-      folder.backendkitUnsecureSSL = false;
-      folder.backendkitPubKey = null;
+      folder.iDServerSignURL = null;
+      folder.iDServerToken = null;
+      folder.iDServerUnsecureSSL = false;
+      folder.iDServerPubKey = null;
     }
     this.folders.push(folder);
-    this.store.set('folders', this.folders);
+    this.saveFolder();
   }
 
   public deleteFolder(folder: FolderParam) {
@@ -65,8 +65,18 @@ export class FoldersConfigService {
       throw new Error ('Unable to find the folder to delete');
     } else {
       this.folders.splice(index, 1);
-      this.store.set('folders', this.folders);
+      this.saveFolder();
     }
+  }
+
+  private saveFolder() {
+    const retFolderParam: any[] = [];
+    this.folders.forEach(folder => {
+      const tempfolder = ({ ...folder });
+      delete tempfolder.logs;
+      retFolderParam.push(tempfolder);
+    });
+    this.store.set('folders', retFolderParam);
   }
 }
 
@@ -75,11 +85,12 @@ export class FolderParam {
   action: string = null;
   private = true;
   strict = false;
-  strictPrune = false;
-  backendkitSignURL: string = null;
-  backendkitToken: string = null;
-  backendkitUnsecureSSL = false;
-  backendkitPubKey: string = null;
+  prune = false;
+  iDServerSignURL: string = null;
+  iDServerToken: string = null;
+  iDServerUnsecureSSL = false;
+  iDServerPubKey: string = null;
+  logs?: string[];
 
   public constructor(folderDesc: FolderDesc) {
     if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {
@@ -98,20 +109,20 @@ export class FolderParam {
     if (folderDesc.strict !== undefined) {
       this.strict = folderDesc.strict;
     }
-    if (folderDesc.strictPrune !== undefined) {
-      this.strictPrune = folderDesc.strictPrune;
+    if (folderDesc.prune !== undefined) {
+      this.prune = folderDesc.prune;
     }
-    if (folderDesc.backendkitSignURL !== undefined) {
-      this.backendkitSignURL = folderDesc.backendkitSignURL;
+    if (folderDesc.iDServerSignURL !== undefined) {
+      this.iDServerSignURL = folderDesc.iDServerSignURL;
     }
-    if (folderDesc.backendkitToken !== undefined) {
-      this.backendkitToken = folderDesc.backendkitToken;
+    if (folderDesc.iDServerToken !== undefined) {
+      this.iDServerToken = folderDesc.iDServerToken;
     }
-    if (folderDesc.backendkitUnsecureSSL !== undefined) {
-      this.backendkitUnsecureSSL = folderDesc.backendkitUnsecureSSL;
+    if (folderDesc.iDServerUnsecureSSL !== undefined) {
+      this.iDServerUnsecureSSL = folderDesc.iDServerUnsecureSSL;
     }
-    if (folderDesc.backendkitPubKey !== undefined) {
-      this.backendkitPubKey = folderDesc.backendkitPubKey;
+    if (folderDesc.iDServerPubKey !== undefined) {
+      this.iDServerPubKey = folderDesc.iDServerPubKey;
     }
   }
 
@@ -127,23 +138,23 @@ export class FolderParam {
     if (this.strict !== false) {
       parametersArray.push('--strict');
     }
-    if (this.strictPrune !== false) {
-      parametersArray.push('--strict-prune');
+    if (this.prune !== false) {
+      parametersArray.push('--prune');
     }
-    if ((this.backendkitSignURL != null) && this.action === 'sign') {
-      parametersArray.push('--backendkitSignURL');
-      parametersArray.push(this.backendkitSignURL);
+    if ((this.iDServerSignURL != null) && this.action === 'sign') {
+      parametersArray.push('--iDServerSignURL');
+      parametersArray.push(this.iDServerSignURL);
     }
-    if ((this.backendkitToken != null) && this.action === 'sign') {
-      parametersArray.push('--backendkitToken');
-      parametersArray.push(this.backendkitToken);
+    if ((this.iDServerToken != null) && this.action === 'sign') {
+      parametersArray.push('--iDServerToken');
+      parametersArray.push(this.iDServerToken);
     }
-    if ((this.backendkitUnsecureSSL !== false) && this.action === 'sign') {
-      parametersArray.push('--unsecureSSL');
+    if ((this.iDServerUnsecureSSL !== false) && this.action === 'sign') {
+      parametersArray.push('--iDServerUnsecureSSL');
     }
-    if ((this.backendkitPubKey != null) && this.action === 'sign') {
-      parametersArray.push('--backendkitPubKey');
-      parametersArray.push(this.backendkitPubKey);
+    if ((this.iDServerPubKey != null) && this.action === 'sign') {
+      parametersArray.push('--iDServerPubKey');
+      parametersArray.push(this.iDServerPubKey);
     }
     return parametersArray;
   }

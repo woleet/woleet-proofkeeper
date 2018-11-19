@@ -30,36 +30,36 @@
       </button>
     </div>
     <div>
-      <mat-checkbox color="primary" name="strictPrune" [(ngModel)]="formFolderParam.strictPrune">StrictPrune</mat-checkbox>
-      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Same as --strict, plus delete the previous anchoring receipt" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+      <mat-checkbox color="primary" name="prune" [(ngModel)]="formFolderParam.prune">Prune</mat-checkbox>
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Delete receipts that are not along the original file, with --strict it checks the hash of the original file and deletes the receipt if they do not match" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
     <div *ngIf="formFolderParam.action == 'sign'">
       <div>
-        <mat-checkbox color="primary" name="UnsecureSSL" [(ngModel)]="formFolderParam.backendkitUnsecureSSL">Backendkit UnsecureSSL</mat-checkbox>
-        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check the ssl certificate validity for the backendkit (only use in developpement)" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <mat-checkbox color="primary" name="iDServerUnsecureSSLL" [(ngModel)]="formFolderParam.iDServerUnsecureSSL">ID.Server UnsecureSSL</mat-checkbox>
+        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check the ssl certificate validity for the ID.Server (only use in developpement)" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
       </div>
       <div>
         <mat-form-field class="full-width">
-          <input type="text" matInput placeholder="Backendkit Token" name="backendkitToken" [(ngModel)]="formFolderParam.backendkitToken">
+          <input type="text" matInput placeholder="ID.Server Token" name="iDServerToken" [(ngModel)]="formFolderParam.iDServerToken">
         </mat-form-field>
       </div>
       <div>
         <mat-form-field class="full-width">
-          <input type="text" matInput placeholder="Backendkit URL" name="backendkitSignURL" [(ngModel)]="formFolderParam.backendkitSignURL">
+          <input type="text" matInput placeholder="ID.Server URL" name="iDServerSignURL" [(ngModel)]="formFolderParam.iDServerSignURL">
         </mat-form-field>
       </div>
       <div>
         <mat-form-field class="full-width">
-          <input type="text" matInput placeholder="Backendkit Public key (optional)" name="backendkitPubKey" [(ngModel)]="formFolderParam.backendkitPubKey">
+          <input type="text" matInput placeholder="ID.Server Public key (optional)" name="iDServerPubKey" [(ngModel)]="formFolderParam.iDServerPubKey">
         </mat-form-field>
       </div>
     </div>
     <div>
-      <button mat-raised-button color="primary" class="add-button" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.backendkitToken && formFolderParam.backendkitSignURL)))" (click)="onClickAdd();">Add folder</button>
+      <button mat-raised-button color="primary" class="add-button" [disabled]="!( formFolderParam.path && (formFolderParam.action == 'anchor' || (formFolderParam.action == 'sign' && formFolderParam.iDServerToken && formFolderParam.iDServerSignURL)))" (click)="onClickAdd();">Add folder</button>
     </div>
   </mat-card>
 </div>
