@@ -37,7 +37,7 @@ setActiveSettings () { this.active = 'settings'; }
 setActiveTerm () { this.active = 'term'; }
 
 async execCli (folder: FolderParam) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
   log.info(this.cli.getActionParametersArray(folder));
   folder.logs = [];
   const exec = this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
@@ -54,7 +54,7 @@ async execCli (folder: FolderParam) {
 async execAllCli (folders: FolderParam[]) {
   for ( let i = 0; i < folders.length; i++ ) {
     const folder = folders[i];
-    await this.execCli(folder);
+    this.execCli(folder);
     folder.logs.forEach(logArray => {
       log.info(logArray);
       const jsonLogArray = JSON.parse(logArray);
