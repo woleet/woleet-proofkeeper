@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors, FormControl } from '@angular/forms';
-import { FoldersConfigService, FolderParam } from '../services/foldersconfig.service';
+import { FoldersConfigService, FolderParam, FolderDesc } from '../services/foldersconfig.service';
 import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
@@ -47,8 +47,22 @@ export class FoldersComponent {
   }
 
   onClickAdd() {
-    // this.folders.addFolderFromClass(this.formFolderParam);
-    // this.formFolderParam = new FolderParam(this.defaultFolderParam);
+    const folderToAdd: FolderDesc = {
+      path: this.folderFormGroup.get('path').value as string,
+      action: this.folderFormGroup.get('action').value as string,
+      privateparam: this.folderFormGroup.get('private').value as boolean,
+      strict: this.folderFormGroup.get('strict').value as boolean,
+      prune: this.folderFormGroup.get('prune').value as boolean,
+      iDServerSignURL: this.folderFormGroup.get('iDServerSignURL').value as string,
+      iDServerToken: this.folderFormGroup.get('iDServerToken').value as string,
+      iDServerUnsecureSSL: this.folderFormGroup.get('iDServerUnsecureSSL').value as boolean,
+      iDServerPubKey: this.folderFormGroup.get('iDServerPubKey').value as string,
+    };
+    this.folders.addFolderFromInterface(folderToAdd);
+    this.folderFormGroup.reset({
+      action: 'anchor',
+      path: '',
+    });
   }
 
   onClickDelete(folder: FolderParam) {

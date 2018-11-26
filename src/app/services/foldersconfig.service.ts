@@ -3,7 +3,7 @@ import { StoreService } from './store.service';
 import * as log from 'loglevel';
 import * as Store from 'electron-store';
 
-declare interface FolderDesc {
+export interface FolderDesc {
   action: string;
   path: string;
   privateparam?: boolean;
