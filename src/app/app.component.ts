@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, timer } from 'rxjs';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { FoldersConfigService, FolderParam } from './services/foldersconfig.service';
+import { StoreService } from './services/store.service';
+import { WizardComponent } from './wizard/wizard.component';
+import * as Store from 'electron-store';
 import * as log from 'loglevel';
 
 @Component({
@@ -13,11 +17,27 @@ import * as log from 'loglevel';
 export class AppComponent {
   public active: string;
   public folders: FoldersConfigService;
+  private store: Store;
   private cli: WoleetCliParametersService;
   private timer: Observable<number> = timer(10 * 1000, 15 * 60 * 1000);
   private running = false;
 
-  constructor(woleetCliService: WoleetCliParametersService, foldersConfigService: FoldersConfigService) {
+  constructor(storeService: StoreService, woleetCliService: WoleetCliParametersService,
+     foldersConfigService: FoldersConfigService, dialog: MatDialog) {
+    this.store = storeService.store;
+    if (!this.store.get('wizardBypass', false)) {
+      const wizardDialog = dialog.open(WizardComponent, {
+        disableClose: true,
+        height: '90vh',
+        width: '90vw',
+        maxHeight: '100vh',
+        maxWidth: '100vw'
+      });
+      wizardDialog.afterClosed().subscribe( () => {
+        this.store.set('wizardBypass', true);
+      });
+    }
+
     this.setActiveFolders();
     this.cli = woleetCliService;
     this.folders = foldersConfigService;

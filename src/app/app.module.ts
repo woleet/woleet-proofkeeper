@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -22,18 +24,21 @@ import { SettingsComponent } from './settings/settings.component';
 import { StoreService } from './services/store.service';
 import { FoldersConfigService } from './services/foldersconfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
+import { WizardComponent } from './wizard/wizard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FoldersComponent,
-    SettingsComponent
+    SettingsComponent,
+    WizardComponent
   ],
   imports: [
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
+    MatDialogModule,
     MatSidenavModule,
     MatListModule,
     MatFormFieldModule,
@@ -46,7 +51,8 @@ import { WoleetCliParametersService } from './services/woleetcliParameters.servi
     MatInputModule,
     MatChipsModule,
     MatTooltipModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   providers: [
     StoreService,
@@ -55,6 +61,9 @@ import { WoleetCliParametersService } from './services/woleetcliParameters.servi
   ],
   bootstrap: [
     AppComponent
+  ],
+  entryComponents: [
+    WizardComponent
   ]
 })
 export class AppModule { }
