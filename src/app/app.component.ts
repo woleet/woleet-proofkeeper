@@ -45,21 +45,24 @@ async execCli (folder: FolderParam) {
     folder.logs.push(data.toString('utf8'));
   });
   exec.on('close', (code) => {
+    this.printLogs(folder);
     log.info(`woleet-cli exited with code ${code}`);
     resolve(code);
   });
 });
 }
 
+async printLogs (folder: FolderParam) {
+  folder.logs.forEach(logArray => {
+    const jsonLogArray = JSON.parse(logArray);
+    log.info(jsonLogArray);
+  });
+}
+
 async execAllCli (folders: FolderParam[]) {
   for ( let i = 0; i < folders.length; i++ ) {
     const folder = folders[i];
     this.execCli(folder);
-    folder.logs.forEach(logArray => {
-      log.info(logArray);
-      const jsonLogArray = JSON.parse(logArray);
-      log.info(jsonLogArray);
-    });
   }
 }
 
