@@ -12,9 +12,9 @@ import * as Store from 'electron-store';
 })
 
 export class WoleetCliParametersService {
-  public woleetCli: WoleetCliExecutable = null;
-  private url: string = null;
-  private token: string = null;
+  public woleetCli: WoleetCliExecutable;
+  private url: string;
+  private token: string;
   public store: Store;
 
   public constructor(storeService: StoreService) {

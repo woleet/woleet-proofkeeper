@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors, FormControl } from '@angular/forms';
+import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { FoldersConfigService, FolderParam, FolderDesc } from '../services/foldersconfig.service';
 import { remote } from 'electron';
 import * as log from 'loglevel';
@@ -25,6 +25,7 @@ export class FoldersComponent {
       private: [true],
       strict: [false],
       prune: [false],
+      recursive: [false],
       iDServerSignURL: [''],
       iDServerToken: [''],
       iDServerPubKey: [''],
@@ -53,6 +54,7 @@ export class FoldersComponent {
       privateparam: this.folderFormGroup.get('private').value as boolean,
       strict: this.folderFormGroup.get('strict').value as boolean,
       prune: this.folderFormGroup.get('prune').value as boolean,
+      recursive: this.folderFormGroup.get('recursive').value as boolean,
       iDServerSignURL: this.folderFormGroup.get('iDServerSignURL').value as string,
       iDServerToken: this.folderFormGroup.get('iDServerToken').value as string,
       iDServerUnsecureSSL: this.folderFormGroup.get('iDServerUnsecureSSL').value as boolean,
@@ -62,6 +64,7 @@ export class FoldersComponent {
     this.folderFormGroup.reset({
       action: 'anchor',
       path: '',
+      private: true,
     });
   }
 
@@ -75,13 +78,6 @@ export class FoldersComponent {
 
   resetPath() {
     this.folderFormGroup.patchValue({path: ''});
-  }
-
-  getErrorMessageCollidingPath() {
-    if (this.folderFormGroup.get('path').getError('collidingPaths') === true) {
-      return 'Folder or subfolder already present';
-    }
-    return null;
   }
 }
 

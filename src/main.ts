@@ -14,7 +14,7 @@ if (environment.production) {
 if (remote.getGlobal('liveenv')) {
   log.setLevel('debug');
 } else {
-  log.setLevel('error');
+  log.setLevel('info');
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)

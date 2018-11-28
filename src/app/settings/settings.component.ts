@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { remote} from 'electron';
+import { remote } from 'electron';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 
 @Component({

@@ -14,13 +14,17 @@
           <mat-icon>close</mat-icon>
         </button>
         <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">Choose folder</button>
-        <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">{{getErrorMessageCollidingPath()}}</mat-error>
+        <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">Folder or subfolder already present</mat-error>
       </mat-form-field>      
     </div>
     <h3 class="mat-h3"> Options: </h3>
     <div>
       <mat-slide-toggle color="primary" name="private" formControlName="private">Private</mat-slide-toggle>
       <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <mat-icon class="help-icon">help</mat-icon>
+      </button>
+      <mat-slide-toggle color="primary" name="recursive" formControlName="recursive">Recursive</mat-slide-toggle>
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Enables the use of subfolders" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
