@@ -1,5 +1,5 @@
 <mat-sidenav-container class="container">
-  <mat-sidenav #sidenav mode="side" opened class="sidenav" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav" [disableClose]="true" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
     <mat-nav-list>
       <a (click)="setActiveFolders();" class="menubutton">
         <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'folders'}">folder</i>
@@ -20,6 +20,7 @@
       <app-settings></app-settings>
     </div>
     <div class="screen-container" *ngIf="active === 'term'">
+      <app-logs></app-logs>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

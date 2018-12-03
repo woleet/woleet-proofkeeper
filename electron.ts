@@ -1,7 +1,6 @@
 import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-import { transition } from '@angular/animations';
 
 let win, liveenv, tray, nativcon;
 let willQuitApp = false;
@@ -53,14 +52,6 @@ function createWindowTray () {
 
   tray.setToolTip('ProofKeeper');
   tray.setContextMenu(contextMenu);
-
-  tray.on('click', () => {
-    win.isVisible() ? win.hide() : win.show();
-  });
-
-  tray.on('right-click', () => {
-    tray.popUpContextMenu();
-  });
 
   win.on('minimize', () => {
     win.hide();

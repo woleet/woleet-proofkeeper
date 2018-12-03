@@ -17,6 +17,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -25,13 +26,15 @@ import { StoreService } from './services/store.service';
 import { FoldersConfigService } from './services/foldersconfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { WizardComponent } from './wizard/wizard.component';
+import { LogsComponent } from './logs/logs.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FoldersComponent,
     SettingsComponent,
-    WizardComponent
+    WizardComponent,
+    LogsComponent
   ],
   imports: [
     FormsModule,
@@ -52,7 +55,8 @@ import { WizardComponent } from './wizard/wizard.component';
     MatChipsModule,
     MatTooltipModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule
   ],
   providers: [
     StoreService,
