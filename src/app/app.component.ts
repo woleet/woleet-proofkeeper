@@ -54,7 +54,7 @@ export class AppComponent {
 
   setActiveSettings () { this.active = 'settings'; }
 
-  setActiveTerm () { this.active = 'term'; }
+  setActiveLogs () { this.active = 'logs'; }
 
   async execCli (folder: FolderParam) {
     return new Promise((resolve) => {

@@ -7,8 +7,8 @@
       <a (click)="setActiveSettings();" class="menubutton">
         <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'settings'}">settings</i>
       </a>
-      <a (click)="setActiveTerm();" class="menubutton">
-        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'term'}">code</i>
+      <a (click)="setActiveLogs();" class="menubutton">
+        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'logs'}">code</i>
       </a>
     </mat-nav-list>
   </mat-sidenav>
@@ -19,7 +19,7 @@
     <div class="screen-container" *ngIf="active === 'settings'">
       <app-settings></app-settings>
     </div>
-    <div class="screen-container" *ngIf="active === 'term'">
+    <div class="screen-container" *ngIf="active === 'logs'">
       <app-logs></app-logs>
     </div>
   </mat-sidenav-content>
