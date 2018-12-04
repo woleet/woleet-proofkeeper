@@ -8,7 +8,6 @@ import { WoleetCliParametersService } from '../services/woleetcliParameters.serv
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
-  private cli: WoleetCliParametersService;
   public token: string;
   public url: string;
 
@@ -21,8 +20,7 @@ export class SettingsComponent {
     remote.getCurrentWebContents().reload();
   }
 
-  constructor(woleetCliService: WoleetCliParametersService) {
-    this.cli = woleetCliService;
+  constructor(private cli: WoleetCliParametersService) {
     this.token = this.cli.getToken();
     this.url = this.cli.getUrl();
   }

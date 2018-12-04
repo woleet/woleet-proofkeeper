@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, timer } from 'rxjs';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';

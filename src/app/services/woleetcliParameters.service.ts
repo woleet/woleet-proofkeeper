@@ -47,7 +47,11 @@ export class WoleetCliParametersService {
 
   public setWoleetCliParameters(token: string, url?: string) {
     this.token = token;
-    this.store.set('token', token);
+    if (token) {
+      this.store.set('token', token);
+    } else {
+      this.deleteToken();
+    }
     if (url) {
       this.url = url;
       this.store.set('url', url);

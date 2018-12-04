@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MatTable,  } from '@angular/material/table';
-import { FoldersConfigService, FolderParam, Log } from '../services/foldersconfig.service';
-import * as log from 'loglevel';
+import { FoldersConfigService, FolderParam } from '../services/foldersconfig.service';
 import { LogMessageService } from '../services/logmessage.service';
 
 
