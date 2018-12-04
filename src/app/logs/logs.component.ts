@@ -25,7 +25,6 @@ export class LogsComponent implements OnDestroy {
     this.displayedColumns = ['level', 'msg'];
     this.logMessageSubscription = this.messageService.getMessage().subscribe((message) => {
       if (this.folder.path === message) {
-        console.log(this.mattable);
         this.mattable.renderRows();
         this.ref.detectChanges();
       }

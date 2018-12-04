@@ -56,7 +56,7 @@ export class AppComponent {
 
   setActiveLogs () { this.active = 'logs'; }
 
-  async execCli (folder: FolderParam) {
+  execCli (folder: FolderParam) {
     return new Promise((resolve) => {
       log.info(this.cli.getActionParametersArray(folder));
       folder.logs = [];
@@ -70,7 +70,7 @@ export class AppComponent {
         jsonLogLine.level = 'error';
         jsonLogLine.msg = data.toString('utf8');
       }
-        folder.logs.push(jsonLogLine);
+        folder.logs.unshift(jsonLogLine);
         this.logMessageService.sendMessage(folder.path);
       });
       exec.on('close', (code) => {
@@ -81,13 +81,13 @@ export class AppComponent {
     });
   }
 
-  async printLogs (folder: FolderParam) {
+  printLogs (folder: FolderParam) {
     folder.logs.forEach(logLine => {
       log.info(logLine);
     });
   }
 
-  async execAllCli (folders: FolderParam[]) {
+  execAllCli (folders: FolderParam[]) {
     for ( let i = 0; i < folders.length; i++ ) {
       const folder = folders[i];
       this.execCli(folder);

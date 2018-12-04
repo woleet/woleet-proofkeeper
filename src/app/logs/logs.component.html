@@ -1,5 +1,5 @@
 <div class="logs-container">
-  <mat-card>
+  <mat-card *ngIf="folders.length !== 0">
     <mat-form-field [style.width.%]="100">
       <mat-select placeholder="Logs of folder" [(ngModel)]="folder">
         <mat-option *ngFor="let folder of folders" [value]="folder">
@@ -25,4 +25,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </mat-card>
+  <mat-card *ngIf="folders.length === 0">
+    <h1 class="mat-h1">No configured folders</h1>
+  </mat-card >
 </div>
