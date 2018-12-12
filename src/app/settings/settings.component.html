@@ -1,16 +1,17 @@
 <mat-card>
-
-<form class="settingsForm">
+  
+  <form class="form-content" [formGroup]="settingsFromGroup">
     <mat-form-field>
-      <input type="text" matInput placeholder="Token" id="inputToken" name="Token" [(ngModel)]="token">
+      <input type="text" matInput placeholder="Token" name="token" formControlName="token" required>
+      <mat-error *ngIf="settingsFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT Token format</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input type="text" matInput placeholder="Override API URL" class="form-control" id="inputURL" name="URL" [(ngModel)]="url">
+      <input type="text" matInput placeholder="Override API URL" name="URL" formControlName="url">
     </mat-form-field>
-    <button mat-raised-button color="primary" [disabled]="" (click)="saveSettings();">Save settings</button>
-</form>
+    <button mat-raised-button color="primary" [disabled]="settingsFromGroup.invalid" (click)="onClickcheckAndSubmit();">Save settings</button>
+  </form>
 </mat-card>
 
-<div class="clearButton">
+<div class="clear-button">
   <button mat-raised-button color="warn" (click)="clearSavedSettings();">Clear saved folders and configuration</button>
 </div>
