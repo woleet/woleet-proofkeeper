@@ -23,8 +23,9 @@ import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
 import { SettingsComponent } from './settings/settings.component';
 import { StoreService } from './services/store.service';
-import { FoldersConfigService } from './services/foldersconfig.service';
+import { FoldersConfigService } from './services/foldersConfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
+import { IdentityService } from './services/Identity.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { LogsComponent } from './logs/logs.component';
 
@@ -61,7 +62,8 @@ import { LogsComponent } from './logs/logs.component';
   providers: [
     StoreService,
     FoldersConfigService,
-    WoleetCliParametersService
+    WoleetCliParametersService,
+    IdentityService
   ],
   bootstrap: [
     AppComponent

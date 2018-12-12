@@ -3,7 +3,23 @@
   flex-direction: column;
 }
 
+.full-width {
+  width: 100%;
+}
+
 .clear-button {
-  position: absolute;
-  bottom: 5vh;
+  margin-top: 5vh;
+}
+
+.identity-card {
+  margin-top: 50px;
+}
+
+.add-identity-form{
+  
+}
+
+.identity-add-button {
+  left: calc(100% - 60px);
+  bottom: 44px;
 }
