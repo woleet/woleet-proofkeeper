@@ -6,26 +6,17 @@
   </mat-dialog-content>
   <mat-dialog-content *ngIf="!firstScreen">
     <form class="form-content" [formGroup]="wizardFromGroup">
-        <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
-        <br>
-        <br>
-        <p class="mat-body-1">
-          Authentication to Woleet API requires an API token, that was configured when creating your Woleet production account<br>
-          You can find your API token in our web application "ProofDesk" in the menu "Account settings"
-        </p>
+      <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
+      <br>
+      <br>
+      <p class="mat-body-1">
+        Accessing the Woleet API requires an API token.<br>
+        You can create one using your <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnProofDesk();">ProofDesk</button> account ("Account settings" menu -> "API" tab)
+      </p>
       <div>
         <mat-form-field class="full-width">
           <input type="text" matInput placeholder="Token" name="token" formControlName="token" required>
           <mat-error *ngIf="wizardFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT Token format</mat-error>
-        </mat-form-field>
-      </div>
-      <p class="mat-body-1">
-          If you have a "ProofDesk for Team" subscription (allowing multiple user accounts in ProofDesk), you need to fullfil your domain<br>
-          (generally corresponding to your enterprise name)
-        </p>
-      <div>
-        <mat-form-field>
-          <input type="text" matInput placeholder="domain" name="domain" formControlName="domain">
         </mat-form-field>
       </div>
     </form>
@@ -33,8 +24,8 @@
   <mat-dialog-actions>
     <div class="button-line">
       <button mat-raised-button color="primary" *ngIf="firstScreen" (click)="firstScreen=false">Start Configuration</button>
-      <button mat-raised-button color="primary" *ngIf="!firstScreen" [disabled]="wizardFromGroup.invalid" (click)="onClickSubmit()">Next</button>
-      <button mat-raised-button (click)="closeDialog()">Skip</button>
+      <button mat-raised-button color="primary" *ngIf="!firstScreen" [disabled]="wizardFromGroup.invalid" (click)="onClickcheckAndSubmit();">Next</button>
+      <button mat-raised-button (click)="closeDialog();">Skip</button>
     </div>
   </mat-dialog-actions>
 </div>
