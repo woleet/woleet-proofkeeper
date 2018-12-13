@@ -23,8 +23,9 @@ export class WoleetCliParametersService {
     if (this.store.has('token')) {
       if (this.store.get('token')) {
         this.token = this.store.get('token');
+      } else {
+        this.deleteToken();
       }
-      this.deleteToken();
       log.warn('There is no token set, you must set one to use the application');
     } else {
       log.warn('There is no token set, you must set one to use the application');
@@ -56,8 +57,8 @@ export class WoleetCliParametersService {
   }
 
   public setWoleetCliParameters(token: string, url?: string) {
-    this.token = token;
     if (token) {
+      this.token = token;
       this.store.set('token', token);
     } else {
       this.deleteToken();

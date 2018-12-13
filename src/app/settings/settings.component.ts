@@ -13,8 +13,6 @@ import { remote } from 'electron';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
-  public token: string;
-  public url: string;
   public settingsFromGroup: FormGroup;
   public addState: boolean;
   public addIdentityFormGroup: FormGroup;
@@ -24,12 +22,9 @@ export class SettingsComponent {
     private snackBar: MatSnackBar,
     public identityService: IdentityService) {
     this.addState = false;
-    this.token = this.cli.getToken();
-    this.url = this.cli.getUrl();
-
     this.settingsFromGroup = formBuilder.group({
-      token: ['', [Validators.required, tokenFormatValidator]],
-      url: ['']
+      token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
+      url: [this.cli.getUrl()]
     });
 
     this.addIdentityFormGroup = formBuilder.group({
