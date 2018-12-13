@@ -11,7 +11,7 @@ export function checkAndSubmit(formGroup: FormGroup,
                                snackBar: MatSnackBar,
                                dialogRef?: MatDialogRef<WizardComponent>) {
   let apiURL = `https://api.woleet.io/v1`;
-  if (formGroup.get('url').value) {
+  if (formGroup.get('url')) {
     apiURL = formGroup.get('url').value;
   }
 
@@ -26,7 +26,10 @@ export function checkAndSubmit(formGroup: FormGroup,
   req.onload = () => {
     if (req.readyState === 4 ) {
       if (req.status === 200) {
-        cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
+        if (formGroup.get('url')) {
+          cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
+        }
+        cliService.setWoleetCliParameters(formGroup.get('token').value);
         if (dialogRef) {
           dialogRef.close();
         }
