@@ -64,9 +64,11 @@ export class AppComponent {
       const exec = this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
       exec.stdout.on('data', (data) => {
         log.info(data.toString('utf8'));
-        let jsonLogLine: Log;
+        const jsonLogLine: Log = {level: '', msg: ''};
       try {
-        jsonLogLine = JSON.parse(data.toString('utf8'));
+        const parsedLogLine = JSON.parse(data.toString('utf8'));
+        jsonLogLine.level = parsedLogLine.level;
+        jsonLogLine.msg = parsedLogLine.msg;
       } catch (error) {
         jsonLogLine.level = 'error';
         jsonLogLine.msg = data.toString('utf8');
