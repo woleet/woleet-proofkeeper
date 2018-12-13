@@ -12,18 +12,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
-  public token: string;
-  public url: string;
   public settingsFromGroup: FormGroup;
 
   constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar) {
-    this.token = this.cli.getToken();
-    this.url = this.cli.getUrl();
     this.settingsFromGroup = formBuilder.group({
-      token: ['', [Validators.required, tokenFormatValidator]],
-      url: ['']
+      token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
+      url: [this.cli.getUrl()]
     });
   }
 
