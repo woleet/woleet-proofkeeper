@@ -16,10 +16,9 @@ export class SettingsComponent {
   public url: string;
   public settingsFromGroup: FormGroup;
 
-  constructor(woleetCliService: WoleetCliParametersService,
+  constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar) {
-    this.cli = woleetCliService;
     this.token = this.cli.getToken();
     this.url = this.cli.getUrl();
     this.settingsFromGroup = formBuilder.group({
