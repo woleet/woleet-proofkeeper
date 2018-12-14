@@ -20,6 +20,7 @@
 }
 
 .identity-add-button {
-  left: calc(100% - 60px);
-  bottom: 44px;
+  top: 22px;
+  z-index: 1;
+  float: right;
 }

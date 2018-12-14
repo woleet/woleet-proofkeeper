@@ -1,5 +1,4 @@
 <mat-card>
-  
   <form class="form-content" [formGroup]="settingsFromGroup">
     <mat-form-field>
       <input type="text" matInput placeholder="Token" name="token" formControlName="token" required>
@@ -12,11 +11,12 @@
   </form>
 </mat-card>
 
-<mat-card class="identity-card">
-  <button mat-fab color="primary" class="identity-add-button" (click)="onAddIdentityClick();">
-    <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
-  </button>
-  <div *ngIf="addState">
+<button mat-fab color="primary" class="identity-add-button" (click)="onAddIdentityClick();">
+  <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
+</button>
+
+<mat-card class="identity-card" *ngIf="addState || identityService.arrayIdentityContent.length === 0 ">
+  <div>
     <form class="add-identity-form" [formGroup]="addIdentityFormGroup">
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
@@ -31,32 +31,33 @@
         <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
       </mat-form-field>
     </form>
-    <button mat-raised-button color="primary" (click)="identityService.addIdentity();">Save</button>
-    <button mat-raised-button color="warn" (click)="addNewIdentityFromGroup();">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addNewIdentityFromGroup();">Save</button>
+    <button mat-raised-button color="warn" (click)="onAddIdentityClick();">Cancel</button>
   </div>
-  <div *ngIf="identityService.arrayIdentityContent">
-    <mat-list-item *ngFor="let IdentityContent of identityService.arrayIdentityContent; last as last" role="listitem">
-      <form class="add-identity-form">
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Name" value="IdentityContent.name">
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput placeholder="API URL" value="IdentityContent.apiUrl">
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput placeholder="API Token" value="IdentityContent.apiToken">
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Public Key (Optional)" value="IdentityContent.publicKey">
-        </mat-form-field>
-      </form>
-      <button mat-raised-button color="primary" (click)="identityService.updateIdentity();">Save</button>
-      <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(IdentityContent.name);">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
-    </mat-list-item>
-  </div>
+</mat-card>
+
+<mat-card class="identity-card" *ngIf="identityService.arrayIdentityContent.length !== 0">
+  <mat-list-item *ngFor="let identityContent of identityService.arrayIdentityContent; last as last" role="listitem">
+    <form class="add-identity-form">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Name" value="{{identityContent.name}}">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="API URL" value="{{identityContent.apiURL}}">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="API Token" value="{{identityContent.apiToken}}">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Public Key (Optional)" value="{{identityContent.publicKey}}">
+      </mat-form-field>
+    </form>
+    <button mat-raised-button color="primary" (click)="identityService.updateIdentity();">Save</button>
+    <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(identityContent.name);">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+  </mat-list-item>
 </mat-card>
 
 <div class="clear-button">

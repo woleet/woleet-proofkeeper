@@ -31,7 +31,7 @@ export class SettingsComponent {
       name: ['', [Validators.required]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
-      pubKey: ['', ]
+      pubKey: ['']
     });
   }
 

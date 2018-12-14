@@ -55,9 +55,8 @@ export class IdentityService {
   }
 
   public deleteIdentity(identityName: string) {
-    const found = this.arrayIdentityContent.filter(elem => elem.name !== name);
     if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
-      this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== name);
+      this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
       this.saveIdentities();
     } else {
       throw new Error (`Identity named ${identityName} not found for deletion`);
