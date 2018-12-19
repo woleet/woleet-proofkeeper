@@ -40,8 +40,7 @@ export class AppComponent {
         });
       }
 
-      // this.setActiveFolders();
-      this.setActiveSettings();
+      this.setActiveFolders();
 
       this.timer.subscribe( () => { if (! this.running ) {
         this.running = true;

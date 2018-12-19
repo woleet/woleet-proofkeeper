@@ -7,6 +7,11 @@
   width: 100%;
 }
 
+.identity-name {
+  width: calc(100% - 60px);
+  text-align: left;
+}
+
 .clear-button {
   margin-top: 5vh;
 }
@@ -15,12 +20,22 @@
   margin-top: 50px;
 }
 
-.add-identity-form{
-  
-}
-
 .identity-add-button {
   top: 22px;
   z-index: 1;
   float: right;
+}
+
+.remove-button {
+  justify-self: flex-end;
+  position: absolute;
+  right: 10px;
+}
+
+.identity-spacer {
+  margin-bottom: 5px;
+}
+
+.identity-name {
+  background-color: rgba(0, 0, 0, 0.02);
 }

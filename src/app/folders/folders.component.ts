@@ -4,6 +4,7 @@ import { FoldersConfigService, FolderParam, FolderDesc } from '../services/folde
 import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
+import { IdentityService } from '../services/Identity.service';
 
 @Component({
   selector: 'app-folders',
@@ -16,7 +17,7 @@ export class FoldersComponent {
   public out: string;
   public folderFormGroup: FormGroup;
 
-  constructor(foldersConfigService: FoldersConfigService, formBuilder: FormBuilder) {
+  constructor(foldersConfigService: FoldersConfigService, formBuilder: FormBuilder, public identityService: IdentityService) {
     this.folders = foldersConfigService;
 
     this.folderFormGroup = formBuilder.group({
@@ -26,9 +27,7 @@ export class FoldersComponent {
       strict: [false],
       prune: [false],
       recursive: [false],
-      iDServerSignURL: [''],
-      iDServerToken: [''],
-      iDServerPubKey: [''],
+      identity: ['', identityCheckerFactory(this)],
       iDServerUnsecureSSL: [false],
     });
   }
@@ -55,10 +54,8 @@ export class FoldersComponent {
       strict: this.folderFormGroup.get('strict').value as boolean,
       prune: this.folderFormGroup.get('prune').value as boolean,
       recursive: this.folderFormGroup.get('recursive').value as boolean,
-      iDServerSignURL: this.folderFormGroup.get('iDServerSignURL').value as string,
-      iDServerToken: this.folderFormGroup.get('iDServerToken').value as string,
+      identityName: this.folderFormGroup.get('identity').value as string,
       iDServerUnsecureSSL: this.folderFormGroup.get('iDServerUnsecureSSL').value as boolean,
-      iDServerPubKey: this.folderFormGroup.get('iDServerPubKey').value as string,
     };
     this.folders.addFolderFromInterface(folderToAdd);
     this.folderFormGroup.reset({
@@ -96,6 +93,24 @@ function noDUplicatePathValidatorFactory(thisParam) {
       if (duplicateFolder) {
         return {collidingPaths: true};
       }
+    }
+    return null;
+  };
+}
+
+function identityCheckerFactory(thisParam) {
+  return function identityChecker(control: AbstractControl): ValidationErrors | null {
+    if (thisParam.folderFormGroup === undefined) {
+      return null;
+    }
+    if (thisParam.folderFormGroup.get('action').value === 'anchor') {
+      return null;
+    }
+    if (!control.value) {
+      return {voidIdentity: true};
+    }
+    if (!thisParam.identityService.arrayIdentityContent.some(elem => elem.name === control.value)) {
+      return {identityNotFound: true};
     }
     return null;
   };

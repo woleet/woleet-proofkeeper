@@ -16,10 +16,12 @@
 </button>
 
 <mat-card class="identity-card" *ngIf="addState || identityService.arrayIdentityContent.length === 0 ">
+  <h3 class="mat-h3"> Add identity: </h3>
   <div>
-    <form class="add-identity-form" [formGroup]="addIdentityFormGroup">
+    <form [formGroup]="addIdentityFormGroup">
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
+        <mat-error *ngIf="addIdentityFormGroup.get('name').getError('nameAlreadyPresent')">name already present</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput placeholder="API URL" formControlName="url">
@@ -31,32 +33,41 @@
         <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
       </mat-form-field>
     </form>
-    <button mat-raised-button color="primary" (click)="addNewIdentityFromGroup();">Save</button>
+    <button mat-raised-button color="primary" [disabled]="addIdentityFormGroup.invalid" (click)="addNewIdentityFromGroup();">Save</button>
     <button mat-raised-button color="warn" (click)="onAddIdentityClick();">Cancel</button>
   </div>
 </mat-card>
 
 <mat-card class="identity-card" *ngIf="identityService.arrayIdentityContent.length !== 0">
+  <h3 class="mat-h3"> Identities: </h3>
   <mat-list-item *ngFor="let identityContent of identityService.arrayIdentityContent; last as last" role="listitem">
-    <form class="add-identity-form">
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Name" value="{{identityContent.name}}">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="API URL" value="{{identityContent.apiURL}}">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="API Token" value="{{identityContent.apiToken}}">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Public Key (Optional)" value="{{identityContent.publicKey}}">
-      </mat-form-field>
-    </form>
-    <button mat-raised-button color="primary" (click)="identityService.updateIdentity();">Save</button>
-    <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(identityContent.name);">
-      <mat-icon>delete</mat-icon>
-    </button>
-    <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
+      <button mat-button class='identity-name' (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
+      <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(identityContent.name);">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="identity-spacer" *ngIf="identityOpened === identityContent.name">
+      <form [formGroup]="editIdentityFormGroup">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput placeholder="API URL" formControlName="url">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput placeholder="API Token" formControlName="token">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
+        </mat-form-field>
+      </form>
+      <button mat-raised-button color="primary" [disabled]="editIdentityFormGroup.invalid" (click)="saveEditForm();">Save</button>
+      <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(identityContent.name);">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-raised-button (click)="closeEditForm();">Cancel</button>
+    </div>
   </mat-list-item>
 </mat-card>
 

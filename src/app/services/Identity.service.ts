@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
 import * as Store from 'electron-store';
 
-interface IdentityContent {
+export interface IdentityContent {
   name: string;
   apiURL: string;
   apiToken: string;
@@ -24,14 +24,6 @@ export class IdentityService {
   }
 
   public addIdentity(name: string, url: string, token: string, publicKey?: string) {
-    this.addOrUpdateIdentity(false, name, url, token, publicKey);
-  }
-
-  public updateIdentity(name: string, url: string, token: string, publicKey?: string) {
-    this.addOrUpdateIdentity(true, name, url, token, publicKey);
-  }
-
-  private addOrUpdateIdentity(update: boolean, name: string, url: string, token: string, publicKey?: string) {
     const tempIdentityContent: IdentityContent = {
       name: '',
       apiURL: '',
@@ -40,31 +32,46 @@ export class IdentityService {
     tempIdentityContent.name = name;
     tempIdentityContent.apiURL = url;
     tempIdentityContent.apiToken = token;
-    console.log(tempIdentityContent);
     if (publicKey) {
       tempIdentityContent.publicKey = publicKey;
     }
-    if (!update && this.arrayIdentityContent.some(elem => elem.name === name)) {
+    if (this.arrayIdentityContent.some(elem => elem.name === name)) {
       throw new Error (`Identity named ${name} already present`);
-    }
-    if (update && !this.arrayIdentityContent.some(elem => elem.name === name)) {
-      throw new Error (`Identity named ${name} not found`);
     }
     this.arrayIdentityContent.push(tempIdentityContent);
     this.saveIdentities();
   }
 
-  public deleteIdentity(identityName: string) {
-    if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
-      this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
+  public updateIdentity(originalName: string, name: string, url: string, token: string, publicKey?: string) {
+    if (!this.arrayIdentityContent.some(elem => elem.name === originalName)) {
+      throw new Error (`Identity named ${name} not found`);
+    }
+    if (originalName === name) {
+      const elementToUpdate = this.arrayIdentityContent.filter(elem => elem.name === originalName)[0];
+      elementToUpdate.apiURL = url;
+      elementToUpdate.apiToken = token;
+      if (publicKey) {
+        elementToUpdate.publicKey = publicKey;
+      }
       this.saveIdentities();
     } else {
-      throw new Error (`Identity named ${identityName} not found for deletion`);
+      this.addIdentity(name, url, token, publicKey);
+      this.deleteIdentity(originalName);
     }
   }
 
-  private saveIdentities() {
-    this.store.set('arrayIdentityContent', this.arrayIdentityContent);
+    public deleteIdentity(identityName: string) {
+      if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
+        this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
+        this.saveIdentities();
+      } else {
+        throw new Error (`Identity named ${identityName} not found for deletion`);
+      }
+    }
+
+    private saveIdentities() {
+      this.store.set('arrayIdentityContent', this.arrayIdentityContent);
+    }
   }
-}
+
 

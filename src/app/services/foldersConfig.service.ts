@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
 import * as log from 'loglevel';
 import * as Store from 'electron-store';
+import { IdentityContent, IdentityService } from './Identity.service';
 
 export interface FolderDesc {
   action: string;
@@ -10,10 +11,8 @@ export interface FolderDesc {
   strict?: boolean;
   prune?: boolean;
   recursive?: boolean;
-  iDServerSignURL?: string;
-  iDServerToken?: string;
+  identityName?: string;
   iDServerUnsecureSSL?: boolean;
-  iDServerPubKey?: string;
 }
 
 @Injectable({
@@ -24,11 +23,11 @@ export class FoldersConfigService {
   public folders: FolderParam[] = [];
   private store: Store;
 
-  public constructor(storeService: StoreService) {
+  public constructor(storeService: StoreService, private identityService: IdentityService) {
     this.store = storeService.store;
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
-      this.folders = folders.map(e => new FolderParam(e));
+      this.folders = folders.map(e => new FolderParam(e, identityService));
     }
   }
 
@@ -45,16 +44,13 @@ export class FoldersConfigService {
   }
 
   public addFolderFromInterface(folderDesc: FolderDesc) {
-    const newFolderParam = new FolderParam(folderDesc);
+    const newFolderParam = new FolderParam(folderDesc, this.identityService);
     this.addFolderFromClass(newFolderParam);
   }
 
   public addFolderFromClass(folder: FolderParam) {
     if (folder.action === 'anchor') {
-      delete folder.iDServerSignURL;
-      delete folder.iDServerToken;
-      delete folder.iDServerUnsecureSSL;
-      delete folder.iDServerPubKey;
+      delete folder.identityName;
     }
     this.folders.push(folder);
     this.saveFolder();
@@ -93,13 +89,11 @@ export class FolderParam {
   strict?: boolean;
   prune?: boolean;
   recursive?: boolean;
-  iDServerSignURL?: string;
-  iDServerToken?: string;
+  identityName?: string;
   iDServerUnsecureSSL?: boolean;
-  iDServerPubKey?: string;
   logs?: Log[];
 
-  public constructor(folderDesc: FolderDesc) {
+  public constructor(folderDesc: FolderDesc, private identityService: IdentityService) {
     if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {
       this.action = folderDesc.action;
     } else {
@@ -122,17 +116,11 @@ export class FolderParam {
     if (folderDesc.recursive) {
       this.recursive = folderDesc.recursive;
     }
-    if (folderDesc.iDServerSignURL) {
-      this.iDServerSignURL = folderDesc.iDServerSignURL;
-    }
-    if (folderDesc.iDServerToken) {
-      this.iDServerToken = folderDesc.iDServerToken;
+    if (folderDesc.identityName) {
+      this.identityName = folderDesc.identityName;
     }
     if (folderDesc.iDServerUnsecureSSL) {
       this.iDServerUnsecureSSL = folderDesc.iDServerUnsecureSSL;
-    }
-    if (folderDesc.iDServerPubKey) {
-      this.iDServerPubKey = folderDesc.iDServerPubKey;
     }
   }
 
@@ -154,20 +142,23 @@ export class FolderParam {
     if (this.recursive) {
       parametersArray.push('--recursive');
     }
-    if (this.iDServerSignURL && this.action === 'sign') {
-      parametersArray.push('--iDServerSignURL');
-      parametersArray.push(this.iDServerSignURL);
-    }
-    if (this.iDServerToken && this.action === 'sign') {
-      parametersArray.push('--iDServerToken');
-      parametersArray.push(this.iDServerToken);
-    }
-    if (this.iDServerUnsecureSSL && this.action === 'sign') {
-      parametersArray.push('--iDServerUnsecureSSL');
-    }
-    if (this.iDServerPubKey && this.action === 'sign') {
-      parametersArray.push('--iDServerPubKey');
-      parametersArray.push(this.iDServerPubKey);
+    if (this.identityName && this.action === 'sign') {
+      if (this.identityService.arrayIdentityContent.filter(item => item.name === this.identityName).length !== 1) {
+        throw new Error(`Unable to find the identity named: ${this.identityName}`);
+      } else {
+        const identity = this.identityService.arrayIdentityContent.filter(item => item.name === this.identityName)[0];
+        parametersArray.push('--iDServerSignURL');
+        parametersArray.push(identity.apiURL);
+        parametersArray.push('--iDServerToken');
+        parametersArray.push(identity.apiToken);
+        if (identity.publicKey) {
+          parametersArray.push('--iDServerPubKey');
+          parametersArray.push(identity.publicKey);
+        }
+        if (this.action === 'sign') {
+          parametersArray.push('--iDServerUnsecureSSL');
+        }
+      }
     }
     return parametersArray;
   }
