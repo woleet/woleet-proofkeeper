@@ -15,7 +15,7 @@
       </p>
       <div>
         <mat-form-field class="full-width">
-          <input type="text" matInput placeholder="Token" name="token" formControlName="token" required>
+          <input type="text" matInput placeholder="API Token" name="token" formControlName="token" required>
           <mat-error *ngIf="wizardFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT Token format</mat-error>
         </mat-form-field>
       </div>
@@ -23,7 +23,7 @@
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="button-line">
-      <button mat-raised-button color="primary" *ngIf="firstScreen" (click)="firstScreen=false">Start Configuration</button>
+      <button mat-raised-button color="primary" *ngIf="firstScreen" (click)="firstScreen=false">Start configuration</button>
       <button mat-raised-button color="primary" *ngIf="!firstScreen" [disabled]="wizardFromGroup.invalid" (click)="onClickcheckAndSubmit();">Next</button>
       <button mat-raised-button (click)="closeDialog();">Skip</button>
     </div>

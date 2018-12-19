@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
-import { FolderParam } from './foldersconfig.service';
+import { FolderParam } from './foldersConfig.service';
 import { remote } from 'electron';
 import * as path from 'path';
 import * as log from 'loglevel';

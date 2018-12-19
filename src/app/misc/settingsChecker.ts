@@ -49,4 +49,3 @@ export function openSnackBarError(snackBar: MatSnackBar) {
   undefined,
   {duration: 3000});
 }
-

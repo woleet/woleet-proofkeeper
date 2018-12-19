@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, timer } from 'rxjs';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
-import { FoldersConfigService, FolderParam, Log } from './services/foldersconfig.service';
+import { FoldersConfigService, FolderParam, Log } from './services/foldersConfig.service';
 import { StoreService } from './services/store.service';
 import { WizardComponent } from './wizard/wizard.component';
-import { LogMessageService } from './services/logmessage.service';
+import { LogMessageService } from './services/logMessage.service';
 import * as Store from 'electron-store';
 import * as log from 'loglevel';
 

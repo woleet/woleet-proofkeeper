@@ -155,18 +155,18 @@ export class FolderParam {
       parametersArray.push('--recursive');
     }
     if (this.iDServerSignURL && this.action === 'sign') {
-      parametersArray.push('--iDServerSignURL');
+      parametersArray.push('--widsSignURL');
       parametersArray.push(this.iDServerSignURL);
     }
     if (this.iDServerToken && this.action === 'sign') {
-      parametersArray.push('--iDServerToken');
+      parametersArray.push('--widsToken');
       parametersArray.push(this.iDServerToken);
     }
     if (this.iDServerUnsecureSSL && this.action === 'sign') {
-      parametersArray.push('--iDServerUnsecureSSL');
+      parametersArray.push('--widsUnsecureSSL');
     }
     if (this.iDServerPubKey && this.action === 'sign') {
-      parametersArray.push('--iDServerPubKey');
+      parametersArray.push('--widsPubKey');
       parametersArray.push(this.iDServerPubKey);
     }
     return parametersArray;

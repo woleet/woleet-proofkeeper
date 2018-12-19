@@ -23,7 +23,7 @@ import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
 import { SettingsComponent } from './settings/settings.component';
 import { StoreService } from './services/store.service';
-import { FoldersConfigService } from './services/foldersconfig.service';
+import { FoldersConfigService } from './services/foldersConfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { LogsComponent } from './logs/logs.component';
@@ -56,12 +56,12 @@ import { LogsComponent } from './logs/logs.component';
     MatTooltipModule,
     MatIconModule,
     MatSnackBarModule,
-    MatTableModule
+    MatTableModule,
   ],
   providers: [
     StoreService,
     FoldersConfigService,
-    WoleetCliParametersService
+    WoleetCliParametersService,
   ],
   bootstrap: [
     AppComponent

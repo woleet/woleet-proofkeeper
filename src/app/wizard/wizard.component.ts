@@ -4,7 +4,7 @@ import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors }
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator } from '../misc/validators';
-import { checkAndSubmit } from '../misc/setingsChecker';
+import { checkAndSubmit } from '../misc/settingsChecker';
 const { shell } = require('electron');
 
 
