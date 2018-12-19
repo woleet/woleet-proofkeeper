@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator } from '../misc/validators';
-import { checkAndSubmit } from '../misc/setingsChecker';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { checkAndSubmit } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
+import { FoldersConfigService } from '../services/foldersConfig.service';
 import { remote } from 'electron';
 
 @Component({
@@ -19,11 +20,11 @@ export class SettingsComponent {
   public addIdentityFormGroup: FormGroup;
   public editIdentityFormGroup: FormGroup;
 
-
   constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
-    public identityService: IdentityService) {
+    public snackBar: MatSnackBar,
+    public identityService: IdentityService,
+    public foldersConfigService: FoldersConfigService) {
     this.addState = false;
     this.identityOpened = '';
     this.settingsFromGroup = formBuilder.group({
@@ -77,17 +78,19 @@ export class SettingsComponent {
 
   openEditForm(editIdentityName: string) {
     const currentIdentity = this.identityService.arrayIdentityContent.filter(elem => elem.name === editIdentityName)[0];
+    this.editIdentityFormGroup.reset();
     this.editIdentityFormGroup.patchValue({name: currentIdentity.name});
     this.editIdentityFormGroup.patchValue({url: currentIdentity.apiURL});
     this.editIdentityFormGroup.patchValue({token: currentIdentity.apiToken});
     if (currentIdentity.publicKey) {
-      this.editIdentityFormGroup.patchValue({pubKey: currentIdentity.name});
+      this.editIdentityFormGroup.patchValue({pubKey: currentIdentity.publicKey});
     }
     this.identityOpened = editIdentityName;
   }
 
   saveEditForm() {
-    this.identityService.updateIdentity(this.identityOpened,
+    this.identityService.updateIdentity(this.foldersConfigService,
+      this.identityOpened,
       this.editIdentityFormGroup.get('name').value,
       this.editIdentityFormGroup.get('url').value,
       this.editIdentityFormGroup.get('token').value,

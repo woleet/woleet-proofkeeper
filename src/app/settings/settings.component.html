@@ -43,7 +43,8 @@
   <mat-list-item *ngFor="let identityContent of identityService.arrayIdentityContent; last as last" role="listitem">
     <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
       <button mat-button class='identity-name' (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
-      <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(identityContent.name);">
+      <button mat-raised-button color="warn" class="remove-button" 
+      (click)="identityService.deleteIdentitySnackbar(identityContent.name, this.foldersConfigService, this.snackBar);">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -63,7 +64,8 @@
         </mat-form-field>
       </form>
       <button mat-raised-button color="primary" [disabled]="editIdentityFormGroup.invalid" (click)="saveEditForm();">Save</button>
-      <button mat-raised-button color="warn" class="remove-button" (click)="identityService.deleteIdentity(identityContent.name);">
+      <button mat-raised-button color="warn" class="remove-button" 
+      (click)="identityService.deleteIdentitySnackbar(identityContent.name,this.foldersConfigService, this.snackBar);">
         <mat-icon>delete</mat-icon>
       </button>
       <button mat-raised-button (click)="closeEditForm();">Cancel</button>

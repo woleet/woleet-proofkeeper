@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
+import { IdentityService } from './Identity.service';
 import * as log from 'loglevel';
 import * as Store from 'electron-store';
-import { IdentityContent, IdentityService } from './Identity.service';
 
 export interface FolderDesc {
   action: string;
@@ -51,9 +51,10 @@ export class FoldersConfigService {
   public addFolderFromClass(folder: FolderParam) {
     if (folder.action === 'anchor') {
       delete folder.identityName;
+      delete folder.iDServerUnsecureSSL;
     }
     this.folders.push(folder);
-    this.saveFolder();
+    this.saveFolders();
   }
 
   public deleteFolder(folder: FolderParam) {
@@ -62,15 +63,16 @@ export class FoldersConfigService {
       throw new Error ('Unable to find the folder to delete');
     } else {
       this.folders.splice(index, 1);
-      this.saveFolder();
+      this.saveFolders();
     }
   }
 
-  private saveFolder() {
+  public saveFolders() {
     const retFolderParam: any[] = [];
     this.folders.forEach(folder => {
       const tempfolder = ({ ...folder });
       delete tempfolder.logs;
+      delete tempfolder.identityService;
       retFolderParam.push(tempfolder);
     });
     this.store.set('folders', retFolderParam);
@@ -93,7 +95,7 @@ export class FolderParam {
   iDServerUnsecureSSL?: boolean;
   logs?: Log[];
 
-  public constructor(folderDesc: FolderDesc, private identityService: IdentityService) {
+  public constructor(folderDesc: FolderDesc, public identityService: IdentityService) {
     if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {
       this.action = folderDesc.action;
     } else {
@@ -147,16 +149,16 @@ export class FolderParam {
         throw new Error(`Unable to find the identity named: ${this.identityName}`);
       } else {
         const identity = this.identityService.arrayIdentityContent.filter(item => item.name === this.identityName)[0];
-        parametersArray.push('--iDServerSignURL');
+        parametersArray.push('--widsSignURL');
         parametersArray.push(identity.apiURL);
-        parametersArray.push('--iDServerToken');
+        parametersArray.push('--widsToken');
         parametersArray.push(identity.apiToken);
         if (identity.publicKey) {
-          parametersArray.push('--iDServerPubKey');
+          parametersArray.push('--widsPubKey');
           parametersArray.push(identity.publicKey);
         }
         if (this.action === 'sign') {
-          parametersArray.push('--iDServerUnsecureSSL');
+          parametersArray.push('--widsUnsecureSSL');
         }
       }
     }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
+import { FoldersConfigService } from './foldersConfig.service';
 import * as Store from 'electron-store';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface IdentityContent {
   name: string;
@@ -42,7 +44,12 @@ export class IdentityService {
     this.saveIdentities();
   }
 
-  public updateIdentity(originalName: string, name: string, url: string, token: string, publicKey?: string) {
+  public updateIdentity(foldersConfigService: FoldersConfigService,
+    originalName: string,
+    name: string,
+    url: string,
+    token: string,
+    publicKey?: string) {
     if (!this.arrayIdentityContent.some(elem => elem.name === originalName)) {
       throw new Error (`Identity named ${name} not found`);
     }
@@ -52,15 +59,25 @@ export class IdentityService {
       elementToUpdate.apiToken = token;
       if (publicKey) {
         elementToUpdate.publicKey = publicKey;
+      } else {
+        delete elementToUpdate.publicKey;
       }
       this.saveIdentities();
     } else {
       this.addIdentity(name, url, token, publicKey);
+      foldersConfigService.folders.forEach(folder => {
+        if (folder.identityName) {
+          if (folder.identityName === originalName) {
+            folder.identityName = name;
+          }
+        }
+      });
+      foldersConfigService.saveFolders();
       this.deleteIdentity(originalName);
     }
   }
 
-    public deleteIdentity(identityName: string) {
+    private deleteIdentity(identityName: string) {
       if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
         this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
         this.saveIdentities();
@@ -69,9 +86,18 @@ export class IdentityService {
       }
     }
 
+    public deleteIdentitySnackbar (identityName: string, foldersConfigService: FoldersConfigService, snackBar: MatSnackBar) {
+      if (foldersConfigService.folders.some(elem => elem.identityName === identityName)) {
+        snackBar.open('Unable to delete the identity, still in use by one of your folder\' s configuration',
+        undefined,
+        {duration: 5000});
+      } else {
+        this.deleteIdentity(identityName);
+      }
+    }
+
     private saveIdentities() {
       this.store.set('arrayIdentityContent', this.arrayIdentityContent);
     }
   }
-
 

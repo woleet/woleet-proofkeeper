@@ -48,13 +48,13 @@
         </button>
       </div>
       <mat-form-field>
-        <mat-select class="custom-select" required formControlName="identity" name="identity">
+        <mat-select class="custom-select" required formControlName="identity" name="identity" placeholder="Identity to use">
           <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
             {{identityName.name}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-          Please add at least an identity on the settings panel
+          Please add at least one identity on the settings panel
         </mat-error>
         <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
           Identity required
