@@ -56,7 +56,7 @@ import { LogsComponent } from './logs/logs.component';
     MatTooltipModule,
     MatIconModule,
     MatSnackBarModule,
-    MatTableModule,
+    MatTableModule
   ],
   providers: [
     StoreService,
