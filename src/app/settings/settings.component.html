@@ -1,7 +1,7 @@
 <mat-card>
   <form class="form-content" [formGroup]="settingsFromGroup">
     <mat-form-field>
-      <input type="text" matInput placeholder="Token" name="token" formControlName="token" required>
+      <input type="text" matInput placeholder="API Token" name="token" formControlName="token" required>
       <mat-error *ngIf="settingsFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT Token format</mat-error>
     </mat-form-field>
     <mat-form-field>
@@ -74,5 +74,5 @@
 </mat-card>
 
 <div class="clear-button">
-  <button mat-raised-button color="warn" (click)="clearSavedSettings();">Clear saved folders and configuration</button>
+  <button mat-raised-button color="warn" (click)="clearSavedSettings();">Reset saved folders and configuration</button>
 </div>
