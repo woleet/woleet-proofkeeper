@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tokenFormatValidator } from '../misc/validators';
 import { checkAndSubmit } from '../misc/settingsChecker';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { settings } from 'cluster';
 
 @Component({
   selector: 'app-settings',
@@ -13,15 +12,11 @@ import { settings } from 'cluster';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent {
-  private cli: WoleetCliParametersService;
-  public token: string;
-  public url: string;
   public settingsFromGroup: FormGroup;
 
-  constructor(woleetCliService: WoleetCliParametersService,
+  constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar) {
-    this.cli = woleetCliService;
     this.settingsFromGroup = formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()]
