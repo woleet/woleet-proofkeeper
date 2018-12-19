@@ -5,7 +5,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tokenFormatValidator } from '../misc/validators';
 import { checkAndSubmit } from '../misc/settingsChecker';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { settings } from 'cluster';
 
 @Component({
   selector: 'app-settings',
