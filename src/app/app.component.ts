@@ -64,14 +64,14 @@ export class AppComponent {
       exec.stdout.on('data', (data) => {
         log.info(data.toString('utf8'));
         const jsonLogLine: Log = {level: '', msg: ''};
-      try {
-        const parsedLogLine = JSON.parse(data.toString('utf8'));
-        jsonLogLine.level = parsedLogLine.level;
-        jsonLogLine.msg = parsedLogLine.msg;
-      } catch (error) {
-        jsonLogLine.level = 'error';
-        jsonLogLine.msg = data.toString('utf8');
-      }
+        try {
+          const parsedLogLine = JSON.parse(data.toString('utf8'));
+          jsonLogLine.level = parsedLogLine.level;
+          jsonLogLine.msg = parsedLogLine.msg;
+        } catch (error) {
+          jsonLogLine.level = 'error';
+          jsonLogLine.msg = data.toString('utf8');
+        }
         folder.logs.unshift(jsonLogLine);
         this.logMessageService.sendMessage(folder.path);
       });
