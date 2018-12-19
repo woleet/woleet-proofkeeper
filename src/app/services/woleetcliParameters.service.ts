@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
-import { FolderParam } from './foldersconfig.service';
+import { FolderParam } from './foldersConfig.service';
 import { remote } from 'electron';
 import * as path from 'path';
 import * as log from 'loglevel';
@@ -23,8 +23,9 @@ export class WoleetCliParametersService {
     if (this.store.has('token')) {
       if (this.store.get('token')) {
         this.token = this.store.get('token');
+      } else {
+        this.deleteToken();
       }
-      this.deleteToken();
       log.warn('There is no token set, you must set one to use the application');
     } else {
       log.warn('There is no token set, you must set one to use the application');
@@ -56,8 +57,12 @@ export class WoleetCliParametersService {
   }
 
   public setWoleetCliParameters(token: string, url?: string) {
-    this.token = token;
-    this.store.set('token', token);
+    if (token) {
+      this.token = token;
+      this.store.set('token', token);
+    } else {
+      this.deleteToken();
+    }
     if (url) {
       this.url = url;
       this.store.set('url', url);

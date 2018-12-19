@@ -17,12 +17,13 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
 import { SettingsComponent } from './settings/settings.component';
 import { StoreService } from './services/store.service';
-import { FoldersConfigService } from './services/foldersconfig.service';
+import { FoldersConfigService } from './services/foldersConfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { WizardComponent } from './wizard/wizard.component';
 
@@ -52,7 +53,8 @@ import { WizardComponent } from './wizard/wizard.component';
     MatChipsModule,
     MatTooltipModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTableModule
   ],
   providers: [
     StoreService,

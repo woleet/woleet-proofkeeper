@@ -3,8 +3,9 @@ import { remote } from 'electron';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tokenFormatValidator } from '../misc/validators';
-import { checkAndSubmit } from '../misc/setingsChecker';
+import { checkAndSubmit } from '../misc/settingsChecker';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { settings } from 'cluster';
 
 @Component({
   selector: 'app-settings',
@@ -21,11 +22,9 @@ export class SettingsComponent {
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar) {
     this.cli = woleetCliService;
-    this.token = this.cli.getToken();
-    this.url = this.cli.getUrl();
     this.settingsFromGroup = formBuilder.group({
-      token: ['', [Validators.required, tokenFormatValidator]],
-      url: ['']
+      token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
+      url: [this.cli.getUrl()]
     });
   }
 

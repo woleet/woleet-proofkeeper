@@ -20,17 +20,17 @@
     <h3 class="mat-h3"> Options: </h3>
     <div>
       <mat-slide-toggle color="primary" name="private" formControlName="private">Private</mat-slide-toggle>
-      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered" [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
       <mat-slide-toggle color="primary" name="recursive" formControlName="recursive">Recursive</mat-slide-toggle>
-      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Enables the use of subfolders" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Enables the use of subfolders" [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
     <div>
       <mat-checkbox color="primary" name="strict" formControlName="strict">Strict</mat-checkbox>
-      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Re-anchor any file that has changed since last anchoring" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+      <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Re-anchor any file that has changed since last anchoring" [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
         <mat-icon class="help-icon">help</mat-icon>
       </button>
     </div>
@@ -42,8 +42,8 @@
     </div>
     <div *ngIf="folderFormGroup.controls['action'].value == 'sign'">
       <div>
-        <mat-checkbox color="primary" name="iDServerUnsecureSSLL" formControlName="iDServerUnsecureSSL">ID.Server UnsecureSSL</mat-checkbox>
-        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check the ssl certificate validity for the ID.Server (only use in developpement)" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">ID.Server Unsecure SSL</mat-checkbox>
+        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check the ssl certificate validity for the ID.Server (only use in developpement)" [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
       </div>

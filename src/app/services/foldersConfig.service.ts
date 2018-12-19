@@ -57,7 +57,7 @@ export class FoldersConfigService {
       delete folder.iDServerPubKey;
     }
     this.folders.push(folder);
-    this.saveFolder();
+    this.saveFolders();
   }
 
   public deleteFolder(folder: FolderParam) {
@@ -66,11 +66,11 @@ export class FoldersConfigService {
       throw new Error ('Unable to find the folder to delete');
     } else {
       this.folders.splice(index, 1);
-      this.saveFolder();
+      this.saveFolders();
     }
   }
 
-  private saveFolder() {
+  private saveFolders() {
     const retFolderParam: any[] = [];
     this.folders.forEach(folder => {
       const tempfolder = ({ ...folder });
@@ -150,18 +150,18 @@ export class FolderParam {
       parametersArray.push('--recursive');
     }
     if (this.iDServerSignURL && this.action === 'sign') {
-      parametersArray.push('--iDServerSignURL');
+      parametersArray.push('--widsSignURL');
       parametersArray.push(this.iDServerSignURL);
     }
     if (this.iDServerToken && this.action === 'sign') {
-      parametersArray.push('--iDServerToken');
+      parametersArray.push('--widsToken');
       parametersArray.push(this.iDServerToken);
     }
     if (this.iDServerUnsecureSSL && this.action === 'sign') {
-      parametersArray.push('--iDServerUnsecureSSL');
+      parametersArray.push('--widsUnsecureSSL');
     }
     if (this.iDServerPubKey && this.action === 'sign') {
-      parametersArray.push('--iDServerPubKey');
+      parametersArray.push('--widsPubKey');
       parametersArray.push(this.iDServerPubKey);
     }
     return parametersArray;
