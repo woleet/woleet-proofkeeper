@@ -7,8 +7,6 @@
   <mat-dialog-content *ngIf="screen[0] === 2">
     <form class="form-content" [formGroup]="wizardTokenFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
-      <br>
-      <br>
       <p class="mat-body-1">
         Accessing the Woleet API requires an API token.<br>
         You can create one using your <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnProofDesk();">ProofDesk</button> account ("Account settings" menu -> "API" tab)
@@ -24,8 +22,6 @@
   <mat-dialog-content *ngIf="screen[0] === 3">
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up identities for signature</h1>
-      <br>
-      <br>
       <p class="mat-body-1">
         With proofKeper you can make Bitcoin proof of signature.<br>
         If you want to sign data with ProofKeeper, please fill the following signature configuration
@@ -37,8 +33,9 @@
         [disableRipple]="true" 
         matTooltip="Name of the key that represents the identity of the legal person commiting in signature operation" 
         [matTooltipPosition]="'above'" 
-        [matTooltipClass]="'tooltip'">
-        <mat-icon class="help-icon">help</mat-icon>
+        [matTooltipClass]="'tooltip'"
+        [style.font-size.px]="20">
+        <mat-icon>help</mat-icon>
       </button>
     </mat-form-field>
     <mat-form-field class="full-width">
@@ -50,8 +47,9 @@
       [disableRipple]="true" 
       matTooltip="To be found in ID.Server configuration menu" 
       [matTooltipPosition]="'above'" 
-      [matTooltipClass]="'tooltip'">
-      <mat-icon class="help-icon">help</mat-icon>
+      [matTooltipClass]="'tooltip'"
+      [style.font-size.px]="20">
+      <mat-icon>help</mat-icon>
     </button>
   </mat-form-field>
   <mat-form-field class="full-width">
