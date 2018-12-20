@@ -33,30 +33,44 @@
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
         <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">Name already present</mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="API URL" formControlName="url">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="API Token" formControlName="token">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
-      </mat-form-field>
-      <span class="add-identity-span">
-        <button mat-fab color="primary" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm();">
-          <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
-        </button>
-        <span class="mat-h3 add-identity-text">Add identity</span>
-      </span>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <div class="button-line">
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">Start configuration</button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid" (click)="saveTokenForm();">Next</button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="saveIdentityForm();">Finish</button>
-      <button mat-raised-button (click)="closeDialog();">Skip</button>
-    </div>
-  </mat-dialog-actions>
+        <button mat-icon-button matSuffix 
+        [disableRipple]="true" 
+        matTooltip="Name of the key that represents the identity of the legal person commiting in signature operation" 
+        [matTooltipPosition]="'above'" 
+        [matTooltipClass]="'tooltip'">
+        <mat-icon class="help-icon">help</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="API URL" formControlName="url">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <input matInput placeholder="API Token" formControlName="token">
+      <button mat-icon-button matSuffix 
+      [disableRipple]="true" 
+      matTooltip="To be found in ID.Server configuration menu" 
+      [matTooltipPosition]="'above'" 
+      [matTooltipClass]="'tooltip'">
+      <mat-icon class="help-icon">help</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
+  </mat-form-field>
+  <span class="add-identity-span">
+    <button mat-fab color="primary" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm();">
+      <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
+    </button>
+    <span class="mat-h3 add-identity-text">Add identity</span>
+  </span>
+</form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="button-line">
+    <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">Start configuration</button>
+    <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid" (click)="saveTokenForm();">Next</button>
+    <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="saveIdentityForm();">Finish</button>
+    <button mat-raised-button (click)="closeDialog();">Skip</button>
+  </div>
+</mat-dialog-actions>
 </div>
