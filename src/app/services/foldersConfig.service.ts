@@ -81,6 +81,11 @@ export class FoldersConfigService {
   }
 }
 
+export interface Log {
+  level: string;
+  msg: string;
+}
+
 export class FolderParam {
   path: string;
   action: string;
@@ -92,7 +97,7 @@ export class FolderParam {
   iDServerToken?: string;
   iDServerUnsecureSSL?: boolean;
   iDServerPubKey?: string;
-  logs?: string[];
+  logs?: Log[];
 
   public constructor(folderDesc: FolderDesc) {
     if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {
