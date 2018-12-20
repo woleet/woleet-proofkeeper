@@ -6,10 +6,10 @@ import { WizardComponent } from '../wizard/wizard.component';
 
 
 
-export function checkAndSubmit(formGroup: FormGroup,
+export async function checkAndSubmit(formGroup: FormGroup,
   cliService: WoleetCliParametersService,
   snackBar: MatSnackBar,
-  dialogRef?: MatDialogRef<WizardComponent>) {
+  screenPage?: number[]) {
     let apiURL = `https://api.woleet.io/v1`;
     if (formGroup.get('url')) {
       if (formGroup.get('url').value) {
@@ -37,8 +37,8 @@ export function checkAndSubmit(formGroup: FormGroup,
           } else {
             cliService.setWoleetCliParameters(formGroup.get('token').value);
           }
-          if (dialogRef) {
-            dialogRef.close();
+          if (screenPage) {
+            screenPage[0] = screenPage[0] + 1;
           }
         } else {
           openSnackBarError(snackBar);

@@ -1,11 +1,11 @@
 <div class="dialog-container">
-  <mat-dialog-content class="welcome-content" *ngIf="firstScreen">
+  <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 1">
     <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
     <h1 class="mat-h1 dialog-title">Welcome to ProofKeeper</h1>
     <h2 class="mat-h2 dialog-subtitle">Timestamp and sign your files dynamically</h2>
   </mat-dialog-content>
-  <mat-dialog-content *ngIf="!firstScreen">
-    <form class="form-content" [formGroup]="wizardFromGroup">
+  <mat-dialog-content *ngIf="screen[0] === 2">
+    <form class="form-content" [formGroup]="wizardTokenFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
       <br>
       <br>
@@ -16,15 +16,46 @@
       <div>
         <mat-form-field class="full-width">
           <input type="text" matInput placeholder="API Token" name="token" formControlName="token" required>
-          <mat-error *ngIf="wizardFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT Token format</mat-error>
+          <mat-error *ngIf="wizardTokenFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT Token format</mat-error>
         </mat-form-field>
       </div>
     </form>
   </mat-dialog-content>
+  <mat-dialog-content *ngIf="screen[0] === 3">
+    <form class="form-content" [formGroup]="wizardIdentityFromGroup">
+      <h1 class="mat-h1 txt-align-center">Set up identities for signature</h1>
+      <br>
+      <br>
+      <p class="mat-body-1">
+        With proofKeper you can make Bitcoin proof of signature.<br>
+        If you want to sign data with ProofKeeper, please fill the following signature configuration
+      </p>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Name" formControlName="name">
+        <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">Name already present</mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="API URL" formControlName="url">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="API Token" formControlName="token">
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
+      </mat-form-field>
+      <span class="add-identity-span">
+        <button mat-fab color="primary" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm();">
+          <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
+        </button>
+        <span class="mat-h3 add-identity-text">Add identity</span>
+      </span>
+    </form>
+  </mat-dialog-content>
   <mat-dialog-actions>
     <div class="button-line">
-      <button mat-raised-button color="primary" *ngIf="firstScreen" (click)="firstScreen=false">Start configuration</button>
-      <button mat-raised-button color="primary" *ngIf="!firstScreen" [disabled]="wizardFromGroup.invalid" (click)="onClickcheckAndSubmit();">Next</button>
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">Start configuration</button>
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid" (click)="saveTokenForm();">Next</button>
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="saveIdentityForm();">Finish</button>
       <button mat-raised-button (click)="closeDialog();">Skip</button>
     </div>
   </mat-dialog-actions>

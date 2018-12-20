@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { tokenFormatValidator } from '../misc/validators';
+import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactory } from '../misc/validators';
 import { checkAndSubmit } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
@@ -33,14 +33,14 @@ export class SettingsComponent {
     });
 
     this.addIdentityFormGroup = formBuilder.group({
-      name: ['', [Validators.required, noDUplicateNameValidatorFactory(this)]],
+      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactory(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
       pubKey: ['']
     });
 
     this.editIdentityFormGroup = formBuilder.group({
-      name: ['', [Validators.required, noDUplicateNameValidatorFactory(this)]],
+      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactory(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
       pubKey: ['']
@@ -102,22 +102,4 @@ export class SettingsComponent {
     this.identityOpened = '';
     this.editIdentityFormGroup.reset();
   }
-}
-
-function noDUplicateNameValidatorFactory(thisParam) {
-  return function noDUplicateNameValidator(control: AbstractControl): ValidationErrors | null {
-    if (!control.value) {
-      return null;
-    }
-    if (thisParam.identityOpened) {
-      if (thisParam.identityService.arrayIdentityContent
-      .filter(elem => elem.name !== thisParam.identityOpened)
-      .some(elem => elem.name === control.value)) {
-        return {nameAlreadyPresent: true};
-      }
-    } else if (thisParam.identityService.arrayIdentityContent.some(elem => elem.name === control.value)) {
-      return {nameAlreadyPresent: true};
-    }
-    return null;
-  };
 }
