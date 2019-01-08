@@ -67,8 +67,8 @@
   <div class="button-line">
     <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">Start configuration</button>
     <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid" (click)="saveTokenForm();">Next</button>
-    <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="saveIdentityForm();">Finish</button>
-    <button mat-raised-button (click)="closeDialog();">Skip</button>
+    <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="closeDialog();">Finish</button>
+    <button mat-raised-button *ngIf="screen[0] !== 3" (click)="closeDialog();">Skip</button>
   </div>
 </mat-dialog-actions>
 </div>
