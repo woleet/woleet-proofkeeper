@@ -6,7 +6,6 @@ import { WoleetCliParametersService } from '../services/woleetcliParameters.serv
 import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactory } from '../misc/validators';
 import { checkAndSubmit } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
-import { FoldersConfigService } from '../services/foldersConfig.service';
 const { shell } = require('electron');
 
 
@@ -25,7 +24,6 @@ export class WizardComponent {
     private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private foldersConfigService: FoldersConfigService,
     private snackBar: MatSnackBar) {
       this.screen = [1];
       this.wizardTokenFromGroup = formBuilder.group({

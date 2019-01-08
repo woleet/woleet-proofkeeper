@@ -1,8 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialogRef } from '@angular/material/dialog';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { WizardComponent } from '../wizard/wizard.component';
 
 
 
