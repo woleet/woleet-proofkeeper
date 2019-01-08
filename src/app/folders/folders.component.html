@@ -2,7 +2,7 @@
   <mat-card>
     <form [formGroup]="folderFormGroup">
     <mat-form-field>
-      <mat-select class="custom-select" required formControlName="action" name="action">
+      <mat-select class="custom-select" required formControlName="action" name="action" (selectionChange)="folderFormGroup.get('path').updateValueAndValidity();">
         <mat-option value="anchor" selected>anchor files</mat-option>
         <mat-option value="sign">sign files</mat-option>
       </mat-select>
