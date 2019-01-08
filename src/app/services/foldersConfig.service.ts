@@ -79,8 +79,3 @@ export class FoldersConfigService {
     this.store.set('folders', retFolderParam);
   }
 }
-
-export interface Log {
-  level: string;
-  msg: string;
-}
