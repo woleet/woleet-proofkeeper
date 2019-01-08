@@ -70,7 +70,6 @@ export class AppComponent {
       const newExecutionCalled = [false]; // Used to pass boolean as reference
       const exec = this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
       exec.stdout.on('data', (data) => {
-        log.warn(data.toString('utf8'));
         folder.logContext.logsAccumulator += data.toString('utf8');
         if (!newExecutionCalled[0]) {
           this.parseLogs(folder, newExecutionCalled);
@@ -104,7 +103,6 @@ export class AppComponent {
   parseLogs (folder: FolderParam, newExecutionCalled: boolean[]) {
     const tempLogAccumulator = folder.logContext.logsAccumulator;
     const logAccumulatorSplitted = tempLogAccumulator.split('\n');
-    log.info(logAccumulatorSplitted);
     if (logAccumulatorSplitted.length >= 2) {
       for (let index = 0; index < logAccumulatorSplitted.length; index++) {
         if (index === logAccumulatorSplitted.length - 1) {
