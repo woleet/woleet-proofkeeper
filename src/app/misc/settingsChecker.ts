@@ -15,11 +15,7 @@ export async function checkAndSubmit(formGroup: FormGroup,
       }
     }
     try {
-      const creditsJSON = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value, snackBar);
-      if (!creditsJSON) {
-        openSnackBarError(snackBar);
-        return;
-      }
+      const creditsJSON = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value);
       try {
         const creditsObject = JSON.parse(<string>creditsJSON);
         if (creditsObject.credits === undefined)  { // TODO: check credits value
@@ -27,19 +23,21 @@ export async function checkAndSubmit(formGroup: FormGroup,
           return;
         }
         if (apiURL === `https://api.woleet.io/v1`) {
-        cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
-      } else {
         cliService.setWoleetCliParameters(formGroup.get('token').value);
+      } else {
+        cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
       }
       if (screenPage) {
         screenPage[0] = screenPage[0] + 1;
       }
     } catch (e) {
       openSnackBarError(snackBar);
+      log.error(e);
       return;
     }
   } catch (e) {
     openSnackBarError(snackBar);
+    log.error(e);
     return;
   }
 }
@@ -48,15 +46,18 @@ export async function checkwIDConnection(url: string,
   token: string,
   pubKeyAddressGroup: PubKeyAddressGroup[],
   snackBar: MatSnackBar) {
+    while (pubKeyAddressGroup.length) {
+      pubKeyAddressGroup.pop();
+    }
     try {
-      const usersJSON = await requestGet(`${url}/discover/users?search=%`, token, snackBar);
+      const usersJSON = await requestGet(`${url}/discover/users?search=%`, token);
       if (usersJSON) {
         try {
           const usersObject = JSON.parse(<string>usersJSON);
           for (const user of usersObject) {
             const currentPubKeyAddressGroup: PubKeyAddressGroup = {user: `${user.identity.commonName}`, pubKeyAddress: []};
             pubKeyAddressGroup.push(currentPubKeyAddressGroup);
-            const currentUserKeysJSON = await requestGet(`${url}/discover/keys/${user.id}`, token, snackBar);
+            const currentUserKeysJSON = await requestGet(`${url}/discover/keys/${user.id}`, token);
             try {
               const currentUserKeysObject = JSON.parse(<string>currentUserKeysJSON);
               for (const key of currentUserKeysObject) {
@@ -68,23 +69,28 @@ export async function checkwIDConnection(url: string,
               }
             } catch (e) {
               openSnackBarErrowID(snackBar);
-              pubKeyAddressGroup = [];
+              while (pubKeyAddressGroup.length) {
+                pubKeyAddressGroup.pop();
+              }
+              log.error(e);
               return;
             }
           }
         } catch (e) {
           openSnackBarErrowID(snackBar);
-          pubKeyAddressGroup = [];
+          while (pubKeyAddressGroup.length) {
+            pubKeyAddressGroup.pop();
+          }
+          log.error(e);
           return;
         }
-      } else {
-        openSnackBarErrowID(snackBar);
-        pubKeyAddressGroup = [];
-        return;
       }
     } catch (e) {
       openSnackBarErrowID(snackBar);
-      pubKeyAddressGroup = [];
+      while (pubKeyAddressGroup.length) {
+        pubKeyAddressGroup.pop();
+      }
+      log.error(e);
       return;
     }
   }
@@ -101,16 +107,13 @@ export async function checkwIDConnection(url: string,
     {duration: 3000});
   }
 
-  export async function requestGet (url: string, token: string, snackBar: MatSnackBar) {
+  export async function requestGet (url: string, token: string) {
     return new Promise(function(resolve, reject) {
       const req = new XMLHttpRequest();
       req.open('GET', `${url}`, true);
       req.setRequestHeader('Content-Type', 'application/json');
       req.setRequestHeader('Authorization', `Bearer ${token}`);
       req.timeout = 3000;
-      req.ontimeout = () => {
-        return reject();
-      };
       req.onload = () => {
         if (req.readyState === 4 ) {
           if (req.status === 200) {
@@ -123,8 +126,12 @@ export async function checkwIDConnection(url: string,
       req.onerror = () => {
         return reject();
       };
+      req.ontimeout = () => {
+        return reject();
+      };
       req.send(null);
     });
   }
+
 
 

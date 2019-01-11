@@ -7,6 +7,7 @@ import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactory } from '.
 import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import log = require('loglevel');
 const { shell } = require('electron');
 
 @Component({
@@ -61,6 +62,9 @@ export class WizardComponent {
       this.wizardIdentityFromGroup.reset();
       this.wizardIdentityFromGroup.patchValue({url: tempURL});
       this.wizardIdentityFromGroup.patchValue({token: tempToken});
+      while (this.pubKeyAddressGroup.length) {
+        this.pubKeyAddressGroup.pop();
+      }
       }
 
       closeDialog() {

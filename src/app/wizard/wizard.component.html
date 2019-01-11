@@ -52,7 +52,7 @@
       <mat-icon>help</mat-icon>
     </button>
   </mat-form-field>
-  <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="cliclOnCheckwIDConnection();">Check ID.Server Connection</button>
+  <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="cliclOnCheckwIDConnection();">Get identities from ID.Server</button>
   <mat-form-field class="full-width">
     <mat-select placeholder="Public Key (Optional)" [disabled]="pubKeyAddressGroup.length === 0" formControlName="pubKey">
       <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
