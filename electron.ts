@@ -22,8 +22,8 @@ nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/ProofKeeper/ass
 
 function createWindowTray () {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 900,
+    height: 800,
     minWidth: 400,
     minHeight: 300,
     icon: nativcon

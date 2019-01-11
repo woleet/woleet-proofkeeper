@@ -4,11 +4,10 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactory } from '../misc/validators';
-import { checkAndSubmit } from '../misc/settingsChecker';
+import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
+import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 const { shell } = require('electron');
-
-
 
 @Component({
   selector: 'app-wizard',
@@ -16,7 +15,8 @@ const { shell } = require('electron');
   styleUrls: ['./wizard.component.scss']
 })
 export class WizardComponent {
-  public screen: number[];
+  public screen: number[]; // Used to pass the page number by reference
+  public pubKeyAddressGroup: PubKeyAddressGroup[];
   public wizardTokenFromGroup: FormGroup;
   public wizardIdentityFromGroup: FormGroup;
 
@@ -26,6 +26,7 @@ export class WizardComponent {
     public identityService: IdentityService,
     private snackBar: MatSnackBar) {
       this.screen = [1];
+      this.pubKeyAddressGroup = [];
       this.wizardTokenFromGroup = formBuilder.group({
         token: ['', [Validators.required, tokenFormatValidator]]
       });
@@ -33,7 +34,7 @@ export class WizardComponent {
         name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactory(this)]],
         url: ['', [Validators.required]],
         token: ['', [Validators.required]],
-        pubKey: ['']
+        pubKey: ['', [Validators.required]]
       });
     }
 
@@ -50,15 +51,27 @@ export class WizardComponent {
     }
 
     saveIdentityForm() {
+      const tempURL = this.wizardIdentityFromGroup.get('url').value;
+      const tempToken = this.wizardIdentityFromGroup.get('token').value;
       this.identityService.addIdentity(
         this.wizardIdentityFromGroup.get('name').value,
-        this.wizardIdentityFromGroup.get('url').value,
-        this.wizardIdentityFromGroup.get('token').value,
+        tempURL,
+        tempToken,
         this.wizardIdentityFromGroup.get('pubKey').value);
-        this.wizardIdentityFromGroup.reset();
+      this.wizardIdentityFromGroup.reset();
+      this.wizardIdentityFromGroup.patchValue({url: tempURL});
+      this.wizardIdentityFromGroup.patchValue({token: tempToken});
       }
 
       closeDialog() {
         this.dialogRef.close();
       }
+
+      cliclOnCheckwIDConnection() {
+        checkwIDConnection(this.wizardIdentityFromGroup.get('url').value,
+        this.wizardIdentityFromGroup.get('token').value,
+        this.pubKeyAddressGroup,
+        this.snackBar);
+      }
     }
+

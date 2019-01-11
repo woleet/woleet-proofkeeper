@@ -71,7 +71,7 @@ export class FoldersConfigService {
   public saveFolders() {
     const retFolderParam: any[] = [];
     this.folders.forEach(folder => {
-      const tempfolder = ({ ...folder });
+      const tempfolder = ({ ...folder }); // Used to copy the object
       delete tempfolder.logContext;
       delete tempfolder.identityService;
       retFolderParam.push(tempfolder);

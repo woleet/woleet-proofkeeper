@@ -1,8 +1,8 @@
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-
-
+import { PubKeyAddressGroup } from './identitiesFromServer';
+import log = require('loglevel');
 
 export async function checkAndSubmit(formGroup: FormGroup,
   cliService: WoleetCliParametersService,
@@ -14,39 +14,79 @@ export async function checkAndSubmit(formGroup: FormGroup,
         apiURL = formGroup.get('url').value;
       }
     }
-
-    const req = new XMLHttpRequest();
-    req.open('GET', `${apiURL}/user/credits`, true);
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.setRequestHeader('Authorization', `Bearer ${formGroup.get('token').value}`);
-    req.timeout = 3000;
-    req.ontimeout = () => {
-      openSnackBarError(snackBar);
-    };
-    req.onload = () => {
-      if (req.readyState === 4 ) {
-        if (req.status === 200) {
-          if (formGroup.get('url')) {
-            if (formGroup.get('url').value) {
-              cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
-            } else {
-              cliService.setWoleetCliParameters(formGroup.get('token').value);
-            }
-          } else {
-            cliService.setWoleetCliParameters(formGroup.get('token').value);
-          }
-          if (screenPage) {
-            screenPage[0] = screenPage[0] + 1;
-          }
-        } else {
-          openSnackBarError(snackBar);
-        }
+    try {
+      const creditsJSON = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value, snackBar);
+      if (!creditsJSON) {
+        openSnackBarError(snackBar);
+        return;
       }
-    };
-    req.onerror = () => {
+      try {
+        const creditsObject = JSON.parse(<string>creditsJSON);
+        if (creditsObject.credits === undefined)  { // TODO: check credits value
+          openSnackBarError(snackBar);
+          return;
+        }
+        if (apiURL === `https://api.woleet.io/v1`) {
+        cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
+      } else {
+        cliService.setWoleetCliParameters(formGroup.get('token').value);
+      }
+      if (screenPage) {
+        screenPage[0] = screenPage[0] + 1;
+      }
+    } catch (e) {
       openSnackBarError(snackBar);
-    };
-    req.send(null);
+      return;
+    }
+  } catch (e) {
+    openSnackBarError(snackBar);
+    return;
+  }
+}
+
+export async function checkwIDConnection(url: string,
+  token: string,
+  pubKeyAddressGroup: PubKeyAddressGroup[],
+  snackBar: MatSnackBar) {
+    try {
+      const usersJSON = await requestGet(`${url}/discover/users?search=%`, token, snackBar);
+      if (usersJSON) {
+        try {
+          const usersObject = JSON.parse(<string>usersJSON);
+          for (const user of usersObject) {
+            const currentPubKeyAddressGroup: PubKeyAddressGroup = {user: `${user.identity.commonName}`, pubKeyAddress: []};
+            pubKeyAddressGroup.push(currentPubKeyAddressGroup);
+            const currentUserKeysJSON = await requestGet(`${url}/discover/keys/${user.id}`, token, snackBar);
+            try {
+              const currentUserKeysObject = JSON.parse(<string>currentUserKeysJSON);
+              for (const key of currentUserKeysObject) {
+                if (key.id === user.defaultKeyId) {
+                  currentPubKeyAddressGroup.pubKeyAddress.unshift({key: `${key.name}`, address: `${key.pubKey}`});
+                } else {
+                  currentPubKeyAddressGroup.pubKeyAddress.push({key: `${key.name}`, address: `${key.pubKey}`});
+                }
+              }
+            } catch (e) {
+              openSnackBarErrowID(snackBar);
+              pubKeyAddressGroup = [];
+              return;
+            }
+          }
+        } catch (e) {
+          openSnackBarErrowID(snackBar);
+          pubKeyAddressGroup = [];
+          return;
+        }
+      } else {
+        openSnackBarErrowID(snackBar);
+        pubKeyAddressGroup = [];
+        return;
+      }
+    } catch (e) {
+      openSnackBarErrowID(snackBar);
+      pubKeyAddressGroup = [];
+      return;
+    }
   }
 
   export function openSnackBarError(snackBar: MatSnackBar) {
@@ -54,3 +94,37 @@ export async function checkAndSubmit(formGroup: FormGroup,
     undefined,
     {duration: 3000});
   }
+
+  export function openSnackBarErrowID(snackBar: MatSnackBar) {
+    snackBar.open('Unable to login, please check your url or token',
+    undefined,
+    {duration: 3000});
+  }
+
+  export async function requestGet (url: string, token: string, snackBar: MatSnackBar) {
+    return new Promise(function(resolve, reject) {
+      const req = new XMLHttpRequest();
+      req.open('GET', `${url}`, true);
+      req.setRequestHeader('Content-Type', 'application/json');
+      req.setRequestHeader('Authorization', `Bearer ${token}`);
+      req.timeout = 3000;
+      req.ontimeout = () => {
+        return reject();
+      };
+      req.onload = () => {
+        if (req.readyState === 4 ) {
+          if (req.status === 200) {
+            return resolve(req.response);
+          } else {
+            return reject();
+          }
+        }
+      };
+      req.onerror = () => {
+        return reject();
+      };
+      req.send(null);
+    });
+  }
+
+

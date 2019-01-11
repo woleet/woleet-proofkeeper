@@ -52,8 +52,15 @@
       <mat-icon>help</mat-icon>
     </button>
   </mat-form-field>
+  <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="cliclOnCheckwIDConnection();">Check ID.Server Connection</button>
   <mat-form-field class="full-width">
-    <input matInput placeholder="Public Key (Optional)" formControlName="pubKey">
+    <mat-select placeholder="Public Key (Optional)" [disabled]="pubKeyAddressGroup.length === 0" formControlName="pubKey">
+      <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
+        <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
+          {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
+        </mat-option>
+      </mat-optgroup>
+    </mat-select>
   </mat-form-field>
   <span class="add-identity-span">
     <button mat-fab color="primary" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm();">
