@@ -43,7 +43,9 @@ export class AppComponent {
       this.timer.subscribe( () => { if (! this.running ) {
         this.running = true;
         const folderToUse = this.folders.folders.slice();
-        this.execAllCli(folderToUse);
+        this.execAllCli(folderToUse).then( _ => {
+          this.running = false;
+        });
       }
     });
   }
@@ -70,9 +72,11 @@ export class AppComponent {
   }
 
   execAllCli (folders: FolderParam[]) {
+    const promisesExec: Promise<any>[] = [];
     for ( let i = 0; i < folders.length; i++ ) {
       const folder = folders[i];
-      this.execCli(folder);
+      promisesExec.push(this.execCli(folder));
     }
+    return Promise.all(promisesExec);
   }
 }
