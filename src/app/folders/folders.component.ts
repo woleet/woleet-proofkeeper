@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
-import { FoldersConfigService, FolderParam, FolderDesc } from '../services/foldersconfig.service';
+import { FoldersConfigService, FolderDesc } from '../services/foldersConfig.service';
+import { FolderParam } from '../misc/folderParam';
 import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';

@@ -3,7 +3,7 @@ import { remote } from 'electron';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tokenFormatValidator } from '../misc/validators';
-import { checkAndSubmit } from '../misc/setingsChecker';
+import { checkAndSubmit } from '../misc/settingsChecker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({

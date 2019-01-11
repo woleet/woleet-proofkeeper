@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator } from '../misc/validators';
-import { checkAndSubmit } from '../misc/setingsChecker';
+import { checkAndSubmit } from '../misc/settingsChecker';
 const { shell } = require('electron');
 
 
@@ -40,4 +40,3 @@ export class WizardComponent {
       this.dialogRef.close();
     }
   }
-

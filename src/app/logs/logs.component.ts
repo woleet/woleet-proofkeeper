@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MatTable,  } from '@angular/material/table';
-import { FoldersConfigService, FolderParam } from '../services/foldersconfig.service';
-import { LogMessageService } from '../services/logmessage.service';
-
+import { FoldersConfigService } from '../services/foldersConfig.service';
+import { LogMessageService } from '../services/logMessage.service';
+import { FolderParam } from '../misc/folderParam';
 
 @Component({
   selector: 'app-logs',
