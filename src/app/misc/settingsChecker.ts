@@ -50,7 +50,7 @@ export async function checkAndSubmit(formGroup: FormGroup,
   }
 
   export function openSnackBarError(snackBar: MatSnackBar) {
-    snackBar.open('Unable to login, please check your token',
+    snackBar.open('Unable to login. Please check your token.',
     undefined,
     {duration: 3000});
   }
