@@ -95,6 +95,16 @@ export async function checkwIDConnection(url: string,
     }
   }
 
+  export async function checkPubKey (url: string, token: string, pubKey: string) {
+    try {
+      const userJSON = await requestGet(`${url}/discover/user/${pubKey}`, token);
+      return true;
+    } catch (e) {
+      log.error(e);
+      return false;
+    }
+  }
+
   export function openSnackBarError(snackBar: MatSnackBar) {
     snackBar.open('Unable to login. Please check your token.',
     undefined,

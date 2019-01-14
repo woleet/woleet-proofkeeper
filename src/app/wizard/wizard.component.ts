@@ -71,11 +71,15 @@ export class WizardComponent {
         this.dialogRef.close();
       }
 
-      cliclOnCheckwIDConnection() {
+      onClickCheckwIDConnection() {
         checkwIDConnection(this.wizardIdentityFromGroup.get('url').value,
         this.wizardIdentityFromGroup.get('token').value,
         this.pubKeyAddressGroup,
         this.snackBar);
+      }
+
+      onURLTokenChanges() {
+        this.pubKeyAddressGroup = [];
       }
     }
 

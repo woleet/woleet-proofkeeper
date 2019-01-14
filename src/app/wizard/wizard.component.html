@@ -23,8 +23,8 @@
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up identities for signature</h1>
       <p class="mat-body-1">
-        With proofKeper you can make Bitcoin proof of signature.<br>
-        If you want to sign data with ProofKeeper, please fill the following signature configuration
+        With ProofKeper you can make Bitcoin proof of signature.<br>
+        If you want to sign data with ProofKeeper, please fill the following signature configuration:
       </p>
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
@@ -39,10 +39,10 @@
       </button>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <input matInput placeholder="API URL" formControlName="url">
+      <input matInput placeholder="API URL" formControlName="url" (ngModelChange)="onURLTokenChanges();">
     </mat-form-field>
     <mat-form-field class="full-width">
-      <input matInput placeholder="API Token" formControlName="token">
+      <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onURLTokenChanges();">
       <button mat-icon-button matSuffix 
       [disableRipple]="true" 
       matTooltip="To be found in ID.Server configuration menu" 
@@ -52,9 +52,9 @@
       <mat-icon>help</mat-icon>
     </button>
   </mat-form-field>
-  <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="cliclOnCheckwIDConnection();">Get identities from ID.Server</button>
-  <mat-form-field class="full-width">
-    <mat-select placeholder="Public Key (Optional)" [disabled]="pubKeyAddressGroup.length === 0" formControlName="pubKey">
+  <button mat-raised-button color="primary" *ngIf="pubKeyAddressGroup.length === 0" (click)="onClickCheckwIDConnection();">Get identities from ID.Server</button>
+  <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
+    <mat-select placeholder="Public Key (Optional)" formControlName="pubKey">
       <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
         <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
           {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
