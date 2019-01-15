@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactory } from '../misc/validators';
+import { tokenFormatValidator,
+         noDuplicateIdentityNameValidatorFactoryOnAdd,
+         noDuplicateIdentityNameValidatorFactoryOnEdit } from '../misc/validators';
 import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
@@ -20,7 +22,8 @@ export class SettingsComponent {
   public settingsFromGroup: FormGroup;
   public addIdentityFormGroup: FormGroup;
   public editIdentityFormGroup: FormGroup;
-  public pubKeyAddressGroup: PubKeyAddressGroup[];
+  public addPubKeyAddressGroup: PubKeyAddressGroup[];
+  public editPubKeyAddressGroup: PubKeyAddressGroup[];
 
   constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
@@ -28,7 +31,8 @@ export class SettingsComponent {
     public identityService: IdentityService,
     public foldersConfigService: FoldersConfigService) {
     this.identityOpened = '';
-    this.pubKeyAddressGroup = [];
+    this.addPubKeyAddressGroup = [];
+    this.editPubKeyAddressGroup = [];
     this.settingsFromGroup = formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()]
@@ -41,14 +45,14 @@ export class SettingsComponent {
     }
 
     this.addIdentityFormGroup = formBuilder.group({
-      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactory(this)]],
+      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
       pubKey: ['', [Validators.required]]
     });
 
     this.editIdentityFormGroup = formBuilder.group({
-      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactory(this)]],
+      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnEdit(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
       pubKey: ['', [Validators.required]]
@@ -75,8 +79,8 @@ export class SettingsComponent {
     );
     this.addState = false;
     this.addIdentityFormGroup.reset();
-    while (this.pubKeyAddressGroup.length) {
-      this.pubKeyAddressGroup.pop();
+    while (this.addPubKeyAddressGroup.length) {
+      this.addPubKeyAddressGroup.pop();
     }
     this.addIdentityFormGroup.patchValue({url: tempURL});
     this.addIdentityFormGroup.patchValue({token: tempToken});
@@ -88,8 +92,8 @@ export class SettingsComponent {
         this.addState = false;
       }
       this.addIdentityFormGroup.reset();
-      while (this.pubKeyAddressGroup.length) {
-        this.pubKeyAddressGroup.pop();
+      while (this.addPubKeyAddressGroup.length) {
+        this.addPubKeyAddressGroup.pop();
       }
     } else {
       this.addState = true;
@@ -114,33 +118,53 @@ export class SettingsComponent {
       this.editIdentityFormGroup.get('token').value,
       this.editIdentityFormGroup.get('pubKey').value);
       this.closeEditForm();
-      while (this.pubKeyAddressGroup.length) {
-        this.pubKeyAddressGroup.pop();
+      while (this.editPubKeyAddressGroup.length) {
+        this.editPubKeyAddressGroup.pop();
       }
   }
 
   closeEditForm() {
     this.identityOpened = '';
     this.editIdentityFormGroup.reset();
-    while (this.pubKeyAddressGroup.length) {
-      this.pubKeyAddressGroup.pop();
+    while (this.editPubKeyAddressGroup.length) {
+      this.editPubKeyAddressGroup.pop();
     }
   }
 
-  onClickCheckwIDConnection() {
-    let url: string;
-    let token: string;
-    if (this.addState) {
-      url = this.addIdentityFormGroup.get('url').value;
-      token = this.addIdentityFormGroup.get('token').value;
-    } else {
-      url = this.editIdentityFormGroup.get('url').value;
-      token = this.editIdentityFormGroup.get('token').value;
-    }
-    checkwIDConnection(url, token, this.pubKeyAddressGroup, this.snackBar);
+  onClickAddwIDConnection() {
+      checkwIDConnection(this.addIdentityFormGroup.get('url').value,
+      this.addIdentityFormGroup.get('token').value,
+      this.addPubKeyAddressGroup,
+      this.snackBar);
   }
 
-  onURLTokenChanges() {
-    this.pubKeyAddressGroup = [];
+
+  async onClickEditwIDConnection() {
+    await checkwIDConnection(this.editIdentityFormGroup.get('url').value,
+    this.editIdentityFormGroup.get('token').value,
+    this.editPubKeyAddressGroup,
+    this.snackBar);
+    if (this.editPubKeyAddressGroup.length !== 0 && this.editIdentityFormGroup.get('pubKey')) {
+      this.editIdentityFormGroup.get('pubKey').setErrors({unableToFindOldKey: true});
+      const match = this.editPubKeyAddressGroup.some(pubKeyAddressGroup => {
+        return pubKeyAddressGroup.pubKeyAddress.some(pubKeyAddress => {
+          if (pubKeyAddress.address === this.editIdentityFormGroup.get('pubKey').value) {
+            return true;
+          }
+        });
+      });
+      if (match) {
+        this.editIdentityFormGroup.get('pubKey').setErrors({unableToFindOldKey: false});
+        this.editIdentityFormGroup.get('pubKey').updateValueAndValidity();
+      }
+    }
+  }
+
+  onAddURLTokenChanges() {
+    this.addPubKeyAddressGroup = [];
+  }
+
+  onEditURLTokenChanges() {
+    this.editPubKeyAddressGroup = [];
   }
 }

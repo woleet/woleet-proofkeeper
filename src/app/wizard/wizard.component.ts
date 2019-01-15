@@ -3,11 +3,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactory } from '../misc/validators';
+import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
 import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
-import log = require('loglevel');
 const { shell } = require('electron');
 
 @Component({
@@ -32,7 +31,7 @@ export class WizardComponent {
         token: ['', [Validators.required, tokenFormatValidator]]
       });
       this.wizardIdentityFromGroup = formBuilder.group({
-        name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactory(this)]],
+        name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
         url: ['', [Validators.required]],
         token: ['', [Validators.required]],
         pubKey: ['', [Validators.required]]

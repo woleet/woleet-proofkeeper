@@ -7,7 +7,7 @@
     <mat-form-field>
       <input type="text" matInput placeholder="Override API URL" name="URL" formControlName="url">
     </mat-form-field>
-    <button mat-raised-button color="primary" [disabled]="settingsFromGroup.invalid" (click)="onClickcheckAndSubmit();">Save settings</button>
+    <button mat-raised-button color="primary" [disabled]="settingsFromGroup.invalid" (click)="onClickcheckAndSubmit();">Save</button>
   </form>
 </mat-card>
 
@@ -24,15 +24,15 @@
         <mat-error *ngIf="addIdentityFormGroup.get('name').getError('nameAlreadyPresent')">Name already present</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <input matInput placeholder="API URL" formControlName="url" (ngModelChange)="onURLTokenChanges();">
+        <input matInput placeholder="API URL" formControlName="url" (ngModelChange)="onAddURLTokenChanges();">
       </mat-form-field>
       <mat-form-field class="full-width">
-        <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onURLTokenChanges();">
+        <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onAddURLTokenChanges();">
       </mat-form-field>
-      <button mat-raised-button color="primary" class="full-width" *ngIf="pubKeyAddressGroup.length === 0" (click)="onClickCheckwIDConnection();">Get identities from ID.Server</button>
-      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
+      <button mat-raised-button color="primary" class="full-width" *ngIf="addPubKeyAddressGroup.length === 0" (click)="onClickAddwIDConnection();">Get identities from ID.Server</button>
+      <mat-form-field class="full-width" *ngIf="addPubKeyAddressGroup.length !== 0">
         <mat-select placeholder="Public Key (Optional)" formControlName="pubKey">
-          <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
+          <mat-optgroup *ngFor="let group of addPubKeyAddressGroup" [label]="group.user">
             <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
               {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
             </mat-option>
@@ -61,23 +61,24 @@
           <input matInput placeholder="Name" formControlName="name">
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput placeholder="API URL" formControlName="url" (ngModelChange)="onURLTokenChanges();">
+          <input matInput placeholder="API URL" formControlName="url" (ngModelChange)="onEditURLTokenChanges();">
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onURLTokenChanges();">
+          <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onEditURLTokenChanges();">
         </mat-form-field>
-        <button mat-raised-button color="primary" class="full-width" *ngIf="pubKeyAddressGroup.length === 0" (click)="onClickCheckwIDConnection();">Get identities from ID.Server</button>
-        <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
-          <mat-select placeholder="Public Key (Optional)" formControlName="pubKey">
-            <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
+        <button mat-raised-button color="primary" class="full-width" *ngIf="editPubKeyAddressGroup.length === 0" (click)="onClickEditwIDConnection();">Get identities from ID.Server</button>
+        <mat-form-field class="full-width" *ngIf="editPubKeyAddressGroup.length !== 0">
+          <mat-select placeholder="Public Key" formControlName="pubKey">
+            <mat-optgroup *ngFor="let group of editPubKeyAddressGroup" [label]="group.user">
               <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
                 {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
               </mat-option>
             </mat-optgroup>
           </mat-select>
+          <mat-error *ngIf="editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')">Unable to find old key</mat-error>
         </mat-form-field>
       </form>
-      <button mat-raised-button color="primary" [disabled]="editIdentityFormGroup.invalid || pubKeyAddressGroup.length === 0" (click)="saveEditForm();">Save</button>
+      <button mat-raised-button color="primary" [disabled]="editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0" (click)="saveEditForm();">Save</button>
       <button mat-raised-button color="warn" class="remove-button" 
       (click)="identityService.deleteIdentitySnackbar(identityContent.name,this.foldersConfigService, this.snackBar);">
         <mat-icon>delete</mat-icon>

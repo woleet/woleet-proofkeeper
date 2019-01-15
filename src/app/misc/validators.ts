@@ -20,18 +20,26 @@ export function tokenFormatValidator(control: AbstractControl): ValidationErrors
   return {invalidJWTFormat: true};
 }
 
-export function noDuplicateIdentityNameValidatorFactory(thisParam) {
+export function noDuplicateIdentityNameValidatorFactoryOnAdd(thisParam) {
   return function noDuplicateIdentityNameValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) {
       return null;
     }
-    if (thisParam.identityOpened) {
-      if (thisParam.identityService.arrayIdentityContent
-      .filter(elem => elem.name !== thisParam.identityOpened)
-      .some(elem => elem.name === control.value)) {
-        return {nameAlreadyPresent: true};
-      }
-    } else if (thisParam.identityService.arrayIdentityContent.some(elem => elem.name === control.value)) {
+    if (thisParam.identityService.arrayIdentityContent.some(elem => elem.name === control.value)) {
+      return {nameAlreadyPresent: true};
+    }
+    return null;
+  };
+}
+
+export function noDuplicateIdentityNameValidatorFactoryOnEdit(thisParam) {
+  return function noDuplicateIdentityNameValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null;
+    }
+    if (thisParam.identityService.arrayIdentityContent
+    .filter(elem => elem.name !== thisParam.identityOpened)
+    .some(elem => elem.name === control.value)) {
       return {nameAlreadyPresent: true};
     }
     return null;
