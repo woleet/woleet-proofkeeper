@@ -11,7 +11,7 @@
   </form>
 </mat-card>
 
-<button mat-fab color="primary" class="identity-add-button" (click)="onAddIdentityClick();">
+<button mat-fab color="primary" class="identity-add-button identity-button" (click)="onAddIdentityClick();">
   <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
 </button>
 
@@ -29,7 +29,7 @@
       <mat-form-field class="full-width">
         <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onAddURLTokenChanges();">
       </mat-form-field>
-      <button mat-raised-button color="primary" class="full-width" *ngIf="addPubKeyAddressGroup.length === 0" (click)="onClickAddwIDConnection();">Get identities from ID.Server</button>
+      <button mat-raised-button color="primary" class="full-width identity-button" *ngIf="addPubKeyAddressGroup.length === 0" (click)="onClickAddwIDConnection();">Get identities from ID.Server</button>
       <mat-form-field class="full-width" *ngIf="addPubKeyAddressGroup.length !== 0">
         <mat-select placeholder="Public Key (Optional)" formControlName="pubKey">
           <mat-optgroup *ngFor="let group of addPubKeyAddressGroup" [label]="group.user">
@@ -40,8 +40,8 @@
         </mat-select>
       </mat-form-field>
     </form>
-    <button mat-raised-button color="primary" [disabled]="addIdentityFormGroup.invalid" (click)="addNewIdentityFromGroup();">Save</button>
-    <button mat-raised-button color="warn" (click)="onAddIdentityClick();">Cancel</button>
+    <button mat-raised-button color="primary" class="identity-button" [disabled]="addIdentityFormGroup.invalid" (click)="addNewIdentityFromGroup();">Save</button>
+    <button mat-raised-button color="warn" class="identity-button" (click)="onAddIdentityClick();">Cancel</button>
   </div>
 </mat-card>
 
@@ -49,8 +49,8 @@
   <h3 class="mat-h3"> Identities: </h3>
   <mat-list-item *ngFor="let identityContent of identityService.arrayIdentityContent; last as last" role="listitem">
     <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
-      <button mat-button class='identity-name' (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
-      <button mat-raised-button color="warn" class="remove-button" 
+      <button mat-button class='identity-name identity-button' (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
+      <button mat-raised-button color="warn" class="remove-button identity-button" 
       (click)="identityService.deleteIdentitySnackbar(identityContent.name, this.foldersConfigService, this.snackBar);">
         <mat-icon>delete</mat-icon>
       </button>
@@ -66,7 +66,7 @@
         <mat-form-field class="full-width">
           <input matInput placeholder="API Token" formControlName="token" (ngModelChange)="onEditURLTokenChanges();">
         </mat-form-field>
-        <button mat-raised-button color="primary" class="full-width" *ngIf="editPubKeyAddressGroup.length === 0" (click)="onClickEditwIDConnection();">Get identities from ID.Server</button>
+        <button mat-raised-button color="primary" class="full-width identity-button" *ngIf="editPubKeyAddressGroup.length === 0" (click)="onClickEditwIDConnection();">Get identities from ID.Server</button>
         <mat-form-field class="full-width" *ngIf="editPubKeyAddressGroup.length !== 0">
           <mat-select placeholder="Public Key" formControlName="pubKey">
             <mat-optgroup *ngFor="let group of editPubKeyAddressGroup" [label]="group.user">
@@ -75,15 +75,15 @@
               </mat-option>
             </mat-optgroup>
           </mat-select>
-          <mat-error *ngIf="editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')">Unable to find old key</mat-error>
+          <mat-error *ngIf="editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')">Unable to find the former key</mat-error>
         </mat-form-field>
       </form>
-      <button mat-raised-button color="primary" [disabled]="editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0" (click)="saveEditForm();">Save</button>
-      <button mat-raised-button color="warn" class="remove-button" 
+      <button mat-raised-button color="primary" class="identity-button" [disabled]="editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0" (click)="saveEditForm();">Save</button>
+      <button mat-raised-button color="warn" class="remove-button identity-button" 
       (click)="identityService.deleteIdentitySnackbar(identityContent.name,this.foldersConfigService, this.snackBar);">
         <mat-icon>delete</mat-icon>
       </button>
-      <button mat-raised-button (click)="closeEditForm();">Cancel</button>
+      <button mat-raised-button class="identity-button" (click)="closeEditForm();">Cancel</button>
     </div>
   </mat-list-item>
 </mat-card>

@@ -43,9 +43,18 @@
   width: 100%;
 }
 
-.button-line {
+.button-line-common{
   display: inline-flex;
+}
+
+.button-line {
+  @extend .button-line-common;
   margin-left: auto;
+}
+
+.button-line-last{
+  @extend .button-line-common;
+  margin: auto;
 }
 
 .add-identity-span {

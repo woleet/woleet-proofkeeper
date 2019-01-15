@@ -70,12 +70,18 @@
   </span>
 </form>
 </mat-dialog-content>
+<mat-dialog-content class="welcome-content" *ngIf="screen[0] === 4">
+  <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
+  <h1 class="mat-h1 dialog-title">Congratulations!</h1>
+  <h2 class="mat-h2 dialog-subtitle">You can now configure the folders for timestamping and signature</h2>
+</mat-dialog-content>
 <mat-dialog-actions>
-  <div class="button-line">
+  <div [ngClass]="(screen[0] !== 4)?'button-line':'button-line-last'"  >
     <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">Start configuration</button>
     <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid" (click)="saveTokenForm();">Next</button>
-    <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="closeDialog();">Finish</button>
-    <button mat-raised-button *ngIf="screen[0] !== 3" (click)="closeDialog();">Skip</button>
+    <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="nextPage();">Next</button>
+    <button mat-raised-button color="primary" *ngIf="screen[0] === 4" (click)="closeDialog();" class="last-button">OK</button>
+    <button mat-raised-button *ngIf="screen[0] !== 4" (click)="closeDialog();">Skip</button>
   </div>
 </mat-dialog-actions>
 </div>
