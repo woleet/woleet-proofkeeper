@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { FoldersConfigService, FolderDesc } from '../services/foldersConfig.service';
+import { IdentityService } from '../services/Identity.service';
 import { FolderParam } from '../misc/folderParam';
 import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
-import { IdentityService } from '../services/Identity.service';
 
 @Component({
   selector: 'app-folders',

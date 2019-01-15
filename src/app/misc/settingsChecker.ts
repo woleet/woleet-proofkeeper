@@ -2,7 +2,7 @@ import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { PubKeyAddressGroup } from './identitiesFromServer';
-import log = require('loglevel');
+import * as log from 'loglevel';
 
 export async function checkAndSubmit(formGroup: FormGroup,
   cliService: WoleetCliParametersService,
