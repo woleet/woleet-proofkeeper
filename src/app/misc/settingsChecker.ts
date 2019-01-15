@@ -32,12 +32,10 @@ export async function checkAndSubmit(formGroup: FormGroup,
       }
     } catch (e) {
       openSnackBarError(snackBar);
-      log.error(e);
       return;
     }
   } catch (e) {
     openSnackBarError(snackBar);
-    log.error(e);
     return;
   }
 }
@@ -72,7 +70,6 @@ export async function checkwIDConnection(url: string,
               while (pubKeyAddressGroup.length) {
                 pubKeyAddressGroup.pop();
               }
-              log.error(e);
               return;
             }
           }
@@ -81,7 +78,6 @@ export async function checkwIDConnection(url: string,
           while (pubKeyAddressGroup.length) {
             pubKeyAddressGroup.pop();
           }
-          log.error(e);
           return;
         }
       }
@@ -90,7 +86,6 @@ export async function checkwIDConnection(url: string,
       while (pubKeyAddressGroup.length) {
         pubKeyAddressGroup.pop();
       }
-      log.error(e);
       return;
     }
   }

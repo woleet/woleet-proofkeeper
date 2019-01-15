@@ -69,7 +69,7 @@ export class FolderParam {
       } else {
         const identity = this.identityService.arrayIdentityContent.filter(item => item.name === this.identityName)[0];
         parametersArray.push('--widsSignURL');
-        parametersArray.push(identity.apiURL);
+        parametersArray.push(`${identity.apiURL}/sign`);
         parametersArray.push('--widsToken');
         parametersArray.push(identity.apiToken);
         if (identity.publicKey) {
