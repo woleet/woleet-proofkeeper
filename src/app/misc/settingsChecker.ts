@@ -107,7 +107,7 @@ export async function checkwIDConnection(url: string,
   }
 
   export function openSnackBarErrowID(snackBar: MatSnackBar) {
-    snackBar.open('Unable to login, please check your url or token',
+    snackBar.open('Unable to login, please check the URL and token.',
     undefined,
     {duration: 3000});
   }
