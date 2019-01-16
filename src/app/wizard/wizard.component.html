@@ -26,7 +26,8 @@
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up identities for signature</h1>
       <p class="mat-body-1">
-        If you want ProofKeeper to sign files and create timestamped proofs of signature, you need to configure at least one signatory identity:
+        If you want ProofKeeper to sign files and create timestamped proofs of signature, you need to configure at least one signatory identity:<br>
+        You will be able to add more signatory entities on the setting windows of this tool after the wizard.
       </p>
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
@@ -41,7 +42,7 @@
       <mat-form-field class="full-width">
         <input matInput placeholder="Woleet.ID Server signature API URL" formControlName="url"
                (ngModelChange)="onURLTokenChanges();">
-        <mat-hint>ex: https://identity.acme.com:3002/</mat-hint>
+        <mat-hint>ex: https://identity.acme.com:3002</mat-hint>
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput placeholder="Woleet.ID Server API Token" formControlName="token"
@@ -65,12 +66,6 @@
           </mat-optgroup>
         </mat-select>
       </mat-form-field>
-      <span class="add-identity-span">
-    <button mat-fab color="primary" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm();">
-      <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
-    </button>
-    <span class="mat-h3 add-identity-text">Add identity</span>
-  </span>
     </form>
   </mat-dialog-content>
   <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 4">
@@ -87,7 +82,7 @@
               (click)="saveTokenForm();">
         Next
       </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" (click)="nextPage();">Next</button>
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm(); nextPage();">Next</button>
       <button mat-raised-button color="primary" *ngIf="screen[0] === 4" (click)="closeDialog();" class="last-button">
         OK
       </button>
