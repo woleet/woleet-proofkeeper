@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -58,6 +59,7 @@ import { LogsComponent } from './logs/logs.component';
     MatIconModule,
     MatSnackBarModule,
     MatTableModule,
+    MatTabsModule,
   ],
   providers: [
     StoreService,

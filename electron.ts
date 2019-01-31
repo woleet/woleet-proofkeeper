@@ -26,7 +26,10 @@ function createWindowTray () {
     height: 800,
     minWidth: 400,
     minHeight: 300,
-    icon: nativcon
+    icon: nativcon,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   if (process.platform === 'darwin') {

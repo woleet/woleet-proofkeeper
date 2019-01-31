@@ -17,12 +17,14 @@ export class FoldersComponent {
   public folders: FoldersConfigService;
   public out: string;
   public folderFormGroup: FormGroup;
+  public addState: boolean;
 
   constructor(foldersConfigService: FoldersConfigService, formBuilder: FormBuilder, public identityService: IdentityService) {
+    this.addState = false;
     this.folders = foldersConfigService;
 
     this.folderFormGroup = formBuilder.group({
-      action: ['anchor', Validators.pattern('anchor|sign')],
+      action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
       path: ['', [Validators.required, Validators.maxLength(160), noDUplicatePathValidatorFactory(this)]],
       private: [true],
       strict: [false],
@@ -42,7 +44,9 @@ export class FoldersComponent {
     } catch (error) {
       path = '';
     } finally {
-      this.folderFormGroup.patchValue({path: path});
+      this.folderFormGroup.patchValue({
+        path: path
+      });
       log.info(`Setting folder: ${this.folderFormGroup.get('path').value}`);
     }
   }
@@ -59,11 +63,7 @@ export class FoldersComponent {
       iDServerUnsecureSSL: this.folderFormGroup.get('iDServerUnsecureSSL').value as boolean,
     };
     this.folders.addFolderFromInterface(folderToAdd);
-    this.folderFormGroup.reset({
-      action: 'anchor',
-      path: '',
-      private: true,
-    });
+    this.resetFolderFormGroup();
   }
 
   onClickDelete(folder: FolderParam) {
@@ -75,7 +75,40 @@ export class FoldersComponent {
   }
 
   resetPath() {
-    this.folderFormGroup.patchValue({path: ''});
+    this.folderFormGroup.patchValue({
+      path: ''
+    });
+  }
+
+  onTabChange(index: number) {
+    if (index === 0 && this.folderFormGroup.get('action').value === 'sign') {
+      this.folderFormGroup.patchValue({
+        action: 'anchor'
+      });
+    } else if (index === 1 && this.folderFormGroup.get('action').value === 'anchor') {
+      this.folderFormGroup.patchValue({
+        action: 'sign'
+      });
+    }
+    this.folderFormGroup.get('path').updateValueAndValidity();
+    this.folderFormGroup.get('identity').updateValueAndValidity();
+  }
+
+  onAddFolderClick() {
+    if (this.addState) {
+      this.addState = false;
+      this.resetFolderFormGroup();
+    } else {
+      this.addState = true;
+    }
+  }
+
+  resetFolderFormGroup() {
+    this.folderFormGroup.reset({
+      action: this.folderFormGroup.get('action').value,
+      path: '',
+      private: true,
+    });
   }
 }
 
@@ -92,7 +125,9 @@ function noDUplicatePathValidatorFactory(thisParam) {
         return (folder.path.includes(control.value) || control.value.includes(folder.path));
       });
       if (duplicateFolder) {
-        return {collidingPaths: true};
+        return {
+          collidingPaths: true
+        };
       }
     }
     return null;
@@ -108,10 +143,14 @@ function identityCheckerFactory(thisParam) {
       return null;
     }
     if (!control.value) {
-      return {voidIdentity: true};
+      return {
+        voidIdentity: true
+      };
     }
     if (!thisParam.identityService.arrayIdentityContent.some(elem => elem.name === control.value)) {
-      return {identityNotFound: true};
+      return {
+        identityNotFound: true
+      };
     }
     return null;
   };

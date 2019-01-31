@@ -1,68 +1,64 @@
 <div class="folderAddForm">
   <mat-card>
-    <form [formGroup]="folderFormGroup">
-      <mat-form-field>
-        <mat-select class="custom-select" required formControlName="action" name="action"
-                    (selectionChange)="folderFormGroup.get('path').updateValueAndValidity();">
-          <mat-option value="anchor" selected>anchor files</mat-option>
-          <mat-option value="sign">sign files</mat-option>
-        </mat-select>
+    <button mat-fab color="primary" class="folder-add-button" (click)="onAddFolderClick();">
+      <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
+    </button>
+    <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
+      <mat-tab label="Anchor">
+      </mat-tab>
+      <mat-tab label="Signature">
+      </mat-tab>
+    </mat-tab-group>
+    <form [formGroup]="folderFormGroup" *ngIf="addState">
+      <mat-form-field class="full-width">
+        <input matInput class="form-control" type="text" placeholder="Folder to scan" formControlName="path">
+        <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value " (click)="resetPath();">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">Choose folder</button>
+        <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
+          Folder or subfolder already present
+        </mat-error>
       </mat-form-field>
-      <div>
-        <mat-form-field class="full-width">
-          <input matInput class="form-control" type="text" placeholder="Folder to scan" formControlName="path">
-          <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value " (click)="resetPath();">
-            <mat-icon>close</mat-icon>
-          </button>
-          <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">Choose folder</button>
-          <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
-            Folder or subfolder already present
-          </mat-error>
-        </mat-form-field>
-      </div>
       <h3 class="mat-h3"> Options: </h3>
       <div>
         <mat-slide-toggle color="primary" name="private" formControlName="private">Private</mat-slide-toggle>
         <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered"
-                [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
+          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
         <mat-slide-toggle color="primary" name="recursive" formControlName="recursive">Recursive</mat-slide-toggle>
         <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Enables the use of subfolders"
-                [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
+          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
       </div>
       <div>
         <mat-checkbox color="primary" name="strict" formControlName="strict">Strict</mat-checkbox>
-        <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="Re-anchor any file that has changed since last anchoring" [matTooltipPosition]="'above'"
-                [matTooltipClass]="'tooltip'">
+        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Re-anchor any file that has changed since last anchoring"
+          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
       </div>
       <div>
         <mat-checkbox color="primary" name="prune" formControlName="prune">Prune</mat-checkbox>
-        <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="Delete receipts that are not along the original file, with --strict it checks the hash of the original file and deletes the receipt if they do not match"
-                matTooltipPosition="above" [matTooltipClass]="'tooltip'">
+        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Delete receipts that are not along the original file, with --strict it checks the hash of the original file and deletes the receipt if they do not match"
+          matTooltipPosition="above" [matTooltipClass]="'tooltip'">
           <mat-icon class="help-icon">help</mat-icon>
         </button>
       </div>
       <div *ngIf="folderFormGroup.controls['action'].value == 'sign'">
         <div>
-          <mat-checkbox color="primary" name="iDServerUnsecureSSL"
-                        formControlName="iDServerUnsecureSSL">Woleet.ID Server unsecure SSL
+          <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">Woleet.ID
+            Server unsecure SSL
           </mat-checkbox>
-          <button mat-icon-button matSuffix [disableRipple]="true"
-                  matTooltip="Do not check Woleet.ID Server's SSL certificate validity (only use in development)"
-                  [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
+          <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check Woleet.ID Server's SSL certificate validity (only use in development)"
+            [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
             <mat-icon class="help-icon">help</mat-icon>
           </button>
         </div>
         <mat-form-field>
-          <mat-select class="custom-select" required formControlName="identity" name="identity"
-                      placeholder="Identity to use">
+          <mat-select class="custom-select" formControlName="identity" name="identity" placeholder="Identity to use">
             <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
               {{identityName.name}}
             </mat-option>
@@ -70,8 +66,7 @@
           <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
             Please add at least one identity on the settings panel
           </mat-error>
-          <mat-error
-            *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
+          <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
             Identity required
           </mat-error>
           <mat-error *ngIf="folderFormGroup.get('identity').getError('identityNotFound')">
@@ -80,8 +75,7 @@
         </mat-form-field>
       </div>
       <div>
-        <button mat-raised-button color="primary" class="add-button" [disabled]="folderFormGroup.invalid"
-                (click)="onClickAdd();">
+        <button mat-raised-button color="primary" class="add-button" [disabled]="folderFormGroup.invalid" (click)="onClickAdd();">
           Add folder
         </button>
       </div>
@@ -94,7 +88,7 @@
   <div class="watchedFolders">
     <mat-list role="list" class="folders-list">
       <mat-list-item class="folders-item-container full-width" *ngFor="let folder of folders.folders; last as last"
-                     role="listitem">
+        role="listitem">
         <button mat-flat-button [disableRipple]="true" color="primary" class="action-type">{{folder.action}}</button>
         <span class="mat-line folder-path">{{folder.path}}</span>
         <button mat-raised-button color="warn" class="remove-button" (click)="onClickDelete(folder);">
