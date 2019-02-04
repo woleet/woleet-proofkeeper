@@ -1,5 +1,5 @@
-<div class="folderAddForm">
-  <mat-card>
+<div>
+  <mat-card class="full-size-card">
     <button mat-fab color="primary" class="folder-add-button" (click)="onAddFolderClick();">
       <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
     </button>
@@ -12,7 +12,7 @@
     <form [formGroup]="folderFormGroup" *ngIf="addState">
       <mat-form-field class="full-width">
         <input matInput class="form-control" type="text" placeholder="Folder to scan" formControlName="path">
-        <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value " (click)="resetPath();">
+        <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value" (click)="resetPath();">
           <mat-icon>close</mat-icon>
         </button>
         <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">Choose folder</button>
@@ -20,43 +20,7 @@
           Folder or subfolder already present
         </mat-error>
       </mat-form-field>
-      <h3 class="mat-h3"> Options: </h3>
-      <div>
-        <mat-slide-toggle color="primary" name="private" formControlName="private">Private</mat-slide-toggle>
-        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Prevents anchors to be discovered"
-          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
-          <mat-icon class="help-icon">help</mat-icon>
-        </button>
-        <mat-slide-toggle color="primary" name="recursive" formControlName="recursive">Recursive</mat-slide-toggle>
-        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Enables the use of subfolders"
-          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
-          <mat-icon class="help-icon">help</mat-icon>
-        </button>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="strict" formControlName="strict">Strict</mat-checkbox>
-        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Re-anchor any file that has changed since last anchoring"
-          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
-          <mat-icon class="help-icon">help</mat-icon>
-        </button>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="prune" formControlName="prune">Prune</mat-checkbox>
-        <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Delete receipts that are not along the original file, with --strict it checks the hash of the original file and deletes the receipt if they do not match"
-          matTooltipPosition="above" [matTooltipClass]="'tooltip'">
-          <mat-icon class="help-icon">help</mat-icon>
-        </button>
-      </div>
-      <div *ngIf="folderFormGroup.controls['action'].value == 'sign'">
-        <div>
-          <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">Woleet.ID
-            Server unsecure SSL
-          </mat-checkbox>
-          <button mat-icon-button matSuffix [disableRipple]="true" matTooltip="Do not check Woleet.ID Server's SSL certificate validity (only use in development)"
-            [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'">
-            <mat-icon class="help-icon">help</mat-icon>
-          </button>
-        </div>
+      <div *ngIf="folderFormGroup.get('action').value == 'sign'">
         <mat-form-field>
           <mat-select class="custom-select" formControlName="identity" name="identity" placeholder="Identity to use">
             <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
@@ -74,28 +38,111 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div>
-        <button mat-raised-button color="primary" class="add-button" [disabled]="folderFormGroup.invalid" (click)="onClickAdd();">
+      <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder('addFolderState')">Options</button>
+      <div *ngIf="openedOptionFolder === 'addFolderState'">
+        <div>
+          <mat-checkbox color="primary" name="private" formControlName="private">
+            Created proofs are not available for public search
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox color="primary" name="recursive" formControlName="recursive">
+            Includes files in subfolders of selected folder
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox color="primary" name="strict" formControlName="strict">
+            Anchor again if files modified
+          </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox color="primary" name="prune" formControlName="prune">
+            Delete old proofs if files modified
+          </mat-checkbox>
+        </div>
+        <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
+          <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
+            Do not check the SSL certificat of Woleet.ID server (only use in developpement)
+          </mat-checkbox>
+        </div>
+      </div>
+      <span class="align-end">
+        <button mat-raised-button color="primary" [disabled]="folderFormGroup.invalid" (click)="onClickAdd();">
           Add folder
         </button>
-      </div>
+        <button mat-raised-button color="warn" (click)="onCancelAddClick();">Cancel</button>
+      </span>
     </form>
+    <h3 class="mat-h3">Configured Folders: </h3>
+    <div class="watchedFolders">
+      <!-- <mat-list role="list" class="folders-list">
+        <mat-list-item class="folders-item-container full-width" *ngFor="let folder of folders.folders; last as last"
+          role="listitem">
+          <button mat-flat-button [disableRipple]="true" color="primary" class="action-type">{{folder.action}}</button>
+          <span class="mat-line folder-path">{{folder.path}}</span>
+          <button mat-raised-button color="warn" class="remove-button" (click)="onClickDelete(folder);">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+        </mat-list-item>
+      </mat-list> -->
+      <mat-accordion>
+        <ng-container *ngFor="let folderParam of foldersFormGroup">
+          <mat-expansion-panel *ngIf="folderParam.get('action').value === folderFormGroup.get('action').value">
+            <mat-expansion-panel-header>
+              {{folderParam.get('path').value}}
+            </mat-expansion-panel-header>
+            <form [formGroup]="folderParam">
+              <div *ngIf="folderParam.get('action').value === 'sign'">
+                <mat-form-field>
+                  <mat-select class="custom-select" formControlName="identity" name="identity" placeholder="Identity to use">
+                    <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
+                      {{identityName.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
+                    Please add at least one identity on the settings panel
+                  </mat-error>
+                  <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
+                    Identity required
+                  </mat-error>
+                  <mat-error *ngIf="folderFormGroup.get('identity').getError('identityNotFound')">
+                    Not found
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderParam.get('path').value)">Options</button>
+              <div *ngIf="openedOptionFolder === folderParam.get('path').value">
+                <div>
+                  <mat-checkbox color="primary" name="private" formControlName="private">
+                    Created proofs are not available for public search
+                  </mat-checkbox>
+                </div>
+                <div>
+                  <mat-checkbox color="primary" name="recursive" formControlName="recursive">
+                    Includes files in subfolders of selected folder
+                  </mat-checkbox>
+                </div>
+                <div>
+                  <mat-checkbox color="primary" name="strict" formControlName="strict">
+                    Anchor again if files modified
+                  </mat-checkbox>
+                </div>
+                <div>
+                  <mat-checkbox color="primary" name="prune" formControlName="prune">
+                    Delete old proofs if files modified
+                  </mat-checkbox>
+                </div>
+                <div *ngIf="folderParam.get('action').value === 'sign'">
+                  <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
+                    Do not check the SSL certificat of Woleet.ID server (only use in developpement)
+                  </mat-checkbox>
+                </div>
+              </div>
+            </form>
+          </mat-expansion-panel>
+        </ng-container>
+      </mat-accordion>
+    </div>
   </mat-card>
 </div>
-<hr style="border: 0px">
-<mat-card>
-  <h3 class="mat-h3">Configured Folders: </h3>
-  <div class="watchedFolders">
-    <mat-list role="list" class="folders-list">
-      <mat-list-item class="folders-item-container full-width" *ngFor="let folder of folders.folders; last as last"
-        role="listitem">
-        <button mat-flat-button [disableRipple]="true" color="primary" class="action-type">{{folder.action}}</button>
-        <span class="mat-line folder-path">{{folder.path}}</span>
-        <button mat-raised-button color="warn" class="remove-button" (click)="onClickDelete(folder);">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
-      </mat-list-item>
-    </mat-list>
-  </div>
-</mat-card>

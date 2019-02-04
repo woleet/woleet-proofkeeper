@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -60,6 +61,7 @@ import { LogsComponent } from './logs/logs.component';
     MatSnackBarModule,
     MatTableModule,
     MatTabsModule,
+    MatExpansionModule,
   ],
   providers: [
     StoreService,

@@ -2,6 +2,11 @@
   width: 100%;
 }
 
+.full-size-card {
+  height: -webkit-fill-available;
+  overflow: auto;
+}
+
 .action-tab {
   margin-bottom: 4px;
 }
@@ -22,8 +27,9 @@
   padding: 0px;
 }
 
-.add-button {
-  margin-top: 20px;
+.align-end{
+  display: flex;
+  justify-content: flex-end;
 }
 
 .folder-path {
