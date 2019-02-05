@@ -73,7 +73,7 @@
         <button mat-raised-button color="warn" (click)="onCancelAddClick();">Cancel</button>
       </span>
     </form>
-    <h3 class="mat-h3">Configured Folders: </h3>
+    <br>
     <div class="watchedFolders">
       <!-- <mat-list role="list" class="folders-list">
         <mat-list-item class="folders-item-container full-width" *ngFor="let folder of folders.folders; last as last"
@@ -87,13 +87,16 @@
         </mat-list-item>
       </mat-list> -->
       <mat-accordion>
-        <ng-container *ngFor="let folderParam of foldersFormGroup">
-          <mat-expansion-panel *ngIf="folderParam.get('action').value === folderFormGroup.get('action').value">
+        <ng-container *ngFor="let folderForm of foldersFormGroup">
+          <mat-expansion-panel *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
             <mat-expansion-panel-header>
-              {{folderParam.get('path').value}}
+              {{folderForm.get('path').value}}
+              <button mat-raised-button color="warn" class="remove-button" (click)="onClickDelete(folderForm);">
+                <mat-icon>delete</mat-icon>
+              </button>
             </mat-expansion-panel-header>
-            <form [formGroup]="folderParam">
-              <div *ngIf="folderParam.get('action').value === 'sign'">
+            <form [formGroup]="folderForm">
+              <div *ngIf="folderForm.get('action').value === 'sign'">
                 <mat-form-field>
                   <mat-select class="custom-select" formControlName="identity" name="identity" placeholder="Identity to use">
                     <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
@@ -103,16 +106,16 @@
                   <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
                     Please add at least one identity on the settings panel
                   </mat-error>
-                  <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
+                  <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderForm.get('identity').getError('voidIdentity')">
                     Identity required
                   </mat-error>
-                  <mat-error *ngIf="folderFormGroup.get('identity').getError('identityNotFound')">
+                  <mat-error *ngIf="folderForm.get('identity').getError('identityNotFound')">
                     Not found
                   </mat-error>
                 </mat-form-field>
               </div>
-              <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderParam.get('path').value)">Options</button>
-              <div *ngIf="openedOptionFolder === folderParam.get('path').value">
+              <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderForm.get('path').value)">Options</button>
+              <div *ngIf="openedOptionFolder === folderForm.get('path').value">
                 <div>
                   <mat-checkbox color="primary" name="private" formControlName="private">
                     Created proofs are not available for public search
@@ -133,11 +136,16 @@
                     Delete old proofs if files modified
                   </mat-checkbox>
                 </div>
-                <div *ngIf="folderParam.get('action').value === 'sign'">
+                <div *ngIf="folderForm.get('action').value === 'sign'">
                   <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
                     Do not check the SSL certificat of Woleet.ID server (only use in developpement)
                   </mat-checkbox>
                 </div>
+                <span class="align-end">
+                    <button mat-raised-button color="primary" [disabled]="folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
+                      Update configuration
+                    </button>
+                  </span>
               </div>
             </form>
           </mat-expansion-panel>

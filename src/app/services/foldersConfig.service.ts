@@ -32,24 +32,7 @@ export class FoldersConfigService {
     }
   }
 
-  public getFoldersPruned(): FolderParam[] {
-    const foldersRet: FolderParam[] = [];
-    this.folders.forEach(folderParam => {
-      if ( ( folderParam.path != null ) && ( folderParam.action === ( 'anchor' || 'sign' ) ) ) {
-        foldersRet.push(folderParam);
-      } else {
-        log.warn('Configuration of folder ' + folderParam.path + ' is invalid');
-      }
-    });
-    return foldersRet;
-  }
-
-  public addFolderFromInterface(folderDesc: FolderDesc) {
-    const newFolderParam = new FolderParam(folderDesc, this.identityService);
-    this.addFolderFromClass(newFolderParam);
-  }
-
-  public addFolderFromClass(folder: FolderParam) {
+  private addFolderFromClass(folder: FolderParam) {
     if (folder.action === 'anchor') {
       delete folder.identityName;
       delete folder.iDServerUnsecureSSL;
@@ -58,12 +41,39 @@ export class FoldersConfigService {
     this.saveFolders();
   }
 
-  public deleteFolder(folder: FolderParam) {
-    const index = this.folders.lastIndexOf(folder);
-    if (index === -1) {
+  public addFolderFromInterface(folderDesc: FolderDesc) {
+    const newFolderParam = new FolderParam(folderDesc, this.identityService);
+    this.addFolderFromClass(newFolderParam);
+  }
+
+  public deleteFolder(folder: FolderDesc) {
+    const indexesOfFound: number[] = [];
+    this.folders.forEach((elem, index) => {
+      if ((folder.path === elem.path) && (folder.action === elem.action)) {
+        indexesOfFound.push(index);
+      }
+    });
+    if (indexesOfFound.length !== 1) {
       throw new Error ('Unable to find the folder to delete');
     } else {
-      this.folders.splice(index, 1);
+      this.folders.splice(indexesOfFound[0], 1);
+      this.saveFolders();
+    }
+  }
+
+  public updateFolderOptions(folder: FolderDesc) {
+    const found = this.folders.filter(elem => ((folder.path === elem.path) && (folder.action === elem.action)));
+    if (found.length !== 1) {
+      throw new Error ('Unable to find the folder to update');
+    } else {
+      found[0].private = folder.privateparam;
+      found[0].strict = folder.strict;
+      found[0].prune = folder.prune;
+      found[0].recursive = folder.recursive;
+      if (found[0].action === 'sign') {
+        found[0].identityName = folder.identityName;
+        found[0].iDServerUnsecureSSL = folder.iDServerUnsecureSSL;
+      }
       this.saveFolders();
     }
   }
