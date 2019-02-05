@@ -54,7 +54,7 @@ export class FoldersConfigService {
       }
     });
     if (indexesOfFound.length !== 1) {
-      throw new Error ('Unable to find the folder to delete');
+      throw new Error('Unable to find the folder to delete');
     } else {
       this.folders.splice(indexesOfFound[0], 1);
       this.saveFolders();
@@ -64,7 +64,7 @@ export class FoldersConfigService {
   public updateFolderOptions(folder: FolderDesc) {
     const found = this.folders.filter(elem => ((folder.path === elem.path) && (folder.action === elem.action)));
     if (found.length !== 1) {
-      throw new Error ('Unable to find the folder to update');
+      throw new Error('Unable to find the folder to update');
     } else {
       found[0].private = folder.privateparam;
       found[0].strict = folder.strict;

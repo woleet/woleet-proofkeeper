@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { FoldersConfigService, FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
-import { FolderParam } from '../misc/folderParam';
 import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
@@ -57,7 +56,7 @@ export class FoldersComponent {
     });
   }
 
-  private getFolderDescFromFormGroup (form: FormGroup) {
+  private getFolderDescFromFormGroup(form: FormGroup) {
     const folderDesc: FolderDesc = {
       path: form.get('path').value as string,
       action: form.get('action').value as string,
@@ -90,6 +89,7 @@ export class FoldersComponent {
   onClickAdd() {
     const folderToAdd = this.getFolderDescFromFormGroup(this.folderFormGroup);
     this.folders.addFolderFromInterface(folderToAdd);
+    this.addState = false;
     this.openedOptionFolder = '';
     this.resetAddFolderFormGroup();
     this.fillFoldersFormGroup();

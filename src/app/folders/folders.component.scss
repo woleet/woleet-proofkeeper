@@ -18,34 +18,36 @@
   float: right;
 }
 
-.unclickable-button {
-  pointer-events: none;
-}
-
-.action-type {
-  @extend .unclickable-button;
-  padding: 0px;
-}
-
 .align-end{
   display: flex;
   justify-content: flex-end;
 }
 
-.folder-path {
-  margin-left: 20px;
-  margin-right: 70px;
-  width: 100%;
-  text-overflow: initial !important;
-  overflow: auto !important;
+.span-expansion-panel-header{
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  margin-right: 30px;
 }
 
-.remove-button {
-  justify-self: flex-end;
-  position: absolute;
-  right: 0%;
+.span-folder-name {
+  align-self: center;
 }
 
-.help-icon {
-  font-size: 20px;
+.span-status-icons {
+  display: flex;
+  align-items: center;
+}
+
+.status-icons{
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: unset;
+  height: 25px;
+  width: 25px;
+}
+
+.span-update-configuration{
+  display: flex;
+  justify-content: flex-end;
 }
