@@ -38,11 +38,11 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder('addFolderState')">Options</button>
-      <div *ngIf="openedOptionFolder === 'addFolderState'">
+      <mat-expansion-panel class="option-expansion-panel" >
+        <mat-expansion-panel-header>Options</mat-expansion-panel-header>
         <div>
           <mat-checkbox color="primary" name="private" formControlName="private">
-            Created proofs are not available for public search
+            Authorize validation without proof file
           </mat-checkbox>
         </div>
         <div>
@@ -65,7 +65,7 @@
             Do not check the SSL certificat of Woleet.ID server (only use in developpement)
           </mat-checkbox>
         </div>
-      </div>
+      </mat-expansion-panel>
       <span class="align-end">
         <button mat-raised-button color="primary" [disabled]="folderFormGroup.invalid" (click)="onClickAdd();">
           Add folder
@@ -76,17 +76,17 @@
     <br>
     <div class="watchedFolders">
       <mat-accordion>
-        <ng-container *ngFor="let folderForm of foldersFormGroup">
+        <ng-container *ngFor="let folderForm of foldersFormGroup; let i = index;">
           <mat-expansion-panel *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
             <mat-expansion-panel-header>
               <span class="span-expansion-panel-header">
                 <span class="span-folder-name">{{folderForm.get('path').value}}</span>
                 <span class=span-status-icons>
-                  <mat-chip-list>
+                  <!-- <mat-chip-list>
                     <mat-chip>ToFill</mat-chip>
-                  </mat-chip-list>
-                  <button mat-mini-fab class="status-icons" style="background-color: green"></button>
-                  <button mat-button color="warn" (click)="onClickDelete(folderForm);">
+                  </mat-chip-list> -->
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" [ngStyle]="(foldersStatusCode[i].exitCode === undefined) ? {'background-color': '#808080'} : (foldersStatusCode[i].exitCode === 0) ? {'background-color': '#08ad08'} : {'background-color': '#f44336'}"></button>
+                  <button mat-icon-button color="warn" (click)="$event.stopPropagation();onClickDelete(folderForm);">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </span>
@@ -114,11 +114,11 @@
               <!-- <span>
                 <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderForm.get('path').value)">Options</button>
               </span> -->
-              <mat-expansion-panel *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
+              <mat-expansion-panel class="option-expansion-panel" *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <mat-expansion-panel-header>Options</mat-expansion-panel-header>
                 <div>
                   <mat-checkbox color="primary" name="private" formControlName="private">
-                    Created proofs are not available for public search
+                    Authorize validation without proof file
                   </mat-checkbox>
                 </div>
                 <div>
@@ -141,44 +141,12 @@
                     Do not check the SSL certificat of Woleet.ID server (only use in developpement)
                   </mat-checkbox>
                 </div>
-                <span class="span-update-configuration">
-                  <button mat-raised-button color="primary" [disabled]="folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
-                    Update configuration
-                  </button>
-                </span>
               </mat-expansion-panel>
-              <!-- <div *ngIf="openedOptionFolder === folderForm.get('path').value">
-                  <div>
-                      <mat-checkbox color="primary" name="private" formControlName="private">
-                        Created proofs are not available for public search
-                      </mat-checkbox>
-                    </div>
-                    <div>
-                      <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-                        Includes files in subfolders of selected folder
-                      </mat-checkbox>
-                    </div>
-                    <div>
-                      <mat-checkbox color="primary" name="strict" formControlName="strict">
-                        Anchor again if files modified
-                      </mat-checkbox>
-                    </div>
-                    <div>
-                      <mat-checkbox color="primary" name="prune" formControlName="prune">
-                        Delete old proofs if files modified
-                      </mat-checkbox>
-                    </div>
-                    <div *ngIf="folderForm.get('action').value === 'sign'">
-                      <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-                        Do not check the SSL certificat of Woleet.ID server (only use in developpement)
-                      </mat-checkbox>
-                    </div>
-                    <span class="span-update-configuration">
-                      <button mat-raised-button color="primary" [disabled]="folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
-                        Update configuration
-                      </button>
-                    </span>
-              </div> -->
+              <span class="span-update-configuration">
+                <button mat-raised-button color="primary" [disabled]="folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
+                  Update configuration
+                </button>
+              </span>
             </form>
           </mat-expansion-panel>
         </ng-container>

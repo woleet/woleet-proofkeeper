@@ -5,6 +5,7 @@ import { IdentityService } from '../services/Identity.service';
 import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
+import { LogContext } from '../misc/logs';
 
 @Component({
   selector: 'app-folders',
@@ -17,13 +18,12 @@ export class FoldersComponent {
   public out: string;
   public folderFormGroup: FormGroup;
   public foldersFormGroup: FormGroup[];
+  public foldersStatusCode: LogContext[];
   public addState: boolean;
-  public openedOptionFolder: string;
 
   constructor(foldersConfigService: FoldersConfigService, private formBuilder: FormBuilder, public identityService: IdentityService) {
     this.addState = false;
     this.folders = foldersConfigService;
-    this.openedOptionFolder = '';
 
     this.folderFormGroup = formBuilder.group({
       action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
@@ -36,11 +36,11 @@ export class FoldersComponent {
       iDServerUnsecureSSL: [false],
     });
     this.fillFoldersFormGroup();
-    console.log(this.foldersFormGroup);
   }
 
   fillFoldersFormGroup() {
     this.foldersFormGroup = [];
+    this.foldersStatusCode = [];
     this.folders.folders.forEach(folderParam => {
       const tempfoldersFromGroup = this.formBuilder.group({
         action: [folderParam.action],
@@ -53,6 +53,7 @@ export class FoldersComponent {
         iDServerUnsecureSSL: [folderParam.iDServerUnsecureSSL],
       });
       this.foldersFormGroup.push(tempfoldersFromGroup);
+      this.foldersStatusCode.push(folderParam.logContext);
     });
   }
 
@@ -90,7 +91,6 @@ export class FoldersComponent {
     const folderToAdd = this.getFolderDescFromFormGroup(this.folderFormGroup);
     this.folders.addFolderFromInterface(folderToAdd);
     this.addState = false;
-    this.openedOptionFolder = '';
     this.resetAddFolderFormGroup();
     this.fillFoldersFormGroup();
   }
@@ -98,9 +98,6 @@ export class FoldersComponent {
   onClickDelete(folderForm: FormGroup) {
     try {
       this.folders.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
-      if (this.openedOptionFolder === folderForm.get('path').value) {
-        this.openedOptionFolder = '';
-      }
       this.fillFoldersFormGroup();
     } catch (error) {
       log.error(error);
@@ -111,7 +108,6 @@ export class FoldersComponent {
     try {
       const folderToUpdate = this.getFolderDescFromFormGroup(formGroup);
       this.folders.updateFolderOptions(folderToUpdate);
-      this.openedOptionFolder = '';
       this.fillFoldersFormGroup();
     } catch (error) {
       log.error(error);
@@ -136,15 +132,11 @@ export class FoldersComponent {
     }
     this.folderFormGroup.get('path').updateValueAndValidity();
     this.folderFormGroup.get('identity').updateValueAndValidity();
-    if (this.openedOptionFolder !== 'addFolderState') {
-      this.openedOptionFolder = '';
-    }
   }
 
   onAddFolderClick() {
     if (this.addState) {
       this.addState = false;
-      this.openedOptionFolder = '';
       this.resetAddFolderFormGroup();
       this.fillFoldersFormGroup();
     } else {
@@ -154,7 +146,6 @@ export class FoldersComponent {
 
   onCancelAddClick() {
     this.addState = false;
-    this.openedOptionFolder = '';
     this.resetAddFolderFormGroup();
   }
 
@@ -164,14 +155,6 @@ export class FoldersComponent {
       path: '',
       private: true,
     });
-  }
-
-  onClickOpenedOptionFolder(folder: string) {
-    if (folder === this.openedOptionFolder) {
-      this.openedOptionFolder = '';
-    } else {
-      this.openedOptionFolder = folder;
-    }
   }
 }
 
