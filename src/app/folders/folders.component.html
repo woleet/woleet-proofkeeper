@@ -4,9 +4,9 @@
       <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
     </button>
     <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
-      <mat-tab label="Anchor">
+      <mat-tab label="Timestamped folders">
       </mat-tab>
-      <mat-tab label="Signature">
+      <mat-tab label="Signed folders">
       </mat-tab>
     </mat-tab-group>
     <form [formGroup]="folderFormGroup" *ngIf="addState">
@@ -42,22 +42,22 @@
         <mat-expansion-panel-header>Options</mat-expansion-panel-header>
         <div>
           <mat-checkbox color="primary" name="private" formControlName="private">
-            Authorize validation without proof file
+            Create public proofs (the proof receipt is not required to verify the proof)
           </mat-checkbox>
         </div>
         <div>
           <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-            Includes files in subfolders of selected folder
+            Includes files from the subfolders of the selected folder
           </mat-checkbox>
         </div>
         <div>
           <mat-checkbox color="primary" name="strict" formControlName="strict">
-            Anchor again if files modified
+            Create a new proof when a file is modified
           </mat-checkbox>
         </div>
         <div>
           <mat-checkbox color="primary" name="prune" formControlName="prune">
-            Delete old proofs if files modified
+            Delete the deprecated proof when a file is modified
           </mat-checkbox>
         </div>
         <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
