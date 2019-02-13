@@ -10,6 +10,7 @@ import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { remote } from 'electron';
+import * as log from 'loglevel';
 
 @Component({
   selector: 'app-settings',
@@ -138,6 +139,13 @@ export class SettingsComponent {
       this.snackBar);
   }
 
+  onClickDeletewIDConnection(identityName: string) {
+    log.info('test');
+    this.identityService.deleteIdentitySnackbar(identityName, this.foldersConfigService, this.snackBar);
+    if (this.identityService.arrayIdentityContent.length === 0) {
+      this.addState = true;
+    }
+}
 
   async onClickEditwIDConnection() {
     await checkwIDConnection(this.editIdentityFormGroup.get('url').value,

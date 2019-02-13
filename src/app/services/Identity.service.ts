@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
 import { FoldersConfigService } from './foldersConfig.service';
-import * as Store from 'electron-store';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as Store from 'electron-store';
 
 export interface IdentityContent {
   name: string;
