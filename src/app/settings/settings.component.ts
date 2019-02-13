@@ -140,7 +140,6 @@ export class SettingsComponent {
   }
 
   onClickDeletewIDConnection(identityName: string) {
-    log.info('test');
     this.identityService.deleteIdentitySnackbar(identityName, this.foldersConfigService, this.snackBar);
     if (this.identityService.arrayIdentityContent.length === 0) {
       this.addState = true;

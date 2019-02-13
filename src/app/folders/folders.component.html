@@ -153,7 +153,7 @@
                 </div>
               </div>
               <span class="span-update-configuration">
-                <button mat-raised-button color="primary" [disabled]="folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
+                <button mat-raised-button color="primary" [disabled]="folderForm.pristine || folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
                   Update configuration
                 </button>
               </span>
