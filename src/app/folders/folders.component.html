@@ -38,8 +38,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <mat-expansion-panel class="option-expansion-panel" >
-        <mat-expansion-panel-header>Options</mat-expansion-panel-header>
+      <div>
         <div>
           <mat-checkbox color="primary" name="private" formControlName="private">
             Authorize validation without proof file
@@ -65,9 +64,10 @@
             Do not check the SSL certificat of Woleet.ID server (only use in developpement)
           </mat-checkbox>
         </div>
-      </mat-expansion-panel>
+      </div>
       <span class="align-end">
-        <button mat-raised-button color="primary" [disabled]="folderFormGroup.invalid" (click)="onClickAdd();">
+        <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
+          (click)="onClickAdd();">
           Add folder
         </button>
         <button mat-raised-button color="warn" (click)="onCancelAddClick();">Cancel</button>
@@ -86,17 +86,17 @@
                     <mat-chip>ToFill</mat-chip>
                   </mat-chip-list> -->
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode === undefined"
-                  style="background-color: #808080" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                  matTooltip="Not yet started"></button>
+                    style="background-color: #808080" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Not yet started"></button>
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode === 0"
-                  style="background-color: #08ad08" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                  matTooltip="Execution successfull"></button>
+                    style="background-color: #08ad08" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Execution successfull"></button>
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode > 0"
-                  style="background-color: #f44336" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                  matTooltip="Failure"></button>
+                    style="background-color: #f44336" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Failure"></button>
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode < 0"
-                  style="background-color: #ff7b00" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                  matTooltip="Work in progress"></button>
+                    style="background-color: #ff7b00" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Work in progress"></button>
                   <button mat-icon-button color="warn" (click)="$event.stopPropagation();onClickDelete(folderForm);">
                     <mat-icon>delete</mat-icon>
                   </button>
@@ -123,10 +123,9 @@
                 </mat-form-field>
               </div>
               <!-- <span>
-                <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderForm.get('path').value)">Options</button>
-              </span> -->
-              <mat-expansion-panel class="option-expansion-panel" *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
-                <mat-expansion-panel-header>Options</mat-expansion-panel-header>
+                  <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderForm.get('path').value)">Options</button>
+                </span> -->
+              <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
                   <mat-checkbox color="primary" name="private" formControlName="private">
                     Authorize validation without proof file
@@ -152,7 +151,7 @@
                     Do not check the SSL certificat of Woleet.ID server (only use in developpement)
                   </mat-checkbox>
                 </div>
-              </mat-expansion-panel>
+              </div>
               <span class="span-update-configuration">
                 <button mat-raised-button color="primary" [disabled]="folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
                   Update configuration
