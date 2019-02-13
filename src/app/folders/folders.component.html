@@ -4,7 +4,7 @@
       <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
     </button>
     <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
-      <mat-tab label="Anchor">
+      <mat-tab label="Timestamping">
       </mat-tab>
       <mat-tab label="Signature">
       </mat-tab>
@@ -41,7 +41,7 @@
       <div>
         <div>
           <mat-checkbox color="primary" name="private" formControlName="private">
-            Authorize validation without proof file
+            Make the proof publicly visible
           </mat-checkbox>
         </div>
         <div>
@@ -51,12 +51,12 @@
         </div>
         <div>
           <mat-checkbox color="primary" name="strict" formControlName="strict">
-            Anchor again if files modified
+            Timestamp again if the files are modified
           </mat-checkbox>
         </div>
         <div>
           <mat-checkbox color="primary" name="prune" formControlName="prune">
-            Delete old proofs if files modified
+            Delete old proofs if the files are modified
           </mat-checkbox>
         </div>
         <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
@@ -128,7 +128,7 @@
               <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
                   <mat-checkbox color="primary" name="private" formControlName="private">
-                    Authorize validation without proof file
+                    Make the proof publicly visible
                   </mat-checkbox>
                 </div>
                 <div>
@@ -138,12 +138,12 @@
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="strict" formControlName="strict">
-                    Anchor again if files modified
+                    Timestamp again if the files are modified
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="prune" formControlName="prune">
-                    Delete old proofs if files modified
+                    Delete old proofs if the files are modified
                   </mat-checkbox>
                 </div>
                 <div *ngIf="folderForm.get('action').value === 'sign'">
