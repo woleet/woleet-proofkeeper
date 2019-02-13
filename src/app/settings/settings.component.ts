@@ -10,7 +10,6 @@ import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { remote } from 'electron';
-import * as log from 'loglevel';
 
 @Component({
   selector: 'app-settings',

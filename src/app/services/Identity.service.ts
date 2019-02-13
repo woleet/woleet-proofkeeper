@@ -88,7 +88,7 @@ export class IdentityService {
 
     public deleteIdentitySnackbar (identityName: string, foldersConfigService: FoldersConfigService, snackBar: MatSnackBar) {
       if (foldersConfigService.folders.some(elem => elem.identityName === identityName)) {
-        snackBar.open('Unable to delete the identity, still in use by one of your folder\' s configuration',
+        snackBar.open('Unable to delete the identity: It is still used by one of your folder\'s configuration',
         undefined,
         {duration: 5000});
       } else {
