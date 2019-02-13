@@ -1,6 +1,6 @@
 <div>
   <mat-card class="full-size-card">
-    <button mat-fab color="primary" class="folder-add-button" (click)="onAddFolderClick();">
+    <button mat-fab color="primary" class="folder-add-button" [disabled]="addState" (click)="onAddFolderClick();">
       <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
     </button>
     <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
@@ -85,7 +85,18 @@
                   <!-- <mat-chip-list>
                     <mat-chip>ToFill</mat-chip>
                   </mat-chip-list> -->
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" [ngStyle]="(foldersStatusCode[i].exitCode === undefined) ? {'background-color': '#808080'} : (foldersStatusCode[i].exitCode === 0) ? {'background-color': '#08ad08'} : {'background-color': '#f44336'}"></button>
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode === undefined"
+                  style="background-color: #808080" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                  matTooltip="Not yet started"></button>
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode === 0"
+                  style="background-color: #08ad08" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                  matTooltip="Execution successfull"></button>
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode > 0"
+                  style="background-color: #f44336" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                  matTooltip="Failure"></button>
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode < 0"
+                  style="background-color: #ff7b00" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                  matTooltip="Work in progress"></button>
                   <button mat-icon-button color="warn" (click)="$event.stopPropagation();onClickDelete(folderForm);">
                     <mat-icon>delete</mat-icon>
                   </button>

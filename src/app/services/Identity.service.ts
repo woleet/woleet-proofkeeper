@@ -100,4 +100,3 @@ export class IdentityService {
       this.store.set('arrayIdentityContent', this.arrayIdentityContent);
     }
   }
-

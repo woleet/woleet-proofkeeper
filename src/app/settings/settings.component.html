@@ -14,7 +14,7 @@
   </form>
 </mat-card>
 
-<button mat-fab color="primary" class="identity-add-button identity-button" (click)="onAddIdentityClick();">
+<button mat-fab color="primary" class="identity-add-button identity-button" [disabled]="addState" (click)="onAddIdentityClick();">
   <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
 </button>
 

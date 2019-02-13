@@ -67,7 +67,7 @@ export class AppComponent {
         folder.logContext.logsAccumulator = '';
       }
       folder.logContext.logs = [];
-      folder.logContext.exitCode = null;
+      folder.logContext.exitCode = -1;
       folder.logContext.launched = true;
       const newExecutionCalled = [false]; // Used to pass boolean as reference
       const exec = this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
