@@ -64,7 +64,8 @@
     <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
       <button mat-button class='identity-name identity-button'
               (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
-      <button mat-raised-button color="warn" class="remove-button identity-button" (click)="onClickDeletewIDConnection(identityContent.name);">
+      <button mat-raised-button color="warn" class="remove-button identity-button" (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);"
+        matTooltip="Delete identity" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -100,7 +101,8 @@
               [disabled]="editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0"
               (click)="saveEditForm();">Save
       </button>
-      <button mat-raised-button color="warn" class="remove-button identity-button" (click)="onClickDeletewIDConnection(identityContent.name);">
+      <button mat-raised-button color="warn"  class="remove-button identity-button" (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);"
+        matTooltip="Delete identity" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
         <mat-icon>delete</mat-icon>
       </button>
       <button mat-raised-button class="identity-button" (click)="closeEditForm();">Cancel</button>
@@ -109,5 +111,5 @@
 </mat-card>
 
 <div class="clear-button">
-  <button mat-raised-button color="warn" (click)="clearSavedSettings();">Reset saved folders and configuration</button>
+  <button mat-raised-button color="warn" (click)="openClearSaveSettingsConfirmDialog();">Reset saved folders and configuration</button>
 </div>

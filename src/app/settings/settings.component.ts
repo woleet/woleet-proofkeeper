@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog'
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator,
          noDuplicateIdentityNameValidatorFactoryOnAdd,
@@ -9,6 +10,7 @@ import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
 import { remote } from 'electron';
 
 @Component({
@@ -29,7 +31,8 @@ export class SettingsComponent {
     private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     public identityService: IdentityService,
-    public foldersConfigService: FoldersConfigService) {
+    public foldersConfigService: FoldersConfigService,
+    private dialog: MatDialog) {
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
@@ -63,9 +66,16 @@ export class SettingsComponent {
     checkAndSubmit(this.settingsFromGroup, this.cli, this.snackBar);
   }
 
-  clearSavedSettings() {
-    this.cli.store.clear();
-    remote.getCurrentWebContents().reload();
+  openClearSaveSettingsConfirmDialog() {
+    let dialogRef = this.dialog.open(ConfirmationDialog);
+    dialogRef.componentInstance.confirmationTitle = 'Reset config';
+    dialogRef.componentInstance.confirmationText = 'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.';
+    dialogRef.afterClosed().subscribe(confirmDelete => {
+      if(confirmDelete === true) {
+        this.cli.store.clear();
+        remote.getCurrentWebContents().reload();
+      }
+    });
   }
 
   addNewIdentityFromGroup() {
@@ -138,12 +148,19 @@ export class SettingsComponent {
       this.snackBar);
   }
 
-  onClickDeletewIDConnection(identityName: string) {
-    this.identityService.deleteIdentitySnackbar(identityName, this.foldersConfigService, this.snackBar);
-    if (this.identityService.arrayIdentityContent.length === 0) {
-      this.addState = true;
-    }
-}
+  openConfirmDeleteWIDConnectionDialog(identityName: string) {
+    let dialogRef = this.dialog.open(ConfirmationDialog);
+    dialogRef.componentInstance.confirmationTitle = 'Delete identity';
+    dialogRef.componentInstance.confirmationText = 'Are you sure you want to delete this identity?';
+    dialogRef.afterClosed().subscribe(confirmDelete => {
+      if(confirmDelete === true) {
+        this.identityService.deleteIdentitySnackbar(identityName, this.foldersConfigService, this.snackBar);
+        if (this.identityService.arrayIdentityContent.length === 0) {
+          this.addState = true;
+        }
+      }
+    });
+  }
 
   async onClickEditwIDConnection() {
     await checkwIDConnection(this.editIdentityFormGroup.get('url').value,

@@ -6,6 +6,8 @@ import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
 import { LogContext } from '../misc/logs';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
 
 @Component({
   selector: 'app-folders',
@@ -21,7 +23,12 @@ export class FoldersComponent {
   public foldersStatusCode: LogContext[];
   public addState: boolean;
 
-  constructor(foldersConfigService: FoldersConfigService, private formBuilder: FormBuilder, public identityService: IdentityService) {
+  constructor(
+    foldersConfigService: FoldersConfigService,
+    private formBuilder: FormBuilder,
+    public identityService: IdentityService,
+    private dialog: MatDialog) {
+
     this.addState = false;
     this.folders = foldersConfigService;
 
@@ -36,6 +43,22 @@ export class FoldersComponent {
       iDServerUnsecureSSL: [false],
     });
     this.fillFoldersFormGroup();
+  }
+
+  openConfirmDeleteDialog(folderForm: FormGroup) {
+    let dialogRef = this.dialog.open(ConfirmationDialog);
+    dialogRef.componentInstance.confirmationTitle = 'Remove folder';
+    dialogRef.componentInstance.confirmationText = 'Are you sure you want to remove this folder from ProofKeeper? Proofs won\'t be deleted and will have to be deleted manually.';
+    dialogRef.afterClosed().subscribe(confirmDelete => {
+      if(confirmDelete === true) {
+        try {
+          this.folders.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
+          this.fillFoldersFormGroup();
+        } catch (error) {
+          log.error(error);
+        }
+      }
+    });
   }
 
   fillFoldersFormGroup() {
@@ -93,15 +116,6 @@ export class FoldersComponent {
     this.addState = false;
     this.resetAddFolderFormGroup();
     this.fillFoldersFormGroup();
-  }
-
-  onClickDelete(folderForm: FormGroup) {
-    try {
-      this.folders.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
-      this.fillFoldersFormGroup();
-    } catch (error) {
-      log.error(error);
-    }
   }
 
   onClickUpdateFolderOptions(formGroup: FormGroup) {

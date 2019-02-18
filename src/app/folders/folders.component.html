@@ -96,8 +96,8 @@
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode < 0"
                     style="background-color: #ff7b00" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
                     matTooltip="Work in progress"></button>
-                  <button mat-icon-button color="warn" (click)="$event.stopPropagation();onClickDelete(folderForm);">
-                    <mat-icon>delete</mat-icon>
+                  <button mat-icon-button color="warn" (click)="$event.stopPropagation();openConfirmDeleteDialog(folderForm);">
+                    <mat-icon matTooltip="Delete folder" matTooltipPosition="above" [matTooltipClass]="'tooltip'" >delete</mat-icon>
                   </button>
                 </span>
               </span>

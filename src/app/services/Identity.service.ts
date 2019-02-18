@@ -85,7 +85,7 @@ export class IdentityService {
         throw new Error (`Identity named ${identityName} not found for deletion`);
       }
     }
-
+    
     public deleteIdentitySnackbar (identityName: string, foldersConfigService: FoldersConfigService, snackBar: MatSnackBar) {
       if (foldersConfigService.folders.some(elem => elem.identityName === identityName)) {
         snackBar.open('Unable to delete the identity: It is still used by one of your folder\'s configuration',

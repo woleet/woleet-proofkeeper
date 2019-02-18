@@ -24,6 +24,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ConfirmationDialog } from './dialogs/confirmationDialog.component';
 import { StoreService } from './services/store.service';
 import { FoldersConfigService } from './services/foldersConfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
@@ -37,7 +38,8 @@ import { LogsComponent } from './logs/logs.component';
     FoldersComponent,
     SettingsComponent,
     WizardComponent,
-    LogsComponent
+    LogsComponent,
+    ConfirmationDialog
   ],
   imports: [
     FormsModule,
@@ -73,7 +75,8 @@ import { LogsComponent } from './logs/logs.component';
     AppComponent
   ],
   entryComponents: [
-    WizardComponent
+    WizardComponent,
+    ConfirmationDialog
   ]
 })
 export class AppModule { }
