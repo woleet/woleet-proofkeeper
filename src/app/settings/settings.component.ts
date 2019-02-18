@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog'
+import { MatDialog } from '@angular/material/dialog'
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator,
          noDuplicateIdentityNameValidatorFactoryOnAdd,

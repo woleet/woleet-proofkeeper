@@ -6,7 +6,7 @@ import { remote } from 'electron';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
 import { LogContext } from '../misc/logs';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
 
 @Component({
