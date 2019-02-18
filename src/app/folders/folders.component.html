@@ -38,32 +38,31 @@
           </mat-error>
         </mat-form-field>
       </div>
+      <br>
       <div>
-        <div>
-          <mat-checkbox color="primary" name="private" formControlName="private">
-            Make the proof publicly visible
-          </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-            Includes files in subfolders of selected folder
-          </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox color="primary" name="strict" formControlName="strict">
-            Timestamp again if the files are modified
-          </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox color="primary" name="prune" formControlName="prune">
-            Delete old proofs if the files are modified
-          </mat-checkbox>
-        </div>
-        <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
-          <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-            Do not check the SSL certificat of Woleet.ID server (only use in developpement)
-          </mat-checkbox>
-        </div>
+        <mat-checkbox color="primary" name="private" formControlName="private">
+          Make the proofs publicly visible
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox color="primary" name="recursive" formControlName="recursive">
+          Include subfolders
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox color="primary" name="strict" formControlName="strict">
+          Timestamp again if the files are modified
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox color="primary" name="prune" formControlName="prune">
+          Delete old proofs if the files are modified
+        </mat-checkbox>
+      </div>
+      <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
+        <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
+          Do not check the SSL certificate of Woleet.ID server (only use in developpement)
+        </mat-checkbox>
       </div>
       <span class="align-end">
         <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
@@ -128,12 +127,12 @@
               <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
                   <mat-checkbox color="primary" name="private" formControlName="private">
-                    Make the proof publicly visible
+                    Make the proofs publicly visible
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-                    Includes files in subfolders of selected folder
+                    Include subfolders
                   </mat-checkbox>
                 </div>
                 <div>
@@ -148,7 +147,7 @@
                 </div>
                 <div *ngIf="folderForm.get('action').value === 'sign'">
                   <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-                    Do not check the SSL certificat of Woleet.ID server (only use in developpement)
+                    Do not check the SSL certificate of Woleet.ID server (only use in developpement)
                   </mat-checkbox>
                 </div>
               </div>
