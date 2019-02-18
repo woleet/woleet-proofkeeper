@@ -148,13 +148,17 @@ export class SettingsComponent {
       this.snackBar);
   }
 
+  isIdentityInUse(identityName: string) {
+    return this.foldersConfigService.folders.some(elem => elem.identityName === identityName)
+  }
+
   openConfirmDeleteWIDConnectionDialog(identityName: string) {
     let dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.componentInstance.confirmationTitle = 'Delete identity';
     dialogRef.componentInstance.confirmationText = 'Are you sure you want to delete this identity?';
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if(confirmDelete === true) {
-        this.identityService.deleteIdentitySnackbar(identityName, this.foldersConfigService, this.snackBar);
+        this.identityService.deleteIdentity(identityName);
         if (this.identityService.arrayIdentityContent.length === 0) {
           this.addState = true;
         }

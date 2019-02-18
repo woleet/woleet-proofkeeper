@@ -28,12 +28,13 @@
 
 .identity-button{
   margin: 4px;
+  margin-top: 8px;
 }
 
 .remove-button {
   justify-self: flex-end;
   position: absolute;
-  right: 10px;
+  right: 16px;
 }
 
 .identity-spacer {
@@ -42,4 +43,8 @@
 
 .identity-name {
   background-color: rgba(0, 0, 0, 0.02);
+}
+
+.fill-space {
+  flex: 1 1 auto;
 }

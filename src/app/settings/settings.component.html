@@ -64,10 +64,13 @@
     <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
       <button mat-button class='identity-name identity-button'
               (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
-      <button mat-raised-button color="warn" class="remove-button identity-button" (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);"
-        matTooltip="Delete identity" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <span class="remove-button identity-button" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+        [matTooltip]="isIdentityInUse(identityContent.name) ? 'This identity is still in use in one of your folder\'s configuration' : 'Delete identity'" >
+        <button mat-raised-button color="warn" [disabled]="isIdentityInUse(identityContent.name)"
+          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </span>
     </div>
     <div class="identity-spacer" *ngIf="identityOpened === identityContent.name">
       <form [formGroup]="editIdentityFormGroup">
@@ -80,7 +83,7 @@
         <mat-form-field class="full-width">
           <input matInput placeholder="Woleet.ID Server API Token" formControlName="token" (ngModelChange)="onEditURLTokenChanges();">
         </mat-form-field>
-        <button mat-raised-button color="primary" class="full-width identity-button"
+        <button mat-raised-button color="primary" class="full-width"
                 *ngIf="editPubKeyAddressGroup.length === 0" (click)="onClickEditwIDConnection();">
           Select a key from Woleet.ID Server
         </button>
@@ -101,11 +104,14 @@
               [disabled]="editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0"
               (click)="saveEditForm();">Save
       </button>
-      <button mat-raised-button color="warn"  class="remove-button identity-button" (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);"
-        matTooltip="Delete identity" matTooltipPosition="above" [matTooltipClass]="'tooltip'">
-        <mat-icon>delete</mat-icon>
-      </button>
       <button mat-raised-button class="identity-button" (click)="closeEditForm();">Cancel</button>
+      <span class="remove-button identity-button" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+        [matTooltip]="isIdentityInUse(identityContent.name) ? 'This identity is still in use in one of your folder\'s configuration' : 'Delete identity'" >
+        <button [disabled]="isIdentityInUse(identityContent.name)"
+          mat-raised-button color="warn" (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </span>
     </div>
   </mat-list-item>
 </mat-card>

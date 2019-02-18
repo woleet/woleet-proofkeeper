@@ -77,7 +77,7 @@ export class IdentityService {
     }
   }
 
-    private deleteIdentity(identityName: string) {
+    public deleteIdentity(identityName: string) {
       if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
         this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
         this.saveIdentities();
@@ -86,16 +86,6 @@ export class IdentityService {
       }
     }
     
-    public deleteIdentitySnackbar (identityName: string, foldersConfigService: FoldersConfigService, snackBar: MatSnackBar) {
-      if (foldersConfigService.folders.some(elem => elem.identityName === identityName)) {
-        snackBar.open('Unable to delete the identity: It is still used by one of your folder\'s configuration',
-        undefined,
-        {duration: 5000});
-      } else {
-        this.deleteIdentity(identityName);
-      }
-    }
-
     private saveIdentities() {
       this.store.set('arrayIdentityContent', this.arrayIdentityContent);
     }
