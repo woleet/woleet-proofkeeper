@@ -16,23 +16,18 @@ export async function checkAndSubmit(formGroup: FormGroup,
     }
     try {
       const creditsJSON = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value);
-      try {
-        const creditsObject = JSON.parse(<string>creditsJSON);
-        if (creditsObject.credits === undefined)  { // TODO: check credits value
-          openSnackBarError(snackBar);
-          return;
-        }
-        if (apiURL === `https://api.woleet.io/v1`) {
-        cliService.setWoleetCliParameters(formGroup.get('token').value);
-      } else {
-        cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
+      const creditsObject = JSON.parse(<string>creditsJSON);
+      if (creditsObject.credits === undefined)  { // TODO: check credits value
+        openSnackBarError(snackBar);
+        return;
       }
-      if (screenPage) {
-        screenPage[0] = screenPage[0] + 1;
-      }
-    } catch (e) {
-      openSnackBarError(snackBar);
-      return;
+      if (apiURL === `https://api.woleet.io/v1`) {
+      cliService.setWoleetCliParameters(formGroup.get('token').value);
+    } else {
+      cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);
+    }
+    if (screenPage) {
+      screenPage[0] = screenPage[0] + 1;
     }
   } catch (e) {
     openSnackBarError(snackBar);
@@ -47,38 +42,23 @@ export async function checkwIDConnection(url: string,
     while (pubKeyAddressGroup.length) {
       pubKeyAddressGroup.pop();
     }
+    
     try {
       const usersJSON = await requestGet(`${url}/discover/users?search=%`, token);
       if (usersJSON) {
-        try {
-          const usersObject = JSON.parse(<string>usersJSON);
-          for (const user of usersObject) {
-            const currentPubKeyAddressGroup: PubKeyAddressGroup = {user: `${user.identity.commonName}`, pubKeyAddress: []};
-            pubKeyAddressGroup.push(currentPubKeyAddressGroup);
-            const currentUserKeysJSON = await requestGet(`${url}/discover/keys/${user.id}`, token);
-            try {
-              const currentUserKeysObject = JSON.parse(<string>currentUserKeysJSON);
-              for (const key of currentUserKeysObject) {
-                if (key.id === user.defaultKeyId) {
-                  currentPubKeyAddressGroup.pubKeyAddress.unshift({key: `${key.name}`, address: `${key.pubKey}`});
-                } else {
-                  currentPubKeyAddressGroup.pubKeyAddress.push({key: `${key.name}`, address: `${key.pubKey}`});
-                }
-              }
-            } catch (e) {
-              openSnackBarErrowID(snackBar);
-              while (pubKeyAddressGroup.length) {
-                pubKeyAddressGroup.pop();
-              }
-              return;
+        const usersObject = JSON.parse(<string>usersJSON);
+        for (const user of usersObject) {
+          const currentPubKeyAddressGroup: PubKeyAddressGroup = {user: `${user.identity.commonName}`, pubKeyAddress: []};
+          pubKeyAddressGroup.push(currentPubKeyAddressGroup);
+          const currentUserKeysJSON = await requestGet(`${url}/discover/keys/${user.id}`, token);
+          const currentUserKeysObject = JSON.parse(<string>currentUserKeysJSON);
+          for (const key of currentUserKeysObject) {
+            if (key.id === user.defaultKeyId) {
+              currentPubKeyAddressGroup.pubKeyAddress.unshift({key: `${key.name}`, address: `${key.pubKey}`});
+            } else {
+              currentPubKeyAddressGroup.pubKeyAddress.push({key: `${key.name}`, address: `${key.pubKey}`});
             }
           }
-        } catch (e) {
-          openSnackBarErrowID(snackBar);
-          while (pubKeyAddressGroup.length) {
-            pubKeyAddressGroup.pop();
-          }
-          return;
         }
       }
     } catch (e) {
@@ -92,7 +72,7 @@ export async function checkwIDConnection(url: string,
 
   export async function checkPubKey (url: string, token: string, pubKey: string) {
     try {
-      const userJSON = await requestGet(`${url}/discover/user/${pubKey}`, token);
+      await requestGet(`${url}/discover/user/${pubKey}`, token);
       return true;
     } catch (e) {
       log.error(e);
@@ -137,6 +117,3 @@ export async function checkwIDConnection(url: string,
       req.send(null);
     });
   }
-
-
-
