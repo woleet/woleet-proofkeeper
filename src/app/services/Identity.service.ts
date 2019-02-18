@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
 import { FoldersConfigService } from './foldersConfig.service';
-import * as Store from 'electron-store';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as Store from 'electron-store';
 
 export interface IdentityContent {
   name: string;
@@ -88,7 +88,7 @@ export class IdentityService {
 
     public deleteIdentitySnackbar (identityName: string, foldersConfigService: FoldersConfigService, snackBar: MatSnackBar) {
       if (foldersConfigService.folders.some(elem => elem.identityName === identityName)) {
-        snackBar.open('Unable to delete the identity, still in use by one of your folder\' s configuration',
+        snackBar.open('Unable to delete the identity: It is still used by one of your folder\'s configuration',
         undefined,
         {duration: 5000});
       } else {
@@ -100,4 +100,3 @@ export class IdentityService {
       this.store.set('arrayIdentityContent', this.arrayIdentityContent);
     }
   }
-

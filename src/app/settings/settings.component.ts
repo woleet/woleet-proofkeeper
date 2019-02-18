@@ -138,6 +138,12 @@ export class SettingsComponent {
       this.snackBar);
   }
 
+  onClickDeletewIDConnection(identityName: string) {
+    this.identityService.deleteIdentitySnackbar(identityName, this.foldersConfigService, this.snackBar);
+    if (this.identityService.arrayIdentityContent.length === 0) {
+      this.addState = true;
+    }
+}
 
   async onClickEditwIDConnection() {
     await checkwIDConnection(this.editIdentityFormGroup.get('url').value,

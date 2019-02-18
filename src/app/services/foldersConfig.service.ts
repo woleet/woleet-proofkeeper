@@ -47,35 +47,30 @@ export class FoldersConfigService {
   }
 
   public deleteFolder(folder: FolderDesc) {
-    const indexesOfFound: number[] = [];
-    this.folders.forEach((elem, index) => {
-      if ((folder.path === elem.path) && (folder.action === elem.action)) {
-        indexesOfFound.push(index);
-      }
-    });
-    if (indexesOfFound.length !== 1) {
+    const index = this.folders.findIndex(f => {return ((folder.path === f.path) && (folder.action === f.action))});
+
+    if (index === -1) 
       throw new Error('Unable to find the folder to delete');
-    } else {
-      this.folders.splice(indexesOfFound[0], 1);
-      this.saveFolders();
-    }
+
+    this.folders.splice(index, 1);
+    this.saveFolders();
   }
 
   public updateFolderOptions(folder: FolderDesc) {
-    const found = this.folders.filter(elem => ((folder.path === elem.path) && (folder.action === elem.action)));
-    if (found.length !== 1) {
+    const found = this.folders.find(elem => ((folder.path === elem.path) && (folder.action === elem.action)));
+    
+    if (!found)
       throw new Error('Unable to find the folder to update');
-    } else {
-      found[0].private = folder.privateparam;
-      found[0].strict = folder.strict;
-      found[0].prune = folder.prune;
-      found[0].recursive = folder.recursive;
-      if (found[0].action === 'sign') {
-        found[0].identityName = folder.identityName;
-        found[0].iDServerUnsecureSSL = folder.iDServerUnsecureSSL;
-      }
-      this.saveFolders();
+
+    found.private = folder.privateparam;
+    found.strict = folder.strict;
+    found.prune = folder.prune;
+    found.recursive = folder.recursive;
+    if (found.action === 'sign') {
+      found.identityName = folder.identityName;
+      found.iDServerUnsecureSSL = folder.iDServerUnsecureSSL;
     }
+    this.saveFolders();
   }
 
   public saveFolders() {
