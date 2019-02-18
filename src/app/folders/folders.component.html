@@ -41,7 +41,6 @@
       </div>
       <br>
       <div>
-<<<<<<< HEAD
         <mat-checkbox color="primary" name="private" formControlName="private">
           Make the proofs publicly visible
         </mat-checkbox>
@@ -65,33 +64,6 @@
         <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
           Do not check the SSL certificate of Woleet.ID server (only use in developpement)
         </mat-checkbox>
-=======
-        <div>
-          <mat-checkbox color="primary" name="private" formControlName="private">
-            Create public proofs (the proof receipt is not required to verify the proof)
-          </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-            Includes files from the subfolders of the selected folder
-          </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox color="primary" name="strict" formControlName="strict">
-            Create a new proof when a file is modified
-          </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox color="primary" name="prune" formControlName="prune">
-            Delete the deprecated proof when a file is modified
-          </mat-checkbox>
-        </div>
-        <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
-          <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-            Do not check the SSL certificat of Woleet.ID server (only use in developpement)
-          </mat-checkbox>
-        </div>
->>>>>>> master
       </div>
       <span class="align-end">
         <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
