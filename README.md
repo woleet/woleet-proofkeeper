@@ -1,5 +1,32 @@
 # ProofKeeper
 
+## Functionnalities
+
+ProofKeeper is Woleet's proof management tool for your desktop. Using this native application, you can automate the timestamping and signature of your sensitive files.
+
+### General usage
+
+The tool scans a folder recursively and anchors or sign all files found. It also gathers proof receipts and stores them beside anchored or signed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
+
+Since anchoring is not a realtime operation, the tool rescan the configured folders every 15 minutes
+
+To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence for all files in a given directory.
+
+Note: tags are added to the anchors according to the name of sub-folders
+
+### Limitations
+
+* All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
+* Symlinks are not followed
+* Scanned sub-folders cannot have a space in their name
+* The maximum length of the subfolder path (without delimiters) is 128 characters
+
+## Installation
+
+The latest installers can be found [here](https://github.com/woleet/woleet-proofkeeper/releases)
+
+Just download it, decompress it and execute it (add execution permissions if necessary)
+
 ## Developpement
 
 To be able to develop on this app, you need to install node dependencies (Node.js 8 is required):
@@ -8,11 +35,11 @@ To be able to develop on this app, you need to install node dependencies (Node.j
 npm install
 ```
 
-Then download binaries of woleet-cli (actual version 0.1.2) and start the app:
+Then download binaries of woleet-cli (actual version 0.2.0) and start the app:
 
 ``` bash
 # Download binaries
-./getBins.sh 0.1.3
+./getBins.sh 0.2.0
 
 # Start the app
 npm start
