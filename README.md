@@ -10,7 +10,7 @@ The tool scans a folder recursively and anchors or sign all files found. It also
 
 Since anchoring is not a realtime operation, the tool rescan the configured folders every 15 minutes
 
-To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence for all files in a given directory.
+To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence or signature for all files in a given directory.
 
 Note: tags are added to the anchors according to the name of sub-folders
 
@@ -29,7 +29,7 @@ Just download it, decompress it and execute it (add execution permissions if nec
 
 ## Developpement
 
-To be able to develop on this app, you need to install node dependencies (Node.js 8 is required):
+To be able to develop on this app, you need to install node dependencies (At least Node.js 8 is required):
 
 ``` bash
 npm install
@@ -61,3 +61,13 @@ npm run electron:mac
 # Windows
 npm run electron:windows
 ```
+
+Alternatively you can launch a docker to build the project, only linux and windows versions will be made (electron-builder limitation)
+
+```bash
+./buildWithDocker.sh
+```
+
+After this step the packages apps will be available in the folder docker-release.
+
+An other folder will be created: docker-cache it will contains the node_modules folder used by the docker container as well as the ~/.cache folder of the container which contains the electron releases.

@@ -14,9 +14,12 @@
     "electron:serve": "npm run electron:TStoJS && rm -rf dist && npm-run-all -p angular:buildandwatch electron:serveandreload",
     "electron:serveandreload": "wait-on dist/ProofKeeper/index.html && electron . --liveenv",
     "electron:TStoJS": "node postinstall && npx tsc --target 'ES5' --typeRoots 'node_modules/@types' --moduleResolution 'node' --lib 'DOM,ES5,ES6' electron.ts",
-    "electron:linux": "npm run build:prod && chmod +x dist/ProofKeeper/assets/bin/linux/woleet-cli && npx electron-builder build --linux",
-    "electron:mac": "npm run build:prod && chmod +x dist/ProofKeeper/assets/bin/darwin/woleet-cli && npx electron-builder build --mac",
-    "electron:windows": "npm run build:prod && npx electron-builder build --windows"
+    "electron:linux": "npm run build:prod && npm run electron:linux-nobuild",
+    "electron:linux-nobuild": "chmod +x dist/ProofKeeper/assets/bin/linux/woleet-cli && npx electron-builder build --linux",
+    "electron:mac": "npm run build:prod && npm run electron:mac-nobuild",
+    "electron:mac-nobuild": "chmod +x dist/ProofKeeper/assets/bin/darwin/woleet-cli && npx electron-builder build --mac",
+    "electron:windows": "npm run build:prod && npm run electron:windows-nobuild",
+    "electron:windows-nobuild": "npx electron-builder build --windows"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.6",
