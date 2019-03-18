@@ -30,4 +30,3 @@ electronuserland/builder:wine -c 'rm -rf docker-release/* && npm install && npm 
 'mv "release/ProofKeeper $RELEASE.exe" "docker-release/ProofKeeper $RELEASE.exe" && '\
 'mv "release/ProofKeeper Setup $RELEASE.exe" "docker-release/ProofKeeper Setup $RELEASE.exe" && '\
 'chown -R '"$(id -u "$(whoami)"):$(id -g "$(whoami)")"' docker-release'
-

@@ -25,7 +25,7 @@ Note: tags are added to the anchors according to the name of sub-folders
 
 The latest installers can be found [here](https://github.com/woleet/woleet-proofkeeper/releases)
 
-Just download it, decompress it and execute it (add execution permissions if necessary)
+Just download it and execute it (add execution permissions if necessary)
 
 ## Developpement
 
@@ -68,6 +68,6 @@ Alternatively you can launch a docker to build the project, only linux and windo
 ./buildWithDocker.sh
 ```
 
-After this step the packages apps will be available in the folder docker-release.
+After this step the packages apps will be available in the folder docker-release/ .
 
 An other folder will be created: docker-cache it will contains the node_modules folder used by the docker container as well as the ~/.cache folder of the container which contains the electron releases.
