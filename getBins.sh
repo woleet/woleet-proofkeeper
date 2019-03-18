@@ -30,6 +30,6 @@ do
     unzip -q "woleet-cli_${PLATFORM}_x86_64.zip"
     rm "woleet-cli_${PLATFORM}_x86_64.zip"
     mkdir -p "src/assets/bin/${PLATFORM}"
-    mv woleet-cli.exe "src/assets/bin/${PLATFORM}/woleet-cli"
+    mv woleet-cli.exe "src/assets/bin/${PLATFORM}/woleet-cli.exe"
   fi
 done

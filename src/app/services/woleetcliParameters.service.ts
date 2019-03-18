@@ -103,12 +103,12 @@ export class WoleetCliParametersService {
     }
 
     public constructor() {
-      let platform: string = process.platform;
+      const platform: string = process.platform;
       if ( platform === 'win32' ) {
-        platform = 'windows';
+        this.woleetCli = path.join(__dirname, 'assets/bin/', 'windows', '/woleet-cli.exe');
+      } else {
+        this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
       }
-      this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
-
       if ( this.woleetCli.includes('app.asar') ) {
         this.woleetCli = this.woleetCli.replace('app.asar', 'app.asar.unpacked');
       }

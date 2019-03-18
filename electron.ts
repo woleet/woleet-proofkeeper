@@ -12,7 +12,7 @@ declare var global: any;
 global.liveenv = liveenv;
 
 if (liveenv) {
-  require('electron-reload')([__dirname], {
+  require('electron-reload')([__dirname + '/dist'], {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
