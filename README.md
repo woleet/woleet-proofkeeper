@@ -6,9 +6,9 @@ ProofKeeper is Woleet's proof management tool for your desktop. Using this nativ
 
 ### General usage
 
-The tool scans a folder recursively and anchors or sign all files found. It also gathers proof receipts and stores them beside anchored or signed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
+The tool scans folders recursively and anchors or signs all files found. It also gathers proof receipts and stores them beside timestamped or signed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
 
-Since anchoring is not a realtime operation, the tool rescan the configured folders every 15 minutes
+Since proof creation is not a realtime operation, the tool rescan the configured folders every 15 minutes
 
 To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence or signature for all files in a given directory.
 
