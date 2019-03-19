@@ -25,6 +25,15 @@ Note: tags are added to the anchors according to the name of sub-folders
 
 The latest installers can be found [here](https://github.com/woleet/woleet-proofkeeper/releases)
 
+There are few version available:
+
+| File name                   | OS/version                   |
+|-----------------------------|---------------------------|
+| ProofKeeper-x.x.x.dmg       | MacOs version             |
+| ProofKeeper.x.x.x.AppImage  | Linux version             |
+| ProofKeeper.x.x.x.exe       | Portable Windows version  |
+| ProofKeeper.Setup.x.x.x.exe | Installer Windows version |
+
 Just download it and execute it (add execution permissions if necessary)
 
 ## Developpement
