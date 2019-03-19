@@ -29,12 +29,12 @@ There are few version available:
 
 | File name                   | OS/version                   |
 |-----------------------------|---------------------------|
-| ProofKeeper-x.x.x.dmg       | MacOs version             |
+| ProofKeeper-x.x.x.dmg       | macOS version             |
 | ProofKeeper.x.x.x.AppImage  | Linux version             |
 | ProofKeeper.x.x.x.exe       | Portable Windows version  |
 | ProofKeeper.Setup.x.x.x.exe | Installer Windows version |
 
-Just download it and execute it (add execution permissions if necessary)
+Just download it and execute it (add execution permissions if necessary).
 
 ## Developpement
 
