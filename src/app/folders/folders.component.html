@@ -84,13 +84,13 @@
                   <!-- <mat-chip-list>
                     <mat-chip>ToFill</mat-chip>
                   </mat-chip-list> -->
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode === undefined"
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();onClickRefresh(folderForm)" *ngIf="foldersStatusCode[i].exitCode === undefined"
                     style="background-color: #808080" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
                     matTooltip="Not yet started"></button>
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode === 0"
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();onClickRefresh(folderForm)" *ngIf="foldersStatusCode[i].exitCode === 0"
                     style="background-color: #08ad08" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
                     matTooltip="Execution successfull"></button>
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode > 0"
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();onClickRefresh(folderForm)" *ngIf="foldersStatusCode[i].exitCode > 0"
                     style="background-color: #f44336" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
                     matTooltip="Failure"></button>
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode < 0"

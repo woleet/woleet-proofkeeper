@@ -47,10 +47,11 @@ export class FoldersConfigService {
   }
 
   public deleteFolder(folder: FolderDesc) {
-    const index = this.folders.findIndex(f => {return ((folder.path === f.path) && (folder.action === f.action))});
+    const index = this.folders.findIndex(f => ((folder.path === f.path) && (folder.action === f.action)));
 
-    if (index === -1) 
+    if (index === -1) {
       throw new Error('Unable to find the folder to delete');
+    }
 
     this.folders.splice(index, 1);
     this.saveFolders();
@@ -58,9 +59,10 @@ export class FoldersConfigService {
 
   public updateFolderOptions(folder: FolderDesc) {
     const found = this.folders.find(elem => ((folder.path === elem.path) && (folder.action === elem.action)));
-    
-    if (!found)
+
+    if (!found) {
       throw new Error('Unable to find the folder to update');
+    }
 
     found.private = folder.privateparam;
     found.strict = folder.strict;
@@ -82,5 +84,13 @@ export class FoldersConfigService {
       retFolderParam.push(tempfolder);
     });
     this.store.set('folders', retFolderParam);
+  }
+
+  public getFolderParamFromActionPath(action: string, path: string): FolderParam {
+    const foundFolder = this.folders.find(elem => ((action === elem.action) && (path === elem.path)));
+    if (!foundFolder) {
+      throw new Error('Unable to find the folder to get params from');
+    }
+    return foundFolder;
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
-import { FoldersConfigService, FolderDesc } from '../services/foldersConfig.service';
+import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
 import { remote } from 'electron';
 import * as log from 'loglevel';
@@ -8,6 +8,7 @@ import * as nodepath from 'path';
 import { LogContext } from '../misc/logs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
+import { CliRunnerService } from '../services/cliRunnerFolderInterface.service';
 
 @Component({
   selector: 'app-folders',
@@ -16,7 +17,6 @@ import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
 })
 export class FoldersComponent {
 
-  public folders: FoldersConfigService;
   public out: string;
   public folderFormGroup: FormGroup;
   public foldersFormGroup: FormGroup[];
@@ -24,13 +24,12 @@ export class FoldersComponent {
   public addState: boolean;
 
   constructor(
-    foldersConfigService: FoldersConfigService,
+    public cliRunnerService: CliRunnerService,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     private dialog: MatDialog) {
 
     this.addState = false;
-    this.folders = foldersConfigService;
 
     this.folderFormGroup = formBuilder.group({
       action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
@@ -46,13 +45,13 @@ export class FoldersComponent {
   }
 
   openConfirmDeleteDialog(folderForm: FormGroup) {
-    let dialogRef = this.dialog.open(ConfirmationDialog);
+    const dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.componentInstance.confirmationTitle = 'Remove folder';
     dialogRef.componentInstance.confirmationText = 'Are you sure you want to remove this folder from ProofKeeper? Proofs won\'t be deleted and will have to be deleted manually.';
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if(confirmDelete === true) {
         try {
-          this.folders.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
+          this.cliRunnerService.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
           this.fillFoldersFormGroup();
         } catch (error) {
           log.error(error);
@@ -64,7 +63,7 @@ export class FoldersComponent {
   fillFoldersFormGroup() {
     this.foldersFormGroup = [];
     this.foldersStatusCode = [];
-    this.folders.folders.forEach(folderParam => {
+    this.cliRunnerService.folders.folders.forEach(folderParam => {
       const tempfoldersFromGroup = this.formBuilder.group({
         action: [folderParam.action],
         path: [folderParam.path],
@@ -112,7 +111,7 @@ export class FoldersComponent {
 
   onClickAdd() {
     const folderToAdd = this.getFolderDescFromFormGroup(this.folderFormGroup);
-    this.folders.addFolderFromInterface(folderToAdd);
+    this.cliRunnerService.addFolder(folderToAdd);
     this.addState = false;
     this.resetAddFolderFormGroup();
     this.fillFoldersFormGroup();
@@ -121,7 +120,7 @@ export class FoldersComponent {
   onClickUpdateFolderOptions(formGroup: FormGroup) {
     try {
       const folderToUpdate = this.getFolderDescFromFormGroup(formGroup);
-      this.folders.updateFolderOptions(folderToUpdate);
+      this.cliRunnerService.updateFolder(folderToUpdate);
       this.fillFoldersFormGroup();
     } catch (error) {
       log.error(error);
@@ -169,6 +168,10 @@ export class FoldersComponent {
       path: '',
       private: true,
     });
+  }
+
+  onClickRefresh(folderForm: FormGroup) {
+    this.cliRunnerService.restartRunner(this.getFolderDescFromFormGroup(folderForm));
   }
 }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog'
+import { MatDialog } from '@angular/material/dialog';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator,
          noDuplicateIdentityNameValidatorFactoryOnAdd,
@@ -67,11 +67,11 @@ export class SettingsComponent {
   }
 
   openClearSaveSettingsConfirmDialog() {
-    let dialogRef = this.dialog.open(ConfirmationDialog);
+    const dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.componentInstance.confirmationTitle = 'Reset config';
     dialogRef.componentInstance.confirmationText = 'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.';
     dialogRef.afterClosed().subscribe(confirmDelete => {
-      if(confirmDelete === true) {
+      if (confirmDelete === true) {
         this.cli.store.clear();
         remote.getCurrentWebContents().reload();
       }
@@ -149,15 +149,15 @@ export class SettingsComponent {
   }
 
   isIdentityInUse(identityName: string) {
-    return this.foldersConfigService.folders.some(elem => elem.identityName === identityName)
+    return this.foldersConfigService.folders.some(elem => elem.identityName === identityName);
   }
 
   openConfirmDeleteWIDConnectionDialog(identityName: string) {
-    let dialogRef = this.dialog.open(ConfirmationDialog);
+    const dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.componentInstance.confirmationTitle = 'Delete identity';
     dialogRef.componentInstance.confirmationText = 'Are you sure you want to delete this identity?';
     dialogRef.afterClosed().subscribe(confirmDelete => {
-      if(confirmDelete === true) {
+      if (confirmDelete === true) {
         this.identityService.deleteIdentity(identityName);
         if (this.identityService.arrayIdentityContent.length === 0) {
           this.addState = true;

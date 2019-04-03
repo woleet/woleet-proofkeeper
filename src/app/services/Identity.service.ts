@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
 import { FoldersConfigService } from './foldersConfig.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as Store from 'electron-store';
 
 export interface IdentityContent {
@@ -85,7 +84,7 @@ export class IdentityService {
         throw new Error (`Identity named ${identityName} not found for deletion`);
       }
     }
-    
+
     private saveIdentities() {
       this.store.set('arrayIdentityContent', this.arrayIdentityContent);
     }
