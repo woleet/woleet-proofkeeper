@@ -181,7 +181,7 @@ function noDUplicatePathValidatorFactory(thisParam) {
       if (!control.value) {
         return null;
       }
-      const foldersToCheck = thisParam.cliRunnerService.folders.folders.filter(folder => {
+      const foldersToCheck = thisParam.cliRunnerFolderInterface.folders.folders.filter(folder => {
         return folder.action === thisParam.folderFormGroup.controls['action'].value;
       });
       const duplicateFolder = foldersToCheck.some(folder => {
