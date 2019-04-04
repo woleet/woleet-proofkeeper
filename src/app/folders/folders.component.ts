@@ -96,12 +96,12 @@ export class FoldersComponent implements OnDestroy {
     const folderDesc: FolderDesc = {
       path: form.get('path').value as string,
       action: form.get('action').value as string,
-      privateparam: form.get('private').value as boolean,
-      strict: form.get('strict').value as boolean,
-      prune: form.get('prune').value as boolean,
-      recursive: form.get('recursive').value as boolean,
+      private: Boolean(form.get('private').value).valueOf(),
+      strict: Boolean(form.get('strict').value).valueOf(),
+      prune: Boolean(form.get('prune').value).valueOf(),
+      recursive: Boolean(form.get('recursive').value).valueOf(),
       identityName: form.get('identity').value as string,
-      iDServerUnsecureSSL: form.get('iDServerUnsecureSSL').value as boolean,
+      iDServerUnsecureSSL: Boolean(form.get('iDServerUnsecureSSL').value).valueOf(),
     };
     return folderDesc;
   }

@@ -5,12 +5,12 @@ import { IdentityService } from '../services/Identity.service';
 export class FolderParam {
   path: string;
   action: string;
-  private?: boolean;
-  strict?: boolean;
-  prune?: boolean;
-  recursive?: boolean;
-  identityName?: string;
-  iDServerUnsecureSSL?: boolean;
+  private: boolean;
+  strict: boolean;
+  prune: boolean;
+  recursive: boolean;
+  identityName: string;
+  iDServerUnsecureSSL: boolean;
   logContext?: LogContext;
 
   public constructor(folderDesc: FolderDesc, public identityService: IdentityService) {
@@ -19,29 +19,13 @@ export class FolderParam {
     } else {
       throw new Error(`Invalid action, must be anchor or sign current: ${folderDesc.action}`);
     }
-    if (folderDesc.path) {
-      this.path = folderDesc.path;
-    } else {
-      throw new Error(`path can't be null / undefined`);
-    }
-    if (folderDesc.privateparam) {
-      this.private = folderDesc.privateparam;
-    }
-    if (folderDesc.strict) {
-      this.strict = folderDesc.strict;
-    }
-    if (folderDesc.prune) {
-      this.prune = folderDesc.prune;
-    }
-    if (folderDesc.recursive) {
-      this.recursive = folderDesc.recursive;
-    }
-    if (folderDesc.identityName) {
-      this.identityName = folderDesc.identityName;
-    }
-    if (folderDesc.iDServerUnsecureSSL) {
-      this.iDServerUnsecureSSL = folderDesc.iDServerUnsecureSSL;
-    }
+    this.path = folderDesc.path;
+    this.private = folderDesc.private;
+    this.strict = folderDesc.strict;
+    this.prune = folderDesc.prune;
+    this.recursive = folderDesc.recursive;
+    this.identityName = folderDesc.identityName;
+    this.iDServerUnsecureSSL = folderDesc.iDServerUnsecureSSL;
     this.logContext = new LogContext();
   }
 

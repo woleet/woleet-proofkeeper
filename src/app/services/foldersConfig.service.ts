@@ -8,12 +8,25 @@ import * as Store from 'electron-store';
 export interface FolderDesc {
   action: string;
   path: string;
-  privateparam?: boolean;
-  strict?: boolean;
-  prune?: boolean;
-  recursive?: boolean;
-  identityName?: string;
-  iDServerUnsecureSSL?: boolean;
+  private: boolean;
+  strict: boolean;
+  prune: boolean;
+  recursive: boolean;
+  identityName: string;
+  iDServerUnsecureSSL: boolean;
+}
+
+function populateDefaultsFolderDesc(folderDesc: FolderDesc) {
+  if (!folderDesc.private) { folderDesc.private = false; }
+  if (!folderDesc.strict) { folderDesc.strict = false; }
+  if (!folderDesc.prune) { folderDesc.prune = false; }
+  if (!folderDesc.recursive) { folderDesc.recursive = false; }
+
+  if (folderDesc.action === 'sign') {
+    if (!folderDesc.iDServerUnsecureSSL) {
+      folderDesc.iDServerUnsecureSSL = false;
+    }
+  }
 }
 
 @Injectable({
@@ -29,6 +42,7 @@ export class FoldersConfigService {
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
       this.folders = folders.map(e => new FolderParam(e, identityService));
+      this.folders.forEach(folder => {populateDefaultsFolderDesc(folder); });
     }
   }
 
@@ -64,7 +78,7 @@ export class FoldersConfigService {
       throw new Error('Unable to find the folder to update');
     }
 
-    found.private = folder.privateparam;
+    found.private = folder.private;
     found.strict = folder.strict;
     found.prune = folder.prune;
     found.recursive = folder.recursive;
