@@ -8,7 +8,7 @@ import * as nodepath from 'path';
 import { LogContext } from '../misc/logs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
-import { CliRunnerService } from '../services/cliRunnerFolderInterface.service';
+import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 
 @Component({
   selector: 'app-folders',
@@ -24,7 +24,7 @@ export class FoldersComponent {
   public addState: boolean;
 
   constructor(
-    public cliRunnerService: CliRunnerService,
+    public cliRunnerFolderInterface: CliRunnerFolderInterface,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     private dialog: MatDialog) {
@@ -51,7 +51,7 @@ export class FoldersComponent {
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if(confirmDelete === true) {
         try {
-          this.cliRunnerService.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
+          this.cliRunnerFolderInterface.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
           this.fillFoldersFormGroup();
         } catch (error) {
           log.error(error);
@@ -63,7 +63,7 @@ export class FoldersComponent {
   fillFoldersFormGroup() {
     this.foldersFormGroup = [];
     this.foldersStatusCode = [];
-    this.cliRunnerService.folders.folders.forEach(folderParam => {
+    this.cliRunnerFolderInterface.folders.folders.forEach(folderParam => {
       const tempfoldersFromGroup = this.formBuilder.group({
         action: [folderParam.action],
         path: [folderParam.path],
@@ -111,7 +111,7 @@ export class FoldersComponent {
 
   onClickAdd() {
     const folderToAdd = this.getFolderDescFromFormGroup(this.folderFormGroup);
-    this.cliRunnerService.addFolder(folderToAdd);
+    this.cliRunnerFolderInterface.addFolder(folderToAdd);
     this.addState = false;
     this.resetAddFolderFormGroup();
     this.fillFoldersFormGroup();
@@ -120,7 +120,7 @@ export class FoldersComponent {
   onClickUpdateFolderOptions(formGroup: FormGroup) {
     try {
       const folderToUpdate = this.getFolderDescFromFormGroup(formGroup);
-      this.cliRunnerService.updateFolder(folderToUpdate);
+      this.cliRunnerFolderInterface.updateFolder(folderToUpdate);
       this.fillFoldersFormGroup();
     } catch (error) {
       log.error(error);
@@ -171,7 +171,7 @@ export class FoldersComponent {
   }
 
   onClickRefresh(folderForm: FormGroup) {
-    this.cliRunnerService.restartRunner(this.getFolderDescFromFormGroup(folderForm));
+    this.cliRunnerFolderInterface.restartRunner(this.getFolderDescFromFormGroup(folderForm));
   }
 }
 
@@ -181,7 +181,7 @@ function noDUplicatePathValidatorFactory(thisParam) {
       if (!control.value) {
         return null;
       }
-      const foldersToCheck = thisParam.folders.folders.filter(folder => {
+      const foldersToCheck = thisParam.cliRunnerService.folders.folders.filter(folder => {
         return folder.action === thisParam.folderFormGroup.controls['action'].value;
       });
       const duplicateFolder = foldersToCheck.some(folder => {

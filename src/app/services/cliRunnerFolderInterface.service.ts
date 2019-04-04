@@ -6,7 +6,7 @@ import { IndependantCliRunnerService } from '../misc/independantCliRunner';
 import * as log from 'loglevel';
 
 @Injectable()
-export class CliRunnerService {
+export class CliRunnerFolderInterface {
 
   private runners: IndependantCliRunnerService[] = [];
 
@@ -17,7 +17,6 @@ export class CliRunnerService {
     this.folders.folders.forEach( folder => {
       this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService));
     });
-    log.info(this.runners);
   }
 
   public addFolder(folderDesc: FolderDesc) {

@@ -31,7 +31,7 @@ import { WoleetCliParametersService } from './services/woleetcliParameters.servi
 import { IdentityService } from './services/Identity.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { LogsComponent } from './logs/logs.component';
-import { CliRunnerService } from './services/cliRunnerFolderInterface.service';
+import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
 
 @NgModule({
   declarations: [
@@ -71,7 +71,7 @@ import { CliRunnerService } from './services/cliRunnerFolderInterface.service';
     FoldersConfigService,
     WoleetCliParametersService,
     IdentityService,
-    CliRunnerService
+    CliRunnerFolderInterface
   ],
   bootstrap: [
     AppComponent

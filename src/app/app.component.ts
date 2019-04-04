@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StoreService } from './services/store.service';
 import { WizardComponent } from './wizard/wizard.component';
-import { CliRunnerService } from './services/cliRunnerFolderInterface.service';
+import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
 import * as Store from 'electron-store';
 
 @Component({
@@ -15,7 +15,7 @@ export class AppComponent {
   public active: string;
   private store: Store;
 
-  constructor(storeService: StoreService, dialog: MatDialog, private cliRunner: CliRunnerService) {
+  constructor(storeService: StoreService, dialog: MatDialog, private cliRunnerFolderInterface: CliRunnerFolderInterface) {
       this.store = storeService.store;
       if (!this.store.get('wizardBypass', false)) {
         const wizardDialog = dialog.open(WizardComponent, {
