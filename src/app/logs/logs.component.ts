@@ -16,7 +16,7 @@ export class LogsComponent implements OnDestroy {
   private logMessageSubscription: any;
   @ViewChild(MatTable) mattable: MatTable<any>;
 
-  constructor(private foldersConfigService: FoldersConfigService,
+  constructor(foldersConfigService: FoldersConfigService,
     private messageService: LogMessageService,
     private ref: ChangeDetectorRef) {
     this.folders = foldersConfigService.folders;

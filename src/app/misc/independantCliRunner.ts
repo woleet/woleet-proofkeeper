@@ -6,6 +6,7 @@ import { Log } from './logs';
 import * as log from 'loglevel';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { LogMessageService } from '../services/logMessage.service';
+import { ExitTickService } from '../services/exitTick.service';
 
 export class IndependantCliRunnerService {
 
@@ -14,7 +15,8 @@ export class IndependantCliRunnerService {
   constructor(private appRef: ApplicationRef,
     public folderParam: FolderParam,
     private cli: WoleetCliParametersService,
-    private logMessageService: LogMessageService) {
+    private logMessageService: LogMessageService,
+    private exitCodeMessageService: ExitTickService) {
       this.timerSubscribe();
   }
 
@@ -42,6 +44,7 @@ export class IndependantCliRunnerService {
         folder.logContext.launched = false;
         this.printLogs(folder);
         log.info(`woleet-cli exited with code ${code}`);
+        this.exitCodeMessageService.sendTick();
         resolve(code);
       });
     });

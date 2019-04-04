@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
@@ -9,25 +9,30 @@ import { LogContext } from '../misc/logs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
+import { ExitTickService } from '../services/exitTick.service';
 
 @Component({
   selector: 'app-folders',
   templateUrl: './folders.component.html',
   styleUrls: ['./folders.component.scss']
 })
-export class FoldersComponent {
+export class FoldersComponent implements OnDestroy {
 
   public out: string;
   public folderFormGroup: FormGroup;
   public foldersFormGroup: FormGroup[];
   public foldersStatusCode: LogContext[];
   public addState: boolean;
+  private exitTickSubscription: any;
+
 
   constructor(
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private ref: ChangeDetectorRef,
+    private exitTickService: ExitTickService) {
 
     this.addState = false;
 
@@ -42,6 +47,14 @@ export class FoldersComponent {
       iDServerUnsecureSSL: [false],
     });
     this.fillFoldersFormGroup();
+
+    this.exitTickSubscription = this.exitTickService.getTick().subscribe(() => {
+      this.ref.detectChanges();
+    });
+  }
+
+  ngOnDestroy() {
+    this.exitTickSubscription.unsubscribe();
   }
 
   openConfirmDeleteDialog(folderForm: FormGroup) {

@@ -4,6 +4,7 @@ import { WoleetCliParametersService } from './woleetcliParameters.service';
 import { LogMessageService } from './logMessage.service';
 import { IndependantCliRunnerService } from '../misc/independantCliRunner';
 import * as log from 'loglevel';
+import { ExitTickService } from './exitTick.service';
 
 @Injectable()
 export class CliRunnerFolderInterface {
@@ -13,9 +14,10 @@ export class CliRunnerFolderInterface {
   constructor (private appRef: ApplicationRef,
     public folders: FoldersConfigService,
     private cli: WoleetCliParametersService,
-    private logMessageService: LogMessageService) {
+    private logMessageService: LogMessageService,
+    private exitTickService: ExitTickService) {
     this.folders.folders.forEach( folder => {
-      this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService));
+      this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService, this.exitTickService));
     });
   }
 
@@ -23,7 +25,7 @@ export class CliRunnerFolderInterface {
     this.folders.addFolderFromInterface(folderDesc);
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
-      this.runners.push( new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService));
+      this.runners.push( new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService));
     } catch (e) {
       log.error(e);
     }
@@ -39,7 +41,7 @@ export class CliRunnerFolderInterface {
 
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
-      this.runners[runnerIndex] = new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService);
+      this.runners[runnerIndex] = new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService);
     } catch (e) {
       log.error(e);
     }
