@@ -20,7 +20,7 @@ if (liveenv) {
 
 nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/ProofKeeper/assets/images/woleet.png'));
 
-function createWindowTray () {
+function createWindowTray() {
   win = new BrowserWindow({
     width: 900,
     height: 800,
@@ -33,18 +33,22 @@ function createWindowTray () {
   });
 
   if (process.platform === 'darwin') {
-    tray = new Tray(nativcon.resize({width: 20, height: 20}));
+    tray = new Tray(nativcon.resize({ width: 20, height: 20 }));
   } else {
     tray = new Tray(nativcon);
   }
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Show', click: function() {
-      win.show();
-    }},
-    { label: 'Exit', click: function() {
-      app.quit();
-    }}
+    {
+      label: 'Show', click: function () {
+        win.show();
+      }
+    },
+    {
+      label: 'Exit', click: function () {
+        app.quit();
+      }
+    }
   ]);
 
   win.loadURL(url.format({

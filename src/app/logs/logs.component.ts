@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MatTable,  } from '@angular/material/table';
+import { MatTable, } from '@angular/material/table';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { LogMessageService } from '../services/logMessage.service';
 import { FolderParam } from '../misc/folderParam';

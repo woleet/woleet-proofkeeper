@@ -30,7 +30,8 @@
           <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
             Please add at least one identity on the settings panel
           </mat-error>
-          <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
+          <mat-error
+            *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
             Identity required
           </mat-error>
           <mat-error *ngIf="folderFormGroup.get('identity').getError('identityNotFound')">
@@ -84,20 +85,26 @@
                   <!-- <mat-chip-list>
                     <mat-chip>ToFill</mat-chip>
                   </mat-chip-list> -->
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();onClickRefresh(folderForm)" *ngIf="foldersStatusCode[i].exitCode === undefined"
-                    style="background-color: #808080" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Not yet started"></button>
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();onClickRefresh(folderForm)" *ngIf="foldersStatusCode[i].exitCode === 0"
-                    style="background-color: #08ad08" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Execution successfull"></button>
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();onClickRefresh(folderForm)" *ngIf="foldersStatusCode[i].exitCode > 0"
-                    style="background-color: #f44336" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Failure"></button>
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();" *ngIf="foldersStatusCode[i].exitCode < 0"
-                    style="background-color: #ff7b00" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Work in progress"></button>
-                  <button mat-icon-button color="warn" (click)="$event.stopPropagation();openConfirmDeleteDialog(folderForm);">
-                    <mat-icon matTooltip="Delete folder" matTooltipPosition="above" [matTooltipClass]="'tooltip'" >delete</mat-icon>
+                  <button mat-mini-fab class="status-icons"
+                    (click)="$event.stopPropagation();onClickRefresh(folderForm)"
+                    *ngIf="foldersStatusCode[i].exitCode === undefined" style="background-color: #808080"
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Not yet started. Click to restart."></button>
+                  <button mat-mini-fab class="status-icons"
+                    (click)="$event.stopPropagation();onClickRefresh(folderForm)"
+                    *ngIf="foldersStatusCode[i].exitCode === 0" style="background-color: #08ad08"
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Execution successfull. Click to restart."></button>
+                  <button mat-mini-fab class="status-icons"
+                    (click)="$event.stopPropagation();onClickRefresh(folderForm)"
+                    *ngIf="foldersStatusCode[i].exitCode > 0" style="background-color: #f44336"
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Failure. Click to restart."></button>
+                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();"
+                    *ngIf="foldersStatusCode[i].exitCode < 0" style="background-color: #ff7b00"
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Work in progress"></button>
+                  <button mat-icon-button color="warn"
+                    (click)="$event.stopPropagation();openConfirmDeleteDialog(folderForm);">
+                    <mat-icon matTooltip="Delete folder" matTooltipPosition="above" [matTooltipClass]="'tooltip'">delete
+                    </mat-icon>
                   </button>
                 </span>
               </span>
@@ -105,15 +112,18 @@
             <form [formGroup]="folderForm">
               <div *ngIf="folderForm.get('action').value === 'sign'">
                 <mat-form-field>
-                  <mat-select class="custom-select" formControlName="identity" name="identity" placeholder="Identity to use">
-                    <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
+                  <mat-select class="custom-select" formControlName="identity" name="identity"
+                    placeholder="Identity to use">
+                    <mat-option *ngFor="let identityName of identityService.arrayIdentityContent"
+                      [value]="identityName.name">
                       {{identityName.name}}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
                     Please add at least one identity on the settings panel
                   </mat-error>
-                  <mat-error *ngIf="identityService.arrayIdentityContent.length !== 0 && folderForm.get('identity').getError('voidIdentity')">
+                  <mat-error
+                    *ngIf="identityService.arrayIdentityContent.length !== 0 && folderForm.get('identity').getError('voidIdentity')">
                     Identity required
                   </mat-error>
                   <mat-error *ngIf="folderForm.get('identity').getError('identityNotFound')">
@@ -152,7 +162,8 @@
                 </div>
               </div>
               <span class="span-update-configuration">
-                <button mat-raised-button color="primary" [disabled]="folderForm.pristine || folderForm.invalid" (click)="onClickUpdateFolderOptions(folderForm);">
+                <button mat-raised-button color="primary" [disabled]="folderForm.pristine || folderForm.invalid"
+                  (click)="onClickUpdateFolderOptions(folderForm);">
                   Update configuration
                 </button>
               </span>

@@ -17,7 +17,7 @@ export class IndependantCliRunnerService {
     private cli: WoleetCliParametersService,
     private logMessageService: LogMessageService,
     private exitCodeMessageService: ExitTickService) {
-      this.timerSubscribe();
+    this.timerSubscribe();
   }
 
   private execCli(folder: FolderParam) {
@@ -94,7 +94,7 @@ export class IndependantCliRunnerService {
     }
   }
 
-  public forceRefresh () {
+  public forceRefresh() {
     this.timerSubscription.unsubscribe();
     this.timerSubscribe();
   }

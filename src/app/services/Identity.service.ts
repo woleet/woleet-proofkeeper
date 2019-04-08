@@ -37,7 +37,7 @@ export class IdentityService {
       tempIdentityContent.publicKey = publicKey;
     }
     if (this.arrayIdentityContent.some(elem => elem.name === name)) {
-      throw new Error (`Identity named ${name} already present`);
+      throw new Error(`Identity named ${name} already present`);
     }
     this.arrayIdentityContent.push(tempIdentityContent);
     this.saveIdentities();
@@ -50,7 +50,7 @@ export class IdentityService {
     token: string,
     publicKey?: string) {
     if (!this.arrayIdentityContent.some(elem => elem.name === originalName)) {
-      throw new Error (`Identity named ${name} not found`);
+      throw new Error(`Identity named ${name} not found`);
     }
     if (originalName === name) {
       const elementToUpdate = this.arrayIdentityContent.filter(elem => elem.name === originalName)[0];
@@ -76,16 +76,16 @@ export class IdentityService {
     }
   }
 
-    public deleteIdentity(identityName: string) {
-      if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
-        this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
-        this.saveIdentities();
-      } else {
-        throw new Error (`Identity named ${identityName} not found for deletion`);
-      }
-    }
-
-    private saveIdentities() {
-      this.store.set('arrayIdentityContent', this.arrayIdentityContent);
+  public deleteIdentity(identityName: string) {
+    if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
+      this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
+      this.saveIdentities();
+    } else {
+      throw new Error(`Identity named ${identityName} not found for deletion`);
     }
   }
+
+  private saveIdentities() {
+    this.store.set('arrayIdentityContent', this.arrayIdentityContent);
+  }
+}

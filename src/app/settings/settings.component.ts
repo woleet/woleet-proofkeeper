@@ -3,9 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { tokenFormatValidator,
-         noDuplicateIdentityNameValidatorFactoryOnAdd,
-         noDuplicateIdentityNameValidatorFactoryOnEdit } from '../misc/validators';
+import {
+  tokenFormatValidator,
+  noDuplicateIdentityNameValidatorFactoryOnAdd,
+  noDuplicateIdentityNameValidatorFactoryOnEdit
+} from '../misc/validators';
 import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
@@ -69,7 +71,8 @@ export class SettingsComponent {
   openClearSaveSettingsConfirmDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.componentInstance.confirmationTitle = 'Reset config';
-    dialogRef.componentInstance.confirmationText = 'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.';
+    dialogRef.componentInstance.confirmationText =
+      'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.';
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if (confirmDelete === true) {
         this.cli.store.clear();
@@ -92,8 +95,8 @@ export class SettingsComponent {
     while (this.addPubKeyAddressGroup.length) {
       this.addPubKeyAddressGroup.pop();
     }
-    this.addIdentityFormGroup.patchValue({url: tempURL});
-    this.addIdentityFormGroup.patchValue({token: tempToken});
+    this.addIdentityFormGroup.patchValue({ url: tempURL });
+    this.addIdentityFormGroup.patchValue({ token: tempToken });
   }
 
   onAddIdentityClick() {
@@ -113,10 +116,10 @@ export class SettingsComponent {
   openEditForm(editIdentityName: string) {
     const currentIdentity = this.identityService.arrayIdentityContent.filter(elem => elem.name === editIdentityName)[0];
     this.editIdentityFormGroup.reset();
-    this.editIdentityFormGroup.patchValue({name: currentIdentity.name});
-    this.editIdentityFormGroup.patchValue({url: currentIdentity.apiURL});
-    this.editIdentityFormGroup.patchValue({token: currentIdentity.apiToken});
-    this.editIdentityFormGroup.patchValue({pubKey: currentIdentity.publicKey});
+    this.editIdentityFormGroup.patchValue({ name: currentIdentity.name });
+    this.editIdentityFormGroup.patchValue({ url: currentIdentity.apiURL });
+    this.editIdentityFormGroup.patchValue({ token: currentIdentity.apiToken });
+    this.editIdentityFormGroup.patchValue({ pubKey: currentIdentity.publicKey });
     this.identityOpened = editIdentityName;
   }
 
@@ -127,10 +130,10 @@ export class SettingsComponent {
       this.editIdentityFormGroup.get('url').value,
       this.editIdentityFormGroup.get('token').value,
       this.editIdentityFormGroup.get('pubKey').value);
-      this.closeEditForm();
-      while (this.editPubKeyAddressGroup.length) {
-        this.editPubKeyAddressGroup.pop();
-      }
+    this.closeEditForm();
+    while (this.editPubKeyAddressGroup.length) {
+      this.editPubKeyAddressGroup.pop();
+    }
   }
 
   closeEditForm() {
@@ -142,7 +145,7 @@ export class SettingsComponent {
   }
 
   onClickAddwIDConnection() {
-      checkwIDConnection(this.addIdentityFormGroup.get('url').value,
+    checkwIDConnection(this.addIdentityFormGroup.get('url').value,
       this.addIdentityFormGroup.get('token').value,
       this.addPubKeyAddressGroup,
       this.snackBar);
@@ -168,11 +171,11 @@ export class SettingsComponent {
 
   async onClickEditwIDConnection() {
     await checkwIDConnection(this.editIdentityFormGroup.get('url').value,
-    this.editIdentityFormGroup.get('token').value,
-    this.editPubKeyAddressGroup,
-    this.snackBar);
+      this.editIdentityFormGroup.get('token').value,
+      this.editPubKeyAddressGroup,
+      this.snackBar);
     if (this.editPubKeyAddressGroup.length !== 0 && this.editIdentityFormGroup.get('pubKey')) {
-      this.editIdentityFormGroup.get('pubKey').setErrors({unableToFindOldKey: true});
+      this.editIdentityFormGroup.get('pubKey').setErrors({ unableToFindOldKey: true });
       const match = this.editPubKeyAddressGroup.some(pubKeyAddressGroup => {
         return pubKeyAddressGroup.pubKeyAddress.some(pubKeyAddress => {
           if (pubKeyAddress.address === this.editIdentityFormGroup.get('pubKey').value) {
@@ -181,7 +184,7 @@ export class SettingsComponent {
         });
       });
       if (match) {
-        this.editIdentityFormGroup.get('pubKey').setErrors({unableToFindOldKey: false});
+        this.editIdentityFormGroup.get('pubKey').setErrors({ unableToFindOldKey: false });
         this.editIdentityFormGroup.get('pubKey').updateValueAndValidity();
       }
     }

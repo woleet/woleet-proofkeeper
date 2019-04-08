@@ -11,12 +11,12 @@ export class CliRunnerFolderInterface {
 
   private runners: IndependantCliRunnerService[] = [];
 
-  constructor (private appRef: ApplicationRef,
+  constructor(private appRef: ApplicationRef,
     public folders: FoldersConfigService,
     private cli: WoleetCliParametersService,
     private logMessageService: LogMessageService,
     private exitTickService: ExitTickService) {
-    this.folders.folders.forEach( folder => {
+    this.folders.folders.forEach(folder => {
       this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService, this.exitTickService));
     });
   }
@@ -25,7 +25,7 @@ export class CliRunnerFolderInterface {
     this.folders.addFolderFromInterface(folderDesc);
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
-      this.runners.push( new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService));
+      this.runners.push(new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService));
     } catch (e) {
       log.error(e);
     }
@@ -33,7 +33,9 @@ export class CliRunnerFolderInterface {
 
   public updateFolder(folderDesc: FolderDesc) {
     this.folders.updateFolderOptions(folderDesc);
-    const runnerIndex = this.runners.findIndex(elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path)));
+    const runnerIndex = this.runners.findIndex(
+      elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path))
+    );
     if (runnerIndex === -1) {
       log.error('Unable to find the runner to update');
       return;
@@ -41,7 +43,8 @@ export class CliRunnerFolderInterface {
 
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
-      this.runners[runnerIndex] = new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService);
+      this.runners[runnerIndex] =
+        new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService);
     } catch (e) {
       log.error(e);
     }
@@ -49,7 +52,9 @@ export class CliRunnerFolderInterface {
 
   public deleteFolder(folderDesc: FolderDesc) {
     this.folders.deleteFolder(folderDesc);
-    const runnerIndex = this.runners.findIndex(elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path)));
+    const runnerIndex = this.runners.findIndex(
+      elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path))
+    );
     if (runnerIndex === -1) {
       log.error('Unable to find the runner to update');
       return;
@@ -57,8 +62,10 @@ export class CliRunnerFolderInterface {
     this.runners.splice(runnerIndex, 1);
   }
 
-  public restartRunner (folderDesc: FolderDesc) {
-    const runnerIndex = this.runners.findIndex(elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path)));
+  public restartRunner(folderDesc: FolderDesc) {
+    const runnerIndex = this.runners.findIndex(
+      elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path))
+    );
     if (runnerIndex === -1) {
       log.error('Unable to find the runner to restart');
       return;

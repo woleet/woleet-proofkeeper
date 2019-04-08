@@ -42,7 +42,7 @@ export class FoldersConfigService {
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
       this.folders = folders.map(e => new FolderParam(e, identityService));
-      this.folders.forEach(folder => {populateDefaultsFolderDesc(folder); });
+      this.folders.forEach(folder => { populateDefaultsFolderDesc(folder); });
     }
   }
 

@@ -60,9 +60,10 @@ export class FoldersComponent implements OnDestroy {
   openConfirmDeleteDialog(folderForm: FormGroup) {
     const dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.componentInstance.confirmationTitle = 'Remove folder';
-    dialogRef.componentInstance.confirmationText = 'Are you sure you want to remove this folder from ProofKeeper? Proofs won\'t be deleted and will have to be deleted manually.';
+    dialogRef.componentInstance.confirmationText =
+      'Are you sure you want to remove this folder from ProofKeeper? Proofs won\'t be deleted and will have to be deleted manually.';
     dialogRef.afterClosed().subscribe(confirmDelete => {
-      if(confirmDelete === true) {
+      if (confirmDelete === true) {
         try {
           this.cliRunnerFolderInterface.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
           this.fillFoldersFormGroup();
