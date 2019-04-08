@@ -88,7 +88,8 @@
                   <button mat-mini-fab class="status-icons"
                     (click)="$event.stopPropagation();onClickRefresh(folderForm)"
                     *ngIf="foldersStatusCode[i].exitCode === undefined" style="background-color: #808080"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Not yet started. Click to restart."></button>
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Not yet started. Click to restart."></button>
                   <button mat-mini-fab class="status-icons"
                     (click)="$event.stopPropagation();onClickRefresh(folderForm)"
                     *ngIf="foldersStatusCode[i].exitCode === 0" style="background-color: #08ad08"
@@ -97,7 +98,8 @@
                   <button mat-mini-fab class="status-icons"
                     (click)="$event.stopPropagation();onClickRefresh(folderForm)"
                     *ngIf="foldersStatusCode[i].exitCode > 0" style="background-color: #f44336"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Failure. Click to restart."></button>
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    matTooltip="Failure. Click to restart."></button>
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();"
                     *ngIf="foldersStatusCode[i].exitCode < 0" style="background-color: #ff7b00"
                     matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Work in progress"></button>
