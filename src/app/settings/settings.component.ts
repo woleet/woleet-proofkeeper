@@ -12,7 +12,7 @@ import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
-import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
+import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { remote } from 'electron';
 
 @Component({
@@ -69,7 +69,7 @@ export class SettingsComponent {
   }
 
   openClearSaveSettingsConfirmDialog() {
-    const dialogRef = this.dialog.open(ConfirmationDialog);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.confirmationTitle = 'Reset config';
     dialogRef.componentInstance.confirmationText =
       'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.';
@@ -156,7 +156,7 @@ export class SettingsComponent {
   }
 
   openConfirmDeleteWIDConnectionDialog(identityName: string) {
-    const dialogRef = this.dialog.open(ConfirmationDialog);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.confirmationTitle = 'Delete identity';
     dialogRef.componentInstance.confirmationText = 'Are you sure you want to delete this identity?';
     dialogRef.afterClosed().subscribe(confirmDelete => {

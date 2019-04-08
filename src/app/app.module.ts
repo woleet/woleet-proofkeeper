@@ -24,7 +24,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
 import { SettingsComponent } from './settings/settings.component';
-import { ConfirmationDialog } from './dialogs/confirmationDialog.component';
+import { ConfirmationDialogComponent } from './dialogs/confirmationDialog.component';
 import { StoreService } from './services/store.service';
 import { FoldersConfigService } from './services/foldersConfig.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
@@ -40,7 +40,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
     SettingsComponent,
     WizardComponent,
     LogsComponent,
-    ConfirmationDialog
+    ConfirmationDialogComponent
   ],
   imports: [
     FormsModule,
@@ -78,7 +78,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
   ],
   entryComponents: [
     WizardComponent,
-    ConfirmationDialog
+    ConfirmationDialogComponent
   ]
 })
 export class AppModule { }

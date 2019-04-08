@@ -7,7 +7,7 @@ import * as log from 'loglevel';
 import * as nodepath from 'path';
 import { LogContext } from '../misc/logs';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialog } from '../dialogs/confirmationDialog.component';
+import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { ExitTickService } from '../services/exitTick.service';
 
@@ -58,7 +58,7 @@ export class FoldersComponent implements OnDestroy {
   }
 
   openConfirmDeleteDialog(folderForm: FormGroup) {
-    const dialogRef = this.dialog.open(ConfirmationDialog);
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.confirmationTitle = 'Remove folder';
     dialogRef.componentInstance.confirmationText =
       'Are you sure you want to remove this folder from ProofKeeper? Proofs won\'t be deleted and will have to be deleted manually.';
