@@ -8,18 +8,9 @@
     "output": "release/"
   },
     "files": [
-        "**/*",
-        "!dist/ProofKeeper/assets/bin${/*}",
-        "!*.ts",
-        "!*.code-workspace",
-        "!LICENSE.md",
-        "!package.json",
-        "!package-lock.json",
-        "!src/",
-        "!.angular-cli.json",
-        "!tsconfig.json",
-        "!tslint.json",
-        "!*.sh"
+      "electron.js",
+      "dist/**",
+      "!dist/ProofKeeper/assets/bin${/*}"
     ],
   "win": {
     "icon": "./src/assets/images/woleet.png",
