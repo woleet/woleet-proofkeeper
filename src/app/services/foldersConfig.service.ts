@@ -35,7 +35,7 @@ function populateDefaultsFolderDesc(folderDesc: FolderDesc) {
 
 export class FoldersConfigService {
   public folders: FolderParam[] = [];
-  private store: Store;
+  public store: Store<any>;
 
   public constructor(storeService: StoreService, private identityService: IdentityService) {
     this.store = storeService.store;

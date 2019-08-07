@@ -13,7 +13,7 @@ import * as Store from 'electron-store';
 
 export class AppComponent {
   public active: string;
-  private store: Store;
+  private store: Store<any>;
 
   constructor(storeService: StoreService, dialog: MatDialog, private cliRunnerFolderInterface: CliRunnerFolderInterface) {
       this.store = storeService.store;

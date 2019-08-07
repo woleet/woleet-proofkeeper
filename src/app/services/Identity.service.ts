@@ -12,7 +12,7 @@ export interface IdentityContent {
 
 @Injectable({ providedIn: 'root' })
 export class IdentityService {
-  private store: Store;
+  public store: Store<any>;
   public arrayIdentityContent: Array<IdentityContent>;
 
   public constructor(storeService: StoreService) {

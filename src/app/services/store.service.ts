@@ -7,7 +7,7 @@ import * as Store from 'electron-store';
 
 export class StoreService {
 
-  public store: Store;
+  public store: Store<any>;
 
   public constructor() {
     this.store = new Store();

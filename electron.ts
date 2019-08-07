@@ -75,7 +75,7 @@ function createWindowTray() {
 }
 
 function setShortcuts() {
-  const menu = Menu.buildFromTemplate([
+  const menuTemplate:Electron.MenuItemConstructorOptions[] = [
     {
       label: 'Menu',
       submenu: [
@@ -87,12 +87,14 @@ function setShortcuts() {
         { role: 'paste' },
         { role: 'selectall' },
         { type: 'separator' },
-        { role: 'toggleDevTools' },
+        { role: 'toggledevtools' },
         { role: 'reload' },
         { role: 'quit' }
       ]
     }
-  ]);
+  ];
+
+  const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 }
 

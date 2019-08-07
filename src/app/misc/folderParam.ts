@@ -53,14 +53,14 @@ export class FolderParam {
       } else {
         const identity = this.identityService.arrayIdentityContent.filter(item => item.name === this.identityName)[0];
         parametersArray.push('--widsSignURL');
-        parametersArray.push(`${identity.apiURL}/sign`);
+        parametersArray.push(`${identity.apiURL}`);
         parametersArray.push('--widsToken');
         parametersArray.push(identity.apiToken);
         if (identity.publicKey) {
           parametersArray.push('--widsPubKey');
           parametersArray.push(identity.publicKey);
         }
-        if (this.action === 'sign') {
+        if (this.iDServerUnsecureSSL) {
           parametersArray.push('--widsUnsecureSSL');
         }
       }
