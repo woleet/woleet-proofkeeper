@@ -75,7 +75,7 @@ function createWindowTray() {
 }
 
 function setShortcuts() {
-  const menuTemplate:Electron.MenuItemConstructorOptions[] = [
+  const menuTemplate: Electron.MenuItemConstructorOptions[] = [
     {
       label: 'Menu',
       submenu: [

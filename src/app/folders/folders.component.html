@@ -41,7 +41,7 @@
       </div>
       <br>
       <div>
-        <mat-checkbox color="primary" name="private" formControlName="private">
+        <mat-checkbox color="primary" name="public" formControlName="public">
           Make the proofs publicly visible
         </mat-checkbox>
       </div>
@@ -138,7 +138,7 @@
                 </span> -->
               <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
-                  <mat-checkbox color="primary" name="private" formControlName="private">
+                  <mat-checkbox color="primary" name="public" formControlName="public">
                     Make the proofs publicly visible
                   </mat-checkbox>
                 </div>

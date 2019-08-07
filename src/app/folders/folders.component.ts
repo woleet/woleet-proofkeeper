@@ -39,7 +39,7 @@ export class FoldersComponent implements OnDestroy {
     this.folderFormGroup = formBuilder.group({
       action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
       path: ['', [Validators.required, Validators.maxLength(160), noDUplicatePathValidatorFactory(this)]],
-      private: [true],
+      public: [false],
       strict: [false],
       prune: [false],
       recursive: [false],
@@ -81,7 +81,7 @@ export class FoldersComponent implements OnDestroy {
       const tempfoldersFromGroup = this.formBuilder.group({
         action: [folderParam.action],
         path: [folderParam.path],
-        private: [folderParam.private],
+        public: [!folderParam.private],
         strict: [folderParam.strict],
         prune: [folderParam.prune],
         recursive: [folderParam.recursive],
@@ -97,7 +97,7 @@ export class FoldersComponent implements OnDestroy {
     const folderDesc: FolderDesc = {
       path: form.get('path').value as string,
       action: form.get('action').value as string,
-      private: Boolean(form.get('private').value).valueOf(),
+      private: Boolean(!form.get('public').value).valueOf(),
       strict: Boolean(form.get('strict').value).valueOf(),
       prune: Boolean(form.get('prune').value).valueOf(),
       recursive: Boolean(form.get('recursive').value).valueOf(),
@@ -110,7 +110,7 @@ export class FoldersComponent implements OnDestroy {
   onClickPopUpDirectory() {
     let path: string;
     try {
-      path = remote.dialog.showOpenDialog({ properties: ['openDirectory'] })[0];
+      path = remote.dialog.showOpenDialogSync({ properties: ['openDirectory'] })[0];
       const pathlenght: number = path.split(nodepath.sep).join('').length;
       log.info(`Path lenght: ${pathlenght}`);
     } catch (error) {
