@@ -17,7 +17,6 @@ export async function checkAndSubmit(http: HttpClient,
   }
   try {
     const creditsObject: any = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value, http);
-    console.log(creditsObject);
     if (creditsObject.credits === undefined) { // TODO: check credits value
       openSnackBarError(snackBar);
       return;
@@ -69,7 +68,6 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
       pubKeyAddressGroup.push(currentPubKeyAddressGroup);
       const currentUserKeysObject: any = await requestGet(`${url}/discover/keys/${user.id}`, token, http);
       for (const key of currentUserKeysObject) {
-        console.log(key);
         if (key.status === 'active' && key.device === 'server') {
           if (key.id === user.defaultKeyId) {
             currentPubKeyAddressGroup.pubKeyAddress.unshift({ key: `${key.name}`, address: `${key.pubKey}` });
