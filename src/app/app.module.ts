@@ -20,6 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -65,6 +66,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
     MatTableModule,
     MatTabsModule,
     MatExpansionModule,
+    HttpClientModule,
   ],
   providers: [
     StoreService,

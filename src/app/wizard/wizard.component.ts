@@ -4,9 +4,10 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
-import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
+import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import { HttpClient } from '@angular/common/http';
 const { shell } = require('electron');
 
 @Component({
@@ -24,7 +25,8 @@ export class WizardComponent {
     private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private http: HttpClient) {
       this.screen = [1];
       this.pubKeyAddressGroup = [];
       this.wizardTokenFromGroup = formBuilder.group({
@@ -47,7 +49,7 @@ export class WizardComponent {
     }
 
     saveTokenForm() {
-      checkAndSubmit(this.wizardTokenFromGroup, this.cli, this.snackBar, this.screen);
+      checkAndSubmit(this.http, this.wizardTokenFromGroup, this.cli, this.snackBar, this.screen);
     }
 
     saveIdentityForm() {
@@ -70,8 +72,9 @@ export class WizardComponent {
         this.dialogRef.close();
       }
 
-      onClickCheckwIDConnection() {
-        checkwIDConnection(this.wizardIdentityFromGroup.get('url').value,
+      onClickCheckwIDConnectionGetAvailableKeys() {
+        checkwIDConnectionGetAvailableKeys(this.http,
+        this.wizardIdentityFromGroup.get('url').value,
         this.wizardIdentityFromGroup.get('token').value,
         this.pubKeyAddressGroup,
         this.snackBar);

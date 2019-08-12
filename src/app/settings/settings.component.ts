@@ -3,16 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import {
-  tokenFormatValidator,
-  noDuplicateIdentityNameValidatorFactoryOnAdd,
-  noDuplicateIdentityNameValidatorFactoryOnEdit
-} from '../misc/validators';
-import { checkAndSubmit, checkwIDConnection } from '../misc/settingsChecker';
+import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd, noDuplicateIdentityNameValidatorFactoryOnEdit } from '../misc/validators';
+import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
+import { HttpClient } from '@angular/common/http';
 import { remote } from 'electron';
 
 @Component({
@@ -34,7 +31,8 @@ export class SettingsComponent {
     public snackBar: MatSnackBar,
     public identityService: IdentityService,
     public foldersConfigService: FoldersConfigService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private http: HttpClient) {
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
@@ -65,7 +63,7 @@ export class SettingsComponent {
   }
 
   onClickcheckAndSubmit() {
-    checkAndSubmit(this.settingsFromGroup, this.cli, this.snackBar);
+    checkAndSubmit(this.http, this.settingsFromGroup, this.cli, this.snackBar);
   }
 
   openClearSaveSettingsConfirmDialog() {
@@ -145,7 +143,8 @@ export class SettingsComponent {
   }
 
   onClickAddwIDConnection() {
-    checkwIDConnection(this.addIdentityFormGroup.get('url').value,
+    checkwIDConnectionGetAvailableKeys(this.http,
+      this.addIdentityFormGroup.get('url').value,
       this.addIdentityFormGroup.get('token').value,
       this.addPubKeyAddressGroup,
       this.snackBar);
@@ -170,7 +169,8 @@ export class SettingsComponent {
   }
 
   async onClickEditwIDConnection() {
-    await checkwIDConnection(this.editIdentityFormGroup.get('url').value,
+    await checkwIDConnectionGetAvailableKeys(this.http,
+      this.editIdentityFormGroup.get('url').value,
       this.editIdentityFormGroup.get('token').value,
       this.editPubKeyAddressGroup,
       this.snackBar);

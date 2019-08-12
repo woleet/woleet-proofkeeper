@@ -54,7 +54,7 @@
         </button>
       </mat-form-field>
       <button mat-raised-button color="primary" *ngIf="pubKeyAddressGroup.length === 0"
-              (click)="onClickCheckwIDConnection();">
+              (click)="onClickCheckwIDConnectionGetAvailableKeys();">
         Select a key from Woleet.ID Server
       </button>
       <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">

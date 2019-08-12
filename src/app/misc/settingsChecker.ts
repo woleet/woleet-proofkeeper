@@ -2,9 +2,10 @@ import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { PubKeyAddressGroup } from './identitiesFromServer';
-import * as log from 'loglevel';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-export async function checkAndSubmit(formGroup: FormGroup,
+export async function checkAndSubmit(http: HttpClient,
+  formGroup: FormGroup,
   cliService: WoleetCliParametersService,
   snackBar: MatSnackBar,
   screenPage?: number[]) {
@@ -15,8 +16,8 @@ export async function checkAndSubmit(formGroup: FormGroup,
     }
   }
   try {
-    const creditsJSON = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value);
-    const creditsObject = JSON.parse(<string>creditsJSON);
+    const creditsObject: any = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value, http);
+    console.log(creditsObject);
     if (creditsObject.credits === undefined) { // TODO: check credits value
       openSnackBarError(snackBar);
       return;
@@ -35,7 +36,8 @@ export async function checkAndSubmit(formGroup: FormGroup,
   }
 }
 
-export async function checkwIDConnection(url: string,
+export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
+  url: string,
   token: string,
   pubKeyAddressGroup: PubKeyAddressGroup[],
   snackBar: MatSnackBar) {
@@ -43,16 +45,32 @@ export async function checkwIDConnection(url: string,
     pubKeyAddressGroup.pop();
   }
 
+  let usersObject;
   try {
-    const usersJSON = await requestGet(`${url}/discover/users?search=%`, token);
-    if (usersJSON) {
-      const usersObject = JSON.parse(<string>usersJSON);
-      for (const user of usersObject) {
-        const currentPubKeyAddressGroup: PubKeyAddressGroup = { user: `${user.identity.commonName}`, pubKeyAddress: [] };
-        pubKeyAddressGroup.push(currentPubKeyAddressGroup);
-        const currentUserKeysJSON = await requestGet(`${url}/discover/keys/${user.id}`, token);
-        const currentUserKeysObject = JSON.parse(<string>currentUserKeysJSON);
-        for (const key of currentUserKeysObject) {
+    const userObject = await requestGet(`${url}/discover/user`, token, http);
+    usersObject = [userObject];
+  } catch (e) {
+    if (e.status === 404) {
+      try {
+        usersObject = await requestGet(`${url}/discover/users?search=%`, token, http);
+      } catch (e) {
+        openSnackBarErrorCleanpubKeyAddressGroup(pubKeyAddressGroup, snackBar);
+        return;
+      }
+    } else {
+      openSnackBarErrorCleanpubKeyAddressGroup(pubKeyAddressGroup, snackBar);
+      return;
+    }
+  }
+
+  try {
+    for (const user of usersObject) {
+      const currentPubKeyAddressGroup: PubKeyAddressGroup = { user: `${user.identity.commonName}`, pubKeyAddress: [] };
+      pubKeyAddressGroup.push(currentPubKeyAddressGroup);
+      const currentUserKeysObject: any = await requestGet(`${url}/discover/keys/${user.id}`, token, http);
+      for (const key of currentUserKeysObject) {
+        console.log(key);
+        if (key.status === 'active' && key.device === 'server') {
           if (key.id === user.defaultKeyId) {
             currentPubKeyAddressGroup.pubKeyAddress.unshift({ key: `${key.name}`, address: `${key.pubKey}` });
           } else {
@@ -62,21 +80,8 @@ export async function checkwIDConnection(url: string,
       }
     }
   } catch (e) {
-    openSnackBarErrowID(snackBar);
-    while (pubKeyAddressGroup.length) {
-      pubKeyAddressGroup.pop();
-    }
+    openSnackBarErrorCleanpubKeyAddressGroup(pubKeyAddressGroup, snackBar);
     return;
-  }
-}
-
-export async function checkPubKey(url: string, token: string, pubKey: string) {
-  try {
-    await requestGet(`${url}/discover/user/${pubKey}`, token);
-    return true;
-  } catch (e) {
-    log.error(e);
-    return false;
   }
 }
 
@@ -86,34 +91,26 @@ export function openSnackBarError(snackBar: MatSnackBar) {
     { duration: 3000 });
 }
 
-export function openSnackBarErrowID(snackBar: MatSnackBar) {
+export function openSnackBarErrorID(snackBar: MatSnackBar) {
   snackBar.open('Unable to login, please check the URL and token.',
     undefined,
     { duration: 3000 });
 }
 
-export async function requestGet(url: string, token: string) {
-  return new Promise(function (resolve, reject) {
-    const req = new XMLHttpRequest();
-    req.open('GET', `${url}`, true);
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.setRequestHeader('Authorization', `Bearer ${token}`);
-    req.timeout = 3000;
-    req.onload = () => {
-      if (req.readyState === 4) {
-        if (req.status === 200) {
-          return resolve(req.response);
-        } else {
-          return reject();
-        }
-      }
-    };
-    req.onerror = () => {
-      return reject();
-    };
-    req.ontimeout = () => {
-      return reject();
-    };
-    req.send(null);
-  });
+export async function openSnackBarErrorCleanpubKeyAddressGroup(
+  pubKeyAddressGroup: PubKeyAddressGroup[], snackBar: MatSnackBar) {
+    openSnackBarErrorID(snackBar);
+    while (pubKeyAddressGroup.length) {
+      pubKeyAddressGroup.pop();
+    }
+  }
+
+async function requestGet(url: string, token: string, http: HttpClient) {
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+      'Authorization': `Bearer ${token}`
+    })
+  };
+  return http.get(url, httpOptions).toPromise();
 }
