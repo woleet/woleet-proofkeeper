@@ -37,4 +37,6 @@ export class AppComponent {
   setActiveSettings () { this.active = 'settings'; }
 
   setActiveLogs () { this.active = 'logs'; }
+
+  setActiveInfos () { this.active = 'infos'; }
 }

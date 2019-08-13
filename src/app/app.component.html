@@ -10,6 +10,9 @@
       <a (click)="setActiveLogs();" class="menubutton">
         <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'logs'}">code</i>
       </a>
+      <a (click)="setActiveInfos();" class="menubutton">
+        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'infos'}">info</i>
+      </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="container mainscreen">
@@ -21,6 +24,9 @@
     </div>
     <div class="screen-container" *ngIf="active === 'logs'">
       <app-logs></app-logs>
+    </div>
+    <div class="screen-container" *ngIf="active === 'infos'">
+      <app-infos></app-infos>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
