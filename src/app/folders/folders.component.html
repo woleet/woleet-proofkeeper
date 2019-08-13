@@ -65,6 +65,11 @@
           Do not check the SSL certificate of Woleet.ID server (only use in developpement)
         </mat-checkbox>
       </div>
+      <div>
+        <mat-form-field class="full-width">
+          <input matInput class="form-control" type="text" name="include" placeholder="Regexp that match files that will be anchored" formControlName="include">
+        </mat-form-field>
+      </div>
       <span class="align-end">
         <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
           (click)="onClickAdd();">
@@ -161,6 +166,11 @@
                   <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
                     Do not check the SSL certificate of Woleet.ID server (only use in developpement)
                   </mat-checkbox>
+                </div>
+                <div>
+                  <mat-form-field class="full-width">
+                    <input matInput class="form-control" type="text" name="include" placeholder="Regexp that match files that will be anchored" formControlName="include">
+                  </mat-form-field>
                 </div>
               </div>
               <span class="span-update-configuration">

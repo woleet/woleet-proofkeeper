@@ -12,6 +12,7 @@ export interface FolderDesc {
   strict: boolean;
   prune: boolean;
   recursive: boolean;
+  include: string;
   identityName: string;
   iDServerUnsecureSSL: boolean;
 }
@@ -82,6 +83,7 @@ export class FoldersConfigService {
     found.strict = folder.strict;
     found.prune = folder.prune;
     found.recursive = folder.recursive;
+    found.include = folder.include;
     if (found.action === 'sign') {
       found.identityName = folder.identityName;
       found.iDServerUnsecureSSL = folder.iDServerUnsecureSSL;
@@ -95,6 +97,9 @@ export class FoldersConfigService {
       const tempfolder = ({ ...folder }); // Used to copy the object
       delete tempfolder.logContext;
       delete tempfolder.identityService;
+      if (!tempfolder.include) {
+        delete tempfolder.include;
+      }
       retFolderParam.push(tempfolder);
     });
     this.store.set('folders', retFolderParam);
