@@ -6,3 +6,9 @@
 .full-width {
   width: 100%;
 }
+
+.fake-href {
+  color: -webkit-link;
+  cursor: pointer;
+  text-decoration: underline;
+}

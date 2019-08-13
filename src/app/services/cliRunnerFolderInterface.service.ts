@@ -3,8 +3,8 @@ import { FoldersConfigService, FolderDesc } from './foldersConfig.service';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 import { LogMessageService } from './logMessage.service';
 import { IndependantCliRunnerService } from '../misc/independantCliRunner';
-import * as log from 'loglevel';
 import { ExitTickService } from './exitTick.service';
+import * as log from 'loglevel';
 
 @Injectable()
 export class CliRunnerFolderInterface {
