@@ -32,6 +32,7 @@ import { WoleetCliParametersService } from './services/woleetcliParameters.servi
 import { IdentityService } from './services/Identity.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { LogsComponent } from './logs/logs.component';
+import { InfosComponent } from './infos/infos.component';
 import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
 
 @NgModule({
@@ -41,6 +42,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
     SettingsComponent,
     WizardComponent,
     LogsComponent,
+    InfosComponent,
     ConfirmationDialogComponent
   ],
   imports: [
