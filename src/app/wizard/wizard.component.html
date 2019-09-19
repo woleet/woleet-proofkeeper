@@ -11,7 +11,7 @@
         Accessing the Woleet API requires an API token.<br>
         You can create one using your
         <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnProofDesk();">ProofDesk</button>
-        account ("Account settings" menu -> "API" tab)
+        account ("Account settings" menu -> "API" tab).
       </p>
       <div>
         <mat-form-field class="full-width">
@@ -26,15 +26,16 @@
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up identities for signature</h1>
       <p class="mat-body-1">
-        If you want ProofKeeper to sign files and create timestamped proofs of signature, you need to configure at least one signatory identity:<br>
-        You will be able to add more signatory entities on the setting windows of this tool after the wizard.
+        If you want ProofKeeper to sign files and create timestamped proofs of signature,
+        you need to configure at least one signatory identity
+        (you will be able to add more signatory entities using the settings after the wizard):
       </p>
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
         <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">Name already present
         </mat-error>
         <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="Give a name to the key representing the identity of the legal person committing in signature operation"
+                matTooltip="Give a name representing the identity of the legal person committing in signature operation."
                 [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
@@ -48,7 +49,7 @@
         <input matInput placeholder="Woleet.ID Server API Token" formControlName="token"
                (ngModelChange)="onURLTokenChanges();">
         <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="To be found in Woleet.ID Server configuration menu"
+                matTooltip="Ask the administrator of your Woleet.ID Server for an API token."
                 [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
@@ -71,7 +72,7 @@
   <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 4">
     <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
     <h1 class="mat-h1 dialog-title">Congratulations!</h1>
-    <h2 class="mat-h2 dialog-subtitle">You can now configure the folders for timestamping and signature</h2>
+    <h2 class="mat-h2 dialog-subtitle">You can now configure the folders for timestamping and signature.</h2>
   </mat-dialog-content>
   <mat-dialog-actions>
     <div [ngClass]="(screen[0] !== 4)?'button-line':'button-line-last'">
