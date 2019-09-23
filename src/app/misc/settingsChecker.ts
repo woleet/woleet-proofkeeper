@@ -45,6 +45,7 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
   }
 
   let usersObject;
+  let isAdminToken = false;
   try {
     const userObject: any = await requestGet(`${url}/discover/user`, token, http);
     usersObject = userObject ? [userObject] : null;
@@ -56,6 +57,7 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
   }
 
   if (!usersObject) {
+    isAdminToken = true;
     try {
       usersObject = await requestGet(`${url}/discover/users?search=%`, token, http);
     } catch (e) {
@@ -66,7 +68,8 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
 
   try {
     for (const user of usersObject) {
-      if (user.Mode === 'esign') {
+      console.log(user);
+      if (isAdminToken && (user.mode === 'esign')) {
         continue;
       }
       const currentPubKeyAddressGroup: PubKeyAddressGroup = {
