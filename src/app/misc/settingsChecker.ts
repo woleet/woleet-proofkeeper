@@ -68,7 +68,6 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
 
   try {
     for (const user of usersObject) {
-      console.log(user);
       if (isAdminToken && (user.mode === 'esign')) {
         continue;
       }
