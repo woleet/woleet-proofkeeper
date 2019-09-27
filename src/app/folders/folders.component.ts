@@ -43,7 +43,7 @@ export class FoldersComponent implements OnDestroy {
       strict: [false],
       prune: [false],
       recursive: [false],
-      include: [''],
+      filter: [''],
       identity: ['', identityCheckerFactory(this)],
       iDServerUnsecureSSL: [false],
     });
@@ -86,7 +86,7 @@ export class FoldersComponent implements OnDestroy {
         strict: [folderParam.strict],
         prune: [folderParam.prune],
         recursive: [folderParam.recursive],
-        include: [folderParam.include],
+        filter: [folderParam.filter],
         identity: [folderParam.identityName, identityCheckerFactory(this)],
         iDServerUnsecureSSL: [folderParam.iDServerUnsecureSSL],
       });
@@ -103,7 +103,7 @@ export class FoldersComponent implements OnDestroy {
       strict: Boolean(form.get('strict').value).valueOf(),
       prune: Boolean(form.get('prune').value).valueOf(),
       recursive: Boolean(form.get('recursive').value).valueOf(),
-      include: form.get('include').value as string,
+      filter: form.get('filter').value as string,
       identityName: form.get('identity').value as string,
       iDServerUnsecureSSL: Boolean(form.get('iDServerUnsecureSSL').value).valueOf(),
     };

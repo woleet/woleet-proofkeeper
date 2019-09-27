@@ -45,18 +45,22 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
   }
 
   let usersObject;
+  let isAdminToken = false;
   try {
-    const userObject = await requestGet(`${url}/discover/user`, token, http);
-    usersObject = [userObject];
+    const userObject: any = await requestGet(`${url}/discover/user`, token, http);
+    usersObject = userObject ? [userObject] : null;
   } catch (e) {
-    if (e.status === 404) {
-      try {
-        usersObject = await requestGet(`${url}/discover/users?search=%`, token, http);
-      } catch (e) {
-        openSnackBarErrorCleanpubKeyAddressGroup(pubKeyAddressGroup, snackBar);
-        return;
-      }
-    } else {
+    if (e.status !== 404) {
+      openSnackBarErrorCleanpubKeyAddressGroup(pubKeyAddressGroup, snackBar);
+      return;
+    }
+  }
+
+  if (!usersObject) {
+    isAdminToken = true;
+    try {
+      usersObject = await requestGet(`${url}/discover/users?search=%`, token, http);
+    } catch (e) {
       openSnackBarErrorCleanpubKeyAddressGroup(pubKeyAddressGroup, snackBar);
       return;
     }
@@ -64,15 +68,27 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
 
   try {
     for (const user of usersObject) {
-      const currentPubKeyAddressGroup: PubKeyAddressGroup = { user: `${user.identity.commonName}`, pubKeyAddress: [] };
+      if (isAdminToken && (user.mode === 'esign')) {
+        continue;
+      }
+      const currentPubKeyAddressGroup: PubKeyAddressGroup = {
+        user: `${user.identity.commonName}`,
+        pubKeyAddress: []
+      };
       pubKeyAddressGroup.push(currentPubKeyAddressGroup);
       const currentUserKeysObject: any = await requestGet(`${url}/discover/keys/${user.id}`, token, http);
       for (const key of currentUserKeysObject) {
         if (key.status === 'active' && key.device === 'server') {
           if (key.id === user.defaultKeyId) {
-            currentPubKeyAddressGroup.pubKeyAddress.unshift({ key: `${key.name}`, address: `${key.pubKey}` });
+            currentPubKeyAddressGroup.pubKeyAddress.unshift({
+              key: `${key.name}`,
+              address: `${key.pubKey}`
+            });
           } else {
-            currentPubKeyAddressGroup.pubKeyAddress.push({ key: `${key.name}`, address: `${key.pubKey}` });
+            currentPubKeyAddressGroup.pubKeyAddress.push({
+              key: `${key.name}`,
+              address: `${key.pubKey}`
+            });
           }
         }
       }
@@ -85,28 +101,23 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
 
 export function openSnackBarError(snackBar: MatSnackBar) {
   snackBar.open('Unable to login. Please check your token.',
-    undefined,
-    { duration: 3000 });
-}
-
-export function openSnackBarErrorID(snackBar: MatSnackBar) {
-  snackBar.open('Unable to login, please check the URL and token.',
-    undefined,
-    { duration: 3000 });
+    undefined, {
+      duration: 3000
+    });
 }
 
 export async function openSnackBarErrorCleanpubKeyAddressGroup(
   pubKeyAddressGroup: PubKeyAddressGroup[], snackBar: MatSnackBar) {
-    openSnackBarErrorID(snackBar);
-    while (pubKeyAddressGroup.length) {
-      pubKeyAddressGroup.pop();
-    }
+  openSnackBarError(snackBar);
+  while (pubKeyAddressGroup.length) {
+    pubKeyAddressGroup.pop();
   }
+}
 
 async function requestGet(url: string, token: string, http: HttpClient) {
   const httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type':  'application/json',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     })
   };
