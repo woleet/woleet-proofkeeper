@@ -9,7 +9,7 @@ export class FolderParam {
   strict: boolean;
   prune: boolean;
   recursive: boolean;
-  include: string;
+  filter: string;
   identityName: string;
   iDServerUnsecureSSL: boolean;
   logContext?: LogContext;
@@ -25,7 +25,7 @@ export class FolderParam {
     this.strict = folderDesc.strict;
     this.prune = folderDesc.prune;
     this.recursive = folderDesc.recursive;
-    this.include = folderDesc.include;
+    this.filter = folderDesc.filter;
     this.identityName = folderDesc.identityName;
     this.iDServerUnsecureSSL = folderDesc.iDServerUnsecureSSL;
     this.logContext = new LogContext();
@@ -49,9 +49,9 @@ export class FolderParam {
     if (this.recursive) {
       parametersArray.push('--recursive');
     }
-    if (this.include) {
-      parametersArray.push('--include');
-      parametersArray.push(this.include);
+    if (this.filter) {
+      parametersArray.push('--filter');
+      parametersArray.push(this.filter);
     }
     if (this.identityName && this.action === 'sign') {
       if (this.identityService.arrayIdentityContent.filter(item => item.name === this.identityName).length !== 1) {
