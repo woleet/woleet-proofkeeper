@@ -14,6 +14,10 @@ To sum up, this tool can be used to generate and maintain the set of timestamped
 
 Note: tags are added to the anchors according to the name of sub-folders
 
+### Regex
+
+If you want to anchor a subset of the files present in a folder or a subfolder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regex, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
+
 ### Limitations
 
 * All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
