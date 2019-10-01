@@ -85,9 +85,9 @@ function setShortcuts() {
         { role: 'cut' },
         { role: 'copy' },
         { role: 'paste' },
-        { role: 'selectall' },
+        { role: 'selectAll' },
         { type: 'separator' },
-        { role: 'toggledevtools' },
+        { role: 'toggleDevTools' },
         { role: 'reload' },
         { role: 'quit' }
       ]
