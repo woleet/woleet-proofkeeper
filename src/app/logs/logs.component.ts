@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { MatTable, } from '@angular/material/table';
+import { Component, ViewChild, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { LogMessageService } from '../services/logMessage.service';
 import { FolderParam } from '../misc/folderParam';
@@ -9,12 +9,12 @@ import { FolderParam } from '../misc/folderParam';
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.scss']
 })
-export class LogsComponent implements OnDestroy {
+export class LogsComponent implements OnInit, OnDestroy {
   public folder: FolderParam;
   public folders: FolderParam[];
   public displayedColumns: string[];
   private logMessageSubscription: any;
-  @ViewChild(MatTable, {static: true}) mattable: MatTable<any>;
+  @ViewChild(MatTable, {static: false}) mattable: MatTable<any>;
 
   constructor(foldersConfigService: FoldersConfigService,
     private messageService: LogMessageService,
@@ -22,6 +22,9 @@ export class LogsComponent implements OnDestroy {
     this.folders = foldersConfigService.folders;
     this.folder = this.folders[0];
     this.displayedColumns = ['level', 'msg'];
+  }
+
+  ngOnInit() {
     this.logMessageSubscription = this.messageService.getMessage().subscribe((message) => {
       if (this.folder.path === message) {
         this.mattable.renderRows();

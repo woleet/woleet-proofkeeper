@@ -31,7 +31,6 @@
     "@angular/compiler-cli": "^8.2.8",
     "@angular/core": "^8.2.8",
     "@angular/forms": "^8.2.8",
-    "@angular/http": "^7.2.15",
     "@angular/language-service": "^8.2.8",
     "@angular/material": "^8.2.2",
     "@angular/platform-browser": "^8.2.8",
@@ -56,9 +55,6 @@
     "tslint": "~5.20.0",
     "typescript": "3.5.3",
     "wait-on": "^3.3.0",
-    "zone.js": "^0.10.2"
-  },
-  "dependencies": {
-    "npm-check-updates": "^3.1.23"
+    "zone.js": "^0.9.1"
   }
 }
