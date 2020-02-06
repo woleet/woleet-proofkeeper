@@ -1,9 +1,8 @@
-import { Injectable, ApplicationRef } from '@angular/core';
+import { Injectable, ApplicationRef, NgZone } from '@angular/core';
 import { FoldersConfigService, FolderDesc } from './foldersConfig.service';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 import { LogMessageService } from './logMessage.service';
 import { IndependantCliRunnerService } from '../misc/independantCliRunner';
-import { ExitTickService } from './exitTick.service';
 import * as log from 'loglevel';
 
 @Injectable()
@@ -15,9 +14,9 @@ export class CliRunnerFolderInterface {
     public folders: FoldersConfigService,
     private cli: WoleetCliParametersService,
     private logMessageService: LogMessageService,
-    private exitTickService: ExitTickService) {
+    private zone: NgZone) {
     this.folders.folders.forEach(folder => {
-      this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService, this.exitTickService));
+      this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService, this.zone));
     });
   }
 
@@ -25,7 +24,7 @@ export class CliRunnerFolderInterface {
     this.folders.addFolderFromInterface(folderDesc);
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
-      this.runners.push(new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService));
+      this.runners.push(new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.zone));
     } catch (e) {
       log.error(e);
     }
@@ -44,7 +43,7 @@ export class CliRunnerFolderInterface {
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
       this.runners[runnerIndex] =
-        new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService);
+        new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.zone);
     } catch (e) {
       log.error(e);
     }

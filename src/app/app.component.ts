@@ -51,7 +51,7 @@ export class AppComponent {
           this.deeplinkDialog.afterClosed().subscribe( () => {
             this.deeplinkDialog = undefined;
             if (this.active === 'settings') {
-              
+              // TODO
             }
           });
         }
