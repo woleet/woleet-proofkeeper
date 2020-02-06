@@ -34,6 +34,7 @@ import { WizardComponent } from './wizard/wizard.component';
 import { LogsComponent } from './logs/logs.component';
 import { InfosComponent } from './infos/infos.component';
 import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
+import { DeeplinkComponent } from './deeplink/deeplink.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
     FoldersComponent,
     SettingsComponent,
     WizardComponent,
+    DeeplinkComponent,
     LogsComponent,
     InfosComponent,
     ConfirmationDialogComponent
@@ -82,6 +84,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
   ],
   entryComponents: [
     WizardComponent,
+    DeeplinkComponent,
     ConfirmationDialogComponent
   ]
 })

@@ -25,6 +25,7 @@
   "linux": {
     "icon": "./src/assets/images/woleet.png",
     "target": [ "AppImage" ],
-    "files": [ "dist/ProofKeeper/assets/bin/linux" ]
+    "files": [ "dist/ProofKeeper/assets/bin/linux" ],
+    "mimeTypes": [ "x-scheme-handler/proofkeeper" ]
   }
 }

@@ -1,0 +1,38 @@
+<div class="dialog-container">
+  <mat-dialog-content *ngIf="(isApi||isWids)">
+    <h1 class="mat-h1 txt-align-center" *ngIf="isApi" >Set up authentication to Woleet API</h1>
+    <h1 class="mat-h1 txt-align-center" *ngIf="isWids" >Set up authentication to Woleet.ID Server</h1>
+    <p class="mat-body-1">
+      Provided API token:<br>
+    </p>
+    <mat-card>
+      {{token}}
+    </mat-card>
+    <mat-divider *ngIf="url" ></mat-divider>
+    <p class="mat-body-1" *ngIf="url">
+      Provided URL:
+    </p>
+    <mat-card *ngIf="url">
+      {{url}}
+    </mat-card>
+  </mat-dialog-content>
+  <mat-dialog-content *ngIf="!(isApi||isWids)">
+    <h1 class="mat-h1 txt-align-center">Invalid configuration passed by deeplinking</h1>
+    <p class="mat-body-1">
+      Please check with the one who provieded you the link<br>
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="button-line">
+      <button mat-raised-button color="primary" *ngIf="(isApi||isWids)" (click)="saveParameters();">
+        Save
+      </button>
+      <button mat-raised-button color="primary" *ngIf="(isApi||isWids)" (click)="closeDialog();">
+        Cancel
+      </button>
+      <button mat-raised-button color="primary" *ngIf="!(isApi||isWids)" (click)="closeDialog();">
+        Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

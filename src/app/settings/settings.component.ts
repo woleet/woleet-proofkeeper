@@ -33,28 +33,32 @@ export class SettingsComponent {
     public foldersConfigService: FoldersConfigService,
     private dialog: MatDialog,
     private http: HttpClient) {
+  this.initComponent();
+  }
+
+  initComponent() {
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
-    this.settingsFromGroup = formBuilder.group({
+    this.settingsFromGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()]
     });
 
-    if (identityService.arrayIdentityContent.length === 0) {
+    if (this.identityService.arrayIdentityContent.length === 0) {
       this.addState = true;
     } else {
       this.addState = false;
     }
 
-    this.addIdentityFormGroup = formBuilder.group({
+    this.addIdentityFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
       pubKey: ['', [Validators.required]]
     });
 
-    this.editIdentityFormGroup = formBuilder.group({
+    this.editIdentityFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnEdit(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
