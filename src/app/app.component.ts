@@ -4,6 +4,7 @@ import { StoreService } from './services/store.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { DeeplinkComponent } from './deeplink/deeplink.component';
 import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
+import { SettingsMessageService } from './services/settingsMessage.service';
 import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
 
@@ -22,6 +23,7 @@ export class AppComponent {
   constructor(storeService: StoreService,
     public dialog: MatDialog,
     private cliRunnerFolderInterface: CliRunnerFolderInterface,
+    private settingsMessageService: SettingsMessageService,
     private zone: NgZone) {
     this.store = storeService.store;
     if (!this.store.get('wizardBypass', false)) {
@@ -51,7 +53,7 @@ export class AppComponent {
           this.deeplinkDialog.afterClosed().subscribe( () => {
             this.deeplinkDialog = undefined;
             if (this.active === 'settings') {
-              // TODO
+              this.settingsMessageService.sendMessage('update');
             }
           });
         }
