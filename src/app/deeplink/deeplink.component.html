@@ -56,6 +56,9 @@
       <button mat-raised-button color="primary" [disabled]="widsFormGroup.invalid" *ngIf="(isWids && (pubKeyAddressGroup.length !== 0))" (click)="saveParameters(); ">
         Save
       </button>
+      <button mat-raised-button color="primary" *ngIf="(isApi||isWids)" (click)="closeDialog();">
+        Cancel
+      </button>
       <button mat-raised-button color="primary" *ngIf="!(isApi||isWids)" (click)="closeDialog();">
         Close
       </button>

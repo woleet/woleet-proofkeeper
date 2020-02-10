@@ -28,7 +28,10 @@ if (gotTheLock) {
     // argv: An array of the second instance’s (command line / deep linked) arguments
     if (process.platform === 'win32' || process.platform === 'linux') {
       // Keep only command line / deep linked arguments
-      sendDeepLink(argv.slice(1));
+      const found = argv.find(elem => (elem.startsWith('proofkeeper://')));
+      if (found) {
+        sendDeepLink(found);
+      }
     }
 
     if (win) {
@@ -159,8 +162,9 @@ if (!app.isDefaultProtocolClient('proofkeeper')) {
 }
 
 async function sendDeepLink(deeplinkingUrl) {
-  app.emit('activate');
+  if (process.platform !== 'darwin') {
+    app.emit('activate');
+  }
   await app.whenReady();
-  console.log(`deeplinkURL is: ${deeplinkingUrl}`);
   win.webContents.send('deeplink', deeplinkingUrl);
 }
