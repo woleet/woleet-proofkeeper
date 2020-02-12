@@ -82,6 +82,7 @@ export class FoldersConfigService implements OnDestroy {
         const indexToCheck = this.folders.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
         if (index !== -1) {
           this.foldersToCheck.splice(indexToCheck, 1);
+          this.folders[index].fixReceipts = false;
           if (this.foldersToCheck.length === 0) {
             this.store.set('fixReceipts', false);
             this.folderDoneSubscription.unsubscribe();
