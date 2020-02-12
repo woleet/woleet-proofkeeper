@@ -3,10 +3,11 @@ import { FolderParam } from './folderParam';
 import { concat, interval, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Log } from './logs';
-import * as log from 'loglevel';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { LogMessageService } from '../services/logMessage.service';
 import { ExitTickService } from '../services/exitTick.service';
+import { FolderDoneService } from '../services/folderDone.service';
+import * as log from 'loglevel';
 
 export class IndependantCliRunnerService {
 
@@ -16,7 +17,8 @@ export class IndependantCliRunnerService {
     public folderParam: FolderParam,
     private cli: WoleetCliParametersService,
     private logMessageService: LogMessageService,
-    private exitCodeMessageService: ExitTickService) {
+    private exitCodeMessageService: ExitTickService,
+    private folderDoneService: FolderDoneService) {
     this.timerSubscribe();
   }
 
@@ -45,6 +47,7 @@ export class IndependantCliRunnerService {
         this.printLogs(folder);
         log.info(`woleet-cli exited with code ${code}`);
         this.exitCodeMessageService.sendTick();
+        this.folderDoneService.sendFolderParam(folder);
         resolve(code);
       });
     });

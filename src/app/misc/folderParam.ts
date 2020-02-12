@@ -9,12 +9,13 @@ export class FolderParam {
   strict: boolean;
   prune: boolean;
   recursive: boolean;
+  fixReceipts: boolean;
   filter: string;
   identityName: string;
   iDServerUnsecureSSL: boolean;
   logContext?: LogContext;
 
-  public constructor(folderDesc: FolderDesc, public identityService: IdentityService) {
+  public constructor(folderDesc: FolderDesc, fixReceipts: boolean, public identityService: IdentityService) {
     if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {
       this.action = folderDesc.action;
     } else {
@@ -25,6 +26,7 @@ export class FolderParam {
     this.strict = folderDesc.strict;
     this.prune = folderDesc.prune;
     this.recursive = folderDesc.recursive;
+    this.fixReceipts = fixReceipts;
     this.filter = folderDesc.filter;
     this.identityName = folderDesc.identityName;
     this.iDServerUnsecureSSL = folderDesc.iDServerUnsecureSSL;
@@ -48,6 +50,9 @@ export class FolderParam {
     }
     if (this.recursive) {
       parametersArray.push('--recursive');
+    }
+    if (this.fixReceipts) {
+      parametersArray.push('--fixReceipts');
     }
     if (this.filter) {
       parametersArray.push('--filter');
