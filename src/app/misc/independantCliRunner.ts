@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Log } from './logs';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { LogMessageService } from '../services/logMessage.service';
+import { FolderDoneService } from '../services/folderDone.service';
 import * as log from 'loglevel';
 
 export class IndependantCliRunnerService {
@@ -15,6 +16,7 @@ export class IndependantCliRunnerService {
     public folderParam: FolderParam,
     private cli: WoleetCliParametersService,
     private logMessageService: LogMessageService,
+    private folderDoneService: FolderDoneService,
     private zone: NgZone) {
     this.timerSubscribe();
   }
@@ -46,6 +48,7 @@ export class IndependantCliRunnerService {
           folder.logContext.launched = false;
           this.printLogs(folder);
           log.info(`woleet-cli exited with code ${code}`);
+        this.folderDoneService.sendFolderParam(folder);
           resolve(code);
         });
       });

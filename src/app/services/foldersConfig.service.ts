@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { StoreService } from './store.service';
 import { FolderParam } from '../misc/folderParam';
 import { IdentityService } from './Identity.service';
-import * as log from 'loglevel';
+import { FolderDoneService } from './folderDone.service';
+import { Subscription } from 'rxjs';
 import * as Store from 'electron-store';
+import * as log from 'loglevel';
 
 export interface FolderDesc {
   action: string;
@@ -34,16 +36,59 @@ function populateDefaultsFolderDesc(folderDesc: FolderDesc) {
   providedIn: 'root',
 })
 
-export class FoldersConfigService {
+export class FoldersConfigService implements OnDestroy {
   public folders: FolderParam[] = [];
   public store: Store<any>;
+  public fixReceipts: boolean;
+  private folderDoneSubscription: Subscription;
+  private foldersToCheck: FolderParam[] = [];
 
-  public constructor(storeService: StoreService, private identityService: IdentityService) {
+  public constructor(storeService: StoreService, private identityService: IdentityService, private folderDoneService: FolderDoneService) {
     this.store = storeService.store;
+    if (!this.store.has('fixReceipts')) {
+      this.store.set('fixReceipts', true);
+    }
+    this.fixReceipts = this.store.get('fixReceipts');
+    if (this.fixReceipts) {
+      this.folderDoneSubscription = this.folderDoneService.getFolderParam().subscribe((folderParam) => {
+        this.receiveFolderDone(folderParam);
+      });
+    }
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
-      this.folders = folders.map(e => new FolderParam(e, identityService));
-      this.folders.forEach(folder => { populateDefaultsFolderDesc(folder); });
+      this.folders = folders.map(e => new FolderParam(e, this.fixReceipts, identityService));
+      this.folders.forEach(folder => {
+        populateDefaultsFolderDesc(folder);
+      });
+      if (this.fixReceipts) {
+        this.folderDoneSubscription = this.folderDoneService.getFolderParam().subscribe((folderParam) => {
+          this.receiveFolderDone(folderParam);
+        });
+        this.foldersToCheck = Array.from(this.folders);
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.folderDoneSubscription) {
+      this.folderDoneSubscription.unsubscribe();
+    }
+  }
+
+  private receiveFolderDone (folderParam: FolderParam) {
+    const index = this.folders.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
+    if (index !== -1) {
+      if (folderParam.logContext.exitCode === 0) {
+        const indexToCheck = this.folders.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
+        if (index !== -1) {
+          this.foldersToCheck.splice(indexToCheck, 1);
+          this.folders[index].fixReceipts = false;
+          if (this.foldersToCheck.length === 0) {
+            this.store.set('fixReceipts', false);
+            this.folderDoneSubscription.unsubscribe();
+          }
+        }
+      }
     }
   }
 
@@ -57,7 +102,7 @@ export class FoldersConfigService {
   }
 
   public addFolderFromInterface(folderDesc: FolderDesc) {
-    const newFolderParam = new FolderParam(folderDesc, this.identityService);
+    const newFolderParam = new FolderParam(folderDesc, false, this.identityService);
     this.addFolderFromClass(newFolderParam);
   }
 
@@ -97,6 +142,7 @@ export class FoldersConfigService {
       const tempfolder = ({ ...folder }); // Used to copy the object
       delete tempfolder.logContext;
       delete tempfolder.identityService;
+      delete tempfolder.fixReceipts;
       if (!tempfolder.filter) {
         delete tempfolder.filter;
       }
