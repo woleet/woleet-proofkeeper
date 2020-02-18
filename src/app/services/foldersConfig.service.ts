@@ -49,11 +49,6 @@ export class FoldersConfigService implements OnDestroy {
       this.store.set('fixReceipts', true);
     }
     this.fixReceipts = this.store.get('fixReceipts');
-    if (this.fixReceipts) {
-      this.folderDoneSubscription = this.folderDoneService.getFolderParam().subscribe((folderParam) => {
-        this.receiveFolderDone(folderParam);
-      });
-    }
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
       this.folders = folders.map(e => new FolderParam(e, this.fixReceipts, identityService));
@@ -75,11 +70,11 @@ export class FoldersConfigService implements OnDestroy {
     }
   }
 
-  private receiveFolderDone (folderParam: FolderParam) {
+  private receiveFolderDone(folderParam: FolderParam) {
     const index = this.folders.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
     if (index !== -1) {
       if (folderParam.logContext.exitCode === 0) {
-        const indexToCheck = this.folders.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
+        const indexToCheck = this.foldersToCheck.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
         if (index !== -1) {
           this.foldersToCheck.splice(indexToCheck, 1);
           this.folders[index].fixReceipts = false;
