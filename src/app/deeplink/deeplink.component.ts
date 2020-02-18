@@ -53,13 +53,13 @@ export class DeeplinkComponent {
     if (deeplinkingUrl.protocol !== 'proofkeeper:') {
       return;
     }
-    if (deeplinkingUrl.pathname.match(/\/+api\/+/i)) {
-      if (!deeplinkingUrl.searchParams.has('token') && deeplinkingUrl.searchParams.has('url')) {
+    if (deeplinkingUrl.pathname.match(/\/+api\/*/i)) {
+      if (!deeplinkingUrl.searchParams.has('token')) {
         return;
       }
       this.isApi = true;
       return;
-    } else if (deeplinkingUrl.pathname.match(/\/+wids\/+/i)) {
+    } else if (deeplinkingUrl.pathname.match(/\/+wids\/*/i)) {
       if (deeplinkingUrl.searchParams.has('token') && deeplinkingUrl.searchParams.has('url')) {
         this.isWids = true;
         return;

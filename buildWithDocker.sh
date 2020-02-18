@@ -26,7 +26,5 @@ electronuserland/builder:wine -c 'rm -rf docker-release/* && npm install && npm 
 'npm run electron:linux-nobuild && '\
 'npm run electron:windows-nobuild  && '\
 'export RELEASE=$(grep "version" package.json | grep -oE "([[:digit:]]\.)+[[:digit:]]") && '\
-'mv "release/ProofKeeper-$RELEASE.AppImage" "docker-release/ProofKeeper $RELEASE.AppImage" && '\
-'mv "release/ProofKeeper $RELEASE.exe" "docker-release/ProofKeeper $RELEASE.exe" && '\
-'mv "release/ProofKeeper Setup $RELEASE.exe" "docker-release/ProofKeeper Setup $RELEASE.exe" && '\
+'mv release/* docker-release/ && '\
 'chown -R '"$(id -u "$(whoami)"):$(id -g "$(whoami)")"' docker-release'
