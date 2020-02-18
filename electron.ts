@@ -23,10 +23,9 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (gotTheLock) {
   app.on('second-instance', (e, argv) => {
     // Someone tried to run a second instance, we should focus our window.
-
     // Protocol handler for win32
     // argv: An array of the second instance’s (command line / deep linked) arguments
-    if (process.platform === 'win32' || process.platform === 'linux') {
+    if (process.platform === 'win32') {
       // Keep only command line / deep linked arguments
       const found = argv.find(elem => (elem.startsWith('proofkeeper://')));
       if (found) {
