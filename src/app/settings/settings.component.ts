@@ -3,7 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd, noDuplicateIdentityNameValidatorFactoryOnEdit } from '../misc/validators';
+import {
+  tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd,
+  noDuplicateIdentityNameValidatorFactoryOnEdit
+} from '../misc/validators';
 import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';

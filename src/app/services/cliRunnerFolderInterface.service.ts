@@ -19,7 +19,9 @@ export class CliRunnerFolderInterface {
     private exitTickService: ExitTickService,
     private folderDoneService: FolderDoneService) {
     this.folders.folders.forEach(folder => {
-      this.runners.push(new IndependantCliRunnerService(this.appRef, folder, this.cli, this.logMessageService, this.exitTickService, this.folderDoneService));
+      this.runners.push(new IndependantCliRunnerService(
+        this.appRef, folder, this.cli, this.logMessageService, this.exitTickService, this.folderDoneService
+      ));
     });
   }
 
@@ -27,7 +29,9 @@ export class CliRunnerFolderInterface {
     this.folders.addFolderFromInterface(folderDesc);
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
-      this.runners.push(new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService, this.folderDoneService));
+      this.runners.push(new IndependantCliRunnerService(
+        this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService, this.folderDoneService
+      ));
     } catch (e) {
       log.error(e);
     }
@@ -46,7 +50,9 @@ export class CliRunnerFolderInterface {
     try {
       const foundFolder = this.folders.getFolderParamFromActionPath(folderDesc.action, folderDesc.path);
       this.runners[runnerIndex] =
-        new IndependantCliRunnerService(this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService, this.folderDoneService);
+        new IndependantCliRunnerService(
+          this.appRef, foundFolder, this.cli, this.logMessageService, this.exitTickService, this.folderDoneService
+        );
     } catch (e) {
       log.error(e);
     }
