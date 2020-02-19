@@ -7,6 +7,7 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
 import { SettingsMessageService } from './services/settingsMessage.service';
 import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
+import * as log from 'loglevel';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,9 @@ export class AppComponent {
 
     ipcRenderer.on('deeplink', (event, deeplinkingUrl) => {
       this.zone.run(() => {
+        if (this.wizardDialog !== undefined) {
+          this.wizardDialog.close();
+        }
         if (!this.deeplinkDialog) {
           this.deeplinkDialog = this.dialog.open(DeeplinkComponent, {
             disableClose: true,
