@@ -26,6 +26,12 @@
   width: 100%;
 }
 
+.mat-card-token {
+  width: 50vh;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
 .button-line{
   display: inline-flex;
   margin: auto;
