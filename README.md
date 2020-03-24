@@ -16,14 +16,14 @@ Note: tags are added to the anchors according to the name of sub-folders
 
 ### Regex
 
-If you want to anchor a subset of the files present in a folder or a subfolder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regex, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
+If you want to anchor a subset of the files present in a folder or a sub-folder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regex, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
 
 ### Limitations
 
 * All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
 * Symlinks are not followed
 * Scanned sub-folders cannot have a space in their name
-* The maximum length of the subfolder path (without delimiters) is 128 characters
+* The maximum length of the sub-folder path (without delimiters) is 128 characters
 
 ## Installation
 
@@ -81,6 +81,6 @@ Alternatively you can launch a docker to build the project, only linux and windo
 ./buildWithDocker.sh
 ```
 
-After this step the packages apps will be available in the folder docker-release/ .
+After this step the packages apps will be available in the docker-release/ folder.
 
-An other folder will be created: docker-cache it will contains the node_modules folder used by the docker container as well as the ~/.cache folder of the container which contains the electron releases.
+Another folder will be created: docker-cache it will contains the node_modules folder used by the docker container as well as the ~/.cache folder of the container which contains the electron releases.
