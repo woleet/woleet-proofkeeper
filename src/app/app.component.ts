@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, NgZone } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StoreService } from './services/store.service';
 import { WizardComponent } from './wizard/wizard.component';
+import { DeeplinkComponent } from './deeplink/deeplink.component';
 import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
+import { SettingsMessageService } from './services/settingsMessage.service';
+import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
+import * as log from 'loglevel';
 
 @Component({
   selector: 'app-root',
@@ -13,23 +17,52 @@ import * as Store from 'electron-store';
 
 export class AppComponent {
   public active: string;
+  private wizardDialog: MatDialogRef<WizardComponent>;
+  private deeplinkDialog: MatDialogRef<DeeplinkComponent>;
   private store: Store<any>;
 
-  constructor(storeService: StoreService, dialog: MatDialog, private cliRunnerFolderInterface: CliRunnerFolderInterface) {
-      this.store = storeService.store;
-      if (!this.store.get('wizardBypass', false)) {
-        const wizardDialog = dialog.open(WizardComponent, {
-          disableClose: true,
-          height: '90vh',
-          width: '90vw',
-          maxHeight: '100vh',
-          maxWidth: '100vw'
-        });
-        wizardDialog.afterClosed().subscribe( () => {
-          this.store.set('wizardBypass', true);
-        });
-      }
-      this.setActiveFolders();
+  constructor(storeService: StoreService,
+    public dialog: MatDialog,
+    private cliRunnerFolderInterface: CliRunnerFolderInterface,
+    private settingsMessageService: SettingsMessageService,
+    private zone: NgZone) {
+    this.store = storeService.store;
+    if (!this.store.get('wizardBypass', false)) {
+      this.wizardDialog = dialog.open(WizardComponent, {
+        disableClose: true,
+        height: '90vh',
+        width: '90vw',
+        maxHeight: '100vh',
+        maxWidth: '100vw'
+      });
+      this.wizardDialog.afterClosed().subscribe( () => {
+        this.store.set('wizardBypass', true);
+        this.wizardDialog = undefined;
+      });
+    }
+    this.setActiveFolders();
+
+    ipcRenderer.on('deeplink', (event, deeplinkingUrl) => {
+      this.zone.run(() => {
+        if (this.wizardDialog !== undefined) {
+          this.wizardDialog.close();
+        }
+        if (!this.deeplinkDialog) {
+          this.deeplinkDialog = this.dialog.open(DeeplinkComponent, {
+            disableClose: true,
+            data: {
+              url: deeplinkingUrl
+            }
+          });
+          this.deeplinkDialog.afterClosed().subscribe( () => {
+            this.deeplinkDialog = undefined;
+            if (this.active === 'settings') {
+              this.settingsMessageService.sendMessage('update');
+            }
+          });
+        }
+      });
+    });
   }
 
   setActiveFolders () { this.active = 'folders'; }

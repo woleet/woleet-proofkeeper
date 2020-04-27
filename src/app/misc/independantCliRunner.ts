@@ -1,11 +1,10 @@
-import { ApplicationRef } from '@angular/core';
+import { ApplicationRef, NgZone } from '@angular/core';
 import { FolderParam } from './folderParam';
 import { concat, interval, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Log } from './logs';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { LogMessageService } from '../services/logMessage.service';
-import { ExitTickService } from '../services/exitTick.service';
 import { FolderDoneService } from '../services/folderDone.service';
 import * as log from 'loglevel';
 
@@ -17,8 +16,8 @@ export class IndependantCliRunnerService {
     public folderParam: FolderParam,
     private cli: WoleetCliParametersService,
     private logMessageService: LogMessageService,
-    private exitCodeMessageService: ExitTickService,
-    private folderDoneService: FolderDoneService) {
+    private folderDoneService: FolderDoneService,
+    private zone: NgZone) {
     this.timerSubscribe();
   }
 
@@ -34,21 +33,24 @@ export class IndependantCliRunnerService {
       const newExecutionCalled = [false]; // Used to pass boolean as reference
       const exec = this.cli.woleetCli.createProcess(this.cli.getActionParametersArray(folder));
       exec.stdout.on('data', (data) => {
-        folder.logContext.logsAccumulator += data.toString('utf8');
-        if (!newExecutionCalled[0]) {
-          this.parseLogs(folder, newExecutionCalled);
-        } else {
-          newExecutionCalled[0] = true;
-        }
+        this.zone.run(() => {
+          folder.logContext.logsAccumulator += data.toString('utf8');
+          if (!newExecutionCalled[0]) {
+            this.parseLogs(folder, newExecutionCalled);
+          } else {
+            newExecutionCalled[0] = true;
+          }
+        });
       });
       exec.on('close', (code) => {
-        folder.logContext.exitCode = code;
-        folder.logContext.launched = false;
-        this.printLogs(folder);
-        log.info(`woleet-cli exited with code ${code}`);
-        this.exitCodeMessageService.sendTick();
+        this.zone.run(() => {
+          folder.logContext.exitCode = code;
+          folder.logContext.launched = false;
+          this.printLogs(folder);
+          log.info(`woleet-cli exited with code ${code}`);
         this.folderDoneService.sendFolderParam(folder);
-        resolve(code);
+          resolve(code);
+        });
       });
     });
   }

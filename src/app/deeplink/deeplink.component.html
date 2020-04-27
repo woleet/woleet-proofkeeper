@@ -1,0 +1,67 @@
+<div class="dialog-container">
+  <mat-dialog-content *ngIf="(isApi||isWids)">
+    <h1 class="mat-h1 txt-align-center" *ngIf="isApi" >Set up authentication to Woleet API</h1>
+    <h1 class="mat-h1 txt-align-center" *ngIf="isWids && (pubKeyAddressGroup.length === 0)" >Set up authentication to Woleet.ID Server</h1>
+    <div *ngIf="pubKeyAddressGroup.length === 0">
+      <p class="mat-body-1">
+        Provided API token:<br>
+      </p>
+      <mat-card class="mat-card-token">
+        {{token}}
+      </mat-card>
+      <mat-divider *ngIf="url" ></mat-divider>
+      <p class="mat-body-1" *ngIf="url">
+        Provided URL:
+      </p>
+      <mat-card *ngIf="url">
+        {{url}}
+      </mat-card>
+    </div>
+    <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Name" formControlName="name">
+        <mat-error *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')">Name already present
+        </mat-error>
+        <button mat-icon-button matSuffix [disableRipple]="true"
+                matTooltip="Give a name representing the identity of the legal person committing in signature operation."
+                [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
+          <mat-icon>help</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
+        <mat-select placeholder="Public key" formControlName="pubKey">
+          <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
+            <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
+              {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-content *ngIf="!(isApi||isWids)">
+    <h1 class="mat-h1 txt-align-center">Invalid configuration passed by deeplinking</h1>
+    <p class="mat-body-1">
+      Please check with the one who provided you the link<br>
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="button-line">
+      <button mat-raised-button color="primary" *ngIf="(isApi)" (click)="saveParameters();">
+        Save
+      </button>
+      <button mat-raised-button color="primary" *ngIf="(isWids && (pubKeyAddressGroup.length === 0))" (click)="onClickCheckwIDConnectionGetAvailableKeys();">
+        Check
+      </button>
+      <button mat-raised-button color="primary" [disabled]="widsFormGroup.invalid" *ngIf="(isWids && (pubKeyAddressGroup.length !== 0))" (click)="saveParameters(); ">
+        Save
+      </button>
+      <button mat-raised-button color="primary" *ngIf="(isApi||isWids)" (click)="closeDialog();">
+        Cancel
+      </button>
+      <button mat-raised-button color="primary" *ngIf="!(isApi||isWids)" (click)="closeDialog();">
+        Close
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

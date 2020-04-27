@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { LogMessageService } from '../services/logMessage.service';
@@ -17,18 +17,16 @@ export class LogsComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable, {static: false}) mattable: MatTable<any>;
 
   constructor(foldersConfigService: FoldersConfigService,
-    private messageService: LogMessageService,
-    private ref: ChangeDetectorRef) {
+    private logMessageService: LogMessageService) {
     this.folders = foldersConfigService.folders;
     this.folder = this.folders[0];
     this.displayedColumns = ['level', 'msg'];
   }
 
   ngOnInit() {
-    this.logMessageSubscription = this.messageService.getMessage().subscribe((message) => {
+    this.logMessageSubscription = this.logMessageService.getMessage().subscribe((message) => {
       if (this.folder.path === message) {
         this.mattable.renderRows();
-        this.ref.detectChanges();
       }
     });
   }

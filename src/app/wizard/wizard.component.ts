@@ -66,7 +66,7 @@ export class WizardComponent {
       while (this.pubKeyAddressGroup.length) {
         this.pubKeyAddressGroup.pop();
       }
-      }
+    }
 
       closeDialog() {
         this.dialogRef.close();

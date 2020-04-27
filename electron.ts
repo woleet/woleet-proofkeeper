@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, webContents } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -16,6 +16,32 @@ if (liveenv) {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
+}
+
+// Force Single Instance Application
+const gotTheLock = app.requestSingleInstanceLock();
+if (gotTheLock) {
+  app.on('second-instance', (e, argv) => {
+    // Someone tried to run a second instance, we should focus our window.
+    // Protocol handler for win32
+    // argv: An array of the second instance’s (command line / deep linked) arguments
+    if (process.platform === 'win32') {
+      // Keep only command line / deep linked arguments
+      const found = argv.find(elem => (elem.startsWith('proofkeeper://')));
+      if (found) {
+        sendDeepLink(found);
+      }
+    }
+
+    if (win) {
+      if (win.isMinimized()) {
+         win.restore();
+        }
+      win.focus();
+    }
+  });
+} else {
+  app.quit();
 }
 
 nativcon = nativeImage.createFromPath(path.join(__dirname, 'dist/ProofKeeper/assets/images/woleet.png'));
@@ -103,6 +129,14 @@ app.on('ready', () => {
   setShortcuts();
 });
 
+app.on('will-finish-launching', function() {
+  // Protocol handler for osx
+  app.on('open-url', function(event, url) {
+    event.preventDefault();
+    sendDeepLink(url);
+  });
+});
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -120,3 +154,16 @@ app.on('activate', () => {
 app.on('before-quit', () => {
   willQuitApp = true;
 });
+
+if (!app.isDefaultProtocolClient('proofkeeper')) {
+  // Define custom protocol handler. Deep linking works on packaged versions of the application!
+  app.setAsDefaultProtocolClient('proofkeeper');
+}
+
+async function sendDeepLink(deeplinkingUrl) {
+  if (process.platform !== 'darwin') {
+    app.emit('activate');
+  }
+  await app.whenReady();
+  win.webContents.send('deeplink', deeplinkingUrl);
+}

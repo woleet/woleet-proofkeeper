@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import {
 import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { IdentityService } from '../services/Identity.service';
 import { FoldersConfigService } from '../services/foldersConfig.service';
+import { SettingsMessageService } from '../services/settingsMessage.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { HttpClient } from '@angular/common/http';
@@ -20,7 +21,7 @@ import { remote } from 'electron';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent {
+export class SettingsComponent implements  OnInit, OnDestroy {
   public addState: boolean;
   public identityOpened: string;
   public settingsFromGroup: FormGroup;
@@ -28,36 +29,55 @@ export class SettingsComponent {
   public editIdentityFormGroup: FormGroup;
   public addPubKeyAddressGroup: PubKeyAddressGroup[];
   public editPubKeyAddressGroup: PubKeyAddressGroup[];
+  private settingsMessageSubscription: any;
+
 
   constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     public identityService: IdentityService,
     public foldersConfigService: FoldersConfigService,
+    private settingsMessageService: SettingsMessageService,
     private dialog: MatDialog,
     private http: HttpClient) {
+  this.initComponent();
+  }
+
+  ngOnInit() {
+    this.settingsMessageSubscription = this.settingsMessageService.getMessage().subscribe((message) => {
+      if (message === 'update') {
+        this.initComponent();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.settingsMessageSubscription.unsubscribe();
+  }
+
+  initComponent() {
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
-    this.settingsFromGroup = formBuilder.group({
+    this.settingsFromGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()]
     });
 
-    if (identityService.arrayIdentityContent.length === 0) {
+    if (this.identityService.arrayIdentityContent.length === 0) {
       this.addState = true;
     } else {
       this.addState = false;
     }
 
-    this.addIdentityFormGroup = formBuilder.group({
+    this.addIdentityFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
       pubKey: ['', [Validators.required]]
     });
 
-    this.editIdentityFormGroup = formBuilder.group({
+    this.editIdentityFormGroup = this.formBuilder.group({
       name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnEdit(this)]],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
