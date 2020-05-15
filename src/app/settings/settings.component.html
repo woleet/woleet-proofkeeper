@@ -59,7 +59,7 @@
 </mat-card>
 
 <mat-card class="identity-card" *ngIf="identityService.arrayIdentityContent.length !== 0">
-  <h3 class="mat-h3">Signatory identities:</h3>
+  <h3 class="mat-h3">Signer identities:</h3>
   <mat-list-item *ngFor="let identityContent of identityService.arrayIdentityContent; last as last" role="listitem">
     <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
       <button mat-button class='identity-name identity-button'
