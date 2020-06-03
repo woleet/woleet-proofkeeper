@@ -14,7 +14,7 @@ export class LogsComponent implements OnInit, OnDestroy {
   public folders: FolderParam[];
   public displayedColumns: string[];
   private logMessageSubscription: any;
-  @ViewChild(MatTable, {static: false}) mattable: MatTable<any>;
+  @ViewChild(MatTable) mattable: MatTable<any>;
 
   constructor(foldersConfigService: FoldersConfigService,
     private logMessageService: LogMessageService) {
