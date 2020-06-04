@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
@@ -28,8 +28,7 @@ export class FoldersComponent {
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private dialog: MatDialog,
-    private ref: ChangeDetectorRef) {
+    private dialog: MatDialog) {
 
     this.addState = false;
 
