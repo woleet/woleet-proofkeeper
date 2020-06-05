@@ -20,7 +20,11 @@
   "mac": {
     "icon": "./src/assets/images/woleet.png",
     "target": [ "dmg" ],
-    "files": [ "dist/ProofKeeper/assets/bin/darwin" ]
+    "files": [ "dist/ProofKeeper/assets/bin/darwin" ],
+    "entitlements": "build/entitlements.mac.plist",
+    "entitlementsInherit": "build/entitlements.mac.plist",
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false
   },
   "linux": {
     "icon": "./src/assets/images/woleet.png",
