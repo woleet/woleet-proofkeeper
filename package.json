@@ -14,7 +14,7 @@
     "build:prod": "npm run build -- -c production",
     "electron:serve": "npm run electron:TStoJS && rm -rf dist && npm-run-all -p angular:buildandwatch electron:serveandreload",
     "electron:serveandreload": "wait-on dist/ProofKeeper/index.html && electron . --liveenv",
-    "electron:TStoJS": "npx tsc --target 'ES5' --typeRoots 'node_modules/@types' --moduleResolution 'node' --lib 'DOM,ES5,ES6' electron.ts",
+    "electron:TStoJS": "npm run postinstall && npx tsc --target 'ES5' --typeRoots 'node_modules/@types' --moduleResolution 'node' --lib 'DOM,ES5,ES6' electron.ts",
     "electron:linux": "npm run build:prod && npm run electron:linux-nobuild",
     "electron:linux-nobuild": "chmod +x dist/ProofKeeper/assets/bin/linux/woleet-cli && npx electron-builder build --linux",
     "electron:mac": "npm run build:prod && npm run electron:mac-nobuild",

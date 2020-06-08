@@ -1,9 +1,11 @@
 {
+  "appId": "com.electron.ProofKeeper",
   "productName": "ProofKeeper",
   "asar": true,
   "asarUnpack": [
     "dist/ProofKeeper/assets/bin"
   ],
+  "afterSign": "build/notarize.js",
   "directories": {
     "output": "release/"
   },
@@ -23,8 +25,7 @@
     "files": [ "dist/ProofKeeper/assets/bin/darwin" ],
     "entitlements": "build/entitlements.mac.plist",
     "entitlementsInherit": "build/entitlements.mac.plist",
-    "hardenedRuntime": true,
-    "gatekeeperAssess": false
+    "hardenedRuntime": true
   },
   "linux": {
     "icon": "./src/assets/images/woleet.png",
