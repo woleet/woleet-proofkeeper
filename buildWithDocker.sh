@@ -14,7 +14,7 @@ docker run -it --rm \
 -v "${PWD}/electron.ts:$PROJECT_FOLDER/electron.ts:ro" \
 -v "${PWD}/package.json:$PROJECT_FOLDER/package.json:ro" \
 -v "${PWD}/package-lock.json:$PROJECT_FOLDER/package-lock.json:ro" \
--v "${PWD}/postinstall.js:$PROJECT_FOLDER/postinstall.js:ro" \
+-v "${PWD}/build:$PROJECT_FOLDER/build:ro" \
 -v "${PWD}/tsconfig.json:$PROJECT_FOLDER/tsconfig.json:ro" \
 -v "${PWD}/tslint.json:$PROJECT_FOLDER/tslint.json:ro" \
 -v "${PWD}/src:$PROJECT_FOLDER/src:ro" \
