@@ -12,8 +12,6 @@ Since proof creation is not a realtime operation, the tool rescan the configured
 
 To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence or signature for all files in a given directory.
 
-Note: tags are added to the anchors according to the name of sub-folders
-
 ### Regex
 
 If you want to anchor a subset of the files present in a folder or a sub-folder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regex, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
@@ -22,7 +20,6 @@ If you want to anchor a subset of the files present in a folder or a sub-folder,
 
 * All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
 * Symlinks are not followed
-* Scanned sub-folders cannot have a space in their name
 * The maximum length of the sub-folder path (without delimiters) is 128 characters
 
 ## Installation
