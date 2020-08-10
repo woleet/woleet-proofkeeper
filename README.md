@@ -1,26 +1,30 @@
 # ProofKeeper
 
-## Functionnalities
+## Functionalities
 
-ProofKeeper is Woleet's proof management tool for your desktop. Using this native application, you can automate the timestamping and signature of your sensitive files.
+ProofKeeper is Woleet's proof management tool for Windows, macOS and Linux.
 
-### General usage
+Using this native application, you can automate the timestamping and signature of your sensitive files, without disclosing them to anybody, not even to Woleet.
 
-The tool scans folders recursively and anchors or signs all files found. It also gathers proof receipts and stores them beside timestamped or signed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
+### How it works
 
-Since proof creation is not a realtime operation, the tool rescan the configured folders every 15 minutes
+The tool automatically scans a set of folders that you define, and timestamps or signs any files found.
 
-To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence or signature for all files in a given directory.
+Once the proof receipts are ready, the tool automatically gathers them from the Woleet platform and stores them beside the timestamped or signed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
 
-### Regex
+The tool rescans the set folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or signed. 
 
-If you want to anchor a subset of the files present in a folder or a sub-folder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regex, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
+To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence or signature for all the files of a set of directories.
 
 ### Limitations
 
 * All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
 * Symlinks are not followed
 * The maximum length of the sub-folder path (without delimiters) is 128 characters
+
+### Using regular expression
+
+If you want to timestamp or sign only a subset of the files present in a folder or a sub-folder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regular expression, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
 
 ## Installation
 
@@ -37,7 +41,7 @@ There are few version available:
 
 Just download it and execute it (add execution permissions if necessary).
 
-## Developpement
+## Development
 
 To be able to develop on this app, you need to install node dependencies (At least Node.js 8 is required):
 
