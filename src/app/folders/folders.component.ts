@@ -189,8 +189,13 @@ function noDUplicatePathValidatorFactory(thisParam) {
       const foldersToCheck = thisParam.cliRunnerFolderInterface.folders.folders.filter(folder => {
         return folder.action === thisParam.folderFormGroup.controls['action'].value;
       });
+      const separator = require('path').sep;
       const duplicateFolder = foldersToCheck.some(folder => {
-        return (folder.path.includes(control.value) || control.value.includes(folder.path));
+        const pathToCheck = folder.path + separator;
+        const valueToCheck = control.value + separator;
+        console.log(pathToCheck);
+        console.log(valueToCheck);
+        return (pathToCheck.includes(valueToCheck) || valueToCheck.includes(pathToCheck));
       });
       if (duplicateFolder) {
         return {
