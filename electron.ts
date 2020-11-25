@@ -54,7 +54,8 @@ function createWindowTray() {
     minHeight: 300,
     icon: nativcon,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   });
 

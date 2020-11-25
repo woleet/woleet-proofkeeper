@@ -4,6 +4,8 @@ import { FolderParam } from '../misc/folderParam';
 import { IdentityService } from './Identity.service';
 import { FolderDoneService } from './folderDone.service';
 import { Subscription } from 'rxjs';
+import { remote } from 'electron';
+import * as semver from 'semver';
 import * as Store from 'electron-store';
 import * as log from 'loglevel';
 
@@ -45,10 +47,7 @@ export class FoldersConfigService implements OnDestroy {
 
   public constructor(storeService: StoreService, private identityService: IdentityService, private folderDoneService: FolderDoneService) {
     this.store = storeService.store;
-    if (!this.store.has('fixReceipts')) {
-      this.store.set('fixReceipts', true);
-    }
-    this.fixReceipts = this.store.get('fixReceipts');
+    this.checkUpgradePath();
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
       this.folders = folders.map(e => new FolderParam(e, this.fixReceipts, identityService));
@@ -152,5 +151,43 @@ export class FoldersConfigService implements OnDestroy {
       throw new Error('Unable to find the folder to get params from');
     }
     return foundFolder;
+  }
+
+  private checkUpgradePath() {
+    const currentVersion = remote.app.getVersion();
+    let storedVersion = '';
+    if (this.store.has('previousVersion')) {
+      storedVersion = this.store.get('previousVersion');
+    } else if (this.store.has('folders')) {
+      // Before version 0.5.1, previousVersion was not stored into the config
+      //  but fixReceipts must be applied if and older configuration were to be found
+      storedVersion = '0.5.0';
+    } else {
+      storedVersion = currentVersion;
+    }
+
+    if (!semver.valid(currentVersion)) {
+      // If currentVersion is not readable, do nothing
+      return;
+    }
+    if (!semver.valid(storedVersion)) {
+      // This case can be triggered when storedVersion is taken from the store but is somehow not readable
+      //  For now a sensible default would be to set it to the currentVersion
+      storedVersion = currentVersion;
+    }
+
+    if (semver.lt(storedVersion, '0.5.1')) {
+      this.upgrade051();
+    }
+
+    this.store.set('previousVersion', currentVersion);
+  }
+
+  private upgrade051() {
+    if (this.store.has('fixReceipts')) {
+      this.store.delete('fixReceipts');
+    }
+    this.fixReceipts = true;
+    this.store.set('previousVersion', '0.5.1');
   }
 }
