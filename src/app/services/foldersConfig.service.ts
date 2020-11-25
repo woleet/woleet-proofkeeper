@@ -174,13 +174,16 @@ export class FoldersConfigService implements OnDestroy {
       // This case can be triggered when storedVersion is taken from the store but is somehow not readable
       //  For now a sensible default would be to set it to the currentVersion
       storedVersion = currentVersion;
+      this.store.set('previousVersion', currentVersion);
     }
 
     if (semver.lt(storedVersion, '0.5.1')) {
       this.upgrade051();
     }
 
-    this.store.set('previousVersion', currentVersion);
+    if (semver.neq(storedVersion, currentVersion)) {
+      this.store.set('previousVersion', currentVersion);
+    }
   }
 
   private upgrade051() {
