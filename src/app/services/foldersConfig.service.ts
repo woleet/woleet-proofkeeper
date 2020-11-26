@@ -48,6 +48,7 @@ export class FoldersConfigService implements OnDestroy {
   public constructor(storeService: StoreService, private identityService: IdentityService, private folderDoneService: FolderDoneService) {
     this.store = storeService.store;
     this.checkUpgradePath();
+    this.fixReceipts = this.store.get('fixReceipts');
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
       this.folders = folders.map(e => new FolderParam(e, this.fixReceipts, identityService));
@@ -187,10 +188,7 @@ export class FoldersConfigService implements OnDestroy {
   }
 
   private upgrade051() {
-    if (this.store.has('fixReceipts')) {
-      this.store.delete('fixReceipts');
-    }
-    this.fixReceipts = true;
+    this.store.set('fixReceipts', true);
     this.store.set('previousVersion', '0.5.1');
   }
 }
