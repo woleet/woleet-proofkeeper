@@ -198,7 +198,7 @@ function noDUplicatePathValidatorFactory(thisParam) {
         let valueToCheck = control.value;
         if (valueToCheck.charAt(valueToCheck.length - 1) !== separator) {
           valueToCheck = valueToCheck + separator;
-        };
+        }
         return (pathToCheck.includes(valueToCheck) || valueToCheck.includes(pathToCheck));
       });
       if (duplicateFolder) {
