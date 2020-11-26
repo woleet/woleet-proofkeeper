@@ -191,10 +191,14 @@ function noDUplicatePathValidatorFactory(thisParam) {
       });
       const separator = require('path').sep;
       const duplicateFolder = foldersToCheck.some(folder => {
-        const pathToCheck = folder.path + separator;
-        const valueToCheck = control.value + separator;
-        console.log(pathToCheck);
-        console.log(valueToCheck);
+        let pathToCheck = folder.path;
+        if (pathToCheck.charAt(pathToCheck.length - 1) !== separator) {
+          pathToCheck = pathToCheck + separator;
+        }
+        let valueToCheck = control.value;
+        if (valueToCheck.charAt(valueToCheck.length - 1) !== separator) {
+          valueToCheck = valueToCheck + separator;
+        };
         return (pathToCheck.includes(valueToCheck) || valueToCheck.includes(pathToCheck));
       });
       if (duplicateFolder) {
