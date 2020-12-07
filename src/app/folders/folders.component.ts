@@ -34,7 +34,7 @@ export class FoldersComponent {
 
     this.folderFormGroup = formBuilder.group({
       action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
-      path: ['', [Validators.required, Validators.maxLength(160), noDUplicatePathValidatorFactory(this)]],
+      path: ['', [Validators.required, Validators.maxLength(160), noDuplicatePathValidatorFactory(this)]],
       public: [false],
       strict: [false],
       prune: [false],
@@ -180,7 +180,7 @@ export class FoldersComponent {
   }
 }
 
-function noDUplicatePathValidatorFactory(thisParam) {
+function noDuplicatePathValidatorFactory(thisParam) {
   return function noDUplicatePathValidator(control: AbstractControl): ValidationErrors | null {
     if (thisParam.folderFormGroup !== undefined) {
       if (!control.value) {

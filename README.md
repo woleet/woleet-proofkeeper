@@ -49,7 +49,7 @@ To be able to develop on this app, you need to install node dependencies (At lea
 npm install
 ```
 
-Then download binaries of woleet-cli (actual version 0.3.0) and start the app:
+Then download the latest binaries of woleet-cli and start the app:
 
 ``` bash
 # Download binaries
