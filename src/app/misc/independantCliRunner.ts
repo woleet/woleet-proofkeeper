@@ -67,8 +67,8 @@ export class IndependantCliRunnerService {
     if (logAccumulatorSplitted.length >= 2) {
       for (let index = 0; index < logAccumulatorSplitted.length; index++) {
         if (index === logAccumulatorSplitted.length - 1) {
-          const lenghtToDelete = tempLogAccumulator.length - logAccumulatorSplitted[index].length;
-          folder.logContext.logsAccumulator = folder.logContext.logsAccumulator.slice(lenghtToDelete);
+          const lengthToDelete = tempLogAccumulator.length - logAccumulatorSplitted[index].length;
+          folder.logContext.logsAccumulator = folder.logContext.logsAccumulator.slice(lengthToDelete);
         } else if (logAccumulatorSplitted[index]) {
           const jsonLogLine: Log = {
             level: '',

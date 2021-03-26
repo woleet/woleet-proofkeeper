@@ -20,7 +20,6 @@ To sum up, this tool can be used to generate and maintain the set of timestamped
 
 * All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
 * Symlinks are not followed
-* The maximum length of the sub-folder path (without delimiters) is 128 characters
 
 ### Using regular expression
 
@@ -53,7 +52,7 @@ Then download the latest binaries of woleet-cli and start the app:
 
 ``` bash
 # Download binaries
-./getBins.sh 0.5.1
+./getBins.sh 0.5.2
 
 # Start the app
 npm start

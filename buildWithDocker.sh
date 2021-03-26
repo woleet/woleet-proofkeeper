@@ -2,7 +2,7 @@
 
 set -e
 
-CLI_CURRENT_VERSION='0.5.1'
+CLI_CURRENT_VERSION='0.5.2'
 PROJECT_FOLDER='/project'
 
 ./getBins.sh $CLI_CURRENT_VERSION

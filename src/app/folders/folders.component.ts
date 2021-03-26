@@ -34,7 +34,7 @@ export class FoldersComponent {
 
     this.folderFormGroup = formBuilder.group({
       action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
-      path: ['', [Validators.required, Validators.maxLength(160), noDuplicatePathValidatorFactory(this)]],
+      path: ['', [Validators.required, noDuplicatePathValidatorFactory(this)]],
       public: [false],
       strict: [false],
       prune: [false],
@@ -102,8 +102,6 @@ export class FoldersComponent {
     let path: string;
     try {
       path = remote.dialog.showOpenDialogSync({ properties: ['openDirectory'] })[0];
-      const pathlenght: number = path.split(nodepath.sep).join('').length;
-      log.info(`Path lenght: ${pathlenght}`);
     } catch (error) {
       path = '';
     } finally {
