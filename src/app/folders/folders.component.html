@@ -84,7 +84,7 @@
         <ng-container *ngFor="let folderForm of foldersFormGroup; let i = index;">
           <mat-expansion-panel *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
             <mat-expansion-panel-header>
-              <span class="span-expansion-panel-header">
+              <div class="span-expansion-panel-header">
                 <span class="span-folder-name">{{folderForm.get('path').value}}</span>
                 <span class=span-status-icons>
                   <!-- <mat-chip-list>
@@ -114,7 +114,7 @@
                     </mat-icon>
                   </button>
                 </span>
-              </span>
+              </div>
             </mat-expansion-panel-header>
             <form [formGroup]="folderForm">
               <div *ngIf="folderForm.get('action').value === 'sign'">
