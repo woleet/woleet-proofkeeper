@@ -4,9 +4,9 @@
       <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
     </button>
     <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
-      <mat-tab label="Timestamped folders">
+      <mat-tab label="Files to timestamp">
       </mat-tab>
-      <mat-tab label="Signed folders">
+      <mat-tab label="Files to sign">
       </mat-tab>
     </mat-tab-group>
     <form [formGroup]="folderFormGroup" *ngIf="addState">
