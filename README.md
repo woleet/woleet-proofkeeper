@@ -52,7 +52,7 @@ Then download the latest binaries of woleet-cli and start the app:
 
 ``` bash
 # Download binaries
-./getBins.sh 0.5.2
+./getBins.sh 0.5.3
 
 # Start the app
 npm start
