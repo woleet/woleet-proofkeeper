@@ -35,7 +35,7 @@ export class FoldersComponent {
     this.folderFormGroup = formBuilder.group({
       action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
       path: ['', [Validators.required, noDuplicatePathValidatorFactory(this)]],
-      public: [false],
+      public: [true],
       strict: [false],
       prune: [false],
       recursive: [false],
@@ -169,7 +169,7 @@ export class FoldersComponent {
     this.folderFormGroup.reset({
       action: this.folderFormGroup.get('action').value,
       path: '',
-      private: true,
+      public: true,
     });
   }
 
