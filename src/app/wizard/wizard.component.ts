@@ -45,7 +45,7 @@ export class WizardComponent {
     }
 
     clickOnProofDesk() {
-      shell.openExternal('https://app.woleet.io/account-settings#api');
+      shell.openExternal('https://app.woleet.io/developer');
     }
 
     saveTokenForm() {
