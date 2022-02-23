@@ -26,36 +26,35 @@
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
       <h1 class="mat-h1 txt-align-center">Set up identities for signature</h1>
       <p class="mat-body-1">
-        If you want ProofKeeper to sign files and create timestamped proofs of signature,
-        you need to configure at least one signer identity
-        (you will be able to add more signer identities using the settings after the wizard):
+        If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one
+        seal identity (you will be able to add more seal identities using the settings after the wizard):
       </p>
       <mat-form-field class="full-width">
         <input matInput placeholder="Name" formControlName="name">
         <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">Name already present
         </mat-error>
         <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="Give a name representing the identity of the legal person committing in signature operation."
-                [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
+          matTooltip="Give a name representing the identity of the legal person committing in signature operation."
+          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput placeholder="Woleet.ID Server signature API URL" formControlName="url"
-               (ngModelChange)="onURLTokenChanges();">
+          (ngModelChange)="onURLTokenChanges();">
         <mat-hint>ex: https://identity.acme.com:3002</mat-hint>
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput placeholder="Woleet.ID Server API Token" formControlName="token"
-               (ngModelChange)="onURLTokenChanges();">
+          (ngModelChange)="onURLTokenChanges();">
         <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="Ask the administrator of your Woleet.ID Server for an API token."
-                [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
+          matTooltip="Ask the administrator of your Woleet.ID Server for an API token."
+          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
       <button mat-raised-button color="primary" *ngIf="pubKeyAddressGroup.length === 0"
-              (click)="onClickCheckwIDConnectionGetAvailableKeys();">
+        (click)="onClickCheckwIDConnectionGetAvailableKeys();">
         Select a key from Woleet.ID Server
       </button>
       <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
@@ -80,10 +79,12 @@
         Start configuration
       </button>
       <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid"
-              (click)="saveTokenForm();">
+        (click)="saveTokenForm();">
         Next
       </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFromGroup.invalid" (click)="saveIdentityForm(); nextPage();">Next</button>
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFromGroup.invalid"
+        (click)="saveIdentityForm(); nextPage();">Next
+      </button>
       <button mat-raised-button color="primary" *ngIf="screen[0] === 4" (click)="closeDialog();" class="last-button">
         OK
       </button>

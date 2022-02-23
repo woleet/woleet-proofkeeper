@@ -14,7 +14,7 @@ Once the proof receipts are ready, the tool automatically gathers them from the 
 
 The tool rescans the set folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or signed. 
 
-To sum up, this tool can be used to generate and maintain the set of timestamped proofs of existence or signature for all the files of a set of directories.
+To sum up, this tool can be used to generate and maintain the set of proofs of timestamp or proof of seal for all the files of a set of directories.
 
 ### Limitations
 
