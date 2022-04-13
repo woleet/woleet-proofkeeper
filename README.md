@@ -31,12 +31,12 @@ The latest installers can be found [here](https://github.com/woleet/woleet-proof
 
 There are few version available:
 
-| File name                   | OS/version                   |
-|-----------------------------|---------------------------|
-| ProofKeeper-x.x.x.dmg       | macOS version             |
-| ProofKeeper.x.x.x.AppImage  | Linux version             |
-| ProofKeeper.x.x.x.exe       | Portable Windows version  |
-| ProofKeeper.Setup.x.x.x.exe | Installer Windows version |
+| File name                              | OS/version                             |
+|----------------------------------------|----------------------------------------|
+| ProofKeeper-x.x.x-macOS.dmg            | macOS version                          |
+| ProofKeeper-x.x.x-Linux.AppImage       | Linux version                          |
+| ProofKeeper-x.x.x-Portable-Windows.exe | Portable Windows version               |
+| ProofKeeper-x.x.x-Setup-Windows.exe    | Installer Windows version              |
 
 Just download it and execute it (add execution permissions if necessary).
 

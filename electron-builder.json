@@ -19,7 +19,14 @@
     "target": [ "portable", "nsis" ],
     "files": [ "dist/ProofKeeper/assets/bin/windows" ]
   },
+  "nsis": {
+    "artifactName": "${productName}-${version}-Setup-Windows.${ext}"
+  },
+  "portable": {
+    "artifactName": "${productName}-${version}-Portable-Windows.${ext}"
+  },
   "mac": {
+    "artifactName": "${productName}-${version}-macOS.${ext}",
     "icon": "./src/assets/images/woleet.png",
     "target": [ "dmg" ],
     "files": [ "dist/ProofKeeper/assets/bin/darwin" ],
@@ -28,6 +35,7 @@
     "hardenedRuntime": true
   },
   "linux": {
+    "artifactName": "${productName}-${version}-Linux.${ext}",
     "icon": "./src/assets/images/woleet.png",
     "target": [ "AppImage" ],
     "files": [ "dist/ProofKeeper/assets/bin/linux" ]
