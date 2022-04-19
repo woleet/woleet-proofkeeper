@@ -42,32 +42,32 @@
       <br>
       <div>
         <mat-checkbox color="primary" name="public" formControlName="public">
-          Make the proofs publicly visible
+          Make proofs publicly discoverable by anyone having the file
         </mat-checkbox>
       </div>
       <div>
         <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-          Include subfolders
+          Include files from subfolders
         </mat-checkbox>
       </div>
       <div>
         <mat-checkbox color="primary" name="strict" formControlName="strict">
-          Timestamp again if the files are modified
+          Recreate proofs if files are modified
         </mat-checkbox>
       </div>
       <div>
         <mat-checkbox color="primary" name="prune" formControlName="prune">
-          Delete old proofs if the files are modified
+          Delete old proofs if files are modified
         </mat-checkbox>
       </div>
       <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
         <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-          Do not check the SSL certificate of Woleet.ID server (only use in developpement)
+          Do not check the SSL certificate of Woleet.ID server (only use in development)
         </mat-checkbox>
       </div>
       <div>
         <mat-form-field class="full-width">
-          <input matInput class="form-control" type="text" name="filter" placeholder="Regexp that match files that will be anchored" formControlName="filter">
+          <input matInput class="form-control" type="text" name="filter" placeholder="Only prove files matching this regular expression" formControlName="filter">
         </mat-form-field>
       </div>
       <span class="align-end">
@@ -144,32 +144,32 @@
               <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
                   <mat-checkbox color="primary" name="public" formControlName="public">
-                    Make the proofs publicly visible
+                    Make proofs publicly discoverable by anyone having the file
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-                    Include subfolders
+                    Include files from subfolders
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="strict" formControlName="strict">
-                    Timestamp again if the files are modified
+                    Recreate proofs if files are modified
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="prune" formControlName="prune">
-                    Delete old proofs if the files are modified
+                    Delete old proofs if files are modified
                   </mat-checkbox>
                 </div>
                 <div *ngIf="folderForm.get('action').value === 'sign'">
                   <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-                    Do not check the SSL certificate of Woleet.ID server (only use in developpement)
+                    Do not check the SSL certificate of Woleet.ID server (only use in development)
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-form-field class="full-width">
-                    <input matInput class="form-control" type="text" name="filter" placeholder="Regexp that match files that will be anchored" formControlName="filter">
+                    <input matInput class="form-control" type="text" name="filter" placeholder="Only prove files matching this regular expression" formControlName="filter">
                   </mat-form-field>
                 </div>
               </div>

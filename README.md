@@ -8,11 +8,11 @@ Using this native application, you can automate the timestamping and signature o
 
 ### How it works
 
-The tool automatically scans a set of folders that you define, and timestamps or signs any files found.
+The tool automatically scans a set of folders that you define, and timestamps or seals all files found (or a sub-part matching a regular expression).
 
-Once the proof receipts are ready, the tool automatically gathers them from the Woleet platform and stores them beside the timestamped or signed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
+Once the proof receipts are ready, the tool automatically gathers them from the Woleet platform and stores them beside the timestamped or sealed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
 
-The tool rescans the set folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or signed. 
+The tool rescans the folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or sealed. 
 
 To sum up, this tool can be used to generate and maintain the set of proofs of timestamp or proof of seal for all the files of a set of directories.
 
@@ -23,7 +23,7 @@ To sum up, this tool can be used to generate and maintain the set of proofs of t
 
 ### Using regular expression
 
-If you want to timestamp or sign only a subset of the files present in a folder or a sub-folder, you can use the regex option which will limit the scope of this tool to the files that matches the provided regular expression, you can test the regex here: https://regex-golang.appspot.com/assets/html/index.html.
+If you want to timestamp or seal only a subset of the files in a folder, you can define a regular expression limiting the scope of this tool to the files matching this expression (you can test the regular expression here: https://regex-golang.appspot.com/assets/html/index.html).
 
 ## Installation
 
