@@ -3,7 +3,7 @@
     <mat-form-field [style.width.%]="100">
       <mat-select placeholder="Logs of folder" [(ngModel)]="folder">
         <mat-option *ngFor="let folder of folders" [value]="folder">
-          {{folder.action}} {{folder.path}}
+          {{translateLegacyAction(folder.action)}} {{folder.path}}
         </mat-option>
       </mat-select>
     </mat-form-field>

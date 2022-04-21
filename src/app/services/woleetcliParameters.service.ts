@@ -42,7 +42,7 @@ export class WoleetCliParametersService {
   public getActionParametersArray(folderParam: FolderParam): [string] {
     const actionParametersArray: [string] = [] as any;
     if (folderParam.action === 'anchor') actionParametersArray.push('timestamp');
-    if (folderParam.action === 'seal') actionParametersArray.push('seal');
+    if (folderParam.action === 'sign') actionParametersArray.push('seal');
     if (this.url) {
       actionParametersArray.push('--url');
       actionParametersArray.push(this.url);

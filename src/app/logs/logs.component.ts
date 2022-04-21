@@ -34,4 +34,10 @@ export class LogsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.logMessageSubscription.unsubscribe();
   }
+
+  translateLegacyAction(action: string): string {
+    if (action === 'anchor') { return 'timestamp'; }
+    if (action === 'sign') { return 'seal'; }
+    return action;
+  }
 }
