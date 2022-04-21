@@ -4,13 +4,13 @@
 
 ProofKeeper is Woleet's proof management tool for Windows, macOS and Linux.
 
-Using this native application, you can automate the timestamping and signature of your sensitive files, without disclosing them to anybody, not even to Woleet.
+Using this native application, you can automate the timestamping and sealing of your sensitive files, without disclosing them to anybody, not even to Woleet.
 
 ### How it works
 
 The tool automatically scans a set of folders that you define, and timestamps or seals all files found (or a sub-part matching a regular expression).
 
-Once the proof receipts are ready, the tool automatically gathers them from the Woleet platform and stores them beside the timestamped or sealed files (in a Chainpoint file named 'filename'-'anchorID'.(anchor|signature)-receipt.json).
+Once the proof receipts are ready, the tool automatically gathers them from the Woleet platform and stores them beside the timestamped or sealed files (in a Chainpoint file named 'filename'-'proofID'.(timestamp|seal)-receipt.json).
 
 The tool rescans the folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or sealed. 
 
@@ -18,7 +18,7 @@ To sum up, this tool can be used to generate and maintain the set of proofs of t
 
 ### Limitations
 
-* All files and folders beginning by '.' or finished by '.(anchor|signature)-(receipt|pending).json' are ignored
+* All files and folders beginning by '.' or finished by '.(timestamp|seal)-(receipt|pending).json' are ignored
 * Symlinks are not followed
 
 ### Using regular expression
@@ -52,7 +52,7 @@ Then download the latest binaries of woleet-cli and start the app:
 
 ``` bash
 # Download binaries
-./getBins.sh 0.5.3
+./getBins.sh 0.5.4
 
 # Start the app
 npm start
