@@ -41,8 +41,11 @@ export class WoleetCliParametersService {
 
   public getActionParametersArray(folderParam: FolderParam): [string] {
     const actionParametersArray: [string] = [] as any;
-    if (folderParam.action === 'anchor') actionParametersArray.push('timestamp');
-    if (folderParam.action === 'sign') actionParametersArray.push('seal');
+    if (folderParam.action === 'anchor') {actionParametersArray.push('timestamp'); }
+    if (folderParam.action === 'sign') {actionParametersArray.push('seal'); }
+    actionParametersArray.push('--config');
+    actionParametersArray.push('DISABLED');
+    actionParametersArray.push('--json');
     if (this.url) {
       actionParametersArray.push('--url');
       actionParametersArray.push(this.url);
@@ -51,9 +54,6 @@ export class WoleetCliParametersService {
       actionParametersArray.push('--token');
       actionParametersArray.push(this.token);
     }
-    actionParametersArray.push('--config');
-    actionParametersArray.push('disabled');
-    actionParametersArray.push('--json');
     return actionParametersArray.concat(folderParam.getParametersArray()) as any;
   }
 

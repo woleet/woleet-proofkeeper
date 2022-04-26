@@ -63,7 +63,7 @@ export class CliRunnerFolderInterface {
     this.runners.splice(runnerIndex, 1);
   }
 
-  public restartRunner(folderDesc: FolderDesc) {
+  public restartRunner(folderDesc: FolderDesc, tempFixReceipts: boolean = false) {
     const runnerIndex = this.runners.findIndex(
       elem => ((folderDesc.action === elem.folderParam.action) && (folderDesc.path === elem.folderParam.path))
     );
@@ -71,6 +71,6 @@ export class CliRunnerFolderInterface {
       log.error('Unable to find the runner to restart');
       return;
     }
-    this.runners[runnerIndex].forceRefresh();
+    this.runners[runnerIndex].forceRefresh(tempFixReceipts);
   }
 }

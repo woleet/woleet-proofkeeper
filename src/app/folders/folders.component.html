@@ -138,9 +138,6 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <!-- <span>
-                  <button mat-raised-button color="primary" (click)="onClickOpenedOptionFolder(folderForm.get('path').value)">Options</button>
-                </span> -->
               <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
                   <mat-checkbox color="primary" name="public" formControlName="public">
@@ -172,6 +169,10 @@
                     <input matInput class="form-control" type="text" name="filter" placeholder="Only prove files matching this regular expression" formControlName="filter">
                   </mat-form-field>
                 </div>
+              </div>
+              <div>
+                <button mat-raised-button color="primary" style="margin-right: 10px" (click)="onClickFixReceipts(folderForm);">Fix Receipts</button>
+                Rename old receipts and fix stored receipts if needed, this option will be enabled for one run only
               </div>
               <span class="span-update-configuration">
                 <button mat-raised-button color="primary" [disabled]="folderForm.pristine || folderForm.invalid"

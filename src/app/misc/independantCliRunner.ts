@@ -11,6 +11,7 @@ import * as log from 'loglevel';
 export class IndependantCliRunnerService {
 
   private timerSubscription: Subscription;
+  private tempFixReceiptExecuted = false;
 
   constructor(private appRef: ApplicationRef,
     public folderParam: FolderParam,
@@ -99,16 +100,22 @@ export class IndependantCliRunnerService {
     }
   }
 
-  public forceRefresh() {
+  public forceRefresh(tempFixReceipts: boolean = false) {
     this.timerSubscription.unsubscribe();
-    this.timerSubscribe();
+    this.timerSubscribe(tempFixReceipts);
   }
 
-  private timerSubscribe() {
+  private timerSubscribe(tempFixReceipts: boolean = false) {
     const appIsStable = this.appRef.isStable.pipe(first(isStable => isStable === true));
     const every15Mins = interval(15 * 60 * 1000);
     const every15MinsOnceAppIsStable = concat(appIsStable, every15Mins);
     this.timerSubscription = every15MinsOnceAppIsStable.subscribe(() => {
+      if (tempFixReceipts && !this.tempFixReceiptExecuted) {
+        const tempFolderParam: FolderParam = Object.create(this.folderParam);
+        tempFolderParam.fixReceipts = true;
+        this.execCli(tempFolderParam);
+        this.tempFixReceiptExecuted = true;
+      }
       if (!this.folderParam.logContext.launched) {
         this.folderParam.logContext.launched = true;
         this.execCli(this.folderParam);

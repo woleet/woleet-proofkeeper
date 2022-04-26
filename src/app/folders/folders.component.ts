@@ -176,6 +176,11 @@ export class FoldersComponent {
   onClickRefresh(folderForm: FormGroup) {
     this.cliRunnerFolderInterface.restartRunner(this.getFolderDescFromFormGroup(folderForm));
   }
+
+  onClickFixReceipts(folderForm: FormGroup) {
+    this.cliRunnerFolderInterface.restartRunner(this.getFolderDescFromFormGroup(folderForm), true);
+    this.fillFoldersFormGroup();
+  }
 }
 
 function noDuplicatePathValidatorFactory(thisParam) {
