@@ -21,8 +21,11 @@ export class DeeplinkComponent {
 
   public isApi = false;
   public isWids = false;
-  public token: string;
-  public url: string;
+  public screen = 0;
+  public woleetToken: string;
+  public woleetUrl: string;
+  public widsToken: string;
+  public widsUrl: string;
   public pubKeyAddressGroup: PubKeyAddressGroup[];
   public widsFormGroup: FormGroup;
 
@@ -36,21 +39,18 @@ export class DeeplinkComponent {
     this.pubKeyAddressGroup = [];
     const deeplinkingUrl = new URL(data.url);
     this.checkParameters(deeplinkingUrl);
-    if (this.isApi || this.isWids) {
-      this.token = deeplinkingUrl.searchParams.get('token');
-      if (deeplinkingUrl.searchParams.has('url')) {
-        this.url = deeplinkingUrl.searchParams.get('url');
-      }
-      if (this.isWids) {
-        this.widsFormGroup = formBuilder.group({
-          name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
-          pubKey: ['', [Validators.required]]
-        });
-      }
+    if (this.isWids) {
+      this.screen = 2;
+      this.widsFormGroup = formBuilder.group({
+        name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
+        pubKey: ['', [Validators.required]]
+      });
     }
+    if (this.isApi) { this.screen = 1; }
   }
 
   checkParameters(deeplinkingUrl: URL) {
+    log.info(`received ${deeplinkingUrl}`);
     if (deeplinkingUrl.protocol !== 'proofkeeper:') {
       return;
     }
@@ -58,12 +58,27 @@ export class DeeplinkComponent {
       if (!deeplinkingUrl.searchParams.has('token')) {
         return;
       }
+      if (deeplinkingUrl.searchParams.has('url')) { this.woleetUrl = deeplinkingUrl.searchParams.get('woleeturl'); }
+      this.woleetToken = deeplinkingUrl.searchParams.get('token');
       this.isApi = true;
       return;
     } else if (deeplinkingUrl.pathname.match(/\/+wids\/*/i)) {
       if (deeplinkingUrl.searchParams.has('token') && deeplinkingUrl.searchParams.has('url')) {
+        this.widsToken = deeplinkingUrl.searchParams.get('token');
+        this.widsUrl = deeplinkingUrl.searchParams.get('url');
         this.isWids = true;
-        return;
+      }
+      return;
+    } else if (deeplinkingUrl.pathname.match(/\/+config\/*/i)) {
+      if (deeplinkingUrl.searchParams.has('woleettoken')) {
+        if (deeplinkingUrl.searchParams.has('woleeturl')) { this.woleetUrl = deeplinkingUrl.searchParams.get('woleeturl'); }
+        this.woleetToken = deeplinkingUrl.searchParams.get('woleettoken');
+        this.isApi = true;
+      }
+      if (deeplinkingUrl.searchParams.has('widstoken') && deeplinkingUrl.searchParams.has('widsurl')) {
+        this.widsToken = deeplinkingUrl.searchParams.get('widstoken');
+        this.widsUrl = deeplinkingUrl.searchParams.get('widsurl');
+        this.isWids = true;
       }
       return;
     }
@@ -71,28 +86,25 @@ export class DeeplinkComponent {
 
   async onClickCheckwIDConnectionGetAvailableKeys() {
     await checkwIDConnectionGetAvailableKeys(this.http,
-    this.url,
-    this.token,
+    this.widsUrl,
+    this.widsToken,
     this.pubKeyAddressGroup,
     this.snackBar);
-    if (this.pubKeyAddressGroup.length === 0) {
-      this.isWids = false;
-    }
   }
 
   saveParameters() {
     if (this.isApi) {
-      if (this.url) {
-        this.cli.setWoleetCliParameters(this.token, this.url);
+      if (this.woleetUrl) {
+        this.cli.setWoleetCliParameters(this.woleetToken, this.woleetUrl);
       } else {
-        this.cli.setWoleetCliParameters(this.token, this.cli.getUrl());
+        this.cli.setWoleetCliParameters(this.woleetToken, this.cli.getUrl());
       }
     }
     if (this.isWids) {
       this.identityService.addIdentity(
         this.widsFormGroup.get('name').value,
-        this.url,
-        this.token,
+        this.widsUrl,
+        this.widsToken,
         this.widsFormGroup.get('pubKey').value);
       this.widsFormGroup.reset();
       while (this.pubKeyAddressGroup.length) {
@@ -100,6 +112,10 @@ export class DeeplinkComponent {
       }
     }
     this.dialogRef.close();
+  }
+
+  nextScreen() {
+    this.screen = this.screen + 1;
   }
 
   closeDialog() {
