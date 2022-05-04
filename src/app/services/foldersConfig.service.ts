@@ -4,7 +4,7 @@ import { FolderParam } from '../misc/folderParam';
 import { IdentityService } from './Identity.service';
 import { FolderDoneService } from './folderDone.service';
 import { Subscription } from 'rxjs';
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import * as semver from 'semver';
 import * as Store from 'electron-store';
 import * as log from 'loglevel';

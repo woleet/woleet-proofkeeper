@@ -15,7 +15,7 @@ export class InfosComponent {
     // tslint:disable-next-line: max-line-length
     const cliResult = require('child_process').spawnSync(this.cli.woleetCli.getCliPath(), ['--version'], {stdio: 'pipe', windowsHide: true});
     this.cliVersion = cliResult.stdout.toString().replace('version ', '');
-    const {app} = require('electron').remote;
+    const {app} = require('@electron/remote');
     this.proofKeeperVersion = `${app.getName()} ${app.getVersion()}`;
   }
 

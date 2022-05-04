@@ -1,6 +1,6 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import * as log from 'loglevel';
 
 import { AppModule } from './app/app.module';

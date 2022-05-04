@@ -1,9 +1,9 @@
-@import '~@angular/material/theming';
+@use '@angular/material' as mat;
 $material-icons-font-path: '~material-design-icons/iconfont/';
 @import '~material-design-icons/iconfont/material-icons.css';
 @import 'custom';
 
-@include mat-core();
+@include mat.core();
 
 // Generated with: http://mcg.mbitson.com/#!?mcgpalette0=%234814ad&themename=mcgtheme
 $woleet-palette: (
@@ -39,11 +39,11 @@ $woleet-palette: (
     )
 );
 
-$primary: mat-palette($woleet-palette);
-$warn:    mat-palette($mat-red);
-$accent:  mat-palette($mat-red, 400);
-@include angular-material-theme(mat-light-theme($primary, $accent));
+$primary: mat.define-palette($woleet-palette);
+$warn:    mat.define-palette(mat.$red-palette);
+$accent:  mat.define-palette(mat.$red-palette, 400);
+@include mat.all-component-themes(mat.define-light-theme($primary, $accent));
 
 .dark-theme {
-  @include angular-material-theme(mat-dark-theme($primary, $accent));
+  @include mat.all-component-themes(mat.define-dark-theme($primary, $accent));
 }

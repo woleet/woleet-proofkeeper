@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import * as log from 'loglevel';
 import * as nodepath from 'path';
 import { LogContext } from '../misc/logs';

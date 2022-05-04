@@ -1,6 +1,12 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage, webContents } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
+import { initialize as initializeRemote, enable as enableRemote } from '@electron/remote/main';
+import * as Store from 'electron-store';
+
 import * as path from 'path';
 import * as url from 'url';
+
+initializeRemote();
+Store.initRenderer();
 
 let win, liveenv, tray, nativcon;
 let willQuitApp = false;
@@ -55,7 +61,8 @@ function createWindowTray() {
     icon: nativcon,
     webPreferences: {
       nodeIntegration: true,
-      enableRemoteModule: true
+      contextIsolation: false,
+      sandbox: false
     }
   });
 
@@ -99,6 +106,7 @@ function createWindowTray() {
       win.hide();
     }
   });
+  enableRemote(win.webContents);
 }
 
 function setShortcuts() {

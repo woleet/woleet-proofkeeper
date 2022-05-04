@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StoreService } from './store.service';
 import { FolderParam } from '../misc/folderParam';
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 import * as path from 'path';
 import * as log from 'loglevel';
 import * as fs from 'fs';
@@ -105,10 +105,11 @@ export class WoleetCliParametersService {
 
     public constructor() {
       const platform: string = process.platform;
+      console.log(platform);
       if ( platform === 'win32' ) {
-        this.woleetCli = path.join(__dirname, 'assets/bin/', 'windows', '/woleet-cli.exe');
+        this.woleetCli = path.join(__dirname, '/assets/bin/', 'windows', '/woleet-cli.exe');
       } else {
-        this.woleetCli = path.join(__dirname, 'assets/bin/', platform, '/woleet-cli');
+        this.woleetCli = path.join(__dirname, '/assets/bin/', platform, '/woleet-cli');
       }
       if ( this.woleetCli.includes('app.asar') ) {
         this.woleetCli = this.woleetCli.replace('app.asar', 'app.asar.unpacked');

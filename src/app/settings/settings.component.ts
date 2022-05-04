@@ -14,7 +14,7 @@ import { SettingsMessageService } from '../services/settingsMessage.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { HttpClient } from '@angular/common/http';
-import { remote } from 'electron';
+import * as remote from '@electron/remote';
 
 @Component({
   selector: 'app-settings',
