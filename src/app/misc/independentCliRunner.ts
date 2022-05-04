@@ -8,7 +8,7 @@ import { LogMessageService } from '../services/logMessage.service';
 import { FolderDoneService } from '../services/folderDone.service';
 import * as log from 'loglevel';
 
-export class IndependantCliRunnerService {
+export class IndependentCliRunnerService {
 
   private timerSubscription: Subscription;
   private tempFixReceiptExecuted = false;
