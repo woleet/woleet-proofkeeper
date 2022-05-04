@@ -102,6 +102,7 @@ export class IndependentCliRunnerService {
 
   public forceRefresh(tempFixReceipts: boolean = false) {
     this.timerSubscription.unsubscribe();
+    if (tempFixReceipts) { this.tempFixReceiptExecuted = false; }
     this.timerSubscribe(tempFixReceipts);
   }
 
