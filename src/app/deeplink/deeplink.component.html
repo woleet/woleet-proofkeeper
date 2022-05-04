@@ -1,20 +1,45 @@
 <div class="dialog-container">
-  <mat-dialog-content *ngIf="(isApi||isWids)">
-    <h1 class="mat-h1 txt-align-center" *ngIf="isApi" >Set up authentication to Woleet API</h1>
-    <h1 class="mat-h1 txt-align-center" *ngIf="isWids && (pubKeyAddressGroup.length === 0)" >Set up authentication to Woleet.ID Server</h1>
-    <div *ngIf="pubKeyAddressGroup.length === 0">
+  <mat-dialog-content *ngIf="screen === 0">
+    <h1 class="mat-h1 txt-align-center">Invalid configuration passed by deeplinking</h1>
+    <p class="mat-body-1">
+      Please check with the one who provided you the link<br>
+    </p>
+  </mat-dialog-content>
+
+  <mat-dialog-content *ngIf="screen === 1">
+    <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
+    <div>
       <p class="mat-body-1">
-        Provided API token:<br>
+        Provided Woleet API token:<br>
       </p>
       <mat-card class="mat-card-token">
-        {{token}}
+        {{woleetToken}}
       </mat-card>
-      <mat-divider *ngIf="url" ></mat-divider>
-      <p class="mat-body-1" *ngIf="url">
-        Provided URL:
+      <mat-divider *ngIf="woleetUrl" ></mat-divider>
+      <p class="mat-body-1" *ngIf="woleetUrl">
+        Provided Woleet URL:
       </p>
-      <mat-card *ngIf="url">
-        {{url}}
+      <mat-card *ngIf="woleetUrl">
+        {{woleetUrl}}
+      </mat-card>
+    </div>
+    </mat-dialog-content>
+
+    <mat-dialog-content *ngIf="screen ===2">
+    <h1 class="mat-h1 txt-align-center" *ngIf="(pubKeyAddressGroup.length === 0)" >Set up authentication to Woleet.ID Server</h1>
+    <div *ngIf="pubKeyAddressGroup.length === 0">
+      <p class="mat-body-1">
+        Provided Woleet.ID Server token:<br>
+      </p>
+      <mat-card class="mat-card-token">
+        {{widsToken}}
+      </mat-card>
+      <mat-divider *ngIf="widsUrl" ></mat-divider>
+      <p class="mat-body-1" *ngIf="widsUrl">
+        Provided Woleet.ID Server URL:
+      </p>
+      <mat-card *ngIf="widsUrl">
+        {{widsUrl}}
       </mat-card>
     </div>
     <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
@@ -39,27 +64,25 @@
       </mat-form-field>
     </form>
   </mat-dialog-content>
-  <mat-dialog-content *ngIf="!(isApi||isWids)">
-    <h1 class="mat-h1 txt-align-center">Invalid configuration passed by deeplinking</h1>
-    <p class="mat-body-1">
-      Please check with the one who provided you the link<br>
-    </p>
-  </mat-dialog-content>
+
   <mat-dialog-actions>
     <div class="button-line">
-      <button mat-raised-button color="primary" *ngIf="(isApi)" (click)="saveParameters();">
+      <button mat-raised-button color="primary" *ngIf="screen === 1 && !isWids" (click)="saveParameters();">
         Save
       </button>
-      <button mat-raised-button color="primary" *ngIf="(isWids && (pubKeyAddressGroup.length === 0))" (click)="onClickCheckwIDConnectionGetAvailableKeys();">
+      <button mat-raised-button color="primary" *ngIf="screen === 1 && isWids" (click)="nextScreen();">
+        Next
+      </button>
+      <button mat-raised-button color="primary" *ngIf="(screen === 2 && (pubKeyAddressGroup.length === 0))" (click)="onClickCheckwIDConnectionGetAvailableKeys();">
         Check
       </button>
-      <button mat-raised-button color="primary" [disabled]="widsFormGroup.invalid" *ngIf="(isWids && (pubKeyAddressGroup.length !== 0))" (click)="saveParameters(); ">
+      <button mat-raised-button color="primary" [disabled]="widsFormGroup.invalid" *ngIf="(screen === 2 && (pubKeyAddressGroup.length !== 0))" (click)="saveParameters(); ">
         Save
       </button>
-      <button mat-raised-button color="primary" *ngIf="(isApi||isWids)" (click)="closeDialog();">
+      <button mat-raised-button color="primary" *ngIf="screen === 1 || screen === 2" (click)="closeDialog();">
         Cancel
       </button>
-      <button mat-raised-button color="primary" *ngIf="!(isApi||isWids)" (click)="closeDialog();">
+      <button mat-raised-button color="primary" *ngIf="screen === 0" (click)="closeDialog();">
         Close
       </button>
     </div>
