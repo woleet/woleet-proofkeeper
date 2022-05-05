@@ -38,5 +38,5 @@ testem.log
 Thumbs.db
 
 # Custom 
-/docker-cache
+/docker-node_modules
 /docker-release

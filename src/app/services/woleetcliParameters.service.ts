@@ -105,7 +105,6 @@ export class WoleetCliParametersService {
 
     public constructor() {
       const platform: string = process.platform;
-      console.log(platform);
       if ( platform === 'win32' ) {
         this.woleetCli = path.join(__dirname, '/assets/bin/', 'windows', '/woleet-cli.exe');
       } else {
