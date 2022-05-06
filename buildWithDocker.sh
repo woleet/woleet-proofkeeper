@@ -5,7 +5,7 @@ set -e
 CLI_CURRENT_VERSION='0.5.4'
 PROJECT_FOLDER='/project'
 
-# ./getBins.sh $CLI_CURRENT_VERSION
+./getBins.sh $CLI_CURRENT_VERSION
 
 docker run --pull always -it --rm --name proofkeeper-builder \
 -v "${PWD}/angular.json:$PROJECT_FOLDER/angular.json:ro" \
