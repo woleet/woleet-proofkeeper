@@ -37,50 +37,50 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
 import { DeeplinkComponent } from './deeplink/deeplink.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        FoldersComponent,
-        SettingsComponent,
-        WizardComponent,
-        DeeplinkComponent,
-        LogsComponent,
-        InfosComponent,
-        ConfirmationDialogComponent
-    ],
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        MatDialogModule,
-        MatSidenavModule,
-        MatListModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatGridListModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatSlideToggleModule,
-        MatButtonModule,
-        MatInputModule,
-        MatChipsModule,
-        MatTooltipModule,
-        MatIconModule,
-        MatSnackBarModule,
-        MatTableModule,
-        MatTabsModule,
-        MatExpansionModule,
-        HttpClientModule,
-    ],
-    providers: [
-        StoreService,
-        FoldersConfigService,
-        WoleetCliParametersService,
-        IdentityService,
-        CliRunnerFolderInterface
-    ],
-    bootstrap: [
-        AppComponent
-    ]
+  declarations: [
+    AppComponent,
+    FoldersComponent,
+    SettingsComponent,
+    WizardComponent,
+    DeeplinkComponent,
+    LogsComponent,
+    InfosComponent,
+    ConfirmationDialogComponent
+  ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatGridListModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatInputModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatTabsModule,
+    MatExpansionModule,
+    HttpClientModule,
+  ],
+  providers: [
+    StoreService,
+    FoldersConfigService,
+    WoleetCliParametersService,
+    IdentityService,
+    CliRunnerFolderInterface
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
