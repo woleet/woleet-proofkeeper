@@ -121,4 +121,23 @@ export class DeeplinkComponent {
   closeDialog() {
     this.dialogRef.close();
   }
+
+  onPubKeyChange() {
+    let replaceName = false;
+    let newName = '';
+    if (!this.widsFormGroup.get('name').value) { replaceName = true; }
+    if (this.pubKeyAddressGroup.length !== 0 && this.widsFormGroup.get('pubKey')) {
+      this.pubKeyAddressGroup.forEach(pubKeyAddressGroup => {
+        if (pubKeyAddressGroup.user === this.widsFormGroup.get('name').value) { replaceName = true; }
+        pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
+          if (pubKeyAddress.address === this.widsFormGroup.get('pubKey').value) {
+            newName = pubKeyAddressGroup.user;
+          }
+        });
+      });
+    }
+    if (replaceName && newName) {
+      this.widsFormGroup.patchValue({ name: newName });
+    }
+  }
 }

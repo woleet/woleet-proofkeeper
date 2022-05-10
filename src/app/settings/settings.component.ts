@@ -220,4 +220,42 @@ export class SettingsComponent implements  OnInit, OnDestroy {
   onEditURLTokenChanges() {
     this.editPubKeyAddressGroup = [];
   }
+
+  onPubKeyChangeAdd() {
+    let replaceName = false;
+    let newName = '';
+    if (!this.addIdentityFormGroup.get('name').value) { replaceName = true; }
+    if (this.addPubKeyAddressGroup.length !== 0 && this.addIdentityFormGroup.get('pubKey')) {
+      this.addPubKeyAddressGroup.forEach(pubKeyAddressGroup => {
+        if (pubKeyAddressGroup.user === this.addIdentityFormGroup.get('name').value) { replaceName = true; }
+        pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
+          if (pubKeyAddress.address === this.addIdentityFormGroup.get('pubKey').value) {
+            newName = pubKeyAddressGroup.user;
+          }
+        });
+      });
+    }
+    if (replaceName && newName) {
+      this.addIdentityFormGroup.patchValue({ name: newName });
+    }
+  }
+  
+  onPubKeyChangeEdit() {
+    let replaceName = false;
+    let newName = '';
+    if (!this.editIdentityFormGroup.get('name').value) { replaceName = true; }
+    if (this.editPubKeyAddressGroup.length !== 0 && this.editIdentityFormGroup.get('pubKey')) {
+      this.editPubKeyAddressGroup.forEach(pubKeyAddressGroup => {
+        if (pubKeyAddressGroup.user === this.editIdentityFormGroup.get('name').value) { replaceName = true; }
+        pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
+          if (pubKeyAddress.address === this.editIdentityFormGroup.get('pubKey').value) {
+            newName = pubKeyAddressGroup.user;
+          }
+        });
+      });
+    }
+    if (replaceName && newName) {
+      this.editIdentityFormGroup.patchValue({ name: newName });
+    }
+  }
 }

@@ -40,7 +40,7 @@
         Select a key from Woleet.ID Server
       </button>
       <mat-form-field class="full-width" *ngIf="addPubKeyAddressGroup.length !== 0">
-        <mat-select placeholder="Public key" formControlName="pubKey">
+        <mat-select placeholder="Public key" formControlName="pubKey" (selectionChange)="onPubKeyChangeAdd()">
           <mat-optgroup *ngFor="let group of addPubKeyAddressGroup" [label]="group.user">
             <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
               {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
@@ -88,7 +88,7 @@
           Select a key from Woleet.ID Server
         </button>
         <mat-form-field class="full-width" *ngIf="editPubKeyAddressGroup.length !== 0">
-          <mat-select placeholder="Public key" formControlName="pubKey">
+          <mat-select placeholder="Public key" formControlName="pubKey" (selectionChange)="onPubKeyChangeEdit()">
             <mat-optgroup *ngFor="let group of editPubKeyAddressGroup" [label]="group.user">
               <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
                 {{pubKeyAddress.key}} - {{pubKeyAddress.address}}

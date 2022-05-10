@@ -27,61 +27,81 @@ export class WizardComponent {
     public identityService: IdentityService,
     private snackBar: MatSnackBar,
     private http: HttpClient) {
-      this.screen = [1];
-      this.pubKeyAddressGroup = [];
-      this.wizardTokenFromGroup = formBuilder.group({
-        token: ['', [Validators.required, tokenFormatValidator]]
+    this.screen = [1];
+    this.pubKeyAddressGroup = [];
+    this.wizardTokenFromGroup = formBuilder.group({
+      token: ['', [Validators.required, tokenFormatValidator]]
+    });
+    this.wizardIdentityFromGroup = formBuilder.group({
+      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
+      url: ['', [Validators.required]],
+      token: ['', [Validators.required]],
+      pubKey: ['', [Validators.required]]
+    });
+  }
+
+  nextPage() {
+    this.screen[0] = this.screen[0] + 1;
+  }
+
+  clickOnProofDesk() {
+    shell.openExternal('https://app.woleet.io/developer');
+  }
+
+  saveTokenForm() {
+    checkAndSubmit(this.http, this.wizardTokenFromGroup, this.cli, this.snackBar, this.screen);
+  }
+
+  saveIdentityForm() {
+    const tempURL = this.wizardIdentityFromGroup.get('url').value;
+    const tempToken = this.wizardIdentityFromGroup.get('token').value;
+    this.identityService.addIdentity(
+      this.wizardIdentityFromGroup.get('name').value,
+      tempURL,
+      tempToken,
+      this.wizardIdentityFromGroup.get('pubKey').value);
+    this.wizardIdentityFromGroup.reset();
+    this.wizardIdentityFromGroup.patchValue({ url: tempURL });
+    this.wizardIdentityFromGroup.patchValue({ token: tempToken });
+    while (this.pubKeyAddressGroup.length) {
+      this.pubKeyAddressGroup.pop();
+    }
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  onClickCheckwIDConnectionGetAvailableKeys() {
+    checkwIDConnectionGetAvailableKeys(this.http,
+      this.wizardIdentityFromGroup.get('url').value,
+      this.wizardIdentityFromGroup.get('token').value,
+      this.pubKeyAddressGroup,
+      this.snackBar);
+  }
+
+  onURLTokenChanges() {
+    this.pubKeyAddressGroup = [];
+  }
+
+  onPubKeyChange() {
+    let replaceName = false;
+    let newName = '';
+    if (!this.wizardIdentityFromGroup.get('name').value) { replaceName = true; }
+    if (this.pubKeyAddressGroup.length !== 0 && this.wizardIdentityFromGroup.get('pubKey')) {
+      this.pubKeyAddressGroup.forEach(pubKeyAddressGroup => {
+        if (pubKeyAddressGroup.user === this.wizardIdentityFromGroup.get('name').value) { replaceName = true; }
+        pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
+          if (pubKeyAddress.address === this.wizardIdentityFromGroup.get('pubKey').value) {
+            newName = pubKeyAddressGroup.user;
+          }
+        });
       });
-      this.wizardIdentityFromGroup = formBuilder.group({
-        name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
-        url: ['', [Validators.required]],
-        token: ['', [Validators.required]],
-        pubKey: ['', [Validators.required]]
-      });
     }
-
-    nextPage() {
-      this.screen[0] = this.screen[0] + 1;
+    if (replaceName && newName) {
+      this.wizardIdentityFromGroup.patchValue({ name: newName });
     }
+  }
 
-    clickOnProofDesk() {
-      shell.openExternal('https://app.woleet.io/developer');
-    }
-
-    saveTokenForm() {
-      checkAndSubmit(this.http, this.wizardTokenFromGroup, this.cli, this.snackBar, this.screen);
-    }
-
-    saveIdentityForm() {
-      const tempURL = this.wizardIdentityFromGroup.get('url').value;
-      const tempToken = this.wizardIdentityFromGroup.get('token').value;
-      this.identityService.addIdentity(
-        this.wizardIdentityFromGroup.get('name').value,
-        tempURL,
-        tempToken,
-        this.wizardIdentityFromGroup.get('pubKey').value);
-      this.wizardIdentityFromGroup.reset();
-      this.wizardIdentityFromGroup.patchValue({url: tempURL});
-      this.wizardIdentityFromGroup.patchValue({token: tempToken});
-      while (this.pubKeyAddressGroup.length) {
-        this.pubKeyAddressGroup.pop();
-      }
-    }
-
-      closeDialog() {
-        this.dialogRef.close();
-      }
-
-      onClickCheckwIDConnectionGetAvailableKeys() {
-        checkwIDConnectionGetAvailableKeys(this.http,
-        this.wizardIdentityFromGroup.get('url').value,
-        this.wizardIdentityFromGroup.get('token').value,
-        this.pubKeyAddressGroup,
-        this.snackBar);
-      }
-
-      onURLTokenChanges() {
-        this.pubKeyAddressGroup = [];
-      }
-    }
+}
 

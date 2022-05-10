@@ -54,7 +54,7 @@
         </button>
       </mat-form-field>
       <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
-        <mat-select placeholder="Public key" formControlName="pubKey">
+        <mat-select placeholder="Public key" formControlName="pubKey" (selectionChange)="onPubKeyChange()">
           <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
             <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
               {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
