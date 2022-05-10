@@ -20,7 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FoldersComponent } from './folders/folders.component';
@@ -35,6 +35,16 @@ import { LogsComponent } from './logs/logs.component';
 import { InfosComponent } from './infos/infos.component';
 import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
 import { DeeplinkComponent } from './deeplink/deeplink.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { from } from 'rxjs';
+import { pluck } from 'rxjs/operators';
+import { TranslationService } from './services/translation.service';
+
+export class WebpackTranslateLoader implements TranslateLoader {
+  getTranslation(lang: string) {
+    return from(import(`../assets/i18n/${lang}.ts`)).pipe(pluck('default'));
+  }
+}
 
 @NgModule({
   declarations: [
@@ -71,13 +81,21 @@ import { DeeplinkComponent } from './deeplink/deeplink.component';
     MatTabsModule,
     MatExpansionModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        deps: [HttpClient],
+        useClass: WebpackTranslateLoader
+      }
+    })
   ],
   providers: [
     StoreService,
     FoldersConfigService,
     WoleetCliParametersService,
     IdentityService,
-    CliRunnerFolderInterface
+    CliRunnerFolderInterface,
+    TranslationService
   ],
   bootstrap: [
     AppComponent

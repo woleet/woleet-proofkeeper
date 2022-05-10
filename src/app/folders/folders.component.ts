@@ -9,6 +9,7 @@ import { LogContext } from '../misc/logs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
+import { TranslationService } from '../services/translation.service';
 
 @Component({
   selector: 'app-folders',
@@ -28,8 +29,8 @@ export class FoldersComponent {
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private dialog: MatDialog) {
-
+    private dialog: MatDialog,
+    public translations: TranslationService) {
     this.addState = false;
 
     this.folderFormGroup = formBuilder.group({
