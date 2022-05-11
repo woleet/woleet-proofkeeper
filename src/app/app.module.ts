@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -39,6 +39,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { from } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 import { TranslationService } from './services/translation.service';
+
+// To call manually a service
+export let AppInjector: Injector;
 
 export class WebpackTranslateLoader implements TranslateLoader {
   getTranslation(lang: string) {
@@ -101,4 +104,8 @@ export class WebpackTranslateLoader implements TranslateLoader {
     AppComponent
   ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector) {
+    AppInjector = this.injector;
+  }
+}

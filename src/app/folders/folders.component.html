@@ -117,7 +117,7 @@
                     [matTooltip]="translations.folders.tooltips.processing | translate"></button>
                   <button mat-icon-button color="warn"
                     (click)="$event.stopPropagation();openConfirmDeleteDialog(folderForm);">
-                    <mat-icon matTooltip="Delete folder" matTooltipPosition="above" [matTooltipClass]="'tooltip'">delete
+                    <mat-icon [matTooltip]="translations.folders.tooltips.deleteFolder | translate" matTooltipPosition="above" [matTooltipClass]="'tooltip'">delete
                     </mat-icon>
                   </button>
                 </span>

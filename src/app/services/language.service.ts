@@ -5,7 +5,7 @@ export class LanguageService {
   public constructor() {}
 
   /**
-   * @return the default browser language.
+   * Get the default browser language.
    */
    getBrowserLanguage(): string {
     // navigator.languages returns something like ["en-US", "en", "fr-FR", "fr"]

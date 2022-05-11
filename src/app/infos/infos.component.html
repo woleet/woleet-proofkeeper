@@ -1,10 +1,10 @@
 <mat-card>
   <mat-list>
-    <h3 mat-subheader>Versions</h3>
+    <h3 mat-subheader>{{ translations.infos.versions | translate }}</h3>
     <mat-list-item> {{proofKeeperVersion}} </mat-list-item>
     <mat-list-item> {{cliVersion}} </mat-list-item>
     <mat-divider></mat-divider>
-    <h3 mat-subheader>Links</h3>
+    <h3 mat-subheader>{{ translations.infos.links | translate }}</h3>
     <mat-list-item> 
       <a class="fake-href" (click)="clickOnGithub();">Github</a> 
     </mat-list-item>
@@ -12,7 +12,7 @@
       <a class="fake-href" (click)="clickOnWoleet();">Woleet</a>
     </mat-list-item>
     <mat-list-item>
-      <a class="fake-href" (click)="clickOnLicense();">License</a>
+      <a class="fake-href" (click)="clickOnLicense();">{{ translations.infos.licence | translate }}</a>
     </mat-list-item>
    </mat-list>
 </mat-card>

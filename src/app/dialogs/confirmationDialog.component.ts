@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { TranslationService } from '../services/translation.service';
 
 @Component({
   selector: 'app-confirm-delete-dialog',
@@ -8,5 +9,5 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class ConfirmationDialogComponent {
   public confirmationText: String;
   public confirmationTitle: String;
-  constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>, public translations: TranslationService) {}
 }

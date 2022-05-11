@@ -1,22 +1,24 @@
 <div class="dialog-container">
   <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 1">
     <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
-    <h1 class="mat-h1 dialog-title">Welcome to ProofKeeper</h1>
-    <h2 class="mat-h2 dialog-subtitle">Timestamp and seal your files dynamically</h2>
+    <h1 class="mat-h1 dialog-title">{{ translations.wizard.welcome }}</h1>
+    <h2 class="mat-h2 dialog-subtitle">{{ translations.wizard.subtitle }}</h2>
   </mat-dialog-content>
   <mat-dialog-content *ngIf="screen[0] === 2">
     <form class="form-content" [formGroup]="wizardTokenFromGroup">
-      <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
+      <h1 class="mat-h1 txt-align-center">{{ translations.commons.setupAuthenticationToWoleetAPI | translate }}</h1>
       <p class="mat-body-1">
-        Accessing the Woleet API requires an API token.<br>
-        You can create one using your
-        <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnProofDesk();">ProofDesk</button>
-        account ("Developer" menu -> "API" tab).
+        <span [innerHTML]="translations.wizard.instruction | translate"></span>
+        <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnProofDesk();">
+          {{ translations.wizard.link | translate }}
+        </button>
       </p>
       <div>
-        <mat-form-field class="full-width">
-          <input type="text" matInput placeholder="Woleet API Token" name="token" formControlName="token" required>
-          <mat-error *ngIf="wizardTokenFromGroup.get('token').getError('invalidJWTFormat')">Invalid JWT token format
+        <mat-form-field class="full-width" appearance="standard">
+          <mat-label> {{ translations.commons.labelNames.woleetAPIToken | translate }}</mat-label>
+          <input type="text" matInput name="token" formControlName="token" required>
+          <mat-error *ngIf="wizardTokenFromGroup.get('token').getError('invalidJWTFormat')">
+            {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
           </mat-error>
         </mat-form-field>
       </div>
@@ -24,41 +26,45 @@
   </mat-dialog-content>
   <mat-dialog-content *ngIf="screen[0] === 3">
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
-      <h1 class="mat-h1 txt-align-center">Set up identities for seal</h1>
+      <h1 class="mat-h1 txt-align-center">{{ translations.wizard.setupIdentities }}</h1>
       <p class="mat-body-1">
-        If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one
-        seal identity (you will be able to add more seal identities using the settings after the wizard):
+        {{ translations.wizard.setupIdentityInstruction }}
       </p>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">Name already present
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">
+          {{ translations.commons.errors.nameAlreadyPresent | translate }}
         </mat-error>
         <button mat-icon-button matSuffix [disableRipple]="true"
-          matTooltip="Give a name representing the identity of the legal person committing in seal operation."
+          [matTooltip]="translations.commons.tooltips.giveName | translate"
           [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Woleet.ID Server signature API URL" formControlName="url"
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>{{ translations.commons.labelNames.widsSignatureAPIURL | translate }}</mat-label>
+        <input matInput formControlName="url"
           (ngModelChange)="onURLTokenChanges();">
         <mat-hint>ex: https://identity.acme.com:3002</mat-hint>
       </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Woleet.ID Server API Token" formControlName="token"
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>{{ translations.commons.labelNames.widsAPIToken | translate }}</mat-label>
+        <input matInput formControlName="token"
           (ngModelChange)="onURLTokenChanges();">
         <button mat-icon-button matSuffix [disableRipple]="true"
-          matTooltip="Ask the administrator of your Woleet.ID Server for an API token."
+          [matTooltip]="translations.commons.tooltips.askAdmin | translate"
           [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
       <button mat-raised-button color="primary" *ngIf="pubKeyAddressGroup.length === 0"
         (click)="onClickCheckwIDConnectionGetAvailableKeys();">
-        Select a key from Woleet.ID Server
+        {{ translations.commons.buttons.selectKeyFromWids | translate }}
       </button>
-      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
-        <mat-select placeholder="Public key" formControlName="pubKey">
+      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0" appearance="standard">
+        <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
+        <mat-select formControlName="pubKey">
           <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
             <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
               {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
@@ -70,25 +76,26 @@
   </mat-dialog-content>
   <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 4">
     <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
-    <h1 class="mat-h1 dialog-title">Congratulations!</h1>
-    <h2 class="mat-h2 dialog-subtitle">You can now configure the folders for timestamping and seal.</h2>
+    <h1 class="mat-h1 dialog-title">{{ translations.wizard.congratulations | translate }}</h1>
+    <h2 class="mat-h2 dialog-subtitle">{{ translations.wizard.congratulationSubtitle | translate }}</h2>
   </mat-dialog-content>
   <mat-dialog-actions>
     <div [ngClass]="(screen[0] !== 4)?'button-line':'button-line-last'">
       <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">
-        Start configuration
+        {{ translations.wizard.startConfig | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid"
         (click)="saveTokenForm();">
-        Next
+        {{ translations.commons.buttons.next | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFromGroup.invalid"
-        (click)="saveIdentityForm(); nextPage();">Next
+        (click)="saveIdentityForm(); nextPage();">
+        {{ translations.commons.buttons.next | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="screen[0] === 4" (click)="closeDialog();" class="last-button">
         OK
       </button>
-      <button mat-raised-button *ngIf="screen[0] !== 4" (click)="closeDialog();">Skip</button>
+      <button mat-raised-button *ngIf="screen[0] !== 4" (click)="closeDialog();">{{ translations.commons.buttons.skip | translate }}</button>
     </div>
   </mat-dialog-actions>
 </div>

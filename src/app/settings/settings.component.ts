@@ -15,6 +15,8 @@ import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { HttpClient } from '@angular/common/http';
 import * as remote from '@electron/remote';
+import { TranslationService } from '../services/translation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
@@ -39,7 +41,9 @@ export class SettingsComponent implements  OnInit, OnDestroy {
     public foldersConfigService: FoldersConfigService,
     private settingsMessageService: SettingsMessageService,
     private dialog: MatDialog,
-    private http: HttpClient) {
+    private http: HttpClient,
+    public translations: TranslationService,
+    private translateService: TranslateService) {
   this.initComponent();
   }
 
@@ -91,9 +95,8 @@ export class SettingsComponent implements  OnInit, OnDestroy {
 
   openClearSaveSettingsConfirmDialog() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-    dialogRef.componentInstance.confirmationTitle = 'Reset config';
-    dialogRef.componentInstance.confirmationText =
-      'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.';
+    dialogRef.componentInstance.confirmationTitle = this.translateService.instant(this.translations.settings.resetConfig);
+    dialogRef.componentInstance.confirmationText = this.translateService.instant(this.translations.settings.resetConfigQuestion);
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if (confirmDelete === true) {
         this.cli.store.clear();
@@ -179,8 +182,8 @@ export class SettingsComponent implements  OnInit, OnDestroy {
 
   openConfirmDeleteWIDConnectionDialog(identityName: string) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-    dialogRef.componentInstance.confirmationTitle = 'Delete identity';
-    dialogRef.componentInstance.confirmationText = 'Are you sure you want to delete this identity?';
+    dialogRef.componentInstance.confirmationTitle = this.translateService.instant(this.translations.settings.deleteIdentity);
+    dialogRef.componentInstance.confirmationText = this.translateService.instant(this.translations.settings.deleteIdentityQuestion);;
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if (confirmDelete === true) {
         this.identityService.deleteIdentity(identityName);
