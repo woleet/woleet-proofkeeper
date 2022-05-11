@@ -15,6 +15,9 @@
       "dom"
     ]
   },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
+  },
   "include": [
     "electron.ts",
     "src/**/*"

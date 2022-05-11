@@ -9,7 +9,7 @@ function concatIfExistsPath(path: string, suffix: string): string {
   return path ? `${path}.${suffix}` : suffix;
 }
 
-function transformObjectToPath<T extends typeof en | string>(suffix: string, objectToTransformOrEndOfPath: T, path = ''): T {
+function transformObjectToPath<T extends Record<string, unknown> | string>(suffix: string, objectToTransformOrEndOfPath: T, path = ''): T {
   return typeof objectToTransformOrEndOfPath === 'object'
     ? Object.entries(objectToTransformOrEndOfPath).reduce((objectToTransform, [key, value]) => {
         objectToTransform[key] = transformObjectToPath(key, value as typeof en, concatIfExistsPath(path, suffix));

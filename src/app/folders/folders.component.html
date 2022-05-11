@@ -10,72 +10,78 @@
       </mat-tab>
     </mat-tab-group>
     <form [formGroup]="folderFormGroup" *ngIf="addState">
-      <mat-form-field class="full-width">
-        <input matInput class="form-control" type="text" placeholder="Folder to scan" formControlName="path">
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
+        <input matInput class="form-control" type="text" formControlName="path">
         <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value" (click)="resetPath();">
           <mat-icon>close</mat-icon>
         </button>
-        <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">Choose folder</button>
+        <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">
+          {{ translations.folders.chooseFolder | translate }}
+        </button>
         <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
-          Folder or subfolder already present
+          {{ translations.folders.errors.folderAlreadyPresent | translate }}
         </mat-error>
       </mat-form-field>
       <div *ngIf="folderFormGroup.get('action').value == 'sign'">
-        <mat-form-field>
-          <mat-select class="custom-select" formControlName="identity" name="identity" placeholder="Identity to use">
+        <mat-form-field appearance="standard">
+          <mat-label>{{ translations.folders.identityToUse | translate }}</mat-label>
+          <mat-select class="custom-select" formControlName="identity" name="identity">
             <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
-              {{identityName.name}}
+              {{ identityName.name }}
             </mat-option>
           </mat-select>
           <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-            Please add at least one identity on the settings panel
+            {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
           </mat-error>
           <mat-error
             *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
-            Identity required
+            {{ translations.folders.errors.identityRequired | translate }}
           </mat-error>
           <mat-error *ngIf="folderFormGroup.get('identity').getError('identityNotFound')">
-            Not found
+            {{ translations.folders.errors.notFound | translate }}
           </mat-error>
         </mat-form-field>
       </div>
       <br>
       <div>
         <mat-checkbox color="primary" name="public" formControlName="public">
-          Make proofs publicly discoverable by anyone having the file
+          {{ translations.folders.checkbox.makeProofsPublicly | translate }}
         </mat-checkbox>
       </div>
       <div>
         <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-          Include files from subfolders
+          {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
         </mat-checkbox>
       </div>
       <div>
         <mat-checkbox color="primary" name="strict" formControlName="strict">
-          Recreate proofs if files are modified
+          {{ translations.folders.checkbox.recreateProofs | translate }}
         </mat-checkbox>
       </div>
       <div>
         <mat-checkbox color="primary" name="prune" formControlName="prune">
-          Delete old proofs if files are modified
+          {{ translations.folders.checkbox.deleteOldProofs | translate }}
         </mat-checkbox>
       </div>
       <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
         <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-          Do not check the SSL certificate of Woleet.ID server (only use in development)
+          {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
         </mat-checkbox>
       </div>
       <div>
-        <mat-form-field class="full-width">
-          <input matInput class="form-control" type="text" name="filter" placeholder="Only prove files matching this regular expression" formControlName="filter">
+        <mat-form-field class="full-width" appearance="standard">
+          <mat-label>{{ translations.folders.proveFilesMatchingRegularExpression | translate }}</mat-label>
+          <input matInput class="form-control" type="text" name="filter" formControlName="filter">
         </mat-form-field>
       </div>
       <span class="align-end">
         <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
           (click)="onClickAdd();">
-          Add folder
+          {{ translations.folders.addFolder | translate }}
         </button>
-        <button mat-raised-button color="warn" (click)="onCancelAddClick();">Cancel</button>
+        <button mat-raised-button color="warn" (click)="onCancelAddClick();"> {{ translations.commons.buttons.cancel |
+          translate }}</button>
       </span>
     </form>
     <br>
@@ -94,20 +100,21 @@
                     (click)="$event.stopPropagation();onClickRefresh(folderForm)"
                     *ngIf="foldersStatusCode[i].exitCode === undefined" style="background-color: #808080"
                     matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Not yet started. Click to restart."></button>
+                    [matTooltip]="translations.folders.tooltips.notYetStarted | translate"></button>
                   <button mat-mini-fab class="status-icons"
                     (click)="$event.stopPropagation();onClickRefresh(folderForm)"
                     *ngIf="foldersStatusCode[i].exitCode === 0" style="background-color: #08ad08"
                     matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Execution successfull. Click to restart."></button>
+                    [matTooltip]="translations.folders.tooltips.executionSuccessful | translate"></button>
                   <button mat-mini-fab class="status-icons"
                     (click)="$event.stopPropagation();onClickRefresh(folderForm)"
                     *ngIf="foldersStatusCode[i].exitCode > 0" style="background-color: #f44336"
                     matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    matTooltip="Failure. Click to restart."></button>
+                    [matTooltip]="translations.folders.tooltips.executionSuccessful | translate"></button>
                   <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();"
                     *ngIf="foldersStatusCode[i].exitCode < 0" style="background-color: #ff7b00"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'" matTooltip="Work in progress"></button>
+                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
+                    [matTooltip]="translations.folders.tooltips.processing | translate"></button>
                   <button mat-icon-button color="warn"
                     (click)="$event.stopPropagation();openConfirmDeleteDialog(folderForm);">
                     <mat-icon matTooltip="Delete folder" matTooltipPosition="above" [matTooltipClass]="'tooltip'">delete
@@ -127,57 +134,61 @@
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-                    Please add at least one identity on the settings panel
+                    {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
                   </mat-error>
                   <mat-error
                     *ngIf="identityService.arrayIdentityContent.length !== 0 && folderForm.get('identity').getError('voidIdentity')">
-                    Identity required
+                    {{ translations.folders.errors.identityRequired | translate }}
                   </mat-error>
                   <mat-error *ngIf="folderForm.get('identity').getError('identityNotFound')">
-                    Not found
+                    {{ translations.folders.errors.notFound | translate }}
                   </mat-error>
                 </mat-form-field>
               </div>
               <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
                 <div>
                   <mat-checkbox color="primary" name="public" formControlName="public">
-                    Make proofs publicly discoverable by anyone having the file
+                    {{ translations.folders.checkbox.makeProofsPublicly | translate }}
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-                    Include files from subfolders
+                    {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="strict" formControlName="strict">
-                    Recreate proofs if files are modified
+                    {{ translations.folders.checkbox.recreateProofs | translate }}
                   </mat-checkbox>
                 </div>
                 <div>
                   <mat-checkbox color="primary" name="prune" formControlName="prune">
-                    Delete old proofs if files are modified
+                    {{ translations.folders.checkbox.deleteOldProofs | translate }}
                   </mat-checkbox>
                 </div>
                 <div *ngIf="folderForm.get('action').value === 'sign'">
                   <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-                    Do not check the SSL certificate of Woleet.ID server (only use in development)
+                    {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
                   </mat-checkbox>
                 </div>
                 <div>
-                  <mat-form-field class="full-width">
-                    <input matInput class="form-control" type="text" name="filter" placeholder="Only prove files matching this regular expression" formControlName="filter">
+                  <mat-form-field class="full-width" appearance="standard">
+                    <mat-label>{{ translations.folders.proveFilesMatchingRegularExpression | translate }}</mat-label>
+                    <input matInput class="form-control" type="text" name="filter" formControlName="filter">
                   </mat-form-field>
                 </div>
               </div>
               <div>
-                <button mat-raised-button color="primary" style="margin-right: 10px" (click)="onClickFixReceipts(folderForm);">Fix Receipts</button>
-                Rename old receipts and fix stored receipts if needed
+                <button mat-raised-button color="primary" style="margin-right: 10px"
+                  (click)="onClickFixReceipts(folderForm);">
+                  {{ translations.folders.fixReceipts | translate }}
+                </button>
+                {{ translations.folders.renameOldReceiptsAndFix | translate }}
               </div>
               <span class="span-update-configuration">
                 <button mat-raised-button color="primary" [disabled]="folderForm.pristine || folderForm.invalid"
                   (click)="onClickUpdateFolderOptions(folderForm);">
-                  Update configuration
+                  {{ translations.folders.updateConfig | translate }}
                 </button>
               </span>
             </form>
