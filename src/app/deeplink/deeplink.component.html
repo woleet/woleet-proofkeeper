@@ -43,7 +43,7 @@
       </mat-card>
     </div>
     <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
-      <mat-form-field class="full-width" appearance="standard">
+      <mat-form-field class="full-width">
         <mat-label>{{ translations.commons.labelNames.name }}</mat-label>
         <input matInput formControlName="name">
         <mat-error *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')">
@@ -55,7 +55,7 @@
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
-      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0" appearance="standard">
+      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
         <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
         <mat-select formControlName="pubKey">
           <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">

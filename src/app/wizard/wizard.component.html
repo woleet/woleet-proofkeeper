@@ -14,7 +14,7 @@
         </button>
       </p>
       <div>
-        <mat-form-field class="full-width" appearance="standard">
+        <mat-form-field class="full-width">
           <mat-label> {{ translations.commons.labelNames.woleetAPIToken | translate }}</mat-label>
           <input type="text" matInput name="token" formControlName="token" required>
           <mat-error *ngIf="wizardTokenFromGroup.get('token').getError('invalidJWTFormat')">
@@ -30,7 +30,7 @@
       <p class="mat-body-1">
         {{ translations.wizard.setupIdentityInstruction }}
       </p>
-      <mat-form-field class="full-width" appearance="standard">
+      <mat-form-field class="full-width">
         <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
         <input matInput formControlName="name">
         <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">
@@ -42,13 +42,13 @@
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
-      <mat-form-field class="full-width" appearance="standard">
+      <mat-form-field class="full-width">
         <mat-label>{{ translations.commons.labelNames.widsSignatureAPIURL | translate }}</mat-label>
         <input matInput formControlName="url"
           (ngModelChange)="onURLTokenChanges();">
         <mat-hint>ex: https://identity.acme.com:3002</mat-hint>
       </mat-form-field>
-      <mat-form-field class="full-width" appearance="standard">
+      <mat-form-field class="full-width">
         <mat-label>{{ translations.commons.labelNames.widsAPIToken | translate }}</mat-label>
         <input matInput formControlName="token"
           (ngModelChange)="onURLTokenChanges();">
@@ -62,7 +62,7 @@
         (click)="onClickCheckwIDConnectionGetAvailableKeys();">
         {{ translations.commons.buttons.selectKeyFromWids | translate }}
       </button>
-      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0" appearance="standard">
+      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
         <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
         <mat-select formControlName="pubKey">
           <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">

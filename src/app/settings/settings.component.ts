@@ -17,22 +17,24 @@ import { HttpClient } from '@angular/common/http';
 import * as remote from '@electron/remote';
 import { TranslationService } from '../services/translation.service';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements  OnInit, OnDestroy {
+export class SettingsComponent implements OnInit, OnDestroy {
   public addState: boolean;
   public identityOpened: string;
-  public settingsFromGroup: FormGroup;
+  public settingsFormGroup: FormGroup;
   public addIdentityFormGroup: FormGroup;
   public editIdentityFormGroup: FormGroup;
+  public languageFormGroup: FormGroup;
   public addPubKeyAddressGroup: PubKeyAddressGroup[];
   public editPubKeyAddressGroup: PubKeyAddressGroup[];
   private settingsMessageSubscription: any;
-
+  public languages: Array<string>;
 
   constructor(private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
@@ -43,8 +45,10 @@ export class SettingsComponent implements  OnInit, OnDestroy {
     private dialog: MatDialog,
     private http: HttpClient,
     public translations: TranslationService,
-    private translateService: TranslateService) {
-  this.initComponent();
+    private translateService: TranslateService,
+    private languageService: LanguageService) {
+    this.initComponent();
+    this.languages = this.languageService.getSupportedLanguages();
   }
 
   ngOnInit() {
@@ -63,7 +67,7 @@ export class SettingsComponent implements  OnInit, OnDestroy {
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
-    this.settingsFromGroup = this.formBuilder.group({
+    this.settingsFormGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()]
     });
@@ -87,10 +91,14 @@ export class SettingsComponent implements  OnInit, OnDestroy {
       token: ['', [Validators.required]],
       pubKey: ['', [Validators.required]]
     });
+
+    this.languageFormGroup = this.formBuilder.group({
+      language: [this.cli.getLang(), [Validators.required]]
+    });
   }
 
   onClickcheckAndSubmit() {
-    checkAndSubmit(this.http, this.settingsFromGroup, this.cli, this.snackBar);
+    checkAndSubmit(this.http, this.settingsFormGroup, this.cli, this.snackBar);
   }
 
   openClearSaveSettingsConfirmDialog() {
@@ -222,5 +230,10 @@ export class SettingsComponent implements  OnInit, OnDestroy {
 
   onEditURLTokenChanges() {
     this.editPubKeyAddressGroup = [];
+  }
+
+  onLanguageChange() {
+    this.cli.setWoleetCliLang(this.languageFormGroup.get('language').value);
+    this.translateService.use(this.languageFormGroup.get('language').value);
   }
 }

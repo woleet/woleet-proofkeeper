@@ -1,6 +1,6 @@
 <div class="logs-container">
   <mat-card *ngIf="folders.length !== 0">
-    <mat-form-field [style.width.%]="100" appearance="standard">
+    <mat-form-field [style.width.%]="100">
       <mat-label>{{ translations.logs.logsOfFolder | translate }}</mat-label>
       <mat-select placeholder="Logs of folder" [(ngModel)]="folder">
         <mat-option *ngFor="let folder of folders" [value]="folder">

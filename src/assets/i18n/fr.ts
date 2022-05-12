@@ -2,6 +2,10 @@ import EN_Translations from './en';
 
 const fr: typeof EN_Translations = {
   title: 'ProofKeeper',
+  languages: {
+    fr: 'Français',
+    en: 'Anglais'
+  },
   commons: {
     buttons: {
       cancel: 'Annuler',
@@ -22,7 +26,8 @@ const fr: typeof EN_Translations = {
       publicKey: 'Clé publique',
       woleetAPIToken: 'Token d\'API de Woleet',
       widsSignatureAPIURL: 'URL de l\'API de signature de Woleet.ID Server',
-      widsAPIToken: 'Token d\'API de Woleet.ID Server'
+      widsAPIToken: 'Token d\'API de Woleet.ID Server',
+      language: 'Langue'
     },
     tooltips: {
       giveName: 'Donnez un nom représentant l\'identité de la personne morale qui s\'engage dans l\'opération de scellé.',

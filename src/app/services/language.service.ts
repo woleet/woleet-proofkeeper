@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
+import { TranslationService } from './translation.service';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  public constructor() {}
+  private supportedLanguages: Array<string>;
+
+  public constructor(private translations: TranslationService) {
+    this.supportedLanguages = Object.keys(this.translations.languages);
+  }
 
   /**
    * Get the default browser language.
@@ -17,5 +22,9 @@ export class LanguageService {
       .filter((e, i, arr) => arr.indexOf(e) === i) // drop doubles
       .filter(lang => lang === 'fr' || lang === 'en'); // drop unsupported languages
     return languages.length > 0 ? languages[0] : 'en';
+  }
+
+  getSupportedLanguages(): Array<string> {
+    return this.supportedLanguages;
   }
 }

@@ -10,7 +10,7 @@
       </mat-tab>
     </mat-tab-group>
     <form [formGroup]="folderFormGroup" *ngIf="addState">
-      <mat-form-field class="full-width" appearance="standard">
+      <mat-form-field class="full-width">
         <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
         <input matInput class="form-control" type="text" formControlName="path">
         <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value" (click)="resetPath();">
@@ -24,7 +24,7 @@
         </mat-error>
       </mat-form-field>
       <div *ngIf="folderFormGroup.get('action').value == 'sign'">
-        <mat-form-field appearance="standard">
+        <mat-form-field>
           <mat-label>{{ translations.folders.identityToUse | translate }}</mat-label>
           <mat-select class="custom-select" formControlName="identity" name="identity">
             <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
@@ -70,7 +70,7 @@
         </mat-checkbox>
       </div>
       <div>
-        <mat-form-field class="full-width" appearance="standard">
+        <mat-form-field class="full-width">
           <mat-label>{{ translations.folders.proveFilesMatchingRegularExpression | translate }}</mat-label>
           <input matInput class="form-control" type="text" name="filter" formControlName="filter">
         </mat-form-field>
@@ -172,7 +172,7 @@
                   </mat-checkbox>
                 </div>
                 <div>
-                  <mat-form-field class="full-width" appearance="standard">
+                  <mat-form-field class="full-width">
                     <mat-label>{{ translations.folders.proveFilesMatchingRegularExpression | translate }}</mat-label>
                     <input matInput class="form-control" type="text" name="filter" formControlName="filter">
                   </mat-form-field>

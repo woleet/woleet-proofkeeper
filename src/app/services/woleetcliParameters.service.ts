@@ -6,6 +6,7 @@ import * as path from 'path';
 import * as log from 'loglevel';
 import * as fs from 'fs';
 import * as Store from 'electron-store';
+import { LanguageService } from './language.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,10 @@ export class WoleetCliParametersService {
   public woleetCli: WoleetCliExecutable;
   private url: string;
   private token: string;
+  private lang: string;
   public store: Store<any>;
 
-  public constructor(storeService: StoreService) {
+  public constructor(storeService: StoreService, languageService: LanguageService) {
     this.store = storeService.store;
     this.woleetCli = new WoleetCliExecutable();
     if (this.store.has('token')) {
@@ -36,6 +38,16 @@ export class WoleetCliParametersService {
       } else {
         this.deleteUrl();
       }
+    }
+
+    if (this.store.has('lang')) {
+      if (!!this.store.get('lang')) {
+        this.lang = this.store.get('lang');
+      } else {
+        this.setWoleetCliLang(languageService.getBrowserLanguage());
+      }
+    } else {
+      this.setWoleetCliLang(languageService.getBrowserLanguage());
     }
   }
 
@@ -57,7 +69,7 @@ export class WoleetCliParametersService {
     return actionParametersArray.concat(folderParam.getParametersArray()) as any;
   }
 
-  public setWoleetCliParameters(token: string, url?: string) {
+  public setWoleetCliParameters(token: string, url?: string, lang?: string) {
     if (token) {
       this.token = token;
       this.store.set('token', token);
@@ -72,12 +84,21 @@ export class WoleetCliParametersService {
     }
   }
 
+  public setWoleetCliLang(lang: string) {
+    this.store.set('lang', lang);
+    this.lang = lang;
+  }
+
   public getUrl(): string {
     return this.url;
   }
 
   public getToken(): string {
     return this.token;
+  }
+
+  public getLang(): string {
+    return this.lang;
   }
 
   public deleteUrl() {

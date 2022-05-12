@@ -3,13 +3,12 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StoreService } from './services/store.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { DeeplinkComponent } from './deeplink/deeplink.component';
-import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
 import { SettingsMessageService } from './services/settingsMessage.service';
 import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
-import * as log from 'loglevel';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from './services/language.service';
+import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 
 @Component({
   selector: 'app-root',
@@ -25,11 +24,11 @@ export class AppComponent {
 
   constructor(storeService: StoreService,
     public dialog: MatDialog,
-    private cliRunnerFolderInterface: CliRunnerFolderInterface,
     private settingsMessageService: SettingsMessageService,
     private zone: NgZone,
     private translateService: TranslateService,
-    private languageService: LanguageService) {
+    private languageService: LanguageService,
+    private cli: WoleetCliParametersService) {
     this.setLanguage();
     this.store = storeService.store;
     if (!this.store.get('wizardBypass', false)) {
@@ -82,7 +81,7 @@ export class AppComponent {
   * Set the browser default language on init webapp.
   */
   setLanguage(): void {
-    this.translateService.addLangs(['en', 'fr']);
-    this.translateService.use(this.languageService.getBrowserLanguage());
+    this.translateService.addLangs(this.languageService.getSupportedLanguages());
+    this.translateService.use(this.cli.getLang());
   }
 }

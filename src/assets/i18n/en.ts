@@ -1,5 +1,9 @@
 export default {
   title: 'ProofKeeper',
+  languages: {
+    fr: 'French',
+    en: 'English'
+  },
   commons: {
     buttons: {
       cancel: 'Cancel',
@@ -20,7 +24,8 @@ export default {
       publicKey: 'Public key',
       woleetAPIToken: 'Woleet API Token',
       widsSignatureAPIURL: 'Woleet.ID Server signature API URL',
-      widsAPIToken: 'Woleet.ID Server API Token'
+      widsAPIToken: 'Woleet.ID Server API Token',
+      language: 'Language'
     },
     tooltips: {
       giveName: 'Give a name representing the identity of the legal person committing in seal operation.',
