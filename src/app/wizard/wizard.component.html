@@ -6,12 +6,12 @@
   </mat-dialog-content>
   <mat-dialog-content *ngIf="screen[0] === 2">
     <form class="form-content" [formGroup]="wizardTokenFromGroup">
-      <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
+      <h1 class="mat-h1 txt-align-center">Set up Woleet API authentication</h1>
       <p class="mat-body-1">
         Accessing the Woleet API requires an API token.<br>
         You can create one using your
-        <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnProofDesk();">ProofDesk</button>
-        account ("Developer" menu -> "API" tab).
+        <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnDashboard();">Woleet Dashboard</button>
+        account ("Security" menu -> "API tokens" tab).
       </p>
       <div>
         <mat-form-field class="full-width">
@@ -24,7 +24,7 @@
   </mat-dialog-content>
   <mat-dialog-content *ngIf="screen[0] === 3">
     <form class="form-content" [formGroup]="wizardIdentityFromGroup">
-      <h1 class="mat-h1 txt-align-center">Set up identities for seal</h1>
+      <h1 class="mat-h1 txt-align-center">Set up identities for sealing</h1>
       <p class="mat-body-1">
         If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one
         seal identity (you will be able to add more seal identities using the settings after the wizard):

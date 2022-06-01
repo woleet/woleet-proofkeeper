@@ -44,8 +44,8 @@ export class WizardComponent {
     this.screen[0] = this.screen[0] + 1;
   }
 
-  clickOnProofDesk() {
-    shell.openExternal('https://app.woleet.io/developer');
+  clickOnDashboard() {
+    shell.openExternal('https://dashboard.woleet.io/security');
   }
 
   saveTokenForm() {
