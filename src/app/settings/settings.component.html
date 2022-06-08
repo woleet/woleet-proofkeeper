@@ -132,13 +132,6 @@
   </mat-list-item>
 </mat-card>
 
-<div class="clear-button">
-  <button mat-raised-button color="warn" (click)="openClearSaveSettingsConfirmDialog();">
-    {{ translations.settings.resetSavedFoldersConfig | translate }}
-  </button>
-</div>
-
-
 <mat-card class="identity-card">
   <form [formGroup]="languageFormGroup">
     <mat-form-field>
@@ -151,3 +144,9 @@
     </mat-form-field>
   </form>
 </mat-card>
+
+<div class="clear-button">
+  <button mat-raised-button color="warn" (click)="openClearSaveSettingsConfirmDialog();">
+    {{ translations.settings.resetSavedFoldersConfig | translate }}
+  </button>
+</div>
