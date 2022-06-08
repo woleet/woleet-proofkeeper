@@ -44,7 +44,7 @@
     </div>
     <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
       <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.name }}</mat-label>
+        <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
         <input matInput formControlName="name">
         <mat-error *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')">
           {{ translations.commons.errors.nameAlreadyPresent | translate }}
