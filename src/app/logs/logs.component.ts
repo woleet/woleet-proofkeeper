@@ -3,6 +3,7 @@ import { MatTable } from '@angular/material/table';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { LogMessageService } from '../services/logMessage.service';
 import { FolderParam } from '../misc/folderParam';
+import { TranslationService } from '../services/translation.service';
 
 @Component({
   selector: 'app-logs',
@@ -17,7 +18,8 @@ export class LogsComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) mattable: MatTable<any>;
 
   constructor(foldersConfigService: FoldersConfigService,
-    private logMessageService: LogMessageService) {
+    private logMessageService: LogMessageService,
+    public translations: TranslationService) {
     this.folders = foldersConfigService.folders;
     this.folder = this.folders[0];
     this.displayedColumns = ['level', 'msg'];

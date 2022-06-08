@@ -109,8 +109,44 @@ function createWindowTray() {
   enableRemote(win.webContents);
 }
 
-function setShortcuts() {
-  const menuTemplate: Electron.MenuItemConstructorOptions[] = [
+
+/**
+* Get the OS language.
+*/
+function getOSLanguage(): string {
+ const language = app.getLocale();
+ if (language.split('-')[1]) {
+   return language.split('-')[0]
+ }
+ return language;
+}
+
+/**
+ * 
+ * @returns 
+ */
+function getMenuTexts(): Electron.MenuItemConstructorOptions[] {
+  if (getOSLanguage() === 'fr') {
+    return [
+      {
+        label: 'Menu',
+        submenu: [
+          { role: 'undo', label: 'Annuler' },
+          { role: 'redo', label: 'Refaire' },
+          { type: 'separator' },
+          { role: 'cut', label: 'Couper' },
+          { role: 'copy', label: 'Copier' },
+          { role: 'paste', label: 'Coller' },
+          { role: 'selectAll', label: 'Sélectionner tout' },
+          { type: 'separator' },
+          { role: 'toggleDevTools', label: 'Ouvrir le débogueur' },
+          { role: 'reload', label: 'Redémarrer' },
+          { role: 'quit', label: 'Quitter' }
+        ],
+      }
+    ];
+  }
+  return [
     {
       label: 'Menu',
       submenu: [
@@ -128,6 +164,10 @@ function setShortcuts() {
       ]
     }
   ];
+}
+
+function setShortcuts() {
+  const menuTemplate: Electron.MenuItemConstructorOptions[] = getMenuTexts();
 
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);

@@ -3,6 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { PubKeyAddressGroup } from './identitiesFromServer';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TranslationService } from '../services/translation.service';
+import { AppInjector } from '../app.module';
+import { TranslateService } from '@ngx-translate/core';
 
 export async function checkAndSubmit(http: HttpClient,
   formGroup: FormGroup,
@@ -100,7 +103,8 @@ export async function checkwIDConnectionGetAvailableKeys(http: HttpClient,
 }
 
 export function openSnackBarError(snackBar: MatSnackBar) {
-  snackBar.open('Unable to login. Please check your token.',
+  const text = AppInjector.get(TranslationService).settings.errors.unableToLogin;
+  snackBar.open(AppInjector.get(TranslateService).instant(text),
     undefined, {
       duration: 3000
     });

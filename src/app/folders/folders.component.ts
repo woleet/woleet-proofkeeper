@@ -9,6 +9,8 @@ import { LogContext } from '../misc/logs';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
+import { TranslationService } from '../services/translation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-folders',
@@ -28,8 +30,9 @@ export class FoldersComponent {
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private dialog: MatDialog) {
-
+    private dialog: MatDialog,
+    public translations: TranslationService,
+    private translateService: TranslateService) {
     this.addState = false;
 
     this.folderFormGroup = formBuilder.group({
@@ -48,9 +51,8 @@ export class FoldersComponent {
 
   openConfirmDeleteDialog(folderForm: FormGroup) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-    dialogRef.componentInstance.confirmationTitle = 'Remove folder';
-    dialogRef.componentInstance.confirmationText =
-      'Are you sure you want to remove this folder from ProofKeeper? Proofs won\'t be deleted and will have to be deleted manually.';
+    dialogRef.componentInstance.confirmationTitle = this.translateService.instant(this.translations.folders.removeFolder);
+    dialogRef.componentInstance.confirmationText = this.translateService.instant(this.translations.folders.removeFolderQuestion);
     dialogRef.afterClosed().subscribe(confirmDelete => {
       if (confirmDelete === true) {
         try {

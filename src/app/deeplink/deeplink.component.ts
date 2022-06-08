@@ -10,6 +10,7 @@ import { checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import * as log from 'loglevel';
 import { HttpClient } from '@angular/common/http';
+import { TranslationService } from '../services/translation.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class DeeplinkComponent {
     public identityService: IdentityService,
     private snackBar: MatSnackBar,
     private http: HttpClient,
+    public translations: TranslationService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.pubKeyAddressGroup = [];
     const deeplinkingUrl = new URL(data.url);

@@ -1,6 +1,7 @@
 <div class="logs-container">
   <mat-card *ngIf="folders.length !== 0">
     <mat-form-field [style.width.%]="100">
+      <mat-label>{{ translations.logs.logsOfFolder | translate }}</mat-label>
       <mat-select placeholder="Logs of folder" [(ngModel)]="folder">
         <mat-option *ngFor="let folder of folders" [value]="folder">
           {{translateLegacyAction(folder.action)}} {{folder.path}}
@@ -10,14 +11,18 @@
 
     <table mat-table [dataSource]="folder.logContext.logs" [style.width.%]="100">
       <ng-container matColumnDef="level">
-        <th mat-header-cell *matHeaderCellDef [style.padding-left.px]="6" [style.padding-right.px]="6"> Level </th>
+        <th mat-header-cell *matHeaderCellDef [style.padding-left.px]="6" [style.padding-right.px]="6">
+          {{ translations.logs.level | translate }}
+        </th>
         <td mat-cell *matCellDef="let logLine" [style.padding-left.px]="6" [style.padding-right.px]="6"
           [style.color]="(logLine.level === 'error'|| logLine.level === 'fatal') && 'red'">
           {{logLine.level}}
         </td>
       </ng-container>
       <ng-container matColumnDef="msg">
-        <th mat-header-cell *matHeaderCellDef [style.padding-left.px]="6" [style.padding-right.px]="6"> Message </th>
+        <th mat-header-cell *matHeaderCellDef [style.padding-left.px]="6" [style.padding-right.px]="6">
+          {{ translations.logs.message | translate }}
+        </th>
         <td mat-cell *matCellDef="let logLine" [style.padding-left.px]="6" [style.padding-right.px]="6" style="word-break: break-all;"
           [style.color]="(logLine.level === 'error'|| logLine.level === 'fatal') && 'red'">
           {{logLine.msg}}
@@ -28,6 +33,6 @@
     </table>
   </mat-card>
   <mat-card *ngIf="folders.length === 0">
-    <h1 class="mat-h1">No configured folders</h1>
+    <h1 class="mat-h1">{{ translations.logs.noConfiguredFolders | translate }}</h1>
   </mat-card>
 </div>

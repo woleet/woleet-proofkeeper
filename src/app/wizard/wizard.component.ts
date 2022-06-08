@@ -8,6 +8,7 @@ import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/sett
 import { IdentityService } from '../services/Identity.service';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { HttpClient } from '@angular/common/http';
+import { TranslationService } from '../services/translation.service';
 const { shell } = require('electron');
 
 @Component({
@@ -26,19 +27,20 @@ export class WizardComponent {
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     private snackBar: MatSnackBar,
-    private http: HttpClient) {
-    this.screen = [1];
-    this.pubKeyAddressGroup = [];
-    this.wizardTokenFromGroup = formBuilder.group({
-      token: ['', [Validators.required, tokenFormatValidator]]
-    });
-    this.wizardIdentityFromGroup = formBuilder.group({
-      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
-      url: ['', [Validators.required]],
-      token: ['', [Validators.required]],
-      pubKey: ['', [Validators.required]]
-    });
-  }
+    private http: HttpClient,
+    public translations: TranslationService) {
+      this.screen = [1];
+      this.pubKeyAddressGroup = [];
+      this.wizardTokenFromGroup = formBuilder.group({
+        token: ['', [Validators.required, tokenFormatValidator]]
+      });
+      this.wizardIdentityFromGroup = formBuilder.group({
+        name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
+        url: ['', [Validators.required]],
+        token: ['', [Validators.required]],
+        pubKey: ['', [Validators.required]]
+      });
+    }
 
   nextPage() {
     this.screen[0] = this.screen[0] + 1;

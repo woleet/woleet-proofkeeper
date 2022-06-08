@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 const { shell } = require('electron');
 
@@ -11,7 +12,7 @@ export class InfosComponent {
   public cliVersion: string;
   public proofKeeperVersion: string;
 
-  constructor(private cli: WoleetCliParametersService) {
+  constructor(private cli: WoleetCliParametersService, public translations: TranslationService) {
     // tslint:disable-next-line: max-line-length
     const cliResult = require('child_process').spawnSync(this.cli.woleetCli.getCliPath(), ['--version'], {stdio: 'pipe', windowsHide: true});
     this.cliVersion = cliResult.stdout.toString().replace('version ', '');

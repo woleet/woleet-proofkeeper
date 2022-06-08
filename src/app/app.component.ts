@@ -3,11 +3,12 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StoreService } from './services/store.service';
 import { WizardComponent } from './wizard/wizard.component';
 import { DeeplinkComponent } from './deeplink/deeplink.component';
-import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.service';
 import { SettingsMessageService } from './services/settingsMessage.service';
 import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
-import * as log from 'loglevel';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from './services/language.service';
+import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 
 @Component({
   selector: 'app-root',
@@ -23,9 +24,12 @@ export class AppComponent {
 
   constructor(storeService: StoreService,
     public dialog: MatDialog,
-    private cliRunnerFolderInterface: CliRunnerFolderInterface,
     private settingsMessageService: SettingsMessageService,
-    private zone: NgZone) {
+    private zone: NgZone,
+    private translateService: TranslateService,
+    private languageService: LanguageService,
+    private cli: WoleetCliParametersService) {
+    this.setLanguage();
     this.store = storeService.store;
     if (!this.store.get('wizardBypass', false)) {
       this.wizardDialog = dialog.open(WizardComponent, {
@@ -35,7 +39,7 @@ export class AppComponent {
         maxHeight: '100vh',
         maxWidth: '100vw'
       });
-      this.wizardDialog.afterClosed().subscribe( () => {
+      this.wizardDialog.afterClosed().subscribe(() => {
         this.store.set('wizardBypass', true);
         this.wizardDialog = undefined;
       });
@@ -54,7 +58,7 @@ export class AppComponent {
               url: deeplinkingUrl
             }
           });
-          this.deeplinkDialog.afterClosed().subscribe( () => {
+          this.deeplinkDialog.afterClosed().subscribe(() => {
             this.deeplinkDialog = undefined;
             if (this.active === 'settings') {
               this.settingsMessageService.sendMessage('update');
@@ -65,11 +69,19 @@ export class AppComponent {
     });
   }
 
-  setActiveFolders () { this.active = 'folders'; }
+  setActiveFolders() { this.active = 'folders'; }
 
-  setActiveSettings () { this.active = 'settings'; }
+  setActiveSettings() { this.active = 'settings'; }
 
-  setActiveLogs () { this.active = 'logs'; }
+  setActiveLogs() { this.active = 'logs'; }
 
-  setActiveInfos () { this.active = 'infos'; }
+  setActiveInfos() { this.active = 'infos'; }
+
+  /**
+  * Set the browser default language on init webapp.
+  */
+  setLanguage(): void {
+    this.translateService.addLangs(this.languageService.getSupportedLanguages());
+    this.translateService.use(this.cli.getLang());
+  }
 }

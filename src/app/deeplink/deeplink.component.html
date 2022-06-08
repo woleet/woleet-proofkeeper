@@ -1,23 +1,23 @@
 <div class="dialog-container">
   <mat-dialog-content *ngIf="screen === 0">
-    <h1 class="mat-h1 txt-align-center">Invalid configuration passed by deeplinking</h1>
+    <h1 class="mat-h1 txt-align-center">{{ translations.deeplink.invalidConf | translate }}</h1>
     <p class="mat-body-1">
-      Please check with the one who provided you the link<br>
+      {{ translations.deeplink.pleaseCheck | translate }}<br>
     </p>
   </mat-dialog-content>
 
   <mat-dialog-content *ngIf="screen === 1">
-    <h1 class="mat-h1 txt-align-center">Set up authentication to Woleet API</h1>
+    <h1 class="mat-h1 txt-align-center">{{ translations.commons.setupAuthenticationToWoleetAPI | translate }}</h1>
     <div>
       <p class="mat-body-1">
-        Provided Woleet API token:<br>
+        {{ translations.deeplink.providedWoleetAPIToken | translate }}<br>
       </p>
       <mat-card class="mat-card-token">
         {{woleetToken}}
       </mat-card>
       <mat-divider *ngIf="woleetUrl" ></mat-divider>
       <p class="mat-body-1" *ngIf="woleetUrl">
-        Provided Woleet URL:
+        {{ translations.deeplink.providedWoleetURL | translate }}
       </p>
       <mat-card *ngIf="woleetUrl">
         {{woleetUrl}}
@@ -26,17 +26,17 @@
     </mat-dialog-content>
 
     <mat-dialog-content *ngIf="screen ===2">
-    <h1 class="mat-h1 txt-align-center" *ngIf="(pubKeyAddressGroup.length === 0)" >Set up authentication to Woleet.ID Server</h1>
+    <h1 class="mat-h1 txt-align-center" *ngIf="(pubKeyAddressGroup.length === 0)" >{{ translations.deeplink.setupAuthenticationToWids | translate }}</h1>
     <div *ngIf="pubKeyAddressGroup.length === 0">
       <p class="mat-body-1">
-        Provided Woleet.ID Server token:<br>
+        {{ translations.deeplink.providedWidsAPIToken | translate }}<br>
       </p>
       <mat-card class="mat-card-token">
         {{widsToken}}
       </mat-card>
       <mat-divider *ngIf="widsUrl" ></mat-divider>
       <p class="mat-body-1" *ngIf="widsUrl">
-        Provided Woleet.ID Server URL:
+        {{ translations.deeplink.providedWidsURL | translate }}
       </p>
       <mat-card *ngIf="widsUrl">
         {{widsUrl}}
@@ -44,17 +44,20 @@
     </div>
     <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
       <mat-form-field class="full-width">
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-error *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')">Name already present
+        <mat-label>{{ translations.commons.labelNames.name }}</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')">
+          {{ translations.commons.errors.nameAlreadyPresent | translate }}
         </mat-error>
         <button mat-icon-button matSuffix [disableRipple]="true"
-                matTooltip="Give a name representing the identity of the legal person committing in seal operation."
+                [matTooltip]="translations.commons.tooltips.giveName | translate"
                 [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
           <mat-icon>help</mat-icon>
         </button>
       </mat-form-field>
       <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
-        <mat-select placeholder="Public key" formControlName="pubKey" (selectionChange)="onPubKeyChange()">
+        <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
+        <mat-select formControlName="pubKey" (selectionChange)="onPubKeyChange()">
           <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
             <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
               {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
@@ -68,22 +71,22 @@
   <mat-dialog-actions>
     <div class="button-line">
       <button mat-raised-button color="primary" *ngIf="screen === 1 && !isWids" (click)="saveParameters();">
-        Save
+        {{ translations.commons.buttons.save | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="screen === 1 && isWids" (click)="nextScreen();">
-        Next
+        {{ translations.commons.buttons.next | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="(screen === 2 && (pubKeyAddressGroup.length === 0))" (click)="onClickCheckwIDConnectionGetAvailableKeys();">
-        Check
+        {{ translations.commons.buttons.check | translate }}
       </button>
       <button mat-raised-button color="primary" [disabled]="widsFormGroup.invalid" *ngIf="(screen === 2 && (pubKeyAddressGroup.length !== 0))" (click)="saveParameters(); ">
-        Save
+        {{ translations.commons.buttons.save | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="screen === 1 || screen === 2" (click)="closeDialog();">
-        Cancel
+        {{ translations.commons.buttons.cancel | translate }}
       </button>
       <button mat-raised-button color="primary" *ngIf="screen === 0" (click)="closeDialog();">
-        Close
+        {{ translations.commons.buttons.close | translate }}
       </button>
     </div>
   </mat-dialog-actions>
