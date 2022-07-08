@@ -23,7 +23,12 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/@woleet/woleet-weblibs/dist",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/scss/styles.scss"
@@ -38,7 +43,10 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "allowedCommonJsDependencies": [
+              "@woleet/woleet-weblibs"
+            ]
           },
           "configurations": {
             "production": {

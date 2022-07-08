@@ -1,0 +1,145 @@
+<div>
+  <mat-card class="full-size-card">
+    <mat-tab-group
+      class="action-tab"
+      (selectedIndexChange)="onTabChange($event)"
+    >
+      <mat-tab [label]="translations.folders.tabs.filesToTimestamp | translate">
+      </mat-tab>
+      <mat-tab [label]="translations.folders.tabs.filesToSeal | translate">
+      </mat-tab>
+    </mat-tab-group>
+    <div *ngIf="!addState" class="default-text">
+      Déposez ici les fichiers pour lesquels vous souhaitez créer une preuve
+      d'horodatage. Une fois les fichiers ancrés dans la blockchain Bitcoin,
+      vous pourrez télécharger les reçus de preuve à partir de votre tableau de
+      bord. Ces reçus de preuve vous permettront de prouver l'existence de vos
+      fichiers à la date de l'horodatage.
+
+      <!-- Drag and drop file to hash -->
+
+      <div
+        class="dropzone"
+        appDragDrop
+        (fileDropped)="onFileDropped($event)"
+        (startDropping)="isDroppingAFile = true"
+        (stopDropping)="isDroppingAFile = false"
+      >
+        <input type="file" (change)="onSelectedFile($event)"  class="dropzone-file-input"/>
+        <div>
+          <mat-icon>note_add</mat-icon>
+          <div>Drop here</div>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="folderFormGroup" *ngIf="addState">
+      <mat-form-field class="full-width">
+        <mat-label>Fichier à horodater</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="path"
+          readonly
+        />
+      </mat-form-field>
+      <div *ngIf="folderFormGroup.get('action').value == 'sign'">
+        <mat-form-field>
+          <mat-label>{{
+            translations.folders.identityToUse | translate
+          }}</mat-label>
+          <mat-select
+            class="custom-select"
+            formControlName="identity"
+            name="identity"
+          >
+            <mat-option
+              *ngFor="let identityName of identityService.arrayIdentityContent"
+              [value]="identityName.name"
+            >
+              {{ identityName.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
+            {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
+          </mat-error>
+          <mat-error
+            *ngIf="
+              identityService.arrayIdentityContent.length !== 0 &&
+              folderFormGroup.get('identity').getError('voidIdentity')
+            "
+          >
+            {{ translations.folders.errors.identityRequired | translate }}
+          </mat-error>
+          <mat-error
+            *ngIf="folderFormGroup.get('identity').getError('identityNotFound')"
+          >
+            {{ translations.folders.errors.notFound | translate }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <br />
+      <div>
+        <mat-checkbox color="primary" name="public" formControlName="public">
+          {{ translations.folders.checkbox.makeProofsPublicly | translate }}
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox
+          color="primary"
+          name="recursive"
+          formControlName="recursive"
+        >
+          {{
+            translations.folders.checkbox.includeFilesFromSubfolders | translate
+          }}
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox color="primary" name="strict" formControlName="strict">
+          {{ translations.folders.checkbox.recreateProofs | translate }}
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-checkbox color="primary" name="prune" formControlName="prune">
+          {{ translations.folders.checkbox.deleteOldProofs | translate }}
+        </mat-checkbox>
+      </div>
+      <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
+        <mat-checkbox
+          color="primary"
+          name="iDServerUnsecureSSL"
+          formControlName="iDServerUnsecureSSL"
+        >
+          {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
+        </mat-checkbox>
+      </div>
+      <div>
+        <mat-form-field class="full-width">
+          <mat-label>{{
+            translations.folders.proveFilesMatchingRegularExpression | translate
+          }}</mat-label>
+          <input
+            matInput
+            type="text"
+            name="filter"
+            formControlName="filter"
+          />
+        </mat-form-field>
+      </div>
+      <span class="align-end">
+        <button
+          mat-raised-button
+          color="primary"
+          class="span-folder-add-button"
+          [disabled]="folderFormGroup.invalid"
+          (click)="onClickTimestamp()"
+        >
+          {{ translations.folders.addFolder | translate }}
+        </button>
+        <button mat-raised-button color="warn" (click)="onCancelAddClick()">
+          {{ translations.commons.buttons.cancel | translate }}
+        </button>
+      </span>
+    </form>
+  </mat-card>
+</div>

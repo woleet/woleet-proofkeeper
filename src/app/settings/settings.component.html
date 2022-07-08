@@ -93,7 +93,7 @@
         </mat-form-field>
         <mat-form-field class="full-width">
           <mat-label>{{ translations.commons.labelNames.widsAPIToken | translate }}</mat-label>
-          <input matInput placeholder="Woleet.ID Server API Token" formControlName="token"
+          <input matInput formControlName="token"
             (ngModelChange)="onEditURLTokenChanges();">
         </mat-form-field>
         <button mat-raised-button color="primary" class="full-width" *ngIf="editPubKeyAddressGroup.length === 0"
