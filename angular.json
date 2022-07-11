@@ -23,12 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "node_modules/@woleet/woleet-weblibs/dist",
-                "output": "/"
-              }
+              "src/assets"
             ],
             "styles": [
               "src/scss/styles.scss"

@@ -1,0 +1,38 @@
+<svg width="78" height="78" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M57.7499 6.5249L53.0249 14.6624" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="0s" dur="3s" repeatCount="indefinite" />
+    </path>
+  <path d="M71.4749 20.25L63.3374 24.975" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="250ms" dur="3s"  repeatCount="indefinite" />
+    </path>
+  <path d="M76.5 39H67.125" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="500ms" dur="3s"  repeatCount="indefinite" />
+    </path>
+  <path d="M71.4749 57.75L63.3374 53.025" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="750ms" dur="3s"  repeatCount="indefinite" />
+    </path>
+  <path d="M57.7499 71.475L53.0249 63.3375" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="1000ms" dur="3s"  repeatCount="indefinite" />
+    </path>
+  <path d="M39 76.5V67.125" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="1250ms" dur="3s"  repeatCount="indefinite" />
+    </path>
+  <path d="M24.975 63.3375L20.25 71.475" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="1500ms" dur="3s" repeatCount="indefinite" />
+    </path>
+  <path d="M14.6624 53.025L6.5249 57.75" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="1750ms" dur="3s" repeatCount="indefinite" />
+    </path>
+  <path d="M10.875 39H1.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="2000ms" dur="3s" repeatCount="indefinite" />
+    </path>
+  <path d="M14.6624 24.975L6.5249 20.25" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="2250ms" dur="3s" repeatCount="indefinite" />
+    </path>
+  <path d="M24.975 14.6624L20.25 6.5249" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="2500ms" dur="3s" repeatCount="indefinite" />
+    </path>
+  <path d="M39 10.875V1.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="stroke" values="#4814AD;#CBD5E1;" begin="2750ms" dur="3s" repeatCount="indefinite" />
+    </path>
+</svg>

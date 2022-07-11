@@ -25,10 +25,16 @@
         (startDropping)="isDroppingAFile = true"
         (stopDropping)="isDroppingAFile = false"
       >
-        <input type="file" (change)="onSelectedFile($event)"  class="dropzone-file-input"/>
-        <div>
+        <input type="file" (change)="onSelectedFile($event)"  class="dropzone-file-input" [ngClass]="{ 'not-clickable': isHashing }"/>
+        <div *ngIf="!isHashing">
           <mat-icon>note_add</mat-icon>
           <div>Drop here</div>
+        </div>
+
+        <div *ngIf="isHashing">
+          <img src="assets/images/loading-woleet-api.svg" />
+          <div class="hash-progress">{{ progress | percent }}</div>
+      <div class="hash-text"><em>Computing fingerprint…</em></div>
         </div>
       </div>
     </div>
