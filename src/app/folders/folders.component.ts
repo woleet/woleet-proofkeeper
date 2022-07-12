@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import * as remote from '@electron/remote';
+import { TranslateService } from '@ngx-translate/core';
+import * as log from 'loglevel';
+import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
+import { LogContext } from '../misc/logs';
+import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
-import * as remote from '@electron/remote';
-import * as log from 'loglevel';
-import * as nodepath from 'path';
-import { LogContext } from '../misc/logs';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
-import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { TranslationService } from '../services/translation.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-folders',
@@ -216,7 +215,7 @@ function noDuplicatePathValidatorFactory(thisParam) {
   };
 }
 
-function identityCheckerFactory(thisParam) {
+export function identityCheckerFactory(thisParam) {
   return function identityChecker(control: AbstractControl): ValidationErrors | null {
     if (thisParam.folderFormGroup === undefined) {
       return null;
@@ -237,3 +236,4 @@ function identityCheckerFactory(thisParam) {
     return null;
   };
 }
+

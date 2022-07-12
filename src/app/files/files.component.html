@@ -25,7 +25,12 @@
         (startDropping)="isDroppingAFile = true"
         (stopDropping)="isDroppingAFile = false"
       >
-        <input type="file" (change)="onSelectedFile($event)"  class="dropzone-file-input" [ngClass]="{ 'not-clickable': isHashing }"/>
+        <input
+          type="file"
+          (change)="onSelectedFile($event)"
+          class="dropzone-file-input"
+          [ngClass]="{ 'not-clickable': isHashing }"
+        />
         <div *ngIf="!isHashing">
           <mat-icon>note_add</mat-icon>
           <div>Drop here</div>
@@ -34,110 +39,90 @@
         <div *ngIf="isHashing">
           <img src="assets/images/loading-woleet-api.svg" />
           <div class="hash-progress">{{ progress | percent }}</div>
-      <div class="hash-text"><em>Computing fingerprint…</em></div>
+          <div class="hash-text"><em>Computing fingerprint…</em></div>
         </div>
       </div>
     </div>
-    <form [formGroup]="folderFormGroup" *ngIf="addState">
-      <mat-form-field class="full-width">
-        <mat-label>Fichier à horodater</mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="path"
-          readonly
-        />
+    <form [formGroup]="fileFormGroup" *ngIf="addState">
+      <mat-form-field *ngIf="fileFormGroup.get('action').value == 'sign'">
+        <mat-label>{{
+          translations.folders.identityToUse | translate
+        }}</mat-label>
+        <mat-select
+          class="custom-select"
+          formControlName="identity"
+          name="identity"
+        >
+          <mat-option
+            *ngFor="let identityName of identityService.arrayIdentityContent"
+            [value]="identityName.name"
+          >
+            {{ identityName.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
+          {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            identityService.arrayIdentityContent.length !== 0 &&
+            fileFormGroup.get('identity').getError('voidIdentity')
+          "
+        >
+          {{ translations.folders.errors.identityRequired | translate }}
+        </mat-error>
+        <mat-error
+          *ngIf="fileFormGroup.get('identity').getError('identityNotFound')"
+        >
+          {{ translations.folders.errors.notFound | translate }}
+        </mat-error>
       </mat-form-field>
-      <div *ngIf="folderFormGroup.get('action').value == 'sign'">
-        <mat-form-field>
-          <mat-label>{{
-            translations.folders.identityToUse | translate
-          }}</mat-label>
-          <mat-select
-            class="custom-select"
-            formControlName="identity"
-            name="identity"
-          >
-            <mat-option
-              *ngFor="let identityName of identityService.arrayIdentityContent"
-              [value]="identityName.name"
-            >
-              {{ identityName.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-            {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
-          </mat-error>
-          <mat-error
-            *ngIf="
-              identityService.arrayIdentityContent.length !== 0 &&
-              folderFormGroup.get('identity').getError('voidIdentity')
-            "
-          >
-            {{ translations.folders.errors.identityRequired | translate }}
-          </mat-error>
-          <mat-error
-            *ngIf="folderFormGroup.get('identity').getError('identityNotFound')"
-          >
-            {{ translations.folders.errors.notFound | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <br />
+
+      <mat-form-field class="full-width">
+        <mat-label>Nom</mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Tags</mat-label>
+        <mat-chip-list  #chipList>
+          <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+            {{ tag }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input placeholder="Nouveau tag..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+      
+      <mat-form-field
+        *ngIf="fileFormGroup.get('action').value == 'sign'"
+        class="full-width"
+      >
+        <mat-label>URL d'identité</mat-label>
+        <input matInput type="text" formControlName="identityURL" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>URL de callback</mat-label>
+        <input matInput type="text" formControlName="callbackURL" />
+      </mat-form-field>
       <div>
         <mat-checkbox color="primary" name="public" formControlName="public">
-          {{ translations.folders.checkbox.makeProofsPublicly | translate }}
+          Public
         </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox
-          color="primary"
-          name="recursive"
-          formControlName="recursive"
-        >
-          {{
-            translations.folders.checkbox.includeFilesFromSubfolders | translate
-          }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="strict" formControlName="strict">
-          {{ translations.folders.checkbox.recreateProofs | translate }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="prune" formControlName="prune">
-          {{ translations.folders.checkbox.deleteOldProofs | translate }}
-        </mat-checkbox>
-      </div>
-      <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
-        <mat-checkbox
-          color="primary"
-          name="iDServerUnsecureSSL"
-          formControlName="iDServerUnsecureSSL"
-        >
-          {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-form-field class="full-width">
-          <mat-label>{{
-            translations.folders.proveFilesMatchingRegularExpression | translate
-          }}</mat-label>
-          <input
-            matInput
-            type="text"
-            name="filter"
-            formControlName="filter"
-          />
-        </mat-form-field>
       </div>
       <span class="align-end">
         <button
           mat-raised-button
           color="primary"
           class="span-folder-add-button"
-          [disabled]="folderFormGroup.invalid"
+          [disabled]="fileFormGroup.invalid"
           (click)="onClickTimestamp()"
         >
           {{ translations.folders.addFolder | translate }}
