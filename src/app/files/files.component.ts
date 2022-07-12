@@ -1,27 +1,27 @@
-import { Component } from "@angular/core";
+import { Component, NgZone } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   ValidationErrors,
   Validators
-} from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import * as remote from "@electron/remote";
-import { TranslateService } from "@ngx-translate/core";
-import * as crypto from "crypto";
-import * as fs from "fs";
-import * as log from "loglevel";
-import { ConfirmationDialogComponent } from "../dialogs/confirmationDialog.component";
-import { LogContext } from "../misc/logs";
-import { CliRunnerFolderInterface } from "../services/cliRunnerFolderInterface.service";
-import { FolderDesc } from "../services/foldersConfig.service";
-import { IdentityService } from "../services/Identity.service";
-import { TranslationService } from "../services/translation.service";
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import * as remote from '@electron/remote';
+import { TranslateService } from '@ngx-translate/core';
+import * as crypto from 'crypto';
+import * as fs from 'fs';
+import * as log from 'loglevel';
+import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
+import { LogContext } from '../misc/logs';
+import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
+import { FolderDesc } from '../services/foldersConfig.service';
+import { IdentityService } from '../services/Identity.service';
+import { TranslationService } from '../services/translation.service';
 @Component({
-  selector: "app-files",
-  templateUrl: "./files.component.html",
-  styleUrls: ["./files.component.scss"],
+  selector: 'app-files',
+  templateUrl: './files.component.html',
+  styleUrls: ['./files.component.scss'],
 })
 export class FilesComponent {
   public out: string;
@@ -41,21 +41,22 @@ export class FilesComponent {
     public identityService: IdentityService,
     private dialog: MatDialog,
     public translations: TranslationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private zone: NgZone
   ) {
     this.addState = false;
     this.folderFormGroup = formBuilder.group({
       action: [
-        "anchor",
-        [Validators.required, Validators.pattern("anchor|sign")],
+        'anchor',
+        [Validators.required, Validators.pattern('anchor|sign')],
       ],
-      path: ["", [Validators.required, noDuplicatePathValidatorFactory(this)]],
+      path: ['', [Validators.required, noDuplicatePathValidatorFactory(this)]],
       public: [true],
       strict: [false],
       prune: [false],
       recursive: [false],
-      filter: [""],
-      identity: ["", identityCheckerFactory(this)],
+      filter: [''],
+      identity: ['', identityCheckerFactory(this)],
       iDServerUnsecureSSL: [false],
     });
     this.fillFoldersFormGroup();
@@ -105,16 +106,16 @@ export class FilesComponent {
 
   private getFolderDescFromFormGroup(form: FormGroup) {
     const folderDesc: FolderDesc = {
-      path: form.get("path").value as string,
-      action: form.get("action").value as string,
-      private: Boolean(!form.get("public").value).valueOf(),
-      strict: Boolean(form.get("strict").value).valueOf(),
-      prune: Boolean(form.get("prune").value).valueOf(),
-      recursive: Boolean(form.get("recursive").value).valueOf(),
-      filter: form.get("filter").value as string,
-      identityName: form.get("identity").value as string,
+      path: form.get('path').value as string,
+      action: form.get('action').value as string,
+      private: Boolean(!form.get('public').value).valueOf(),
+      strict: Boolean(form.get('strict').value).valueOf(),
+      prune: Boolean(form.get('prune').value).valueOf(),
+      recursive: Boolean(form.get('recursive').value).valueOf(),
+      filter: form.get('filter').value as string,
+      identityName: form.get('identity').value as string,
       iDServerUnsecureSSL: Boolean(
-        form.get("iDServerUnsecureSSL").value
+        form.get('iDServerUnsecureSSL').value
       ).valueOf(),
     };
     return folderDesc;
@@ -124,15 +125,15 @@ export class FilesComponent {
     let path: string;
     try {
       path = remote.dialog.showOpenDialogSync({
-        properties: ["openDirectory"],
+        properties: ['openDirectory'],
       })[0];
     } catch (error) {
-      path = "";
+      path = '';
     } finally {
       this.folderFormGroup.patchValue({
         path: path,
       });
-      log.info(`Setting folder: ${this.folderFormGroup.get("path").value}`);
+      log.info(`Setting folder: ${this.folderFormGroup.get('path').value}`);
     }
   }
 
@@ -156,25 +157,25 @@ export class FilesComponent {
 
   resetPath() {
     this.folderFormGroup.patchValue({
-      path: "",
+      path: '',
     });
   }
 
   onTabChange(index: number) {
-    if (index === 0 && this.folderFormGroup.get("action").value === "sign") {
+    if (index === 0 && this.folderFormGroup.get('action').value === 'sign') {
       this.folderFormGroup.patchValue({
-        action: "anchor",
+        action: 'anchor',
       });
     } else if (
       index === 1 &&
-      this.folderFormGroup.get("action").value === "anchor"
+      this.folderFormGroup.get('action').value === 'anchor'
     ) {
       this.folderFormGroup.patchValue({
-        action: "sign",
+        action: 'sign',
       });
     }
-    this.folderFormGroup.get("path").updateValueAndValidity();
-    this.folderFormGroup.get("identity").updateValueAndValidity();
+    this.folderFormGroup.get('path').updateValueAndValidity();
+    this.folderFormGroup.get('identity').updateValueAndValidity();
   }
 
   onAddFolderClick() {
@@ -196,8 +197,8 @@ export class FilesComponent {
 
   resetAddFolderFormGroup() {
     this.folderFormGroup.reset({
-      action: this.folderFormGroup.get("action").value,
-      path: "",
+      action: this.folderFormGroup.get('action').value,
+      path: '',
       public: true,
     });
   }
@@ -223,13 +224,9 @@ export class FilesComponent {
         file: null,
         hash: null
       };
-     
 
-      console.log(file);
-
-      this.hashFile(file).then(value => {
-        this.selectedFile = value;
-        console.log(this.selectedFile)
+      this.hashFile(file).then((fileWithHash) => {
+        this.selectedFile = fileWithHash;
         this.addState = true;
         this.isHashing = false;
       });
@@ -240,16 +237,16 @@ export class FilesComponent {
     const fileStream = fs.createReadStream(file.path);
     if (Buffer.isBuffer(fileStream)) {
       const result = crypto
-        .createHash("sha256")
+        .createHash('sha256')
         .update(fileStream)
-        .digest("hex");
+        .digest('hex');
       return Promise.resolve({
         hash: result,
         file,
       });
     }
 
-    const hasher = crypto.createHash("sha256");
+    const hasher = crypto.createHash('sha256');
 
     return new Promise((resolve, reject) => {
       const total = file.size;
@@ -258,13 +255,13 @@ export class FilesComponent {
         fileStream.on('data', (data) => {
           hasher.update(data);
           progress += data.length;
-          this.progress = progress / total;
+          this.zone.run(() => {
+            this.progress = progress / total;
+          });
         });
         fileStream.on('end', () => {
-          const result = hasher.digest('hex');
-          this.progress = null;
           resolve({
-            hash: result,
+            hash: hasher.digest('hex'),
             file: file,
           });
         });
@@ -304,10 +301,10 @@ function noDuplicatePathValidatorFactory(thisParam) {
       const foldersToCheck =
         thisParam.cliRunnerFolderInterface.folders.folders.filter((folder) => {
           return (
-            folder.action === thisParam.folderFormGroup.controls["action"].value
+            folder.action === thisParam.folderFormGroup.controls['action'].value
           );
         });
-      const separator = require("path").sep;
+      const separator = require('path').sep;
       const duplicateFolder = foldersToCheck.some((folder) => {
         let pathToCheck = folder.path;
         if (pathToCheck.charAt(pathToCheck.length - 1) !== separator) {
@@ -339,7 +336,7 @@ function identityCheckerFactory(thisParam) {
     if (thisParam.folderFormGroup === undefined) {
       return null;
     }
-    if (thisParam.folderFormGroup.get("action").value === "anchor") {
+    if (thisParam.folderFormGroup.get('action').value === 'anchor') {
       return null;
     }
     if (!control.value) {
