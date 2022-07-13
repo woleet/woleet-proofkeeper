@@ -4,10 +4,8 @@
       class="action-tab"
       (selectedIndexChange)="onTabChange($event)"
     >
-      <mat-tab [label]="translations.folders.tabs.filesToTimestamp | translate">
-      </mat-tab>
-      <mat-tab [label]="translations.folders.tabs.filesToSeal | translate">
-      </mat-tab>
+      <mat-tab [label]="'Fichier à horodater'"> </mat-tab>
+      <mat-tab [label]="'Fichier à certifier'"> </mat-tab>
     </mat-tab-group>
     <div *ngIf="!fileHash" class="default-text">
       Déposez ici les fichiers pour lesquels vous souhaitez créer une preuve
@@ -34,13 +32,13 @@
         />
         <div *ngIf="!isHashing">
           <mat-icon class="drop-icon">note_add</mat-icon>
-          <div class="drop-text">Drop here your file</div>
+          <div class="drop-text">Déposez votre fichier ici</div>
         </div>
 
         <div *ngIf="isHashing">
           <img src="assets/images/loading-woleet-api.svg" />
           <div class="hash-progress">{{ progress | percent }}</div>
-          <div class="hash-text"><em>Computing fingerprint…</em></div>
+          <div class="hash-text"><em>Calcul du hash…</em></div>
           <button
             mat-raised-button
             color="warn"
@@ -123,22 +121,80 @@
         <mat-label>URL de callback</mat-label>
         <input matInput type="text" formControlName="callbackURL" />
       </mat-form-field>
-      <div>
-        <mat-checkbox color="primary" name="public" formControlName="public">
-          Public
-        </mat-checkbox>
+      <mat-checkbox color="primary" name="public" formControlName="public">
+        Public
+      </mat-checkbox>
+      <div class="metadata-section">
+        <mat-accordion>
+          <mat-expansion-panel
+            (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title> Métadonnées </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="metadata">
+              <ul>
+                <li *ngFor="let data of metadata | keyvalue">
+                  <div class="key-value">
+                    {{ data.key }}: {{ data.value }}
+                    <mat-icon (click)="deleteMetadata(data.key)" class="delete">
+                      delete
+                    </mat-icon>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="d-flex">
+                <mat-form-field class="name">
+                  <mat-label>Nom</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="metadataName"
+                    (keyup.enter)="metadataIsValid() ? addMetadata() : null"
+                  />
+                </mat-form-field>
+                <mat-form-field class="value">
+                  <mat-label>Valeur</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="metadataValue"
+                    (keyup.enter)="metadataIsValid() ? addMetadata() : null"
+                  />
+                </mat-form-field>
+              </div>
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                (click)="addMetadata()"
+                [disabled]="!metadataIsValid()"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
       </div>
       <span class="align-end">
         <button
+          type="button"
           mat-raised-button
           color="primary"
           class="span-folder-add-button"
           [disabled]="fileFormGroup.invalid"
           (click)="onClickTimestamp()"
         >
-          {{ translations.folders.addFolder | translate }}
+          Horodater le ficher
         </button>
-        <button mat-raised-button color="warn" (click)="onCancelAddClick()">
+        <button
+          type="button"
+          mat-raised-button
+          color="warn"
+          (click)="onCancelAddClick()"
+        >
           {{ translations.commons.buttons.cancel | translate }}
         </button>
       </span>

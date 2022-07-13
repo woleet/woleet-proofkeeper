@@ -111,3 +111,27 @@
 .drop-text {
   margin-top: 0.5rem;
 }
+
+.metadata-section {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+
+  .name,
+  .value {
+    width: 100%;
+  }
+
+  .value {
+    margin-left: 1rem;
+  }
+  
+  .delete {
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+
+  .key-value {
+    display: flex;
+    align-items: center;
+  }
+}

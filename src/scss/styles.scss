@@ -47,3 +47,15 @@ $accent:  mat.define-palette(mat.$red-palette, 400);
 .dark-theme {
   @include mat.all-component-themes(mat.define-dark-theme($primary, $accent));
 }
+
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}

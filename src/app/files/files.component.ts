@@ -2,13 +2,16 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import { identityCheckerFactory } from '../folders/folders.component';
 import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { IdentityService } from '../services/Identity.service';
+import { ProofReceiptService } from '../services/proof-receipt.service';
 import { TranslationService } from '../services/translation.service';
+import { Proof } from '../shared/interfaces/i-proof';
 
 @Component({
   selector: 'app-files',
@@ -25,6 +28,8 @@ export class FilesComponent {
   fileStream: fs.ReadStream;
   isHashing = false;
   progress = 0;
+  metadata = {};
+  panelOpenState = false;
 
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -35,20 +40,23 @@ export class FilesComponent {
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     public translations: TranslationService,
-    private zone: NgZone
+    private zone: NgZone,
+    private proofReceiptService: ProofReceiptService,
+    private snackBar: MatSnackBar
   ) {
     this.fileFormGroup = this.formBuilder.group({
-      name: [''],
-      tags: [''],
-      identityURL: [''],
-      callbackURL: [''],
-      metadata: [''],
+      name: ['', Validators.required],
+      identityURL: [null],
+      callbackURL: [null],
+      metadata: [null],
       action: [
         'anchor',
         [Validators.required, Validators.pattern('anchor|sign')],
       ],
       public: [true],
-      identity: ['', identityCheckerFactory(this)],
+      identity: [null, identityCheckerFactory(this)],
+      metadataName: [null],
+      metadataValue: [null],
     });
   }
 
@@ -70,13 +78,15 @@ export class FilesComponent {
 
   onCancelAddClick() {
     this.cancelFileHash();
+    this.metadata = {};
+    this.tags = [];
+    this.panelOpenState = false;
     this.resetAddFileFormGroup();
   }
 
   resetAddFileFormGroup() {
     this.fileFormGroup.reset({
       action: this.fileFormGroup.get('action').value,
-      path: '',
       public: true,
     });
   }
@@ -142,11 +152,6 @@ export class FilesComponent {
     this.onFileDropped(file);
   }
 
-  onClickTimestamp() {
-    this.fileHash = null;
-    this.resetAddFileFormGroup();
-  }
-
   addTag(event: MatChipInputEvent) {
     const value = (event.value || '').trim();
 
@@ -165,5 +170,68 @@ export class FilesComponent {
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
+  }
+
+  metadataIsValid(): boolean {
+    const name = this.fileFormGroup.get('metadataName').value;
+    const value = this.fileFormGroup.get('metadataValue').value;
+    return !!name && !!value;
+  }
+
+  addMetadata() {
+    const name = this.fileFormGroup.get('metadataName').value;
+    const value = this.fileFormGroup.get('metadataValue').value;
+    this.metadata[name] = value;
+    this.fileFormGroup.get('metadataName').reset();
+    this.fileFormGroup.get('metadataValue').reset();
+  }
+
+  deleteMetadata(key: string) {
+    delete this.metadata[key];
+  }
+
+  onClickTimestamp() {
+    this.proofReceiptService.createAnchor(this.createProof()).subscribe(() => {
+      this.openSnackBar('Horodatage créée !');
+      this.onCancelAddClick();
+    });
+  }
+
+  createProof(): Proof {
+    const proof: Proof = {};
+    const formValues = this.fileFormGroup.value;
+    console.log(formValues);
+    if (formValues.action === 'anchor') {
+      proof.hash = this.fileHash;
+    } else {
+      proof.signedHash = this.fileHash;
+    }
+
+    proof.name = formValues.name;
+    proof.public = formValues.public;
+
+    if (this.tags && this.tags.length) {
+      proof.tags = this.tags;
+    }
+
+    if (!!formValues.identityURL) {
+      proof.identityURL = formValues.identityURL;
+    }
+
+    if (!!formValues.callbackURL) {
+      proof.callbackURL = formValues.callbackURL;
+    }
+
+    if (this.metadata && Object.keys(this.metadata).length) {
+      proof.metadata = this.metadata;
+    }
+
+    return proof;
+  }
+
+  openSnackBar(message: string, action?: string) {
+    this.snackBar.open(message, action, {
+      duration: 5000,
+    });
   }
 }
