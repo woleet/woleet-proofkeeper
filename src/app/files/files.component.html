@@ -9,7 +9,7 @@
       <mat-tab [label]="translations.folders.tabs.filesToSeal | translate">
       </mat-tab>
     </mat-tab-group>
-    <div *ngIf="!addState" class="default-text">
+    <div *ngIf="!fileHash" class="default-text">
       Déposez ici les fichiers pour lesquels vous souhaitez créer une preuve
       d'horodatage. Une fois les fichiers ancrés dans la blockchain Bitcoin,
       vous pourrez télécharger les reçus de preuve à partir de votre tableau de
@@ -26,24 +26,33 @@
         (stopDropping)="isDroppingAFile = false"
       >
         <input
+          #fileInput
           type="file"
-          (change)="onSelectedFile($event)"
+          (change)="onSelectedFile($event); fileInput.value = null"
           class="dropzone-file-input"
           [ngClass]="{ 'not-clickable': isHashing }"
         />
         <div *ngIf="!isHashing">
-          <mat-icon>note_add</mat-icon>
-          <div>Drop here</div>
+          <mat-icon class="drop-icon">note_add</mat-icon>
+          <div class="drop-text">Drop here your file</div>
         </div>
 
         <div *ngIf="isHashing">
           <img src="assets/images/loading-woleet-api.svg" />
           <div class="hash-progress">{{ progress | percent }}</div>
           <div class="hash-text"><em>Computing fingerprint…</em></div>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="cancelFileHash()"
+            class="cancel-file-hash"
+          >
+            {{ translations.commons.buttons.cancel | translate }}
+          </button>
         </div>
       </div>
     </div>
-    <form [formGroup]="fileFormGroup" *ngIf="addState">
+    <form [formGroup]="fileFormGroup" *ngIf="fileHash">
       <mat-form-field *ngIf="fileFormGroup.get('action').value == 'sign'">
         <mat-label>{{
           translations.folders.identityToUse | translate
@@ -85,21 +94,23 @@
 
       <mat-form-field class="full-width">
         <mat-label>Tags</mat-label>
-        <mat-chip-list  #chipList>
-          <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
             {{ tag }}
             <button matChipRemove>
               <mat-icon>cancel</mat-icon>
             </button>
           </mat-chip>
-          <input placeholder="Nouveau tag..."
-                 [matChipInputFor]="chipList"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="addOnBlur"
-                 (matChipInputTokenEnd)="add($event)">
+          <input
+            placeholder="Nouveau tag..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="addTag($event)"
+          />
         </mat-chip-list>
       </mat-form-field>
-      
+
       <mat-form-field
         *ngIf="fileFormGroup.get('action').value == 'sign'"
         class="full-width"

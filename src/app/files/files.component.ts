@@ -1,9 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, NgZone } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup, Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
@@ -13,10 +10,6 @@ import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.s
 import { IdentityService } from '../services/Identity.service';
 import { TranslationService } from '../services/translation.service';
 
-export interface tag {
-  name: string;
-}
-
 @Component({
   selector: 'app-files',
   templateUrl: './files.component.html',
@@ -25,35 +18,17 @@ export interface tag {
 export class FilesComponent {
   public fileFormGroup: FormGroup;
   public foldersStatusCode: LogContext[];
-  
-  addState = false;
+
   isDroppingAFile = false;
-  selectedFile: FileWithHash;
+  selectedFile: File;
+  fileHash: string;
+  fileStream: fs.ReadStream;
   isHashing = false;
   progress = 0;
+
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   tags: Array<string> = [];
-
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our tag
-    if (value) {
-      this.tags.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
-  }
-
-  remove(tag: string): void {
-    const index = this.tags.indexOf(tag);
-
-    if (index >= 0) {
-      this.tags.splice(index, 1);
-    }
-  }
 
   constructor(
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
@@ -94,8 +69,7 @@ export class FilesComponent {
   }
 
   onCancelAddClick() {
-    this.addState = false;
-    this.selectedFile = null;
+    this.cancelFileHash();
     this.resetAddFileFormGroup();
   }
 
@@ -110,31 +84,30 @@ export class FilesComponent {
   onFileDropped(file: File) {
     if (file) {
       this.isHashing = true;
-      this.selectedFile = {
-        file: null,
-        hash: null
-      };
+      this.selectedFile = file;
 
-      this.hashFile(file).then((fileWithHash) => {
-        this.selectedFile = fileWithHash;
-        this.fileFormGroup.get('name').setValue(this.selectedFile.file.name);
-        this.addState = true;
-        this.isHashing = false;
+      this.hashFile(file).then((fileHash) => {
+        this.fileHash = fileHash;
+        this.fileFormGroup.get('name').setValue(this.selectedFile.name);
       });
     }
   }
 
-  hashFile(file: File) {
-    const fileStream = fs.createReadStream(file.path);
-    if (Buffer.isBuffer(fileStream)) {
+  cancelFileHash() {
+    this.fileStream.close();
+    this.fileHash = null;
+    this.isHashing = false;
+  }
+
+  hashFile(file: File): Promise<string> {
+    this.fileStream = fs.createReadStream(file.path);
+
+    if (Buffer.isBuffer(this.fileStream)) {
       const result = crypto
         .createHash('sha256')
-        .update(fileStream)
+        .update(this.fileStream)
         .digest('hex');
-      return Promise.resolve({
-        hash: result,
-        file,
-      });
+      return Promise.resolve(result);
     }
 
     const hasher = crypto.createHash('sha256');
@@ -143,25 +116,22 @@ export class FilesComponent {
       const total = file.size;
       let progress = 0;
       try {
-        fileStream.on('data', (data) => {
+        this.fileStream.on('data', (data) => {
           hasher.update(data);
           progress += data.length;
           this.zone.run(() => {
             this.progress = progress / total;
           });
         });
-        fileStream.on('end', () => {
-          resolve({
-            hash: hasher.digest('hex'),
-            file: file,
-          });
+        this.fileStream.on('end', () => {
+          resolve(hasher.digest('hex'));
         });
-        fileStream.on('error', (error) => {
-          console.error(error.message, fileStream);
+        this.fileStream.on('error', (error) => {
+          console.error(error.message, this.fileStream);
           reject();
         });
       } catch (error) {
-        console.error(error.message, fileStream);
+        console.error(error.message, this.fileStream);
         reject(error);
       }
     });
@@ -173,12 +143,27 @@ export class FilesComponent {
   }
 
   onClickTimestamp() {
-    this.addState = false;
+    this.fileHash = null;
     this.resetAddFileFormGroup();
   }
-}
 
-interface FileWithHash {
-  file?: File;
-  hash?: string;
+  addTag(event: MatChipInputEvent) {
+    const value = (event.value || '').trim();
+
+    // Add our tag
+    if (value) {
+      this.tags.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+  }
+
+  removeTag(tag: string) {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+  }
 }
