@@ -191,16 +191,21 @@ export class FilesComponent {
   }
 
   onClickTimestamp() {
-    this.proofReceiptService.createAnchor(this.createProof()).subscribe(() => {
-      this.openSnackBar('Horodatage créée !');
-      this.onCancelAddClick();
-    });
+    this.proofReceiptService.createAnchor(this.createProof()).subscribe(
+      () => {
+        this.openSnackBar('Horodatage créée !');
+        this.onCancelAddClick();
+      },
+      (error) => {
+        console.error('Cannot create a timestamp: ', error);
+        this.openSnackBar('Error: ' + error.status);
+      }
+    );
   }
 
   createProof(): Proof {
     const proof: Proof = {};
     const formValues = this.fileFormGroup.value;
-    console.log(formValues);
     if (formValues.action === 'anchor') {
       proof.hash = this.fileHash;
     } else {
