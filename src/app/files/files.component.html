@@ -8,11 +8,9 @@
       <mat-tab [label]="'Fichier à certifier'"> </mat-tab>
     </mat-tab-group>
     <div *ngIf="!fileHash" class="default-text">
-      Déposez ici les fichiers pour lesquels vous souhaitez créer une preuve
-      d'horodatage. Une fois les fichiers ancrés dans la blockchain Bitcoin,
-      vous pourrez télécharger les reçus de preuve à partir de votre tableau de
-      bord. Ces reçus de preuve vous permettront de prouver l'existence de vos
-      fichiers à la date de l'horodatage.
+      <div
+        [innerHTML]="translations.files.introText[getCurrentMode()] | translate"
+      ></div>
 
       <!-- Drag and drop file to hash -->
 
@@ -32,13 +30,18 @@
         />
         <div *ngIf="!isHashing">
           <mat-icon class="drop-icon">note_add</mat-icon>
-          <div class="drop-text">Déposez votre fichier ici</div>
+          <div
+            class="drop-text"
+            [innerHTML]="translations.files.dropFile | translate"
+          ></div>
         </div>
 
         <div *ngIf="isHashing">
           <img src="assets/images/loading-woleet-api.svg" />
           <div class="hash-progress">{{ progress | percent }}</div>
-          <div class="hash-text"><em>Calcul du hash…</em></div>
+          <div class="hash-text">
+            <em>{{ translations.files.hashing | translate }}</em>
+          </div>
           <button
             mat-raised-button
             color="warn"
@@ -51,9 +54,9 @@
       </div>
     </div>
     <form [formGroup]="fileFormGroup" *ngIf="fileHash">
-      <mat-form-field *ngIf="fileFormGroup.get('action').value == 'sign'">
+      <mat-form-field *ngIf="getCurrentMode() === 'sign'">
         <mat-label>{{
-          translations.folders.identityToUse | translate
+          translations.commons.labelNames.identityToUse | translate
         }}</mat-label>
         <mat-select
           class="custom-select"
@@ -86,12 +89,14 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <mat-label>Nom</mat-label>
+        <mat-label>{{
+          translations.commons.labelNames.name | translate
+        }}</mat-label>
         <input matInput type="text" formControlName="name" />
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <mat-label>Tags</mat-label>
+        <mat-label>{{ translations.files.labels.tags | translate }}</mat-label>
         <mat-chip-list #chipList>
           <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
             {{ tag }}
@@ -100,7 +105,7 @@
             </button>
           </mat-chip>
           <input
-            placeholder="Nouveau tag..."
+            [placeholder]="translations.files.labels.newTag | translate"
             [matChipInputFor]="chipList"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             [matChipInputAddOnBlur]="addOnBlur"
@@ -109,16 +114,15 @@
         </mat-chip-list>
       </mat-form-field>
 
-      <mat-form-field
-        *ngIf="fileFormGroup.get('action').value == 'sign'"
-        class="full-width"
-      >
-        <mat-label>URL d'identité</mat-label>
+      <mat-form-field *ngIf="getCurrentMode() === 'sign'" class="full-width">
+        <mat-label>{{
+          translations.files.labels.identityURL | translate
+        }}</mat-label>
         <input matInput type="text" formControlName="identityURL" />
       </mat-form-field>
 
       <mat-checkbox color="primary" name="public" formControlName="public">
-        Public
+        {{ translations.files.labels.public | translate }}
       </mat-checkbox>
       <div class="accordion-section">
         <mat-accordion>
@@ -127,11 +131,15 @@
             (closed)="openCallbackURLPanel = false"
           >
             <mat-expansion-panel-header>
-              <mat-panel-title>URL de callback</mat-panel-title>
+              <mat-panel-title>{{
+                translations.files.labels.callbackURL | translate
+              }}</mat-panel-title>
             </mat-expansion-panel-header>
 
             <mat-form-field class="full-width">
-              <mat-label>URL</mat-label>
+              <mat-label>{{
+                translations.files.labels.url | translate
+              }}</mat-label>
               <input matInput type="text" formControlName="callbackURL" />
             </mat-form-field>
             <button
@@ -142,7 +150,7 @@
               [disabled]="!fileFormGroup.get('callbackURL').value"
               (click)="testCallbackURL()"
             >
-              Tester l'URL
+              {{ translations.files.labels.testURL | translate }}
             </button>
 
             <!-- Result of an anchor callback -->
@@ -157,10 +165,12 @@
               "
             >
               <div *ngIf="!!anchorCallbackResult.status">
-                Statut : {{ anchorCallbackResult.status }}
+                {{ translations.commons.labelNames.status | translate }}
+                {{ anchorCallbackResult.status }}
               </div>
               <div *ngIf="!!anchorCallbackResult.message">
-                Contenu : {{ anchorCallbackResult.message }}
+                {{ translations.commons.labelNames.content | translate }}
+                {{ anchorCallbackResult.message }}
               </div>
             </mat-card>
           </mat-expansion-panel>
@@ -173,7 +183,11 @@
             (closed)="openMetadataPanel = false"
           >
             <mat-expansion-panel-header>
-              <mat-panel-title> Métadonnées </mat-panel-title>
+              <mat-panel-title>
+                {{
+                  translations.files.labels.metadata | translate
+                }}</mat-panel-title
+              >
             </mat-expansion-panel-header>
             <div class="metadata">
               <ul>
@@ -189,7 +203,9 @@
 
               <div class="d-flex">
                 <mat-form-field class="name">
-                  <mat-label>Nom</mat-label>
+                  <mat-label>{{
+                    translations.commons.labelNames.name | translate
+                  }}</mat-label>
                   <input
                     matInput
                     type="text"
@@ -198,7 +214,9 @@
                   />
                 </mat-form-field>
                 <mat-form-field class="value">
-                  <mat-label>Valeur</mat-label>
+                  <mat-label>{{
+                    translations.commons.labelNames.value | translate
+                  }}</mat-label>
                   <input
                     matInput
                     type="text"
@@ -229,7 +247,7 @@
           [disabled]="fileFormGroup.invalid"
           (click)="onSubmit()"
         >
-          Horodater le ficher
+          {{ translations.files.buttons[getCurrentMode()] | translate }}
         </button>
         <button
           type="button"

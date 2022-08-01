@@ -25,7 +25,7 @@
       </mat-form-field>
       <div *ngIf="folderFormGroup.get('action').value == 'sign'">
         <mat-form-field>
-          <mat-label>{{ translations.folders.identityToUse | translate }}</mat-label>
+          <mat-label>{{ translations.commons.labelNames.identityToUse | translate }}</mat-label>
           <mat-select class="custom-select" formControlName="identity" name="identity">
             <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
               {{ identityName.name }}
@@ -127,7 +127,7 @@
             <form [formGroup]="folderForm">
               <div *ngIf="folderForm.get('action').value === 'sign'">
                 <mat-form-field>
-                  <mat-label>{{ translations.folders.identityToUse | translate }}</mat-label>
+                  <mat-label>{{ translations.commons.labelNames.identityToUse | translate }}</mat-label>
                   <mat-select class="custom-select" formControlName="identity" name="identity">
                     <mat-option *ngFor="let identityName of identityService.arrayIdentityContent"
                       [value]="identityName.name">

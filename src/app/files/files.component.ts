@@ -3,6 +3,7 @@ import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import { concatMap } from 'rxjs/operators';
@@ -15,9 +16,7 @@ import { SecurityService } from '../services/security.service';
 import { SignatureRequestService } from '../services/signature-request.service';
 import { TranslationService } from '../services/translation.service';
 import { Proof } from '../shared/interfaces/i-proof';
-import {
-  ParametersForWIDSSignature
-} from '../shared/interfaces/i-signature-request';
+import { ParametersForWIDSSignature } from '../shared/interfaces/i-signature-request';
 import { UserLog } from '../shared/interfaces/i-user';
 
 @Component({
@@ -49,6 +48,7 @@ export class FilesComponent {
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     public translations: TranslationService,
+    private translateService: TranslateService,
     private zone: NgZone,
     private proofReceiptService: ProofReceiptService,
     private securityService: SecurityService,
@@ -71,16 +71,17 @@ export class FilesComponent {
     });
   }
 
+  getCurrentMode(): 'anchor' | 'sign' {
+    return this.fileFormGroup.get('action').value;
+  }
+
   onTabChange(index: number) {
-    if (index === 0 && this.fileFormGroup.get('action').value === 'sign') {
+    if (index === 0 && this.getCurrentMode() === 'sign') {
       this.fileFormGroup.patchValue({
         action: 'anchor',
       });
       this.fileFormGroup.get('identity').removeValidators(Validators.required);
-    } else if (
-      index === 1 &&
-      this.fileFormGroup.get('action').value === 'anchor'
-    ) {
+    } else if (index === 1 && this.getCurrentMode() === 'anchor') {
       this.fileFormGroup.patchValue({
         action: 'sign',
       });
@@ -100,7 +101,7 @@ export class FilesComponent {
 
   resetAddFileFormGroup() {
     this.fileFormGroup.reset({
-      action: this.fileFormGroup.get('action').value,
+      action: this.getCurrentMode(),
       public: true,
     });
   }
@@ -205,7 +206,7 @@ export class FilesComponent {
   }
 
   onSubmit() {
-    if (this.fileFormGroup.value.action === 'anchor') {
+    if (this.getCurrentMode() === 'anchor') {
       this.timestampFile();
       return;
     }
@@ -216,7 +217,11 @@ export class FilesComponent {
   timestampFile() {
     this.proofReceiptService.createAnchor(this.createProof()).subscribe(
       () => {
-        this.openSnackBar('Horodatage créée !');
+        this.openSnackBar(
+          this.translateService.instant(
+            this.translations.files.successTexts[this.getCurrentMode()]
+          )
+        );
         this.onCancel();
       },
       (error) => {
@@ -246,7 +251,11 @@ export class FilesComponent {
       )
       .subscribe(
         () => {
-          this.openSnackBar('Certification créée !');
+          this.openSnackBar(
+            this.translateService.instant(
+              this.translations.files.successTexts[this.getCurrentMode()]
+            )
+          );
           this.onCancel();
         },
         (error) => {
