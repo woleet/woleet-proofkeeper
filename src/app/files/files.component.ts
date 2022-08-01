@@ -5,14 +5,19 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
+import { concatMap } from 'rxjs/operators';
 import { identityCheckerFactory } from '../folders/folders.component';
 import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { IdentityService } from '../services/Identity.service';
 import { ProofReceiptService } from '../services/proof-receipt.service';
 import { SecurityService } from '../services/security.service';
+import { SignatureRequestService } from '../services/signature-request.service';
 import { TranslationService } from '../services/translation.service';
 import { Proof } from '../shared/interfaces/i-proof';
+import {
+  ParametersForWIDSSignature
+} from '../shared/interfaces/i-signature-request';
 import { UserLog } from '../shared/interfaces/i-user';
 
 @Component({
@@ -47,6 +52,7 @@ export class FilesComponent {
     private zone: NgZone,
     private proofReceiptService: ProofReceiptService,
     private securityService: SecurityService,
+    private signatureRequestService: SignatureRequestService,
     private snackBar: MatSnackBar
   ) {
     this.fileFormGroup = this.formBuilder.group({
@@ -70,6 +76,7 @@ export class FilesComponent {
       this.fileFormGroup.patchValue({
         action: 'anchor',
       });
+      this.fileFormGroup.get('identity').removeValidators(Validators.required);
     } else if (
       index === 1 &&
       this.fileFormGroup.get('action').value === 'anchor'
@@ -77,11 +84,12 @@ export class FilesComponent {
       this.fileFormGroup.patchValue({
         action: 'sign',
       });
+      this.fileFormGroup.get('identity').addValidators(Validators.required);
     }
     this.fileFormGroup.get('identity').updateValueAndValidity();
   }
 
-  onCancelAddClick() {
+  onCancel() {
     this.cancelFileHash();
     this.metadata = {};
     this.tags = [];
@@ -196,11 +204,20 @@ export class FilesComponent {
     delete this.metadata[key];
   }
 
-  onClickTimestamp() {
+  onSubmit() {
+    if (this.fileFormGroup.value.action === 'anchor') {
+      this.timestampFile();
+      return;
+    }
+
+    this.sealFile();
+  }
+
+  timestampFile() {
     this.proofReceiptService.createAnchor(this.createProof()).subscribe(
       () => {
         this.openSnackBar('Horodatage créée !');
-        this.onCancelAddClick();
+        this.onCancel();
       },
       (error) => {
         console.error('Cannot create a timestamp: ', error);
@@ -209,13 +226,42 @@ export class FilesComponent {
     );
   }
 
-  createProof(): Proof {
-    const proof: Proof = {};
+  sealFile() {
+    const params: ParametersForWIDSSignature = {
+      hashToSign: this.fileHash,
+      identityToSign: 'ALL',
+    };
+
+    const identitySelected = this.identityService.arrayIdentityContent.filter(
+      (identity) => identity.name === this.fileFormGroup.get('identity').value
+    )[0];
+
+    this.signatureRequestService
+      .signHashWithWIDS(params, identitySelected)
+      .pipe(
+        concatMap((signatureAnchor) => {
+          const seal = { ...signatureAnchor, ...this.createProof() };
+          return this.proofReceiptService.createAnchor(seal);
+        })
+      )
+      .subscribe(
+        () => {
+          this.openSnackBar('Certification créée !');
+          this.onCancel();
+        },
+        (error) => {
+          console.error('Cannot create a seal: ', error);
+          this.openSnackBar('Error: ' + error.status);
+        }
+      );
+  }
+
+  createProof() {
     const formValues = this.fileFormGroup.value;
+    let proof: Proof = {};
+
     if (formValues.action === 'anchor') {
       proof.hash = this.fileHash;
-    } else {
-      proof.signedHash = this.fileHash;
     }
 
     proof.name = formValues.name;
@@ -249,7 +295,8 @@ export class FilesComponent {
   testCallbackURL() {
     this.anchorCallbackResult = null;
 
-    this.securityService.tryAnchorCallback('dummy', this.fileFormGroup.get('callbackURL').value)
-    .subscribe(log => this.anchorCallbackResult = log);
+    this.securityService
+      .tryAnchorCallback('dummy', this.fileFormGroup.get('callbackURL').value)
+      .subscribe((log) => (this.anchorCallbackResult = log));
   }
 }

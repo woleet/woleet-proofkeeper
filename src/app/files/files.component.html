@@ -227,7 +227,7 @@
           color="primary"
           class="span-folder-add-button"
           [disabled]="fileFormGroup.invalid"
-          (click)="onClickTimestamp()"
+          (click)="onSubmit()"
         >
           Horodater le ficher
         </button>
@@ -235,7 +235,7 @@
           type="button"
           mat-raised-button
           color="warn"
-          (click)="onCancelAddClick()"
+          (click)="onCancel()"
         >
           {{ translations.commons.buttons.cancel | translate }}
         </button>
