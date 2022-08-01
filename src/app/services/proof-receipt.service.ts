@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Proof } from '../shared/interfaces/i-proof';
+import { SharedService } from './shared.service';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class ProofReceiptService {
 
   constructor(
     private http: HttpClient,
-    private cli: WoleetCliParametersService
+    private cli: WoleetCliParametersService,
+    private sharedService: SharedService
   ) {}
 
   createAnchor(proof: Proof, notifyByEmail = true): Observable<Proof> {
@@ -20,17 +22,10 @@ export class ProofReceiptService {
       proof.notifyByEmail = true;
     }
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.cli.getToken()}`,
-      }),
-    };
-
     return this.http.post(
       this.cli.getUrl() + this.ANCHOR_PATH,
       proof,
-      httpOptions
+      this.sharedService.getHTTPHeaders()
     );
   }
 }

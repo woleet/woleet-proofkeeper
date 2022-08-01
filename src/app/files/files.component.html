@@ -117,18 +117,60 @@
         <input matInput type="text" formControlName="identityURL" />
       </mat-form-field>
 
-      <mat-form-field class="full-width">
-        <mat-label>URL de callback</mat-label>
-        <input matInput type="text" formControlName="callbackURL" />
-      </mat-form-field>
       <mat-checkbox color="primary" name="public" formControlName="public">
         Public
       </mat-checkbox>
-      <div class="metadata-section">
+      <div class="accordion-section">
         <mat-accordion>
           <mat-expansion-panel
-            (opened)="panelOpenState = true"
-            (closed)="panelOpenState = false"
+            (opened)="openCallbackURLPanel = true"
+            (closed)="openCallbackURLPanel = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>URL de callback</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-form-field class="full-width">
+              <mat-label>URL</mat-label>
+              <input matInput type="text" formControlName="callbackURL" />
+            </mat-form-field>
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              class="span-folder-add-button"
+              [disabled]="!fileFormGroup.get('callbackURL').value"
+              (click)="testCallbackURL()"
+            >
+              Tester l'URL
+            </button>
+
+            <!-- Result of an anchor callback -->
+            <mat-card
+              *ngIf="anchorCallbackResult"
+              class="test-url-response"
+              [ngClass]="
+                anchorCallbackResult.status >= 200 &&
+                anchorCallbackResult.status <= 299
+                  ? 'success'
+                  : 'error'
+              "
+            >
+              <div *ngIf="!!anchorCallbackResult.status">
+                Statut : {{ anchorCallbackResult.status }}
+              </div>
+              <div *ngIf="!!anchorCallbackResult.message">
+                Contenu : {{ anchorCallbackResult.message }}
+              </div>
+            </mat-card>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="accordion-section">
+        <mat-accordion>
+          <mat-expansion-panel
+            (opened)="openMetadataPanel = true"
+            (closed)="openMetadataPanel = false"
           >
             <mat-expansion-panel-header>
               <mat-panel-title> Métadonnées </mat-panel-title>

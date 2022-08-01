@@ -10,8 +10,10 @@ import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { IdentityService } from '../services/Identity.service';
 import { ProofReceiptService } from '../services/proof-receipt.service';
+import { SecurityService } from '../services/security.service';
 import { TranslationService } from '../services/translation.service';
 import { Proof } from '../shared/interfaces/i-proof';
+import { UserLog } from '../shared/interfaces/i-user';
 
 @Component({
   selector: 'app-files',
@@ -29,7 +31,9 @@ export class FilesComponent {
   isHashing = false;
   progress = 0;
   metadata = {};
-  panelOpenState = false;
+  openMetadataPanel = false;
+  openCallbackURLPanel = false;
+  anchorCallbackResult: UserLog;
 
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
@@ -42,6 +46,7 @@ export class FilesComponent {
     public translations: TranslationService,
     private zone: NgZone,
     private proofReceiptService: ProofReceiptService,
+    private securityService: SecurityService,
     private snackBar: MatSnackBar
   ) {
     this.fileFormGroup = this.formBuilder.group({
@@ -80,7 +85,8 @@ export class FilesComponent {
     this.cancelFileHash();
     this.metadata = {};
     this.tags = [];
-    this.panelOpenState = false;
+    this.openMetadataPanel = false;
+    this.openCallbackURLPanel = false;
     this.resetAddFileFormGroup();
   }
 
@@ -238,5 +244,12 @@ export class FilesComponent {
     this.snackBar.open(message, action, {
       duration: 5000,
     });
+  }
+
+  testCallbackURL() {
+    this.anchorCallbackResult = null;
+
+    this.securityService.tryAnchorCallback('dummy', this.fileFormGroup.get('callbackURL').value)
+    .subscribe(log => this.anchorCallbackResult = log);
   }
 }

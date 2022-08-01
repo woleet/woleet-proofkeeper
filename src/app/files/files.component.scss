@@ -1,3 +1,5 @@
+@import '../../scss/custom.scss';
+
 .full-width {
   width: 100%;
 }
@@ -112,7 +114,7 @@
   margin-top: 0.5rem;
 }
 
-.metadata-section {
+.accordion-section {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 
@@ -133,5 +135,19 @@
   .key-value {
     display: flex;
     align-items: center;
+  }
+
+  .test-url-response {
+    font-family: monospace;
+    word-break: break-word;
+    margin-top: 1rem;
+
+    &.success {
+      color: $primary;
+    }
+
+    &.error {
+      color: $warn;
+    }
   }
 }
