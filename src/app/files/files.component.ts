@@ -329,7 +329,7 @@ export class FilesComponent {
           type === 'seal'
             ? this.storeService.getManualSealsPath()
             : this.storeService.getManualTimestampingsPath()
-        }/${this.selectedFile.name}-${anchorId}-${type}-receipt-pending.json`;
+        }/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
         console.log(fileName)
       });
