@@ -14,6 +14,7 @@ import { IdentityService } from '../services/Identity.service';
 import { ProofReceiptService } from '../services/proof-receipt.service';
 import { SecurityService } from '../services/security.service';
 import { SignatureRequestService } from '../services/signature-request.service';
+import { StoreService } from '../services/store.service';
 import { TranslationService } from '../services/translation.service';
 import { Proof } from '../shared/interfaces/i-proof';
 import { ParametersForWIDSSignature } from '../shared/interfaces/i-signature-request';
@@ -53,7 +54,8 @@ export class FilesComponent {
     private proofReceiptService: ProofReceiptService,
     private securityService: SecurityService,
     private signatureRequestService: SignatureRequestService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private storeService: StoreService
   ) {
     this.fileFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
@@ -71,19 +73,19 @@ export class FilesComponent {
     });
   }
 
-  getCurrentMode(): 'anchor' | 'sign' {
+  getCurrentMode(): 'anchor' | 'seal' {
     return this.fileFormGroup.get('action').value;
   }
 
   onTabChange(index: number) {
-    if (index === 0 && this.getCurrentMode() === 'sign') {
+    if (index === 0 && this.getCurrentMode() === 'seal') {
       this.fileFormGroup.patchValue({
         action: 'anchor',
       });
       this.fileFormGroup.get('identity').removeValidators(Validators.required);
     } else if (index === 1 && this.getCurrentMode() === 'anchor') {
       this.fileFormGroup.patchValue({
-        action: 'sign',
+        action: 'seal',
       });
       this.fileFormGroup.get('identity').addValidators(Validators.required);
     }
@@ -114,6 +116,7 @@ export class FilesComponent {
       this.hashFile(file).then((fileHash) => {
         this.fileHash = fileHash;
         this.fileFormGroup.get('name').setValue(this.selectedFile.name);
+        this.isDroppingAFile = false;
       });
     }
   }
@@ -122,6 +125,7 @@ export class FilesComponent {
     this.fileStream.close();
     this.fileHash = null;
     this.isHashing = false;
+    this.isDroppingAFile = false;
   }
 
   hashFile(file: File): Promise<string> {
@@ -216,13 +220,17 @@ export class FilesComponent {
 
   timestampFile() {
     this.proofReceiptService.createAnchor(this.createProof()).subscribe(
-      () => {
+      (proof) => {
         this.openSnackBar(
           this.translateService.instant(
             this.translations.files.successTexts[this.getCurrentMode()]
-          )
+          ) + this.storeService.getManualTimestampingsPath()
         );
         this.onCancel();
+        this.retrieveProofReceipt(
+          proof.id,
+          this.getCurrentMode() === 'seal' ? 'seal' : 'timestamp'
+        );
       },
       (error) => {
         console.error('Cannot create a timestamp: ', error);
@@ -250,13 +258,17 @@ export class FilesComponent {
         })
       )
       .subscribe(
-        () => {
+        (proof) => {
           this.openSnackBar(
             this.translateService.instant(
               this.translations.files.successTexts[this.getCurrentMode()]
-            )
+            ) + this.storeService.getManualSealsPath()
           );
           this.onCancel();
+          this.retrieveProofReceipt(
+            proof.id,
+            this.getCurrentMode() === 'seal' ? 'seal' : 'timestamp'
+          );
         },
         (error) => {
           console.error('Cannot create a seal: ', error);
@@ -297,7 +309,7 @@ export class FilesComponent {
 
   openSnackBar(message: string, action?: string) {
     this.snackBar.open(message, action, {
-      duration: 5000,
+      duration: 10000,
     });
   }
 
@@ -307,5 +319,19 @@ export class FilesComponent {
     this.securityService
       .tryAnchorCallback('dummy', this.fileFormGroup.get('callbackURL').value)
       .subscribe((log) => (this.anchorCallbackResult = log));
+  }
+
+  retrieveProofReceipt(anchorId: string, type: 'seal' | 'timestamp') {
+    this.proofReceiptService
+      .getReceiptById(anchorId, true)
+      .subscribe((content) => {
+        const fileName = `${
+          type === 'seal'
+            ? this.storeService.getManualSealsPath()
+            : this.storeService.getManualTimestampingsPath()
+        }/${this.selectedFile.name}-${anchorId}-${type}-receipt-pending.json`;
+        fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
+        console.log(fileName)
+      });
   }
 }

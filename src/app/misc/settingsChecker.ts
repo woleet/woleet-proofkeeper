@@ -1,23 +1,42 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
+import { AppInjector } from '../app.module';
+import { StoreService } from '../services/store.service';
+import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { PubKeyAddressGroup } from './identitiesFromServer';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TranslationService } from '../services/translation.service';
-import { AppInjector } from '../app.module';
-import { TranslateService } from '@ngx-translate/core';
 
 export async function checkAndSubmit(http: HttpClient,
   formGroup: FormGroup,
   cliService: WoleetCliParametersService,
   snackBar: MatSnackBar,
-  screenPage?: number[]) {
+  screenPage?: number[],
+  storeService?: StoreService) {
   let apiURL = `https://api.woleet.io/v1`;
   if (formGroup.get('url')) {
     if (formGroup.get('url').value) {
       apiURL = formGroup.get('url').value;
     }
   }
+
+  if (storeService) {
+   
+    storeService.setManualTimestampingsPath(formGroup.get('manualTimestampingsPath').value);
+    storeService.setManualSealsPath(formGroup.get('manualSealsPath').value);
+    console.log
+    console.log('timestamp', formGroup.get('manualTimestampingsPath').value)
+
+    console.log('seal', formGroup.get('manualSealsPath').value)
+  }
+
+  if (formGroup.get('url')) {
+    if (formGroup.get('url').value) {
+      apiURL = formGroup.get('url').value;
+    }
+  }
+
   try {
     const creditsObject: any = await requestGet(`${apiURL}/user/credits`, formGroup.get('token').value, http);
     if (creditsObject.credits === undefined) { // TODO: check credits value

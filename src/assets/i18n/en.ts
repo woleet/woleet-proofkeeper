@@ -40,11 +40,11 @@ export default {
   files: {
     tabs: {
       anchor: 'File to timestamp',
-      sign: 'File to seal',
+      seal: 'File to seal',
     },
     introText: {
       anchor: 'Drop here the files for which you want to <b>create a proof of timestamp</b>. <br> Once the file are anchored in the Bitcoin blockchain, you will be able to <b>retrieve its proof receipt</b> in your computer. <br> This proof receipt will allow you to <b>prove the existence of your file on the date of the timestamp</b>.',
-      sign: 'Drop here the file for which you want to <b>create a proof of seal</b>. <br> Once the file is signed, the signature is automatically anchored in the Bitcoin blockchain. You will thus be able to <b>retrieve the proof receipt</b> in your computer. <br> This proof receipt will allow to <b>prove the validity and the date of the signature</b>.'
+      seal: 'Drop here the file for which you want to <b>create a proof of seal</b>. <br> Once the file is signed, the signature is automatically anchored in the Bitcoin blockchain. You will thus be able to <b>retrieve the proof receipt</b> in your computer. <br> This proof receipt will allow to <b>prove the validity and the date of the signature</b>.'
     },
     dropFile: 'Drop the file here <br> (or click to browse)',
     labels: {
@@ -60,11 +60,11 @@ export default {
     hashing: 'Computing fingerprint…',
     buttons: {
       anchor: 'Timestamp the file',
-      sign: 'Sign with my identity server'
+      seal: 'Sign with my identity server'
     },
     successTexts: {
-      anchor: 'Timestamping created!',
-      sign: 'Seal created'
+      anchor: 'Timestamping created in the following folder: ',
+      seal: 'Seal created created in the following folder: '
     }
   },
   folders: {

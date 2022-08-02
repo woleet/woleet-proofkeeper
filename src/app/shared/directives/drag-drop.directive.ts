@@ -5,20 +5,20 @@ import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/c
 })
 export class DragDropDirective {
 
-  isDropping: boolean;
   files;
 
   @Input() dropText: string;
   @Input() progress: number;
 
   @Output() readonly fileDropped = new EventEmitter<File>();
+  @Output() readonly startDropping = new EventEmitter<void>();
   @Output() readonly stopDropping = new EventEmitter<void>();
 
   // Dragover listener
   @HostListener('dragover', ['$event']) onDragOver(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    this.isDropping = true;
+    this. startDropping.emit();
   }
 
   // Dragleave listener

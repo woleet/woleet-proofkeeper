@@ -13,7 +13,7 @@
       <mat-form-field class="full-width">
         <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
         <input matInput class="form-control" type="text" formControlName="path">
-        <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value" (click)="resetPath();">
+        <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value" (click)="resetPath();" class="icon-btn">
           <mat-icon>close</mat-icon>
         </button>
         <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import * as log from 'loglevel';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
@@ -9,6 +8,7 @@ import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
+import { SharedService } from '../services/shared.service';
 import { TranslationService } from '../services/translation.service';
 
 @Component({
@@ -31,7 +31,9 @@ export class FoldersComponent {
     public identityService: IdentityService,
     private dialog: MatDialog,
     public translations: TranslationService,
-    private translateService: TranslateService) {
+    private translateService: TranslateService,
+    private sharedService: SharedService
+  ) {
     this.addState = false;
 
     this.folderFormGroup = formBuilder.group({
@@ -100,17 +102,7 @@ export class FoldersComponent {
   }
 
   onClickPopUpDirectory() {
-    let path: string;
-    try {
-      path = remote.dialog.showOpenDialogSync({ properties: ['openDirectory'] })[0];
-    } catch (error) {
-      path = '';
-    } finally {
-      this.folderFormGroup.patchValue({
-        path: path
-      });
-      log.info(`Setting folder: ${this.folderFormGroup.get('path').value}`);
-    }
+    this.sharedService.openPopupDirectory(this.folderFormGroup, 'path', this.folderFormGroup.get('path').value);
   }
 
   onClickAdd() {

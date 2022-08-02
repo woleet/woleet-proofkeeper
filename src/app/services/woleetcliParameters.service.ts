@@ -1,25 +1,24 @@
 import { Injectable } from '@angular/core';
-import { StoreService } from './store.service';
-import { FolderParam } from '../misc/folderParam';
 import * as remote from '@electron/remote';
-import * as path from 'path';
-import * as log from 'loglevel';
-import * as fs from 'fs';
 import * as Store from 'electron-store';
-import { LanguageService } from './language.service';
+import * as fs from 'fs';
+import * as log from 'loglevel';
+import * as path from 'path';
+import { FolderParam } from '../misc/folderParam';
+import { StoreService } from './store.service';
 
 @Injectable({
   providedIn: 'root',
 })
-
 export class WoleetCliParametersService {
   public woleetCli: WoleetCliExecutable;
   private url: string;
   private token: string;
-  private lang: string;
   public store: Store<any>;
 
-  public constructor(storeService: StoreService, languageService: LanguageService) {
+  public constructor(
+    storeService: StoreService
+  ) {
     this.store = storeService.store;
     this.woleetCli = new WoleetCliExecutable();
     if (this.store.has('token')) {
@@ -27,10 +26,14 @@ export class WoleetCliParametersService {
         this.token = this.store.get('token');
       } else {
         this.deleteToken();
-        log.warn('There is no token set, you must set one to use the application');
+        log.warn(
+          'There is no token set, you must set one to use the application'
+        );
       }
     } else {
-      log.warn('There is no token set, you must set one to use the application');
+      log.warn(
+        'There is no token set, you must set one to use the application'
+      );
     }
     if (this.store.has('url')) {
       if (this.store.get('url')) {
@@ -39,22 +42,16 @@ export class WoleetCliParametersService {
         this.deleteUrl();
       }
     }
-
-    if (this.store.has('lang')) {
-      if (!!this.store.get('lang')) {
-        this.lang = this.store.get('lang');
-      } else {
-        this.setWoleetCliLang(languageService.getBrowserLanguage());
-      }
-    } else {
-      this.setWoleetCliLang(languageService.getBrowserLanguage());
-    }
   }
 
   public getActionParametersArray(folderParam: FolderParam): [string] {
     const actionParametersArray: [string] = [] as any;
-    if (folderParam.action === 'anchor') {actionParametersArray.push('timestamp'); }
-    if (folderParam.action === 'sign') {actionParametersArray.push('seal'); }
+    if (folderParam.action === 'anchor') {
+      actionParametersArray.push('timestamp');
+    }
+    if (folderParam.action === 'sign') {
+      actionParametersArray.push('seal');
+    }
     actionParametersArray.push('--config');
     actionParametersArray.push('DISABLED');
     actionParametersArray.push('--json');
@@ -66,10 +63,12 @@ export class WoleetCliParametersService {
       actionParametersArray.push('--token');
       actionParametersArray.push(this.token);
     }
-    return actionParametersArray.concat(folderParam.getParametersArray()) as any;
+    return actionParametersArray.concat(
+      folderParam.getParametersArray()
+    ) as any;
   }
 
-  public setWoleetCliParameters(token: string, url?: string, lang?: string) {
+  public setWoleetCliParameters(token: string, url?: string) {
     if (token) {
       this.token = token;
       this.store.set('token', token);
@@ -84,21 +83,12 @@ export class WoleetCliParametersService {
     }
   }
 
-  public setWoleetCliLang(lang: string) {
-    this.store.set('lang', lang);
-    this.lang = lang;
-  }
-
   public getUrl(): string {
     return this.url;
   }
 
   public getToken(): string {
     return this.token;
-  }
-
-  public getLang(): string {
-    return this.lang;
   }
 
   public deleteUrl() {
@@ -112,46 +102,61 @@ export class WoleetCliParametersService {
   }
 }
 
-  export class WoleetCliExecutable {
+export class WoleetCliExecutable {
+  private woleetCli: string;
 
-    private woleetCli: string;
+  public getCliPath() {
+    return this.woleetCli;
+  }
 
-    public getCliPath() {
-      return this.woleetCli;
+  public createProcess(parameters: [string]): any {
+    return require('child_process').spawn(this.woleetCli, parameters, {
+      stdio: 'pipe',
+      windowsHide: true,
+    });
+  }
+
+  public constructor() {
+    const platform: string = process.platform;
+    if (platform === 'win32') {
+      this.woleetCli = path.join(
+        __dirname,
+        '/assets/bin/',
+        'windows',
+        '/woleet-cli.exe'
+      );
+    } else {
+      this.woleetCli = path.join(
+        __dirname,
+        '/assets/bin/',
+        platform,
+        '/woleet-cli'
+      );
+    }
+    if (this.woleetCli.includes('app.asar')) {
+      this.woleetCli = this.woleetCli.replace('app.asar', 'app.asar.unpacked');
     }
 
-    public createProcess(parameters: [string]): any {
-      return require('child_process').spawn(this.woleetCli, parameters, {stdio: 'pipe', windowsHide: true});
-    }
-
-    public constructor() {
-      const platform: string = process.platform;
-      if ( platform === 'win32' ) {
-        this.woleetCli = path.join(__dirname, '/assets/bin/', 'windows', '/woleet-cli.exe');
-      } else {
-        this.woleetCli = path.join(__dirname, '/assets/bin/', platform, '/woleet-cli');
-      }
-      if ( this.woleetCli.includes('app.asar') ) {
-        this.woleetCli = this.woleetCli.replace('app.asar', 'app.asar.unpacked');
-      }
-
-      if (fs.lstatSync(this.woleetCli).isFile()) {
-        if (remote.getGlobal('liveenv')) {
-          if ( platform !== 'windows' ) {
-            let executable = true;
-            try {
-              fs.accessSync(this.woleetCli, fs.constants.X_OK);
-            } catch (err) {
-              executable = false;
-            }
-            if (!executable) {
-              // tslint:disable-next-line:no-bitwise
-              fs.chmodSync(this.woleetCli, fs.lstatSync(this.woleetCli).mode | fs.constants.S_IXUSR);
-            }
+    if (fs.lstatSync(this.woleetCli).isFile()) {
+      if (remote.getGlobal('liveenv')) {
+        if (platform !== 'windows') {
+          let executable = true;
+          try {
+            fs.accessSync(this.woleetCli, fs.constants.X_OK);
+          } catch (err) {
+            executable = false;
+          }
+          if (!executable) {
+            // tslint:disable-next-line:no-bitwise
+            fs.chmodSync(
+              this.woleetCli,
+              fs.lstatSync(this.woleetCli).mode | fs.constants.S_IXUSR
+            );
           }
         }
-      } else {
-        log.error(`Unable to find: ${this.woleetCli}`);
       }
+    } else {
+      log.error(`Unable to find: ${this.woleetCli}`);
     }
   }
+}

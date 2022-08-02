@@ -1,24 +1,100 @@
 <mat-card>
   <form class="form-content" [formGroup]="settingsFormGroup">
     <mat-form-field>
-      <mat-label>{{ translations.commons.labelNames.woleetAPIToken | translate }}</mat-label>
-      <input type="text" matInput name="token" formControlName="token" required>
-      <mat-error *ngIf="settingsFormGroup.get('token').getError('invalidJWTFormat')">
+      <mat-label>{{
+        translations.commons.labelNames.woleetAPIToken | translate
+      }}</mat-label>
+      <input
+        type="text"
+        matInput
+        name="token"
+        formControlName="token"
+        required
+      />
+      <mat-error
+        *ngIf="settingsFormGroup.get('token').getError('invalidJWTFormat')"
+      >
         {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
       </mat-error>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>{{ translations.settings.overrideWoleetAPIURL | translate }}</mat-label>
-      <input type="text" matInput name="URL" formControlName="url">
+      <mat-label>{{
+        translations.settings.overrideWoleetAPIURL | translate
+      }}</mat-label>
+      <input type="text" matInput name="URL" formControlName="url" />
     </mat-form-field>
-    <button mat-raised-button color="primary" [disabled]="settingsFormGroup.invalid" (click)="onClickcheckAndSubmit();">
+    <mat-form-field class="full-width">
+      <mat-label>Dossier par défaut pour les horodatages manuelles</mat-label>
+      <input
+        matInput
+        class="form-control"
+        type="text"
+        formControlName="manualTimestampingsPath"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        *ngIf="settingsFormGroup.get('manualTimestampingsPath').value"
+        (click)="resetPath('manualTimestampingsPath')"
+        class="icon-btn"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <button
+        mat-button
+        color="primary"
+        matSuffix
+        (click)="onClickPopUpDirectory('manualTimestampingsPath')"
+      >
+        {{ translations.folders.chooseFolder | translate }}
+      </button>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label
+        >Dossier par défaut pour les certifications manuelles</mat-label
+      >
+      <input
+        matInput
+        class="form-control"
+        type="text"
+        formControlName="manualSealsPath"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        *ngIf="settingsFormGroup.get('manualSealsPath').value"
+        (click)="resetPath('manualSealsPath')"
+        class="icon-btn"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <button
+        mat-button
+        color="primary"
+        matSuffix
+        (click)="onClickPopUpDirectory('manualSealsPath')"
+      >
+        {{ translations.folders.chooseFolder | translate }}
+      </button>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="settingsFormGroup.invalid"
+      (click)="onClickCheckAndSubmit()"
+    >
       {{ translations.commons.buttons.save | translate }}
     </button>
   </form>
 </mat-card>
 
-<button mat-fab color="primary" class="identity-add-button identity-button" [disabled]="addState"
-  (click)="onAddIdentityClick();">
+<button
+  mat-fab
+  color="primary"
+  class="identity-add-button identity-button"
+  [disabled]="addState"
+  (click)="onAddIdentityClick()"
+>
   <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
 </button>
 
@@ -27,104 +103,244 @@
   <div>
     <form [formGroup]="addIdentityFormGroup">
       <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
-        <input matInput formControlName="name">
-        <mat-error *ngIf="addIdentityFormGroup.get('name').getError('nameAlreadyPresent')">
+        <mat-label>{{
+          translations.commons.labelNames.name | translate
+        }}</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error
+          *ngIf="
+            addIdentityFormGroup.get('name').getError('nameAlreadyPresent')
+          "
+        >
           {{ translations.commons.errors.nameAlreadyPresent | translate }}
         </mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.widsSignatureAPIURL | translate }}</mat-label>
-        <input matInput formControlName="url" (ngModelChange)="onAddURLTokenChanges();">
+        <mat-label>{{
+          translations.commons.labelNames.widsSignatureAPIURL | translate
+        }}</mat-label>
+        <input
+          matInput
+          formControlName="url"
+          (ngModelChange)="onAddURLTokenChanges()"
+        />
       </mat-form-field>
       <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.widsAPIToken | translate }}</mat-label>
-        <input matInput formControlName="token" (ngModelChange)="onAddURLTokenChanges();">
+        <mat-label>{{
+          translations.commons.labelNames.widsAPIToken | translate
+        }}</mat-label>
+        <input
+          matInput
+          formControlName="token"
+          (ngModelChange)="onAddURLTokenChanges()"
+        />
       </mat-form-field>
-      <button mat-raised-button color="primary" class="full-width identity-button"
-        *ngIf="addPubKeyAddressGroup.length === 0" (click)="onClickAddwIDConnection();">
+      <button
+        mat-raised-button
+        color="primary"
+        class="full-width identity-button"
+        *ngIf="addPubKeyAddressGroup.length === 0"
+        (click)="onClickAddwIDConnection()"
+      >
         {{ translations.commons.buttons.selectKeyFromWids | translate }}
       </button>
-      <mat-form-field class="full-width" *ngIf="addPubKeyAddressGroup.length !== 0">
-        <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
-        <mat-select formControlName="pubKey" (selectionChange)="onPubKeyChangeAdd()">
-          <mat-optgroup *ngFor="let group of addPubKeyAddressGroup" [label]="group.user">
-            <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
-              {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
+      <mat-form-field
+        class="full-width"
+        *ngIf="addPubKeyAddressGroup.length !== 0"
+      >
+        <mat-label>{{
+          translations.commons.labelNames.publicKey | translate
+        }}</mat-label>
+        <mat-select
+          formControlName="pubKey"
+          (selectionChange)="onPubKeyChangeAdd()"
+        >
+          <mat-optgroup
+            *ngFor="let group of addPubKeyAddressGroup"
+            [label]="group.user"
+          >
+            <mat-option
+              *ngFor="let pubKeyAddress of group.pubKeyAddress"
+              [value]="pubKeyAddress.address"
+            >
+              {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
             </mat-option>
           </mat-optgroup>
         </mat-select>
       </mat-form-field>
     </form>
-    <button mat-raised-button color="primary" class="identity-button" [disabled]="addIdentityFormGroup.invalid"
-      (click)="addNewIdentityFromGroup();">
+    <button
+      mat-raised-button
+      color="primary"
+      class="identity-button"
+      [disabled]="addIdentityFormGroup.invalid"
+      (click)="addNewIdentityFromGroup()"
+    >
       {{ translations.commons.buttons.save | translate }}
     </button>
-    <button mat-raised-button color="warn" class="identity-button"
-      [disabled]="this.identityService.arrayIdentityContent.length === 0" (click)="onAddIdentityClick();">
+    <button
+      mat-raised-button
+      color="warn"
+      class="identity-button"
+      [disabled]="this.identityService.arrayIdentityContent.length === 0"
+      (click)="onAddIdentityClick()"
+    >
       {{ translations.commons.buttons.cancel | translate }}
     </button>
   </div>
 </mat-card>
 
-<mat-card class="identity-card" *ngIf="identityService.arrayIdentityContent.length !== 0">
+<mat-card
+  class="identity-card"
+  *ngIf="identityService.arrayIdentityContent.length !== 0"
+>
   <h3 class="mat-h3">{{ translations.settings.sealIdentities | translate }}</h3>
-  <mat-list-item *ngFor="let identityContent of identityService.arrayIdentityContent; last as last" role="listitem">
-    <div class="identity-spacer" *ngIf="identityOpened !== identityContent.name">
-      <button mat-button class='identity-name identity-button'
-        (click)="openEditForm(identityContent.name);">{{identityContent.name}}</button>
-      <span class="remove-button identity-button" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-        [matTooltip]="(isIdentityInUse(identityContent.name) ? translations.settings.identityUsedInOneFolder : translations.settings.deleteIdentity) | translate">
-        <button mat-raised-button color="warn" [disabled]="isIdentityInUse(identityContent.name)"
-          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);">
+  <mat-list-item
+    *ngFor="
+      let identityContent of identityService.arrayIdentityContent;
+      last as last
+    "
+    role="listitem"
+  >
+    <div
+      class="identity-spacer"
+      *ngIf="identityOpened !== identityContent.name"
+    >
+      <button
+        mat-button
+        class="identity-name identity-button"
+        (click)="openEditForm(identityContent.name)"
+      >
+        {{ identityContent.name }}
+      </button>
+      <span
+        class="remove-button identity-button"
+        matTooltipPosition="above"
+        [matTooltipClass]="'tooltip'"
+        [matTooltip]="
+          (isIdentityInUse(identityContent.name)
+            ? translations.settings.identityUsedInOneFolder
+            : translations.settings.deleteIdentity
+          ) | translate
+        "
+      >
+        <button
+          mat-raised-button
+          color="warn"
+          [disabled]="isIdentityInUse(identityContent.name)"
+          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name)"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </span>
     </div>
-    <div class="identity-spacer" *ngIf="identityOpened === identityContent.name">
+    <div
+      class="identity-spacer"
+      *ngIf="identityOpened === identityContent.name"
+    >
       <form [formGroup]="editIdentityFormGroup">
         <mat-form-field class="full-width">
-          <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
-          <input matInput formControlName="name">
+          <mat-label>{{
+            translations.commons.labelNames.name | translate
+          }}</mat-label>
+          <input matInput formControlName="name" />
         </mat-form-field>
         <mat-form-field class="full-width">
-          <mat-label>{{ translations.commons.labelNames.widsSignatureAPIURL | translate }}</mat-label>
-          <input matInput formControlName="url" (ngModelChange)="onEditURLTokenChanges();">
+          <mat-label>{{
+            translations.commons.labelNames.widsSignatureAPIURL | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="url"
+            (ngModelChange)="onEditURLTokenChanges()"
+          />
         </mat-form-field>
         <mat-form-field class="full-width">
-          <mat-label>{{ translations.commons.labelNames.widsAPIToken | translate }}</mat-label>
-          <input matInput formControlName="token"
-            (ngModelChange)="onEditURLTokenChanges();">
+          <mat-label>{{
+            translations.commons.labelNames.widsAPIToken | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="token"
+            (ngModelChange)="onEditURLTokenChanges()"
+          />
         </mat-form-field>
-        <button mat-raised-button color="primary" class="full-width" *ngIf="editPubKeyAddressGroup.length === 0"
-          (click)="onClickEditwIDConnection();">
+        <button
+          mat-raised-button
+          color="primary"
+          class="full-width"
+          *ngIf="editPubKeyAddressGroup.length === 0"
+          (click)="onClickEditwIDConnection()"
+        >
           {{ translations.commons.buttons.selectKeyFromWids | translate }}
         </button>
-        <mat-form-field class="full-width" *ngIf="editPubKeyAddressGroup.length !== 0">
-          <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
-          <mat-select formControlName="pubKey" (selectionChange)="onPubKeyChangeEdit()">
-            <mat-optgroup *ngFor="let group of editPubKeyAddressGroup" [label]="group.user">
-              <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
-                {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
+        <mat-form-field
+          class="full-width"
+          *ngIf="editPubKeyAddressGroup.length !== 0"
+        >
+          <mat-label>{{
+            translations.commons.labelNames.publicKey | translate
+          }}</mat-label>
+          <mat-select
+            formControlName="pubKey"
+            (selectionChange)="onPubKeyChangeEdit()"
+          >
+            <mat-optgroup
+              *ngFor="let group of editPubKeyAddressGroup"
+              [label]="group.user"
+            >
+              <mat-option
+                *ngFor="let pubKeyAddress of group.pubKeyAddress"
+                [value]="pubKeyAddress.address"
+              >
+                {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
               </mat-option>
             </mat-optgroup>
           </mat-select>
-          <mat-error *ngIf="editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')">
+          <mat-error
+            *ngIf="
+              editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')
+            "
+          >
             {{ translations.settings.errors.unableFindFormerKey | translate }}
           </mat-error>
         </mat-form-field>
       </form>
-      <button mat-raised-button color="primary" class="identity-button"
-        [disabled]="editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0" (click)="saveEditForm();">
+      <button
+        mat-raised-button
+        color="primary"
+        class="identity-button"
+        [disabled]="
+          editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0
+        "
+        (click)="saveEditForm()"
+      >
         {{ translations.commons.buttons.save | translate }}
       </button>
-      <button mat-raised-button class="identity-button" (click)="closeEditForm();">
+      <button
+        mat-raised-button
+        class="identity-button"
+        (click)="closeEditForm()"
+      >
         {{ translations.commons.buttons.cancel | translate }}
       </button>
-      <span class="remove-button identity-button" matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-        [matTooltip]="(isIdentityInUse(identityContent.name) ? translations.settings.identityUsedInOneFolder : translations.settings.deleteIdentity) | translate">
-        <button [disabled]="isIdentityInUse(identityContent.name)" mat-raised-button color="warn"
-          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name);">
+      <span
+        class="remove-button identity-button"
+        matTooltipPosition="above"
+        [matTooltipClass]="'tooltip'"
+        [matTooltip]="
+          (isIdentityInUse(identityContent.name)
+            ? translations.settings.identityUsedInOneFolder
+            : translations.settings.deleteIdentity
+          ) | translate
+        "
+      >
+        <button
+          [disabled]="isIdentityInUse(identityContent.name)"
+          mat-raised-button
+          color="warn"
+          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name)"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </span>
@@ -135,8 +351,14 @@
 <mat-card class="identity-card">
   <form [formGroup]="languageFormGroup">
     <mat-form-field>
-      <mat-label>{{ translations.commons.labelNames.language | translate }}</mat-label>
-      <mat-select class="custom-select" formControlName="language" (selectionChange)="onLanguageChange()">
+      <mat-label>{{
+        translations.commons.labelNames.language | translate
+      }}</mat-label>
+      <mat-select
+        class="custom-select"
+        formControlName="language"
+        (selectionChange)="onLanguageChange()"
+      >
         <mat-option *ngFor="let language of languages" [value]="language">
           {{ translations.languages[language] | translate }}
         </mat-option>
@@ -146,7 +368,11 @@
 </mat-card>
 
 <div class="clear-button">
-  <button mat-raised-button color="warn" (click)="openClearSaveSettingsConfirmDialog();">
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="openClearSaveSettingsConfirmDialog()"
+  >
     {{ translations.settings.resetSavedFoldersConfig | translate }}
   </button>
 </div>

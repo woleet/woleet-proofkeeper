@@ -7,7 +7,6 @@ import { DeeplinkComponent } from './deeplink/deeplink.component';
 import { LanguageService } from './services/language.service';
 import { SettingsMessageService } from './services/settingsMessage.service';
 import { StoreService } from './services/store.service';
-import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { WizardComponent } from './wizard/wizard.component';
 
 @Component({
@@ -27,10 +26,9 @@ export class AppComponent {
     private settingsMessageService: SettingsMessageService,
     private zone: NgZone,
     private translateService: TranslateService,
-    private languageService: LanguageService,
-    private cli: WoleetCliParametersService) {
-    this.setLanguage();
+    private languageService: LanguageService) {
     this.store = storeService.store;
+    this.setLanguage();
     if (!this.store.get('wizardBypass', false)) {
       this.wizardDialog = dialog.open(WizardComponent, {
         disableClose: true,
@@ -84,6 +82,6 @@ export class AppComponent {
   */
   setLanguage(): void {
     this.translateService.addLangs(this.languageService.getSupportedLanguages());
-    this.translateService.use(this.cli.getLang());
+    this.translateService.use(this.store.get('lang'));
   }
 }

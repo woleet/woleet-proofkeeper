@@ -1,6 +1,6 @@
-import { LogContext } from './logs';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
+import { LogContext } from './logs';
 
 export class FolderParam {
   path: string;
@@ -14,6 +14,7 @@ export class FolderParam {
   identityName: string;
   iDServerUnsecureSSL: boolean;
   logContext?: LogContext;
+  receiptsDownloaded?: boolean;
 
   public constructor(folderDesc: FolderDesc, fixReceipts: boolean, public identityService: IdentityService) {
     if ((folderDesc.action === 'anchor') || (folderDesc.action === 'sign')) {

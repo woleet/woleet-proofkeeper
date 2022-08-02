@@ -71,12 +71,16 @@
   margin-top: 2rem;
   margin-bottom: 2rem;
   height: 400px;
-  border: 2px dashed #4814ad;
+  border: 2px dashed black;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   position: relative;
+
+  &.is-dropping  {
+    border-color: $primary;
+  }
 
   .dropzone-file-input {
     position: absolute;
@@ -108,7 +112,9 @@
   font-size: 75px;
   height: 100%;
   width: 100%;
-  color: $primary;
+  &.is-dropping {
+    color: $primary;
+  }
 }
 
 .drop-text {

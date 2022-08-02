@@ -4,8 +4,8 @@
       class="action-tab"
       (selectedIndexChange)="onTabChange($event)"
     >
-      <mat-tab [label]="'Fichier à horodater'"> </mat-tab>
-      <mat-tab [label]="'Fichier à certifier'"> </mat-tab>
+      <mat-tab [label]="translations.files.tabs.anchor | translate"></mat-tab>
+      <mat-tab [label]="translations.files.tabs.seal | translate"></mat-tab>
     </mat-tab-group>
     <div *ngIf="!fileHash" class="default-text">
       <div
@@ -20,6 +20,7 @@
         (fileDropped)="onFileDropped($event)"
         (startDropping)="isDroppingAFile = true"
         (stopDropping)="isDroppingAFile = false"
+        [ngClass]="{'is-dropping': isDroppingAFile}"
       >
         <input
           #fileInput
@@ -29,7 +30,7 @@
           [ngClass]="{ 'not-clickable': isHashing }"
         />
         <div *ngIf="!isHashing">
-          <mat-icon class="drop-icon">note_add</mat-icon>
+          <mat-icon class="drop-icon" [ngClass]="{'is-dropping': isDroppingAFile}">note_add</mat-icon>
           <div
             class="drop-text"
             [innerHTML]="translations.files.dropFile | translate"
@@ -54,7 +55,7 @@
       </div>
     </div>
     <form [formGroup]="fileFormGroup" *ngIf="fileHash">
-      <mat-form-field *ngIf="getCurrentMode() === 'sign'">
+      <mat-form-field *ngIf="getCurrentMode() === 'seal'">
         <mat-label>{{
           translations.commons.labelNames.identityToUse | translate
         }}</mat-label>
@@ -114,7 +115,7 @@
         </mat-chip-list>
       </mat-form-field>
 
-      <mat-form-field *ngIf="getCurrentMode() === 'sign'" class="full-width">
+      <mat-form-field *ngIf="getCurrentMode() === 'seal'" class="full-width">
         <mat-label>{{
           translations.files.labels.identityURL | translate
         }}</mat-label>

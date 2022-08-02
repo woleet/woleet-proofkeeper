@@ -9,7 +9,6 @@ import { WoleetCliParametersService } from './woleetcliParameters.service';
   providedIn: 'root',
 })
 export class ProofReceiptService {
-  private ANCHOR_PATH = '/anchor';
 
   constructor(
     private http: HttpClient,
@@ -23,9 +22,20 @@ export class ProofReceiptService {
     }
 
     return this.http.post(
-      this.cli.getUrl() + this.ANCHOR_PATH,
+    `${this.cli.getUrl()}/anchor`,
       proof,
       this.sharedService.getHTTPHeaders()
     );
+  }
+
+  /**
+   * Get the receipt with the id.
+   */
+  getReceiptById(anchorId: string, allowPartial?: boolean): Observable<Proof> {
+    let url = `${this.cli.getUrl()}/receipt/${anchorId}`;
+    if (allowPartial) {
+      url += '?allowPartial=true';
+    }
+    return this.http.get<Proof>(url, this.sharedService.getHTTPHeaders());
   }
 }
