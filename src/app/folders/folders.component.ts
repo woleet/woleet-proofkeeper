@@ -70,7 +70,7 @@ export class FoldersComponent {
     this.foldersFormGroup = [];
     this.foldersStatusCode = [];
     this.cliRunnerFolderInterface.folders.folders.forEach(folderParam => {
-      const tempfoldersFromGroup = this.formBuilder.group({
+      const tempfoldersFormGroup = this.formBuilder.group({
         action: [folderParam.action],
         path: [folderParam.path],
         public: [!folderParam.private],
@@ -81,7 +81,7 @@ export class FoldersComponent {
         identity: [folderParam.identityName, identityCheckerFactory(this)],
         iDServerUnsecureSSL: [folderParam.iDServerUnsecureSSL],
       });
-      this.foldersFormGroup.push(tempfoldersFromGroup);
+      this.foldersFormGroup.push(tempfoldersFormGroup);
       this.foldersStatusCode.push(folderParam.logContext);
     });
   }
@@ -124,9 +124,7 @@ export class FoldersComponent {
   }
 
   resetPath() {
-    this.folderFormGroup.patchValue({
-      path: ''
-    });
+    this.sharedService.resetPath(this.folderFormGroup);
   }
 
   onTabChange(index: number) {

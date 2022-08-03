@@ -24,7 +24,12 @@
       <input type="text" matInput name="URL" formControlName="url" />
     </mat-form-field>
     <mat-form-field class="full-width">
-      <mat-label>Dossier par défaut pour les horodatages manuelles</mat-label>
+      <mat-label>
+        {{
+          translations.commons.labelNames.defaultFolderForManualTimestampings
+            | translate
+        }}
+      </mat-label>
       <input
         matInput
         class="form-control"
@@ -50,8 +55,11 @@
       </button>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <mat-label
-        >Dossier par défaut pour les certifications manuelles</mat-label
+      <mat-label>
+        {{
+          translations.commons.labelNames.defaultFolderForManualSeals
+            | translate
+        }}</mat-label
       >
       <input
         matInput
@@ -174,7 +182,7 @@
       color="primary"
       class="identity-button"
       [disabled]="addIdentityFormGroup.invalid"
-      (click)="addNewIdentityFromGroup()"
+      (click)="addNewIdentityFormGroup()"
     >
       {{ translations.commons.buttons.save | translate }}
     </button>

@@ -64,4 +64,10 @@ export class SharedService {
     if (action === 'sign') { return 'seal'; }
     return action;
   }
+
+  resetPath(folderFormGroup: FormGroup, key = 'path') {
+    folderFormGroup.patchValue({
+      [key]: ''
+    });
+  }
 }

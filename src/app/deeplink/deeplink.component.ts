@@ -1,16 +1,15 @@
-import { Component, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialogRef } from '@angular/material/dialog';
-import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { IdentityService } from '../services/Identity.service';
-import { noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
-import { checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
-import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
-import * as log from 'loglevel';
 import { HttpClient } from '@angular/common/http';
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import * as log from 'loglevel';
+import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import { checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
+import { noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
+import { IdentityService } from '../services/Identity.service';
 import { TranslationService } from '../services/translation.service';
+import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 
 
 @Component({

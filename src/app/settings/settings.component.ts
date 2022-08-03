@@ -9,7 +9,8 @@ import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.compo
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import {
   checkAndSubmit,
-  checkwIDConnectionGetAvailableKeys
+  checkwIDConnectionGetAvailableKeys,
+  storeManualActionsPath
 } from '../misc/settingsChecker';
 import {
   noDuplicateIdentityNameValidatorFactoryOnAdd,
@@ -81,8 +82,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.settingsFormGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()],
-      manualTimestampingsPath: [this.storeService.getManualTimestampingsPath()],
-      manualSealsPath: [this.storeService.getManualSealsPath()],
+      manualTimestampingsPath: [
+        this.storeService.getManualTimestampingsPath(),
+        [Validators.required],
+      ],
+      manualSealsPath: [
+        this.storeService.getManualSealsPath(),
+        [Validators.required],
+      ],
     });
 
     if (this.identityService.arrayIdentityContent.length === 0) {
@@ -123,7 +130,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickCheckAndSubmit() {
-    checkAndSubmit(this.http, this.settingsFormGroup, this.cli, this.snackBar, null, this.storeService);
+    storeManualActionsPath(this.settingsFormGroup, this.storeService);
+    checkAndSubmit(
+      this.http,
+      this.settingsFormGroup,
+      this.cli,
+      this.snackBar,
+      null
+    );
   }
 
   openClearSaveSettingsConfirmDialog() {
@@ -142,7 +156,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
-  addNewIdentityFromGroup() {
+  addNewIdentityFormGroup() {
     const tempURL = this.addIdentityFormGroup.get('url').value;
     const tempToken = this.addIdentityFormGroup.get('token').value;
     this.identityService.addIdentity(
@@ -357,12 +371,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickPopUpDirectory(type: string) {
-    this.sharedService.openPopupDirectory(this.settingsFormGroup, type, this.settingsFormGroup.get(type).value);
+    this.sharedService.openPopupDirectory(
+      this.settingsFormGroup,
+      type,
+      this.settingsFormGroup.get(type).value
+    );
   }
 
   resetPath(type: string) {
-    this.settingsFormGroup.patchValue({
-      [type]: '',
-    });
+    this.sharedService.resetPath(this.settingsFormGroup, type);
   }
 }

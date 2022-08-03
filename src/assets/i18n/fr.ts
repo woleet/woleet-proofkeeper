@@ -31,7 +31,9 @@ const fr: typeof EN_Translations = {
       value: 'Valeur',
       identityToUse: 'Identité à utiliser',
       status: 'Statut :',
-      content: 'Contenu :'
+      content: 'Contenu :',
+      defaultFolderForManualTimestampings: 'Dossier par défaut pour les horodatages manuelles',
+      defaultFolderForManualSeals: 'Dossier par défaut pour les certifications manuelles'
     },
     tooltips: {
       giveName: 'Donnez un nom représentant l\'identité de la personne morale qui s\'engage dans l\'opération de scellé.',
@@ -144,10 +146,12 @@ const fr: typeof EN_Translations = {
     subtitle: 'Horodater et sceller vos fichiers dynamiquement',
     instruction: `L'accès à l'API Woleet nécessite un token d'API.<br>Vous pouvez en créer un en utilisant votre compte Woleet (menu "Developer" -> onglet "API") ou en cliquant sur ce`,
     link: 'lien',
+    defineDefaultFolders: 'Définir les dossiers par défaut pour vos actions manuelles',
+    defaultFoldersInstruction: 'Vous pouvez créer manuellement un horodatage ou une preuve de scellé et enregistrer leurs reçus preuve. <br> Définissez vos dossiers par défaut pour retrouver ces reçus de preuve :',
     setupIdentities: 'Configurer les identités pour le scellé',
     setupIdentityInstruction: 'Si vous voulez que ProofKeeper scelle les fichiers et crée des preuves de scellé horodatées, vous devez configurer au moins une identité de scellé (vous pourrez ajouter d\'autres identités de scellé en utilisant les paramètres après l\'assistant) :',
     congratulations: 'Félicitations !',
-    congratulationSubtitle: 'Vous pouvez maintenant configurer les dossiers pour l\'horodatage et le scellé.',
+    congratulationSubtitle: 'Vous pouvez maintenant configurer les dossiers pour l\'horodatage et le scellé ou en créer.',
     startConfig: 'Démarrer la configuration'
   }
 };

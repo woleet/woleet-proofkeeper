@@ -14,7 +14,6 @@ export class StoreService {
 
   public constructor(languageService: LanguageService) {
     this.store = new Store();
-
     if (this.store.has('lang')) {
       if (!!this.store.get('lang')) {
         this.lang = this.store.get('lang');
@@ -31,22 +30,20 @@ export class StoreService {
           'manualTimestampingsPath'
         );
       } else {
-        this.manualTimestampingsPath = app.getPath('documents');
-        this.store.set('manualTimestampingsPath', this.manualTimestampingsPath);
+        this.setManualTimestampingsPath(app.getPath('documents'));
       }
     } else {
-      this.store.set('manualTimestampingsPath', app.getPath('documents'));
+      this.setManualTimestampingsPath(app.getPath('documents'));
     }
 
     if (this.store.has('manualSealsPath')) {
       if (!!this.store.get('manualSealsPath')) {
         this.manualSealsPath = this.store.get('manualSealsPath');
       } else {
-        this.manualSealsPath = app.getPath('documents');
-        this.store.set('manualSealsPath', this.manualSealsPath);
+        this.setManualSealsPath(app.getPath('documents'));
       }
     } else {
-      this.store.set('manualSealsPath', app.getPath('documents'));
+      this.setManualSealsPath(app.getPath('documents'));
     }
   }
 

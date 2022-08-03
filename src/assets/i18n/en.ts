@@ -29,7 +29,9 @@ export default {
       identityToUse: 'Identity to use',
       value: 'Value',
       status: 'Status:',
-      content: 'Content:'
+      content: 'Content:',
+      defaultFolderForManualTimestampings: 'Default folder for manual timestampings',
+      defaultFolderForManualSeals: 'Default folder for manual seals'
     },
     tooltips: {
       giveName: 'Give a name representing the identity of the legal person committing in seal operation.',
@@ -142,10 +144,12 @@ export default {
     subtitle: 'Timestamp and seal your files dynamically',
     instruction: `Accessing the Woleet API requires an API token.<br>You can create one using your Woleet account ("Developer" menu -> "API" tab) or by clicking this`,
     link: 'link',
+    defineDefaultFolders: 'Define the default folders for your manual actions',
+    defaultFoldersInstruction: 'You can create manually a timestamping or a proof of seal and save their proof receipts. <br> Define your default folders to retrieve these proof receipts:',
     setupIdentities: 'Set up identities for seal',
     setupIdentityInstruction: 'If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one seal identity (you will be able to add more seal identities using the settings after the wizard):',
     congratulations: 'Congratulations !',
-    congratulationSubtitle: 'You can now configure the folders for timestamping and seal.',
+    congratulationSubtitle: 'You can now configure the folders for timestamping and seal or create them.',
     startConfig: 'Start configuration'
   }
 };
