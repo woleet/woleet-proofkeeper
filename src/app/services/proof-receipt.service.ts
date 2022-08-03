@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Proof } from '../shared/interfaces/i-proof';
-import { SharedService } from './shared.service';
+import { getDefaultApiUrl, SharedService } from './shared.service';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class ProofReceiptService {
     private cli: WoleetCliParametersService,
     private sharedService: SharedService
   ) {
-    this.apiURL = this.cli.getUrl() || this.sharedService.getDefaultApiUrl();
+    this.apiURL = this.cli.getUrl() || getDefaultApiUrl();
   }
 
   createAnchor(proof: Proof, notifyByEmail = true): Observable<Proof> {

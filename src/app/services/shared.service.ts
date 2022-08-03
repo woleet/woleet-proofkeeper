@@ -76,15 +76,15 @@ export class SharedService {
       [key]: '',
     });
   }
-
-  getDefaultApiUrl() {
-    return `https://api.woleet.${
-      environment.production ? 'io' : 'localhost'
-    }/v1`;
-  }
 }
 
-export function  getDefaultFolderPathForManualActions(subfolder: string) {
+export function getDefaultApiUrl() {
+  return `https://api.woleet.${
+    environment.production ? 'io' : 'localhost'
+  }/v1`;
+}
+
+export function getDefaultFolderPathForManualActions(subfolder: string) {
   const path = `${app.getPath('documents')}/ProofKeeper/${subfolder}`;
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });

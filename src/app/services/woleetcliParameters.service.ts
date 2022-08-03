@@ -4,7 +4,9 @@ import * as Store from 'electron-store';
 import * as fs from 'fs';
 import * as log from 'loglevel';
 import * as path from 'path';
+import { environment } from '../../environments/environment';
 import { FolderParam } from '../misc/folderParam';
+import { getDefaultApiUrl } from './shared.service';
 import { StoreService } from './store.service';
 
 @Injectable({
@@ -58,6 +60,10 @@ export class WoleetCliParametersService {
     if (this.url) {
       actionParametersArray.push('--url');
       actionParametersArray.push(this.url);
+    } else if (!environment.production && !this.url) {
+      // For local mode, add url parameter too
+      actionParametersArray.push('--url');
+      actionParametersArray.push(getDefaultApiUrl());
     }
     if (this.token) {
       actionParametersArray.push('--token');

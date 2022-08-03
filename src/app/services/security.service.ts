@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserLog } from '../shared/interfaces/i-user';
-import { SharedService } from './shared.service';
+import { getDefaultApiUrl, SharedService } from './shared.service';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class SecurityService {
     private cli: WoleetCliParametersService,
     private sharedService: SharedService
   ) {
-    this.apiURL = this.cli.getUrl() || this.sharedService.getDefaultApiUrl();
+    this.apiURL = this.cli.getUrl() || getDefaultApiUrl();
   }
 
   tryAnchorCallback(anchorId: string, callbackURL: string): Observable<UserLog> {

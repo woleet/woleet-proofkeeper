@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AppInjector } from '../app.module';
-import { SharedService } from '../services/shared.service';
+import { getDefaultApiUrl } from '../services/shared.service';
 import { StoreService } from '../services/store.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
@@ -16,7 +16,7 @@ export async function checkAndSubmit(
   snackBar: MatSnackBar,
   screenPage?: number[]
 ) {
-  let apiURL = AppInjector.get(SharedService).getDefaultApiUrl();
+  let apiURL = getDefaultApiUrl();
 
   if (formGroup.get('url')) {
     if (formGroup.get('url').value) {
@@ -41,7 +41,7 @@ export async function checkAndSubmit(
       openSnackBarError(snackBar);
       return;
     }
-    if (apiURL === AppInjector.get(SharedService).getDefaultApiUrl()) {
+    if (apiURL === getDefaultApiUrl()) {
       cliService.setWoleetCliParameters(formGroup.get('token').value);
     } else {
       cliService.setWoleetCliParameters(
