@@ -55,7 +55,7 @@
       </div>
     </div>
     <form [formGroup]="fileFormGroup" *ngIf="fileHash">
-      <mat-form-field *ngIf="getCurrentMode() === 'seal'">
+      <mat-form-field *ngIf="getCurrentMode() === 'sign'">
         <mat-label>{{
           translations.commons.labelNames.identityToUse | translate
         }}</mat-label>
@@ -115,7 +115,7 @@
         </mat-chip-list>
       </mat-form-field>
 
-      <mat-form-field *ngIf="getCurrentMode() === 'seal'" class="full-width">
+      <mat-form-field *ngIf="getCurrentMode() === 'sign'" class="full-width">
         <mat-label>{{
           translations.files.labels.identityURL | translate
         }}</mat-label>

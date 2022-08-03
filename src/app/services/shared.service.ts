@@ -58,4 +58,10 @@ export class SharedService {
       log.info(`Setting folder: ${folderFormGroup.get(label).value}`);
     }
   }
+
+  translateLegacyAction(action: string): string {
+    if (action === 'anchor') { return 'timestamp'; }
+    if (action === 'sign') { return 'seal'; }
+    return action;
+  }
 }

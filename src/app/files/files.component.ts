@@ -73,19 +73,19 @@ export class FilesComponent {
     });
   }
 
-  getCurrentMode(): 'anchor' | 'seal' {
+  getCurrentMode(): 'anchor' | 'sign' {
     return this.fileFormGroup.get('action').value;
   }
 
   onTabChange(index: number) {
-    if (index === 0 && this.getCurrentMode() === 'seal') {
+    if (index === 0 && this.getCurrentMode() === 'sign') {
       this.fileFormGroup.patchValue({
         action: 'anchor',
       });
       this.fileFormGroup.get('identity').removeValidators(Validators.required);
     } else if (index === 1 && this.getCurrentMode() === 'anchor') {
       this.fileFormGroup.patchValue({
-        action: 'seal',
+        action: 'sign',
       });
       this.fileFormGroup.get('identity').addValidators(Validators.required);
     }
@@ -229,7 +229,7 @@ export class FilesComponent {
         this.onCancel();
         this.retrieveProofReceipt(
           proof.id,
-          this.getCurrentMode() === 'seal' ? 'seal' : 'timestamp'
+          this.getCurrentMode() === 'sign' ? 'sign' : 'timestamp'
         );
       },
       (error) => {
@@ -267,7 +267,7 @@ export class FilesComponent {
           this.onCancel();
           this.retrieveProofReceipt(
             proof.id,
-            this.getCurrentMode() === 'seal' ? 'seal' : 'timestamp'
+            this.getCurrentMode() === 'sign' ? 'sign' : 'timestamp'
           );
         },
         (error) => {
@@ -321,16 +321,19 @@ export class FilesComponent {
       .subscribe((log) => (this.anchorCallbackResult = log));
   }
 
-  retrieveProofReceipt(anchorId: string, type: 'seal' | 'timestamp') {
+  retrieveProofReceipt(anchorId: string, type: 'sign' | 'timestamp') {
     this.proofReceiptService
       .getReceiptById(anchorId, true)
       .subscribe((content) => {
-        const fileName = `${
-          type === 'seal'
+        const folderPath =
+          type === 'sign'
             ? this.storeService.getManualSealsPath()
-            : this.storeService.getManualTimestampingsPath()
-        }/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
+            : this.storeService.getManualTimestampingsPath();
+
+        const fileName = `${folderPath}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
+
+        
       });
   }
 }
