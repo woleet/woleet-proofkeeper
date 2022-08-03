@@ -10,8 +10,11 @@ import { concatMap } from 'rxjs/operators';
 import { identityCheckerFactory } from '../folders/folders.component';
 import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
-import { FoldersConfigService } from '../services/foldersConfig.service';
-import { IdentityService } from '../services/Identity.service';
+import {
+  FolderDesc,
+  FoldersConfigService
+} from '../services/foldersConfig.service';
+import { IdentityContent, IdentityService } from '../services/Identity.service';
 import { ProofReceiptService } from '../services/proof-receipt.service';
 import { SecurityService } from '../services/security.service';
 import { SignatureRequestService } from '../services/signature-request.service';
@@ -229,10 +232,7 @@ export class FilesComponent {
           ) + this.storeService.getManualTimestampingsPath()
         );
         this.onCancel();
-        this.retrieveProofReceipt(
-          proof.id,
-          this.getCurrentMode()
-        );
+        this.retrieveProofReceipt(proof.id, this.getCurrentMode());
       },
       (error) => {
         console.error('Cannot create a timestamp: ', error);
@@ -267,10 +267,7 @@ export class FilesComponent {
             ) + this.storeService.getManualSealsPath()
           );
           this.onCancel();
-          this.retrieveProofReceipt(
-            proof.id,
-            this.getCurrentMode()
-          );
+          this.retrieveProofReceipt(proof.id, this.getCurrentMode(), identitySelected);
         },
         (error) => {
           console.error('Cannot create a seal: ', error);
@@ -323,45 +320,45 @@ export class FilesComponent {
       .subscribe((log) => (this.anchorCallbackResult = log));
   }
 
-  retrieveProofReceipt(anchorId: string, action: 'sign' | 'anchor') {
+  retrieveProofReceipt(anchorId: string, action: 'sign' | 'anchor', identitySelected?: IdentityContent) {
     this.proofReceiptService
       .getReceiptById(anchorId, true)
       .subscribe((content) => {
-        const type = action === 'sign' ? 'sign' : 'timestamp';
+        const type = action === 'sign' ? 'seal' : 'timestamp';
         const folderPath =
-          type === 'sign'
+          type === 'seal'
             ? this.storeService.getManualSealsPath()
             : this.storeService.getManualTimestampingsPath();
 
         const fileName = `${folderPath}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
 
-        this.addFolderIfNeeded(action, folderPath);
+        this.addFolderIfNeeded(action, folderPath, identitySelected);
       });
   }
 
-  addFolderIfNeeded(action: 'sign' | 'anchor', folderPath: string) {
-    const folderExists = this.foldersConfigService.folders?.some(folder => folder.action === action && folder.path === folderPath);
+  addFolderIfNeeded(action: 'sign' | 'anchor', folderPath: string, identitySelected: IdentityContent) {
+    const folderExists = this.foldersConfigService.folders?.some(
+      (folder) => folder.action === action && folder.path === folderPath
+    );
 
     if (folderExists) {
       return;
     }
-    
-    // const folderDesc: FolderDesc = {
-    //   path: folderPath,
-    //   action: action,
-    //   private: Boolean(!form.get('public').value).valueOf(),
-    //   strict: Boolean(form.get('strict').value).valueOf(),
-    //   prune: Boolean(form.get('prune').value).valueOf(),
-    //   recursive: Boolean(form.get('recursive').value).valueOf(),
-    //   filter: form.get('filter').value as string,
-    //   identityName: form.get('identity').value as string,
-    //   iDServerUnsecureSSL: Boolean(form.get('iDServerUnsecureSSL').value).valueOf(),
-    // };
 
-    // if (type === 'sign') {
-    //   return;
-    // }
+    // Create and add folder if it does not exist
+    const folderDesc: FolderDesc = {
+      path: folderPath,
+      action: action,
+      private: false,
+      strict: false,
+      prune: false,
+      recursive: false,
+      filter: null,
+      identityName: identitySelected && identitySelected.name || null,
+      iDServerUnsecureSSL: null,
+    };
 
+    this.cliRunnerFolderInterface.addFolder(folderDesc);
   }
 }
