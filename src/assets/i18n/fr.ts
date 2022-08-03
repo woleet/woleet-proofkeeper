@@ -19,7 +19,8 @@ const fr: typeof EN_Translations = {
     },
     errors: {
       nameAlreadyPresent: 'Nom déjà existant',
-      invalidJWTTokenFormat: 'Format de token JWT non valide'
+      invalidJWTTokenFormat: 'Format de token JWT non valide',
+      noApiToken: 'Le token d\'API de Woleet doit être défini'
     },
     labelNames: {
       name: 'Nom',

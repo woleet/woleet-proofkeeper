@@ -24,11 +24,6 @@
   margin-right: 4px;
 }
 
-.align-end {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .span-expansion-panel-header {
   display: flex;
   flex: 1;
@@ -157,4 +152,10 @@
       color: $warn;
     }
   }
+}
+
+.no-api-token {
+  margin-top: 0.5rem;
+  font-style: italic;
+  font-size: smaller;
 }

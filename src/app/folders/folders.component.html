@@ -75,7 +75,7 @@
           <input matInput class="form-control" type="text" name="filter" formControlName="filter">
         </mat-form-field>
       </div>
-      <span class="align-end">
+      <div class="align-right">
         <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
           (click)="onClickAdd();">
           {{ translations.folders.addFolder | translate }}
@@ -83,7 +83,7 @@
         <button mat-raised-button color="warn" (click)="onCancelAddClick();"> 
           {{ translations.commons.buttons.cancel | translate }}
         </button>
-      </span>
+      </div>
     </form>
     <br>
     <div class="watchedFolders">

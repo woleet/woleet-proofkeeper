@@ -1,7 +1,8 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { dialog } from '@electron/remote';
+import { app, dialog } from '@electron/remote';
+import * as fs from 'fs';
 import * as log from 'loglevel';
 import { environment } from '../../environments/environment';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
@@ -81,4 +82,12 @@ export class SharedService {
       environment.production ? 'io' : 'localhost'
     }/v1`;
   }
+}
+
+export function  getDefaultFolderPathForManualActions(subfolder: string) {
+  const path = `${app.getPath('documents')}/ProofKeeper/${subfolder}`;
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
+  return path;
 }

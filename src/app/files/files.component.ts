@@ -43,6 +43,7 @@ export class FilesComponent {
   openMetadataPanel = false;
   openCallbackURLPanel = false;
   anchorCallbackResult: UserLog;
+  noApiTokenSet = this.storeService.store.get('token');
 
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;

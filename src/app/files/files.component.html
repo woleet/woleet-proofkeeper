@@ -20,7 +20,7 @@
         (fileDropped)="onFileDropped($event)"
         (startDropping)="isDroppingAFile = true"
         (stopDropping)="isDroppingAFile = false"
-        [ngClass]="{'is-dropping': isDroppingAFile}"
+        [ngClass]="{ 'is-dropping': isDroppingAFile }"
       >
         <input
           #fileInput
@@ -30,7 +30,11 @@
           [ngClass]="{ 'not-clickable': isHashing }"
         />
         <div *ngIf="!isHashing">
-          <mat-icon class="drop-icon" [ngClass]="{'is-dropping': isDroppingAFile}">note_add</mat-icon>
+          <mat-icon
+            class="drop-icon"
+            [ngClass]="{ 'is-dropping': isDroppingAFile }"
+            >note_add</mat-icon
+          >
           <div
             class="drop-text"
             [innerHTML]="translations.files.dropFile | translate"
@@ -239,26 +243,31 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <span class="align-end">
-        <button
-          type="button"
-          mat-raised-button
-          color="primary"
-          class="span-folder-add-button"
-          [disabled]="fileFormGroup.invalid"
-          (click)="onSubmit()"
-        >
-          {{ translations.files.buttons[getCurrentMode()] | translate }}
-        </button>
-        <button
-          type="button"
-          mat-raised-button
-          color="warn"
-          (click)="onCancel()"
-        >
-          {{ translations.commons.buttons.cancel | translate }}
-        </button>
-      </span>
+      <div class="align-right">
+        <div>
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            class="span-folder-add-button"
+            [disabled]="fileFormGroup.invalid || !noApiTokenSet"
+            (click)="onSubmit()"
+          >
+            {{ translations.files.buttons[getCurrentMode()] | translate }}
+          </button>
+          <button
+            type="button"
+            mat-raised-button
+            color="warn"
+            (click)="onCancel()"
+          >
+            {{ translations.commons.buttons.cancel | translate }}
+          </button>
+        </div>
+        <mat-error *ngIf="!noApiTokenSet" class="no-api-token">
+          {{ translations.commons.errors.noApiToken | translate }}
+        </mat-error>
+      </div>
     </form>
   </mat-card>
 </div>

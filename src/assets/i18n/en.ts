@@ -17,7 +17,8 @@ export default {
     },
     errors: {
       nameAlreadyPresent: 'Name already present',
-      invalidJWTTokenFormat: 'Invalid JWT Token format'
+      invalidJWTTokenFormat: 'Invalid JWT Token format',
+      noApiToken: 'The Woleet API token must be defined'
     },
     labelNames: {
       name: 'Name',

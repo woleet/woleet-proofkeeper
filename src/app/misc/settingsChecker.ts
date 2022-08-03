@@ -17,6 +17,7 @@ export async function checkAndSubmit(
   screenPage?: number[]
 ) {
   let apiURL = AppInjector.get(SharedService).getDefaultApiUrl();
+
   if (formGroup.get('url')) {
     if (formGroup.get('url').value) {
       apiURL = formGroup.get('url').value;
