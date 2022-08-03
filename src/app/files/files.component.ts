@@ -331,7 +331,6 @@ export class FilesComponent {
             : this.storeService.getManualTimestampingsPath()
         }/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
-        console.log(fileName)
       });
   }
 }

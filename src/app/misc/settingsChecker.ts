@@ -22,13 +22,8 @@ export async function checkAndSubmit(http: HttpClient,
   }
 
   if (storeService) {
-   
     storeService.setManualTimestampingsPath(formGroup.get('manualTimestampingsPath').value);
     storeService.setManualSealsPath(formGroup.get('manualSealsPath').value);
-    console.log
-    console.log('timestamp', formGroup.get('manualTimestampingsPath').value)
-
-    console.log('seal', formGroup.get('manualSealsPath').value)
   }
 
   if (formGroup.get('url')) {
