@@ -10,6 +10,7 @@ import { concatMap } from 'rxjs/operators';
 import { identityCheckerFactory } from '../folders/folders.component';
 import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
+import { FoldersConfigService } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
 import { ProofReceiptService } from '../services/proof-receipt.service';
 import { SecurityService } from '../services/security.service';
@@ -55,7 +56,8 @@ export class FilesComponent {
     private securityService: SecurityService,
     private signatureRequestService: SignatureRequestService,
     private snackBar: MatSnackBar,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private foldersConfigService: FoldersConfigService
   ) {
     this.fileFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
@@ -229,7 +231,7 @@ export class FilesComponent {
         this.onCancel();
         this.retrieveProofReceipt(
           proof.id,
-          this.getCurrentMode() === 'sign' ? 'sign' : 'timestamp'
+          this.getCurrentMode()
         );
       },
       (error) => {
@@ -267,7 +269,7 @@ export class FilesComponent {
           this.onCancel();
           this.retrieveProofReceipt(
             proof.id,
-            this.getCurrentMode() === 'sign' ? 'sign' : 'timestamp'
+            this.getCurrentMode()
           );
         },
         (error) => {
@@ -321,10 +323,11 @@ export class FilesComponent {
       .subscribe((log) => (this.anchorCallbackResult = log));
   }
 
-  retrieveProofReceipt(anchorId: string, type: 'sign' | 'timestamp') {
+  retrieveProofReceipt(anchorId: string, action: 'sign' | 'anchor') {
     this.proofReceiptService
       .getReceiptById(anchorId, true)
       .subscribe((content) => {
+        const type = action === 'sign' ? 'sign' : 'timestamp';
         const folderPath =
           type === 'sign'
             ? this.storeService.getManualSealsPath()
@@ -333,7 +336,32 @@ export class FilesComponent {
         const fileName = `${folderPath}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
 
-        
+        this.addFolderIfNeeded(action, folderPath);
       });
+  }
+
+  addFolderIfNeeded(action: 'sign' | 'anchor', folderPath: string) {
+    const folderExists = this.foldersConfigService.folders?.some(folder => folder.action === action && folder.path === folderPath);
+
+    if (folderExists) {
+      return;
+    }
+    
+    // const folderDesc: FolderDesc = {
+    //   path: folderPath,
+    //   action: action,
+    //   private: Boolean(!form.get('public').value).valueOf(),
+    //   strict: Boolean(form.get('strict').value).valueOf(),
+    //   prune: Boolean(form.get('prune').value).valueOf(),
+    //   recursive: Boolean(form.get('recursive').value).valueOf(),
+    //   filter: form.get('filter').value as string,
+    //   identityName: form.get('identity').value as string,
+    //   iDServerUnsecureSSL: Boolean(form.get('iDServerUnsecureSSL').value).valueOf(),
+    // };
+
+    // if (type === 'sign') {
+    //   return;
+    // }
+
   }
 }

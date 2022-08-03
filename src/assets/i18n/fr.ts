@@ -42,11 +42,11 @@ const fr: typeof EN_Translations = {
   files: {
     tabs: {
       anchor: 'Fichier à horodater',
-      seal: 'Fichier à certifier',
+      sign: 'Fichier à certifier',
     },
     introText: {
       anchor: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve d\'horodatage</b>. <br> Une fois le fichier ancré dans la blockchain Bitcoin, vous pourrez <b>retrouver son reçu de preuve</b> dans votre ordinateur. <br> Ce reçu de preuve vous permettra de <b>prouver l\'existence de votre fichier à la date de l\'horodatage</b>.',
-      seal: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. Vous pourrez donc <b>retrouver le reçu de preuve</b> sur votre ordinateur. <br> Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
+      sign: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. Vous pourrez donc <b>retrouver le reçu de preuve</b> sur votre ordinateur. <br> Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
     },
     dropFile: 'Déposez le fichier <br> (ou cliquez pour choisir)',
     labels: {
@@ -62,11 +62,11 @@ const fr: typeof EN_Translations = {
     hashing: 'Calcul du hash…',
     buttons: {
       anchor: 'Horodater le fichier',
-      seal: 'Signer avec mon serveur d\'identité'
+      sign: 'Signer avec mon serveur d\'identité'
     },
     successTexts: {
       anchor: 'Horodatage créée dans le dossier suivant : ',
-      seal: 'Preuve de scellé créé dans le dossier suivant : '
+      sign: 'Preuve de scellé créé dans le dossier suivant : '
     }
   },
   folders: {
