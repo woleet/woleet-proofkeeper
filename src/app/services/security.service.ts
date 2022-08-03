@@ -9,16 +9,18 @@ import { WoleetCliParametersService } from './woleetcliParameters.service';
   providedIn: 'root'
 })
 export class SecurityService {
-  private ANCHOR_CALLBACK_URL = '/callback/try/anchor/';
+  private apiURL: string;
 
   constructor(
     private _http: HttpClient,
     private cli: WoleetCliParametersService,
     private sharedService: SharedService
-  ) {}
+  ) {
+    this.apiURL = this.cli.getUrl() || this.sharedService.getDefaultApiUrl();
+  }
 
   tryAnchorCallback(anchorId: string, callbackURL: string): Observable<UserLog> {
-    return this._http.post<UserLog>(`${this.cli.getUrl()}${this.ANCHOR_CALLBACK_URL}${anchorId}`, 
+    return this._http.post<UserLog>(`${this.apiURL}/callback/try/anchor/${anchorId}`, 
     {
       callbackURL: encodeURI(callbackURL)
     },

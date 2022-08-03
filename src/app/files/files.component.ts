@@ -235,8 +235,8 @@ export class FilesComponent {
         this.retrieveProofReceipt(proof.id, this.getCurrentMode());
       },
       (error) => {
-        console.error('Cannot create a timestamp: ', error);
-        this.openSnackBar('Error: ' + error.status);
+        console.error('Cannot create timestamping: ', error);
+        this.openSnackBar('Cannot create timestamping: ' + error.status);
       }
     );
   }
@@ -271,7 +271,7 @@ export class FilesComponent {
         },
         (error) => {
           console.error('Cannot create a seal: ', error);
-          this.openSnackBar('Error: ' + error.status);
+          this.openSnackBar('Cannot create a seal: ' + error.status);
         }
       );
   }

@@ -10,11 +10,15 @@ import { WoleetCliParametersService } from './woleetcliParameters.service';
 })
 export class ProofReceiptService {
 
+  private apiURL: string;
+
   constructor(
     private http: HttpClient,
     private cli: WoleetCliParametersService,
     private sharedService: SharedService
-  ) {}
+  ) {
+    this.apiURL = this.cli.getUrl() || this.sharedService.getDefaultApiUrl();
+  }
 
   createAnchor(proof: Proof, notifyByEmail = true): Observable<Proof> {
     if (!proof.notifyByEmail && notifyByEmail) {
@@ -22,7 +26,7 @@ export class ProofReceiptService {
     }
 
     return this.http.post(
-    `${this.cli.getUrl()}/anchor`,
+    `${this.apiURL}/anchor`,
       proof,
       this.sharedService.getHTTPHeaders()
     );
@@ -32,7 +36,7 @@ export class ProofReceiptService {
    * Get the receipt with the id.
    */
   getReceiptById(anchorId: string, allowPartial?: boolean): Observable<Proof> {
-    let url = `${this.cli.getUrl()}/receipt/${anchorId}`;
+    let url = `${this.apiURL}/receipt/${anchorId}`;
     if (allowPartial) {
       url += '?allowPartial=true';
     }

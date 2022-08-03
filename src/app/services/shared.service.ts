@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { dialog } from '@electron/remote';
 import * as log from 'loglevel';
+import { environment } from '../../environments/environment';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 
 @Injectable({
@@ -60,14 +61,24 @@ export class SharedService {
   }
 
   translateLegacyAction(action: string): string {
-    if (action === 'anchor') { return 'timestamp'; }
-    if (action === 'sign') { return 'seal'; }
+    if (action === 'anchor') {
+      return 'timestamp';
+    }
+    if (action === 'sign') {
+      return 'seal';
+    }
     return action;
   }
 
   resetPath(folderFormGroup: FormGroup, key = 'path') {
     folderFormGroup.patchValue({
-      [key]: ''
+      [key]: '',
     });
+  }
+
+  getDefaultApiUrl() {
+    return `https://api.woleet.${
+      environment.production ? 'io' : 'localhost'
+    }/v1`;
   }
 }

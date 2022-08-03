@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from '../../environments/environment';
 import { AppInjector } from '../app.module';
+import { SharedService } from '../services/shared.service';
 import { StoreService } from '../services/store.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
@@ -16,9 +16,7 @@ export async function checkAndSubmit(
   snackBar: MatSnackBar,
   screenPage?: number[]
 ) {
-  let apiURL = `https://api.woleet.${
-    environment.production ? 'io' : 'localhost'
-  }/v1`;
+  let apiURL = AppInjector.get(SharedService).getDefaultApiUrl();
   if (formGroup.get('url')) {
     if (formGroup.get('url').value) {
       apiURL = formGroup.get('url').value;
@@ -42,10 +40,7 @@ export async function checkAndSubmit(
       openSnackBarError(snackBar);
       return;
     }
-    if (
-      apiURL ===
-      `https://api.woleet.${environment.production ? 'io' : 'localhost'}/v1`
-    ) {
+    if (apiURL === AppInjector.get(SharedService).getDefaultApiUrl()) {
       cliService.setWoleetCliParameters(formGroup.get('token').value);
     } else {
       cliService.setWoleetCliParameters(
