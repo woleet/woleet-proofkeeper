@@ -4,7 +4,6 @@ import { FormGroup } from '@angular/forms';
 import { app, dialog } from '@electron/remote';
 import * as fs from 'fs';
 import * as log from 'loglevel';
-import { dirname } from 'path';
 import { environment } from '../../environments/environment';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 
@@ -89,7 +88,6 @@ export function getDefaultFolderPathForManualActions(subfolder: string) {
 
 export function createNewFolder(path: string) {
   if (!fs.existsSync(path)) {
-    const pathAdapted = dirname(`${path}/a`);
-    fs.mkdirSync(pathAdapted, { recursive: true });
+    fs.mkdirSync(path, { recursive: true });
   }
 }
