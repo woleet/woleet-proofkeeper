@@ -1,0 +1,56 @@
+$text-color: #26232b;
+$color-text-second: #69666e;
+$color-text-button: #4a4357;
+$color-black-transparent: rgba(38, 35, 43, 0.9);
+$main-color: #4814ad;
+$main-color-hover: #5217c4;
+$main-color-transparent-01: #4814ad45;
+$main-color-transparent-02: #8000ff1a;
+$color-secondary: #05b8c0;
+$color-secondary-transparent: #05b8c01a;
+$color-blue: #00aaff;
+$color-white: #ffffff;
+$color-purple: #8000ff;
+$color-box-shadow: rgba(0, 0, 0, 0.12);
+$color-grey: #c4c4c4;
+$color-orange: #ff8949;
+
+$color-grey-light-01: #f8f9fb;
+$color-grey-light-02: #eff1f4;
+$color-grey-light-border: #e0e0e0;
+
+$color-state-available: #00e599;
+$color-state-available-darker: #00ce89;
+$color-state-warning: #ffd333;
+$color-state-error: #ff4060;
+$color-codeblock-background: #263238;
+
+$standard-space: 8px;
+$stepper-size: 140px;
+$main-border-radius: $standard-space;
+$main-border-width: 1px;
+$sidebar-width: 225px;
+
+$small-font-size: 12px;
+$default-font-size: 13px;
+$bigger-font-size: 24px;
+
+$small-screen: 575px;
+$medium-screen: 767px;
+
+$font-weight-light: 400;
+$font-weight-medium: 500;
+$default-font-weight: 600;
+$font-weight-big: 700;
+$font-weight-very-big: 900;
+
+$sidebar-width-big: 400px;
+
+$base-line-height: 1.5;
+$content-center-padding-top: $standard-space * 4 + 4;
+
+@mixin for-iPad-screen {
+  @media (max-width: 1024px), (min-resolution: 120dpi) {
+    @content;
+  }
+}
