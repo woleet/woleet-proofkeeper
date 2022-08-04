@@ -17,7 +17,7 @@ import {
 import { IdentityContent, IdentityService } from '../services/Identity.service';
 import { ProofReceiptService } from '../services/proof-receipt.service';
 import { SecurityService } from '../services/security.service';
-import { createNewFolder } from '../services/shared.service';
+import { adaptPath, createNewFolder } from '../services/shared.service';
 import { SignatureRequestService } from '../services/signature-request.service';
 import { StoreService } from '../services/store.service';
 import { TranslationService } from '../services/translation.service';
@@ -330,8 +330,9 @@ export class FilesComponent {
       .subscribe((content) => {
         const type = action === 'sign' ? 'seal' : 'timestamp';
 
-        const fileName = `${this.proofReceiptsOfManualOperationsFolder}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`;
+        const fileName = adaptPath(`${this.proofReceiptsOfManualOperationsFolder}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`);
         createNewFolder(this.proofReceiptsOfManualOperationsFolder);
+        console.log('lllaa: ', fileName)
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
 
         this.addFolderIfNeeded(action, this.proofReceiptsOfManualOperationsFolder, identitySelected);

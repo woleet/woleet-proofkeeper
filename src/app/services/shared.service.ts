@@ -83,11 +83,19 @@ export function getDefaultApiUrl() {
 }
 
 export function getDefaultFolderPathForManualActions(subfolder: string) {
-  return `${app.getPath('documents')}/ProofKeeper/${subfolder}`;
+  return adaptPath(`${app.getPath('documents')}/ProofKeeper/${subfolder}`);
 }
 
 export function createNewFolder(path: string) {
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
+}
+
+export function adaptPath(path: string) {
+  if (process.platform === 'win32') {
+    return path.replace(/\//g, '\\');
+  }
+
+  return path;
 }
