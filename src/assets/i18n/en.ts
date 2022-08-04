@@ -31,8 +31,7 @@ export default {
       value: 'Value',
       status: 'Status:',
       content: 'Content:',
-      defaultFolderForManualTimestampings: 'Default folder for manual timestampings',
-      defaultFolderForManualSeals: 'Default folder for manual seals'
+      proofReceiptsOfManualOperationsFolder: 'Default folder for manual operations',
     },
     tooltips: {
       giveName: 'Give a name representing the identity of the legal person committing in seal operation.',
@@ -46,7 +45,7 @@ export default {
       sign: 'File to seal',
     },
     introText: {
-      anchor: 'Drop here the files for which you want to <b>create a proof of timestamp</b>. <br> Once the file are anchored in the Bitcoin blockchain, you will be able to <b>retrieve its proof receipt</b> in your computer. <br> This proof receipt will allow you to <b>prove the existence of your file on the date of the timestamp</b>.',
+      anchor: 'Drop here the files for which you want to <b>create a proof of timestamp</b>. <br><br> Once the file are anchored in the Bitcoin blockchain, you will be able to <b>retrieve its proof receipt</b> in this folder: <br> <small><i>{{ pathFolder }}<i></small> <br><br> This proof receipt will allow you to <b>prove the existence of your file on the date of the timestamp</b>.',
       sign: 'Drop here the file for which you want to <b>create a proof of seal</b>. <br> Once the file is signed, the signature is automatically anchored in the Bitcoin blockchain. You will thus be able to <b>retrieve the proof receipt</b> in your computer. <br> This proof receipt will allow to <b>prove the validity and the date of the signature</b>.'
     },
     dropFile: 'Drop the file here <br> (or click to browse)',
@@ -145,8 +144,6 @@ export default {
     subtitle: 'Timestamp and seal your files dynamically',
     instruction: `Accessing the Woleet API requires an API token.<br>You can create one using your Woleet account ("Developer" menu -> "API" tab) or by clicking this`,
     link: 'link',
-    defineDefaultFolders: 'Define the default folders for your manual actions',
-    defaultFoldersInstruction: 'You can create manually a timestamping or a proof of seal and save their proof receipts. <br> Define your default folders to retrieve these proof receipts:',
     setupIdentities: 'Set up identities for seal',
     setupIdentityInstruction: 'If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one seal identity (you will be able to add more seal identities using the settings after the wizard):',
     congratulations: 'Congratulations !',

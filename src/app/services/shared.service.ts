@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { app, dialog } from '@electron/remote';
 import * as fs from 'fs';
 import * as log from 'loglevel';
+import { dirname } from 'path';
 import { environment } from '../../environments/environment';
 import { WoleetCliParametersService } from './woleetcliParameters.service';
 
@@ -79,15 +80,16 @@ export class SharedService {
 }
 
 export function getDefaultApiUrl() {
-  return `https://api.woleet.${
-    environment.production ? 'io' : 'localhost'
-  }/v1`;
+  return `https://api.woleet.${environment.production ? 'io' : 'localhost'}/v1`;
 }
 
 export function getDefaultFolderPathForManualActions(subfolder: string) {
-  const path = `${app.getPath('documents')}/ProofKeeper/${subfolder}`;
+  return `${app.getPath('documents')}/ProofKeeper/${subfolder}`;
+}
+
+export function createNewFolder(path: string) {
   if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, { recursive: true });
+    const pathAdapted = dirname(`${path}/a`);
+    fs.mkdirSync(pathAdapted, { recursive: true });
   }
-  return path;
 }

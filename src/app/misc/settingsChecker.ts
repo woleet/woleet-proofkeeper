@@ -58,14 +58,11 @@ export async function checkAndSubmit(
   }
 }
 
-export function storeManualActionsPath(
-  formGroup: FormGroup,
-  storeService?: StoreService
+export function storeManualActionsFolder(
+  value: string,
+  storeService: StoreService
 ) {
-  storeService.setManualTimestampingsPath(
-    formGroup.get('manualTimestampingsPath').value
-  );
-  storeService.setManualSealsPath(formGroup.get('manualSealsPath').value);
+  storeService.setProofReceiptsOfManualOperationsFolder(value);
 }
 
 export async function checkwIDConnectionGetAvailableKeys(

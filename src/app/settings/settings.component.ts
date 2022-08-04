@@ -10,7 +10,7 @@ import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import {
   checkAndSubmit,
   checkwIDConnectionGetAvailableKeys,
-  storeManualActionsPath
+  storeManualActionsFolder
 } from '../misc/settingsChecker';
 import {
   noDuplicateIdentityNameValidatorFactoryOnAdd,
@@ -41,6 +41,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   public editPubKeyAddressGroup: PubKeyAddressGroup[];
   private settingsMessageSubscription: any;
   public languages: Array<string>;
+  DEFAULT_VALUE_MANUAL_OPERATION_FOLDER: string;
 
   constructor(
     private cli: WoleetCliParametersService,
@@ -76,20 +77,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   initComponent() {
+    this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER = this.storeService.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER;
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
     this.settingsFormGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()],
-      manualTimestampingsPath: [
-        this.storeService.getManualTimestampingsPath(),
+      [this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]: [
+        this.storeService.getProofReceiptsOfManualOperationsFolder(),
         [Validators.required],
-      ],
-      manualSealsPath: [
-        this.storeService.getManualSealsPath(),
-        [Validators.required],
-      ],
+      ]
     });
 
     if (this.identityService.arrayIdentityContent.length === 0) {
@@ -130,7 +128,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickCheckAndSubmit() {
-    storeManualActionsPath(this.settingsFormGroup, this.storeService);
+    storeManualActionsFolder(this.settingsFormGroup.get(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER).value, this.storeService);
     checkAndSubmit(
       this.http,
       this.settingsFormGroup,

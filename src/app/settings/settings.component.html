@@ -26,7 +26,7 @@
     <mat-form-field class="full-width">
       <mat-label>
         {{
-          translations.commons.labelNames.defaultFolderForManualTimestampings
+          translations.commons.labelNames[DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]
             | translate
         }}
       </mat-label>
@@ -34,13 +34,13 @@
         matInput
         class="form-control"
         type="text"
-        formControlName="manualTimestampingsPath"
+        [formControlName]="DEFAULT_VALUE_MANUAL_OPERATION_FOLDER"
       />
       <button
         mat-icon-button
         matSuffix
-        *ngIf="settingsFormGroup.get('manualTimestampingsPath').value"
-        (click)="resetPath('manualTimestampingsPath')"
+        *ngIf="settingsFormGroup.get(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER).value"
+        (click)="resetPath(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)"
         class="icon-btn"
       >
         <mat-icon>close</mat-icon>
@@ -49,38 +49,7 @@
         mat-button
         color="primary"
         matSuffix
-        (click)="onClickPopUpDirectory('manualTimestampingsPath')"
-      >
-        {{ translations.folders.chooseFolder | translate }}
-      </button>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-      <mat-label>
-        {{
-          translations.commons.labelNames.defaultFolderForManualSeals
-            | translate
-        }}</mat-label
-      >
-      <input
-        matInput
-        class="form-control"
-        type="text"
-        formControlName="manualSealsPath"
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        *ngIf="settingsFormGroup.get('manualSealsPath').value"
-        (click)="resetPath('manualSealsPath')"
-        class="icon-btn"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-      <button
-        mat-button
-        color="primary"
-        matSuffix
-        (click)="onClickPopUpDirectory('manualSealsPath')"
+        (click)="onClickPopUpDirectory(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)"
       >
         {{ translations.folders.chooseFolder | translate }}
       </button>

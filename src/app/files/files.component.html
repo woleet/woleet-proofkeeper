@@ -9,7 +9,7 @@
     </mat-tab-group>
     <div *ngIf="!fileHash" class="default-text">
       <div
-        [innerHTML]="translations.files.introText[getCurrentMode()] | translate"
+        [innerHTML]="translations.files.introText[getCurrentMode()] | translate: {pathFolder: proofReceiptsOfManualOperationsFolder}"
       ></div>
 
       <!-- Drag and drop file to hash -->

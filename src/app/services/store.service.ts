@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Store from 'electron-store';
 import { LanguageService } from './language.service';
-import { getDefaultFolderPathForManualActions } from './shared.service';
+import { createNewFolder, getDefaultFolderPathForManualActions } from './shared.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,9 @@ import { getDefaultFolderPathForManualActions } from './shared.service';
 export class StoreService {
   public store: Store<any>;
   private lang: string;
-  private manualTimestampingsPath: string;
-  private manualSealsPath: string;
+  private proofReceiptsOfManualOperationsFolder: string;
+  DEFAULT_VALUE_MANUAL_OPERATION_FOLDER = 'proofReceiptsOfManualOperationsFolder';
+  DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME = 'proofReceiptsOfManualOperations';
 
   public constructor(languageService: LanguageService) {
     this.store = new Store();
@@ -24,26 +25,18 @@ export class StoreService {
       this.setLang(languageService.getBrowserLanguage());
     }
 
-    if (this.store.has('manualTimestampingsPath')) {
-      if (!!this.store.get('manualTimestampingsPath')) {
-        this.manualTimestampingsPath = this.store.get(
-          'manualTimestampingsPath'
+    if (this.store.has(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)) {
+      if (!!this.store.get(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)) {
+        this.proofReceiptsOfManualOperationsFolder = this.store.get(
+          this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER
         );
       } else {
-        this.setManualTimestampingsPath(getDefaultFolderPathForManualActions('timestamps'));
+        createNewFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
+        this.setProofReceiptsOfManualOperationsFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
       }
     } else {
-      this.setManualTimestampingsPath(getDefaultFolderPathForManualActions('timestamps'));
-    }
-
-    if (this.store.has('manualSealsPath')) {
-      if (!!this.store.get('manualSealsPath')) {
-        this.manualSealsPath = this.store.get('manualSealsPath');
-      } else {
-        this.setManualSealsPath(getDefaultFolderPathForManualActions('seals'));
-      }
-    } else {
-      this.setManualSealsPath(getDefaultFolderPathForManualActions('seals'));
+      createNewFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
+      this.setProofReceiptsOfManualOperationsFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
     }
   }
 
@@ -51,22 +44,13 @@ export class StoreService {
     return this.lang;
   }
 
-  public getManualTimestampingsPath(): string {
-    return this.manualTimestampingsPath;
+  public getProofReceiptsOfManualOperationsFolder(): string {
+    return this.proofReceiptsOfManualOperationsFolder;
   }
 
-  public getManualSealsPath(): string {
-    return this.manualSealsPath;
-  }
-
-  public setManualTimestampingsPath(path: string) {
-    this.store.set('manualTimestampingsPath', path);
-    this.manualTimestampingsPath = path;
-  }
-
-  public setManualSealsPath(path: string) {
-    this.store.set('manualSealsPath', path);
-    this.manualSealsPath = path;
+  public setProofReceiptsOfManualOperationsFolder(path: string) {
+    this.store.set(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER, path);
+    this.proofReceiptsOfManualOperationsFolder = path;
   }
 
   public setLang(lang: string) {
