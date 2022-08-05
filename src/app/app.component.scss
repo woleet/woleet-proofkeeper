@@ -1,56 +1,52 @@
-.container {
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-}
+@import '../scss/variables';
 
-.sidenav {
+.app-body {
+  height: 100%;
   display: flex;
-  text-align: center;
-  width: 80px;
-  color: rgb(255, 255, 255);
-  background: rgba(0, 0, 0, 0.1);
-}
+  flex-direction: column;
 
-.active {
-  //color: rgb(40, 200, 143);
-  color: rgb(72, 20, 173);
-}
-
-.menubutton {
-  background-color: rgba(255, 255, 255, 1);
-  color: rgba(0, 0, 0, 0.245);
-  border: none;
-  padding: 5px;
-  width: 45px;
-  height: 45px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 35px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  :hover {
-    color: rgb(72, 20, 173);
+  .sidebar {
+    min-height: 100%;
+    transition: all 0.2s;
+    position: absolute;
+    z-index: 10;
+    background: $color-grey-light-01;
+    border-right: $main-border-width solid $color-grey-light-02;
+    display: flex;
+    flex-direction: column;
+    width: $sidebar-width;
   }
-}
 
-.menubutton-icon {
-  vertical-align: middle;
-  font-size: 35px;
-}
+  .menu-button {
+    color: $text-color;
+    cursor: pointer;
 
-.mainscreen {
-  background: #f8f9fa;
-  overflow: auto;
-}
+    &:hover {
+      color: $main-color;
+      background: $color-grey-light-02;
+      border-color: $color-grey-light-border;
+    }
 
-.screen-container {
-  padding-left: 2vw;
-  padding-right: 2vw;
-  padding-top: 2vh;
-  padding-bottom: 2vh;
+    &.active {
+      background: $color-grey-light-02;
+      border-left: solid 4px $main-color;
+      color: $main-color;
+    }
+  }
+
+  .menu-button-icon {
+    font-size: calc($sidebar-width / 2);
+    width: 100%;
+    height: $sidebar-width;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .main-screen {
+    overflow: auto;
+    padding: 2vh 2vw;
+    margin-left: $sidebar-width;
+    height: 100%;
+  }
 }

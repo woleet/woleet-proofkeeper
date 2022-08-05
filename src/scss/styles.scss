@@ -2,7 +2,6 @@
 $material-icons-font-path: '~material-design-icons/iconfont/';
 @import '~material-design-icons/iconfont/material-icons.css';
 @import 'variables';
-@import 'icons';
 
 @include mat.core();
 
@@ -47,4 +46,15 @@ $accent:  mat.define-palette(mat.$red-palette, 400);
 
 .dark-theme {
   @include mat.all-component-themes(mat.define-dark-theme($primary, $accent));
+}
+
+html,
+body,
+.fill-height {
+  font-family: Montserrat, sans-serif;
+  height: 100%;
+  overflow-x: hidden;
+  font-size: $default-font-size;
+  color: $text-color;
+  margin: 0;
 }

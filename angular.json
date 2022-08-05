@@ -26,7 +26,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/scss/styles.scss"
+              "src/scss/styles.scss",
+              "src/scss/_icons.scss"
             ],
             "scripts": [],
             "customWebpackConfig": {

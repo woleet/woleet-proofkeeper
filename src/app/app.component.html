@@ -1,32 +1,38 @@
-<mat-sidenav-container class="container">
-  <mat-sidenav #sidenav mode="side" opened class="sidenav" [disableClose]="true" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
-    <mat-nav-list>
-      <a (click)="setActiveFolders();" class="menubutton">
-        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'folders'}">folder</i>
-      </a>
-      <a (click)="setActiveSettings();" class="menubutton">
-        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'settings'}">settings</i>
-      </a>
-      <a (click)="setActiveLogs();" class="menubutton">
-        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'logs'}">code</i>
-      </a>
-      <a (click)="setActiveInfos();" class="menubutton">
-        <i class="material-icons menubutton-icon" [ngClass]="{'active' : active === 'infos'}">info</i>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content class="container mainscreen">
-    <div class="screen-container" *ngIf="active === 'folders'">
-      <app-folders></app-folders>
-    </div>
-    <div class="screen-container" *ngIf="active === 'settings'">
-      <app-settings></app-settings>
-    </div>
-    <div class="screen-container" *ngIf="active === 'logs'">
-      <app-logs></app-logs>
-    </div>
-    <div class="screen-container" *ngIf="active === 'infos'">
-      <app-infos></app-infos>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<div class="app-body">
+  <div class="sidebar">
+    <a
+      (click)="setActiveFolders()"
+      class="menu-button"
+      [ngClass]="{ active: active === 'folders' }"
+    >
+      <i class="icon-folder menu-button-icon"></i>
+    </a>
+    <a
+      (click)="setActiveSettings()"
+      class="menu-button"
+      [ngClass]="{ active: active === 'settings' }"
+    >
+      <i class="icon-settings menu-button-icon"></i>
+    </a>
+    <a
+      (click)="setActiveLogs()"
+      class="menu-button"
+      [ngClass]="{ active: active === 'logs' }"
+    >
+      <i class="icon-code menu-button-icon"></i>
+    </a>
+    <a
+      (click)="setActiveInfos()"
+      class="menu-button"
+      [ngClass]="{ active: active === 'infos' }"
+    >
+      <i class="icon-info menu-button-icon"></i>
+    </a>
+  </div>
+  <div class="main-screen">
+    <app-folders *ngIf="active === 'folders'"></app-folders>
+    <app-settings *ngIf="active === 'settings'"></app-settings>
+    <app-logs *ngIf="active === 'logs'"></app-logs>
+    <app-infos *ngIf="active === 'infos'"></app-infos>
+  </div>
+</div>
