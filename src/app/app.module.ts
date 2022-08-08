@@ -39,6 +39,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { from } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 import { TranslationService } from './services/translation.service';
+import { TooltipDirective } from './shared/directives/tooltip.directive';
 
 // To call manually a service
 export let AppInjector: Injector;
@@ -58,7 +59,8 @@ export class WebpackTranslateLoader implements TranslateLoader {
     DeeplinkComponent,
     LogsComponent,
     InfosComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    TooltipDirective
   ],
   imports: [
     FormsModule,

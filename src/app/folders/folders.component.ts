@@ -190,6 +190,37 @@ export class FoldersComponent {
   isOnSignTab() {
     return this.folderFormGroup.get('action').value === 'sign';
   }
+
+  getStatusColor(rank: number) {
+    if(this.foldersStatusCode[rank].exitCode === 0) {
+      return 'SUCCESS';
+    }
+
+    if(this.foldersStatusCode[rank].exitCode > 0) {
+      return 'FAILURE';
+    }
+
+    if(this.foldersStatusCode[rank].exitCode < 0) {
+      return 'PROCESSING';
+    }
+
+    return null;
+  }
+  getStatusTooltip(rank: number) {
+
+    if (this.foldersStatusCode[rank].exitCode === 0) {
+      return this.translateService.instant(this.translations.folders.tooltips.executionSuccessful);
+    }
+
+    if (this.foldersStatusCode[rank].exitCode > 0) {
+      return this.translateService.instant(this.translations.folders.tooltips.failure);
+    }
+
+    if (this.foldersStatusCode[rank].exitCode < 0) {
+      return this.translateService.instant(this.translations.folders.tooltips.processing);
+    }
+    return this.translateService.instant(this.translations.folders.tooltips.notYetStarted);
+  }
 }
 
 function noDuplicatePathValidatorFactory(thisParam) {

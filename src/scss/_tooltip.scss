@@ -1,0 +1,42 @@
+.tooltip-container {
+  text-align: center;
+  z-index: 100;
+  position: fixed;
+  padding: $standard-space;
+  border-radius: $standard-space;
+  font-size: smaller;
+  font-weight: $default-font-weight;
+  line-height: initial;
+  color: $color-white;
+  width: auto;
+  background: $color-black-transparent;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translate(-50%, -30%);
+  animation: tooltip-slide 0.18s ease-out 0.5s;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent $color-black-transparent transparent;
+  }
+}
+
+@keyframes tooltip-slide {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -30%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

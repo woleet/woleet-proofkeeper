@@ -1,3 +1,5 @@
+@import '../../scss/variables';
+
 .full-width {
   width: 100%;
 }
@@ -7,10 +9,6 @@
   top: -8px;
   z-index: 1;
   float: right;
-}
-
-.span-folder-add-button {
-  margin-right: 4px;
 }
 
 .align-end {
@@ -34,20 +32,61 @@
   direction: rtl;
 }
 
-.span-status-icons {
-  display: flex;
-  align-items: center;
-}
-
-.status-icons {
-  margin-left: 10px;
-  margin-right: 10px;
-  box-shadow: unset;
-  height: 25px;
-  width: 25px;
-}
-
 .span-update-configuration {
   display: flex;
   justify-content: flex-end;
+}
+
+.icon-in-input {
+  padding: 0;
+}
+
+.trash-btn {
+  font-size: large;
+}
+
+.state {
+  padding: $standard-space;
+  border-radius: 50%;
+  background-color: $color-text-second;
+
+  &:hover {
+    border-color: rgba($color-text-second, 0.75);
+    background-color: rgba($color-text-second, 0.75);
+  }
+
+  &.FAILURE {
+    border: $main-border-width solid $color-state-error;
+    background-color: $color-state-error;
+
+    &:hover {
+      border-color: rgba($color-state-error, 0.75);
+      background-color: rgba($color-state-error, 0.75);
+    }
+  }
+
+  &.PROCESSING {
+    border: $main-border-width solid $color-orange;
+    background-color: $color-orange;
+
+    &:hover {
+      border-color: rgba($color-orange, 0.75);
+      background-color: rgba($color-orange, 0.75);
+    }
+  }
+
+  &.SUCCESS {
+    border: $main-border-width solid $color-state-available-darker;
+    background-color: $color-state-available-darker;
+
+    &:hover {
+      border-color: rgba($color-state-available-darker, 0.75);
+      background-color: rgba($color-state-available-darker, 0.75);
+    }
+  }
+}
+
+.btn-on-right {
+  display: flex;
+  align-items: center;
 }

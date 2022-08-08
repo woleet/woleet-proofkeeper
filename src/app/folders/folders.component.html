@@ -35,21 +35,15 @@
   <form [formGroup]="folderFormGroup" *ngIf="addState">
     <mat-form-field class="full-width">
       <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
-      <input matInput class="form-control" type="text" formControlName="path" />
+      <input matInput type="text" formControlName="path" />
       <button
-        mat-icon-button
-        matSuffix
         *ngIf="folderFormGroup.get('path').value"
         (click)="resetPath()"
+        class="btn btn-without-background"
       >
-        <mat-icon>close</mat-icon>
+        <i class="icon-close"></i>
       </button>
-      <button
-        mat-button
-        color="primary"
-        matSuffix
-        (click)="onClickPopUpDirectory()"
-      >
+      <button class="btn btn-primary" (click)="onClickPopUpDirectory()">
         {{ translations.folders.chooseFolder | translate }}
       </button>
       <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
@@ -143,15 +137,13 @@
     </div>
     <span class="align-end">
       <button
-        mat-raised-button
-        color="primary"
-        class="span-folder-add-button"
+        class="btn btn-primary mr"
         [disabled]="folderFormGroup.invalid"
         (click)="onClickAdd()"
       >
         {{ translations.folders.addFolder | translate }}
       </button>
-      <button mat-raised-button color="warn" (click)="onCancelAddClick()">
+      <button class="btn danger" (click)="onCancelAddClick()">
         {{ translations.commons.buttons.cancel | translate }}
       </button>
     </span>
@@ -171,78 +163,26 @@
               <span class="span-folder-name">{{
                 folderForm.get('path').value
               }}</span>
-              <span class="span-status-icons">
-                <!-- <mat-chip-list>
-                    <mat-chip>ToFill</mat-chip>
-                  </mat-chip-list> -->
-                <button
-                  mat-mini-fab
-                  class="status-icons"
+              <div class="btn-on-right">
+                <div
+                  class="state mr"
+                  [class]="getStatusColor(i)"
+                  [appTooltip]="getStatusTooltip(i)"
                   (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
-                  *ngIf="foldersStatusCode[i].exitCode === undefined"
-                  style="background-color: #808080"
-                  matTooltipPosition="above"
-                  [matTooltipClass]="'tooltip'"
-                  [matTooltip]="
-                    translations.folders.tooltips.notYetStarted | translate
-                  "
-                ></button>
+                ></div>
                 <button
-                  mat-mini-fab
-                  class="status-icons"
-                  (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
-                  *ngIf="foldersStatusCode[i].exitCode === 0"
-                  style="background-color: #08ad08"
-                  matTooltipPosition="above"
-                  [matTooltipClass]="'tooltip'"
-                  [matTooltip]="
-                    translations.folders.tooltips.executionSuccessful
-                      | translate
+                  class="btn btn-danger btn-without-background"
+                  [appTooltip]="
+                    translations.folders.tooltips.deleteFolder | translate
                   "
-                ></button>
-                <button
-                  mat-mini-fab
-                  class="status-icons"
-                  (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
-                  *ngIf="foldersStatusCode[i].exitCode > 0"
-                  style="background-color: #f44336"
-                  matTooltipPosition="above"
-                  [matTooltipClass]="'tooltip'"
-                  [matTooltip]="
-                    translations.folders.tooltips.executionSuccessful
-                      | translate
-                  "
-                ></button>
-                <button
-                  mat-mini-fab
-                  class="status-icons"
-                  (click)="$event.stopPropagation()"
-                  *ngIf="foldersStatusCode[i].exitCode < 0"
-                  style="background-color: #ff7b00"
-                  matTooltipPosition="above"
-                  [matTooltipClass]="'tooltip'"
-                  [matTooltip]="
-                    translations.folders.tooltips.processing | translate
-                  "
-                ></button>
-                <button
-                  mat-icon-button
-                  color="warn"
                   (click)="
                     $event.stopPropagation();
                     openConfirmDeleteDialog(folderForm)
                   "
                 >
-                  <mat-icon
-                    [matTooltip]="
-                      translations.folders.tooltips.deleteFolder | translate
-                    "
-                    matTooltipPosition="above"
-                    [matTooltipClass]="'tooltip'"
-                    >delete
-                  </mat-icon>
+                  <i class="icon-trash trash-btn"></i>
                 </button>
-              </span>
+              </div>
             </div>
           </mat-expansion-panel-header>
           <form [formGroup]="folderForm">
@@ -367,9 +307,7 @@
             </div>
             <div>
               <button
-                mat-raised-button
-                color="primary"
-                style="margin-right: 10px"
+                class="btn btn-primary mr"
                 (click)="onClickFixReceipts(folderForm)"
               >
                 {{ translations.folders.fixReceipts | translate }}
@@ -378,8 +316,7 @@
             </div>
             <span class="span-update-configuration">
               <button
-                mat-raised-button
-                color="primary"
+                class="btn btn-primary"
                 [disabled]="folderForm.pristine || folderForm.invalid"
                 (click)="onClickUpdateFolderOptions(folderForm)"
               >

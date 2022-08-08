@@ -1,0 +1,146 @@
+@use 'sass:math';
+
+.btn {
+  color: $color-text-button;
+  padding: 10px 12px;
+  border: math.div($main-border-width, 2) solid $color-grey-light-border;
+  border-radius: $standard-space;
+  font-weight: $font-weight-medium;
+  font-size: $default-font-size - 1;
+  white-space: nowrap;
+  background-color: $color-white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-grey-light-01;
+  }
+
+  &.btn-danger {
+    color: $color-state-error;
+    border-color: $color-state-error;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-state-error;
+    }
+  }
+
+  &.btn-success {
+    color: $color-state-available;
+    border-color: $color-state-available;
+
+    &:hover {
+      color: $color-white;
+      background-color: $color-state-available;
+    }
+  }
+
+  &.btn-smaller {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+
+  &:focus {
+    box-shadow: unset;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.4;
+  }
+
+  &.btn-large {
+    width: 400px;
+    max-width: 100%;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  &.btn-primary {
+    color: $color-white;
+    border-color: $main-color !important;
+    background-color: $main-color !important;
+    border-radius: $main-border-radius;
+    &:hover {
+      background-color: lighten($main-color, 5%) !important;
+    }
+  }
+
+  &.btn-outline-default {
+    border: $main-border-width solid $color-grey-light-border;
+    background-color: transparent;
+    &:hover {
+      background-color: $color-grey-light-01;
+    }
+  }
+
+  &.btn-outline-white {
+    border-radius: $main-border-radius;
+    border: 1px solid $color-grey-light-border;
+    background: transparent;
+    padding: 10px 16px;
+    align-items: center;
+
+    &:hover {
+      background-color: $color-grey-light-01;
+    }
+  }
+
+  &.btn-outline-primary {
+    border-radius: $main-border-radius;
+    border: 1px solid $main-color !important;
+    background: transparent;
+    padding: $standard-space + 2 $standard-space * 2;
+    align-items: center;
+    color: $text-color !important;
+
+    &:hover,
+    &:active {
+      background-color: $main-color-transparent-02 !important;
+    }
+
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+
+  &.btn-info {
+    color: $color-white;
+    background-color: $color-secondary !important;
+    border-color: $color-secondary !important;
+    &:hover {
+      background-color: lighten($color-secondary, 2%) !important;
+    }
+  }
+
+  &.btn-warn {
+    background-color: $color-state-warning !important;
+    &:hover {
+      background-color: lighten($color-state-warning, 2%) !important;
+    }
+  }
+
+  &.btn-rounded {
+    line-height: 0;
+    border-radius: 50% !important;
+    padding: $standard-space * 2 - 4;
+  }
+
+  &.btn-without-background {
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    &:hover {
+      color: $color-secondary;
+      background-color: transparent;
+    }
+  }
+
+  &.btn-without-shadow-onfocus:focus {
+    box-shadow: 0 0 0 0;
+  }
+}
+
+input[type='radio']:checked + * {
+  font-weight: $default-font-weight;
+}

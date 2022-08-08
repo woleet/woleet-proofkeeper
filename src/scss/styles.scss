@@ -2,7 +2,11 @@
 $material-icons-font-path: '~material-design-icons/iconfont/';
 @import '~material-design-icons/iconfont/material-icons.css';
 @import 'variables';
+@import 'commons';
+@import 'card';
 @import 'tab';
+@import 'btn';
+@import 'tooltip';
 
 @include mat.core();
 
@@ -59,18 +63,6 @@ body,
   margin: 0;
 }
 
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  word-wrap: break-word;
-  word-break: break-word;
-  border: $main-border-width solid $color-grey-light-02;
-  border-radius: 0.5rem;
-  padding: $standard-space * 4;
-  transition: all 0.25s ease-in-out;
-
-  &.card-part {
-    margin-bottom: $standard-space * 4;
-  }
+.mat-form-field-infix {
+  display: flex !important;
 }
