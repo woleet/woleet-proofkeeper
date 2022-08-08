@@ -8,12 +8,30 @@
   >
     <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
   </button>
-  <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
-    <mat-tab [label]="translations.folders.tabs.filesToTimestamp | translate">
-    </mat-tab>
-    <mat-tab [label]="translations.folders.tabs.filesToSeal | translate">
-    </mat-tab>
-  </mat-tab-group>
+  <div class="tab-flex">
+    <a
+      class="custom-tab-button"
+      [ngClass]="{ active: isOnAnchorTab() }"
+      (click)="changeTab()"
+    >
+      <i class="icon icon-clock"></i>
+      <span class="ml-1">{{
+        translations.folders.tabs.filesToTimestamp | translate
+      }}</span>
+    </a>
+    <a
+      class="custom-tab-button"
+      [ngClass]="{ active: isOnSignTab() }"
+      (click)="changeTab()"
+    >
+      <i class="icon icon-seal"></i>
+      <span class="ml-1">{{
+        translations.folders.tabs.filesToSeal | translate
+      }}</span>
+    </a>
+  </div>
+  <hr class="hr-tab" />
+
   <form [formGroup]="folderFormGroup" *ngIf="addState">
     <mat-form-field class="full-width">
       <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>

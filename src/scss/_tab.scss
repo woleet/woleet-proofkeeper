@@ -1,0 +1,49 @@
+.flex-tab {
+  display: flex;
+  flex-wrap: wrap;
+
+  .align-to-search-input {
+    margin-top: 6px;
+  }
+}
+
+.custom-tab-button {
+  background-color: inherit;
+  border: 0;
+  cursor: pointer;
+  padding: 0 15px 9px 15px;
+
+  &.disabled-tab-with-tooltip {
+    padding-bottom: 12px;
+  }
+
+  @media (max-width: 500px) {
+    padding: 0 10px 9px 10px;
+  }
+
+  &.active {
+    font-weight: $default-font-weight;
+    border: solid $main-color;
+    border-width: 0 0 $main-border-width * 2 0;
+    color: $main-color;
+  }
+
+  .icon {
+    margin-right: $standard-space;
+  }
+}
+
+hr {
+  &.hr-tab {
+    margin-top: 11px;
+    margin-bottom: $standard-space * 4;
+    width: 100%;
+
+    &.disabled-tab-with-tooltip {
+      margin-top: 2px;
+    }
+  }
+
+  border: 0;
+  border-top: $main-border-width solid $color-grey-light-02;
+}

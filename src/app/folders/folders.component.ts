@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import * as remote from '@electron/remote';
+import { TranslateService } from '@ngx-translate/core';
+import * as log from 'loglevel';
+import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
+import { LogContext } from '../misc/logs';
+import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
-import * as remote from '@electron/remote';
-import * as log from 'loglevel';
-import * as nodepath from 'path';
-import { LogContext } from '../misc/logs';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
-import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { TranslationService } from '../services/translation.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-folders',
@@ -138,12 +137,12 @@ export class FoldersComponent {
     });
   }
 
-  onTabChange(index: number) {
-    if (index === 0 && this.folderFormGroup.get('action').value === 'sign') {
+  changeTab() {
+    if (this.folderFormGroup.get('action').value === 'sign') {
       this.folderFormGroup.patchValue({
         action: 'anchor'
       });
-    } else if (index === 1 && this.folderFormGroup.get('action').value === 'anchor') {
+    } else if (this.folderFormGroup.get('action').value === 'anchor') {
       this.folderFormGroup.patchValue({
         action: 'sign'
       });
@@ -182,6 +181,14 @@ export class FoldersComponent {
   onClickFixReceipts(folderForm: FormGroup) {
     this.cliRunnerFolderInterface.restartRunner(this.getFolderDescFromFormGroup(folderForm), true);
     this.fillFoldersFormGroup();
+  }
+
+  isOnAnchorTab() {
+    return this.folderFormGroup.get('action').value === 'anchor';
+  }
+
+  isOnSignTab() {
+    return this.folderFormGroup.get('action').value === 'sign';
   }
 }
 
