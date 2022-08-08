@@ -1,14 +1,14 @@
 import { Component, NgZone } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { StoreService } from './services/store.service';
-import { WizardComponent } from './wizard/wizard.component';
-import { DeeplinkComponent } from './deeplink/deeplink.component';
-import { SettingsMessageService } from './services/settingsMessage.service';
+import { TranslateService } from '@ngx-translate/core';
 import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
-import { TranslateService } from '@ngx-translate/core';
+import { DeeplinkComponent } from './deeplink/deeplink.component';
 import { LanguageService } from './services/language.service';
+import { SettingsMessageService } from './services/settingsMessage.service';
+import { StoreService } from './services/store.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
+import { WizardComponent } from './wizard/wizard.component';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ import { WoleetCliParametersService } from './services/woleetcliParameters.servi
 })
 
 export class AppComponent {
-  public active: string;
+  public active: Menus;
   private wizardDialog: MatDialogRef<WizardComponent>;
   private deeplinkDialog: MatDialogRef<DeeplinkComponent>;
   private store: Store<any>;
@@ -85,3 +85,5 @@ export class AppComponent {
     this.translateService.use(this.cli.getLang());
   }
 }
+
+type Menus = 'folders' | 'settings' | 'logs' | 'infos';

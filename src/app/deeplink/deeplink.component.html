@@ -12,16 +12,16 @@
       <p class="mat-body-1">
         {{ translations.deeplink.providedWoleetAPIToken | translate }}<br>
       </p>
-      <mat-card class="mat-card-token">
+      <div class="card card-part">
         {{woleetToken}}
-      </mat-card>
+      </div>
       <mat-divider *ngIf="woleetUrl" ></mat-divider>
       <p class="mat-body-1" *ngIf="woleetUrl">
         {{ translations.deeplink.providedWoleetURL | translate }}
       </p>
-      <mat-card *ngIf="woleetUrl">
+      <div class="card card-part" *ngIf="woleetUrl">
         {{woleetUrl}}
-      </mat-card>
+      </div>
     </div>
     </mat-dialog-content>
 
@@ -31,16 +31,16 @@
       <p class="mat-body-1">
         {{ translations.deeplink.providedWidsAPIToken | translate }}<br>
       </p>
-      <mat-card class="mat-card-token">
+      <div class="card card-part">
         {{widsToken}}
-      </mat-card>
+      </div>
       <mat-divider *ngIf="widsUrl" ></mat-divider>
       <p class="mat-body-1" *ngIf="widsUrl">
         {{ translations.deeplink.providedWidsURL | translate }}
       </p>
-      <mat-card *ngIf="widsUrl">
+      <div class="card card-part">
         {{widsUrl}}
-      </mat-card>
+      </div>
     </div>
     <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
       <mat-form-field class="full-width">

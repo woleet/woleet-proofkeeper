@@ -7,41 +7,40 @@ $material-icons-font-path: '~material-design-icons/iconfont/';
 
 // Generated with: http://mcg.mbitson.com/#!?mcgpalette0=%234814ad&themename=mcgtheme
 $woleet-palette: (
-        50 : #e9e3f5,
-        100 : #c8b9e6,
-        200 : #a48ad6,
-        300 : #7f5bc6,
-        400 : #6337b9,
-        500 : #4814ad,
-        600 : #4112a6,
-        700 : #380e9c,
-        800 : #300b93,
-        900 : #210683,
-        A100 : #beb1ff,
-        A200 : #937eff,
-        A400 : #684bff,
-        A700 : #5331ff,
-    contrast: (
-        50 : #000000,
-        100 : #000000,
-        200 : #000000,
-        300 : #000000,
-        400 : #000000,
-        500 : #ffffff,
-        600 : #ffffff,
-        700 : #ffffff,
-        800 : #ffffff,
-        900 : #ffffff,
-        A100 : #000000,
-        A200 : #000000,
-        A400 : #000000,
-        A700 : #000000,
-    )
+  50 : #e9e3f5,
+  100 : #c8b9e6,
+  200 : #a48ad6,
+  300 : #7f5bc6,
+  400 : #6337b9,
+  500 : #4814ad,
+  600 : #4112a6,
+  700 : #380e9c,
+  800 : #300b93,
+  900 : #210683,
+  A100 : #beb1ff,
+  A200 : #937eff,
+  A400 : #684bff,
+  A700 : #5331ff,
+  contrast: (50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
 );
 
 $primary: mat.define-palette($woleet-palette);
-$warn:    mat.define-palette(mat.$red-palette);
-$accent:  mat.define-palette(mat.$red-palette, 400);
+$warn: mat.define-palette(mat.$red-palette);
+$accent: mat.define-palette(mat.$red-palette, 400);
 @include mat.all-component-themes(mat.define-light-theme($primary, $accent));
 
 .dark-theme {
@@ -57,4 +56,20 @@ body,
   font-size: $default-font-size;
   color: $text-color;
   margin: 0;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
+  word-break: break-word;
+  border: $main-border-width solid $color-grey-light-02;
+  border-radius: 0.5rem;
+  padding: $standard-space * 4;
+  transition: all 0.25s ease-in-out;
+
+  &.card-part {
+    margin-bottom: $standard-space * 4;
+  }
 }

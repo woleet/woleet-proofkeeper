@@ -1,201 +1,376 @@
-<div>
-  <mat-card class="full-size-card">
-    <button mat-fab color="primary" class="folder-add-button" [disabled]="addState" (click)="onAddFolderClick();">
-      <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
-    </button>
-    <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
-      <mat-tab [label]="translations.folders.tabs.filesToTimestamp | translate">
-      </mat-tab>
-      <mat-tab [label]="translations.folders.tabs.filesToSeal | translate">
-      </mat-tab>
-    </mat-tab-group>
-    <form [formGroup]="folderFormGroup" *ngIf="addState">
-      <mat-form-field class="full-width">
-        <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
-        <input matInput class="form-control" type="text" formControlName="path">
-        <button mat-icon-button matSuffix *ngIf="folderFormGroup.get('path').value" (click)="resetPath();">
-          <mat-icon>close</mat-icon>
-        </button>
-        <button mat-button color="primary" matSuffix (click)="onClickPopUpDirectory();">
-          {{ translations.folders.chooseFolder | translate }}
-        </button>
-        <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
-          {{ translations.folders.errors.folderAlreadyPresent | translate }}
+<div class="card">
+  <button
+    mat-fab
+    color="primary"
+    class="folder-add-button"
+    [disabled]="addState"
+    (click)="onAddFolderClick()"
+  >
+    <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
+  </button>
+  <mat-tab-group class="action-tab" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab [label]="translations.folders.tabs.filesToTimestamp | translate">
+    </mat-tab>
+    <mat-tab [label]="translations.folders.tabs.filesToSeal | translate">
+    </mat-tab>
+  </mat-tab-group>
+  <form [formGroup]="folderFormGroup" *ngIf="addState">
+    <mat-form-field class="full-width">
+      <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
+      <input matInput class="form-control" type="text" formControlName="path" />
+      <button
+        mat-icon-button
+        matSuffix
+        *ngIf="folderFormGroup.get('path').value"
+        (click)="resetPath()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <button
+        mat-button
+        color="primary"
+        matSuffix
+        (click)="onClickPopUpDirectory()"
+      >
+        {{ translations.folders.chooseFolder | translate }}
+      </button>
+      <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
+        {{ translations.folders.errors.folderAlreadyPresent | translate }}
+      </mat-error>
+    </mat-form-field>
+    <div *ngIf="folderFormGroup.get('action').value == 'sign'">
+      <mat-form-field>
+        <mat-label>{{
+          translations.folders.identityToUse | translate
+        }}</mat-label>
+        <mat-select
+          class="custom-select"
+          formControlName="identity"
+          name="identity"
+        >
+          <mat-option
+            *ngFor="let identityName of identityService.arrayIdentityContent"
+            [value]="identityName.name"
+          >
+            {{ identityName.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
+          {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            identityService.arrayIdentityContent.length !== 0 &&
+            folderFormGroup.get('identity').getError('voidIdentity')
+          "
+        >
+          {{ translations.folders.errors.identityRequired | translate }}
+        </mat-error>
+        <mat-error
+          *ngIf="folderFormGroup.get('identity').getError('identityNotFound')"
+        >
+          {{ translations.folders.errors.notFound | translate }}
         </mat-error>
       </mat-form-field>
-      <div *ngIf="folderFormGroup.get('action').value == 'sign'">
-        <mat-form-field>
-          <mat-label>{{ translations.folders.identityToUse | translate }}</mat-label>
-          <mat-select class="custom-select" formControlName="identity" name="identity">
-            <mat-option *ngFor="let identityName of identityService.arrayIdentityContent" [value]="identityName.name">
-              {{ identityName.name }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-            {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
-          </mat-error>
-          <mat-error
-            *ngIf="identityService.arrayIdentityContent.length !== 0 && folderFormGroup.get('identity').getError('voidIdentity')">
-            {{ translations.folders.errors.identityRequired | translate }}
-          </mat-error>
-          <mat-error *ngIf="folderFormGroup.get('identity').getError('identityNotFound')">
-            {{ translations.folders.errors.notFound | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <br>
-      <div>
-        <mat-checkbox color="primary" name="public" formControlName="public">
-          {{ translations.folders.checkbox.makeProofsPublicly | translate }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-          {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="strict" formControlName="strict">
-          {{ translations.folders.checkbox.recreateProofs | translate }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-checkbox color="primary" name="prune" formControlName="prune">
-          {{ translations.folders.checkbox.deleteOldProofs | translate }}
-        </mat-checkbox>
-      </div>
-      <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
-        <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-          {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
-        </mat-checkbox>
-      </div>
-      <div>
-        <mat-form-field class="full-width">
-          <mat-label>{{ translations.folders.proveFilesMatchingRegularExpression | translate }}</mat-label>
-          <input matInput class="form-control" type="text" name="filter" formControlName="filter">
-        </mat-form-field>
-      </div>
-      <span class="align-end">
-        <button mat-raised-button color="primary" class="span-folder-add-button" [disabled]="folderFormGroup.invalid"
-          (click)="onClickAdd();">
-          {{ translations.folders.addFolder | translate }}
-        </button>
-        <button mat-raised-button color="warn" (click)="onCancelAddClick();"> 
-          {{ translations.commons.buttons.cancel | translate }}
-        </button>
-      </span>
-    </form>
-    <br>
-    <div class="watchedFolders">
-      <mat-accordion>
-        <ng-container *ngFor="let folderForm of foldersFormGroup; let i = index;">
-          <mat-expansion-panel *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
-            <mat-expansion-panel-header>
-              <div class="span-expansion-panel-header">
-                <span class="span-folder-name">{{folderForm.get('path').value}}</span>
-                <span class=span-status-icons>
-                  <!-- <mat-chip-list>
+    </div>
+    <br />
+    <div>
+      <mat-checkbox color="primary" name="public" formControlName="public">
+        {{ translations.folders.checkbox.makeProofsPublicly | translate }}
+      </mat-checkbox>
+    </div>
+    <div>
+      <mat-checkbox
+        color="primary"
+        name="recursive"
+        formControlName="recursive"
+      >
+        {{
+          translations.folders.checkbox.includeFilesFromSubfolders | translate
+        }}
+      </mat-checkbox>
+    </div>
+    <div>
+      <mat-checkbox color="primary" name="strict" formControlName="strict">
+        {{ translations.folders.checkbox.recreateProofs | translate }}
+      </mat-checkbox>
+    </div>
+    <div>
+      <mat-checkbox color="primary" name="prune" formControlName="prune">
+        {{ translations.folders.checkbox.deleteOldProofs | translate }}
+      </mat-checkbox>
+    </div>
+    <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
+      <mat-checkbox
+        color="primary"
+        name="iDServerUnsecureSSL"
+        formControlName="iDServerUnsecureSSL"
+      >
+        {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
+      </mat-checkbox>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>{{
+          translations.folders.proveFilesMatchingRegularExpression | translate
+        }}</mat-label>
+        <input
+          matInput
+          class="form-control"
+          type="text"
+          name="filter"
+          formControlName="filter"
+        />
+      </mat-form-field>
+    </div>
+    <span class="align-end">
+      <button
+        mat-raised-button
+        color="primary"
+        class="span-folder-add-button"
+        [disabled]="folderFormGroup.invalid"
+        (click)="onClickAdd()"
+      >
+        {{ translations.folders.addFolder | translate }}
+      </button>
+      <button mat-raised-button color="warn" (click)="onCancelAddClick()">
+        {{ translations.commons.buttons.cancel | translate }}
+      </button>
+    </span>
+  </form>
+  <br />
+  <div class="watchedFolders">
+    <mat-accordion>
+      <ng-container *ngFor="let folderForm of foldersFormGroup; let i = index">
+        <mat-expansion-panel
+          *ngIf="
+            folderForm.get('action').value ===
+            folderFormGroup.get('action').value
+          "
+        >
+          <mat-expansion-panel-header>
+            <div class="span-expansion-panel-header">
+              <span class="span-folder-name">{{
+                folderForm.get('path').value
+              }}</span>
+              <span class="span-status-icons">
+                <!-- <mat-chip-list>
                     <mat-chip>ToFill</mat-chip>
                   </mat-chip-list> -->
-                  <button mat-mini-fab class="status-icons"
-                    (click)="$event.stopPropagation();onClickRefresh(folderForm)"
-                    *ngIf="foldersStatusCode[i].exitCode === undefined" style="background-color: #808080"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    [matTooltip]="translations.folders.tooltips.notYetStarted | translate"></button>
-                  <button mat-mini-fab class="status-icons"
-                    (click)="$event.stopPropagation();onClickRefresh(folderForm)"
-                    *ngIf="foldersStatusCode[i].exitCode === 0" style="background-color: #08ad08"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    [matTooltip]="translations.folders.tooltips.executionSuccessful | translate"></button>
-                  <button mat-mini-fab class="status-icons"
-                    (click)="$event.stopPropagation();onClickRefresh(folderForm)"
-                    *ngIf="foldersStatusCode[i].exitCode > 0" style="background-color: #f44336"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    [matTooltip]="translations.folders.tooltips.executionSuccessful | translate"></button>
-                  <button mat-mini-fab class="status-icons" (click)="$event.stopPropagation();"
-                    *ngIf="foldersStatusCode[i].exitCode < 0" style="background-color: #ff7b00"
-                    matTooltipPosition="above" [matTooltipClass]="'tooltip'"
-                    [matTooltip]="translations.folders.tooltips.processing | translate"></button>
-                  <button mat-icon-button color="warn"
-                    (click)="$event.stopPropagation();openConfirmDeleteDialog(folderForm);">
-                    <mat-icon [matTooltip]="translations.folders.tooltips.deleteFolder | translate" matTooltipPosition="above" [matTooltipClass]="'tooltip'">delete
-                    </mat-icon>
-                  </button>
-                </span>
-              </div>
-            </mat-expansion-panel-header>
-            <form [formGroup]="folderForm">
-              <div *ngIf="folderForm.get('action').value === 'sign'">
-                <mat-form-field>
-                  <mat-select class="custom-select" formControlName="identity" name="identity"
-                    placeholder="Identity to use">
-                    <mat-option *ngFor="let identityName of identityService.arrayIdentityContent"
-                      [value]="identityName.name">
-                      {{identityName.name}}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-                    {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
-                  </mat-error>
-                  <mat-error
-                    *ngIf="identityService.arrayIdentityContent.length !== 0 && folderForm.get('identity').getError('voidIdentity')">
-                    {{ translations.folders.errors.identityRequired | translate }}
-                  </mat-error>
-                  <mat-error *ngIf="folderForm.get('identity').getError('identityNotFound')">
-                    {{ translations.folders.errors.notFound | translate }}
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div *ngIf="folderForm.get('action').value === folderFormGroup.get('action').value">
-                <div>
-                  <mat-checkbox color="primary" name="public" formControlName="public">
-                    {{ translations.folders.checkbox.makeProofsPublicly | translate }}
-                  </mat-checkbox>
-                </div>
-                <div>
-                  <mat-checkbox color="primary" name="recursive" formControlName="recursive">
-                    {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
-                  </mat-checkbox>
-                </div>
-                <div>
-                  <mat-checkbox color="primary" name="strict" formControlName="strict">
-                    {{ translations.folders.checkbox.recreateProofs | translate }}
-                  </mat-checkbox>
-                </div>
-                <div>
-                  <mat-checkbox color="primary" name="prune" formControlName="prune">
-                    {{ translations.folders.checkbox.deleteOldProofs | translate }}
-                  </mat-checkbox>
-                </div>
-                <div *ngIf="folderForm.get('action').value === 'sign'">
-                  <mat-checkbox color="primary" name="iDServerUnsecureSSL" formControlName="iDServerUnsecureSSL">
-                    {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
-                  </mat-checkbox>
-                </div>
-                <div>
-                  <mat-form-field class="full-width">
-                    <mat-label>{{ translations.folders.proveFilesMatchingRegularExpression | translate }}</mat-label>
-                    <input matInput class="form-control" type="text" name="filter" formControlName="filter">
-                  </mat-form-field>
-                </div>
-              </div>
-              <div>
-                <button mat-raised-button color="primary" style="margin-right: 10px"
-                  (click)="onClickFixReceipts(folderForm);">
-                  {{ translations.folders.fixReceipts | translate }}
-                </button>
-                {{ translations.folders.renameOldReceiptsAndFix | translate }}
-              </div>
-              <span class="span-update-configuration">
-                <button mat-raised-button color="primary" [disabled]="folderForm.pristine || folderForm.invalid"
-                  (click)="onClickUpdateFolderOptions(folderForm);">
-                  {{ translations.folders.updateConfig | translate }}
+                <button
+                  mat-mini-fab
+                  class="status-icons"
+                  (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
+                  *ngIf="foldersStatusCode[i].exitCode === undefined"
+                  style="background-color: #808080"
+                  matTooltipPosition="above"
+                  [matTooltipClass]="'tooltip'"
+                  [matTooltip]="
+                    translations.folders.tooltips.notYetStarted | translate
+                  "
+                ></button>
+                <button
+                  mat-mini-fab
+                  class="status-icons"
+                  (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
+                  *ngIf="foldersStatusCode[i].exitCode === 0"
+                  style="background-color: #08ad08"
+                  matTooltipPosition="above"
+                  [matTooltipClass]="'tooltip'"
+                  [matTooltip]="
+                    translations.folders.tooltips.executionSuccessful
+                      | translate
+                  "
+                ></button>
+                <button
+                  mat-mini-fab
+                  class="status-icons"
+                  (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
+                  *ngIf="foldersStatusCode[i].exitCode > 0"
+                  style="background-color: #f44336"
+                  matTooltipPosition="above"
+                  [matTooltipClass]="'tooltip'"
+                  [matTooltip]="
+                    translations.folders.tooltips.executionSuccessful
+                      | translate
+                  "
+                ></button>
+                <button
+                  mat-mini-fab
+                  class="status-icons"
+                  (click)="$event.stopPropagation()"
+                  *ngIf="foldersStatusCode[i].exitCode < 0"
+                  style="background-color: #ff7b00"
+                  matTooltipPosition="above"
+                  [matTooltipClass]="'tooltip'"
+                  [matTooltip]="
+                    translations.folders.tooltips.processing | translate
+                  "
+                ></button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="
+                    $event.stopPropagation();
+                    openConfirmDeleteDialog(folderForm)
+                  "
+                >
+                  <mat-icon
+                    [matTooltip]="
+                      translations.folders.tooltips.deleteFolder | translate
+                    "
+                    matTooltipPosition="above"
+                    [matTooltipClass]="'tooltip'"
+                    >delete
+                  </mat-icon>
                 </button>
               </span>
-            </form>
-          </mat-expansion-panel>
-        </ng-container>
-      </mat-accordion>
-    </div>
-  </mat-card>
+            </div>
+          </mat-expansion-panel-header>
+          <form [formGroup]="folderForm">
+            <div *ngIf="folderForm.get('action').value === 'sign'">
+              <mat-form-field>
+                <mat-select
+                  class="custom-select"
+                  formControlName="identity"
+                  name="identity"
+                  placeholder="Identity to use"
+                >
+                  <mat-option
+                    *ngFor="
+                      let identityName of identityService.arrayIdentityContent
+                    "
+                    [value]="identityName.name"
+                  >
+                    {{ identityName.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="identityService.arrayIdentityContent.length === 0"
+                >
+                  {{
+                    translations.folders.errors.addAtLeastOneIdentity
+                      | translate
+                  }}
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    identityService.arrayIdentityContent.length !== 0 &&
+                    folderForm.get('identity').getError('voidIdentity')
+                  "
+                >
+                  {{ translations.folders.errors.identityRequired | translate }}
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    folderForm.get('identity').getError('identityNotFound')
+                  "
+                >
+                  {{ translations.folders.errors.notFound | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div
+              *ngIf="
+                folderForm.get('action').value ===
+                folderFormGroup.get('action').value
+              "
+            >
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  name="public"
+                  formControlName="public"
+                >
+                  {{
+                    translations.folders.checkbox.makeProofsPublicly | translate
+                  }}
+                </mat-checkbox>
+              </div>
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  name="recursive"
+                  formControlName="recursive"
+                >
+                  {{
+                    translations.folders.checkbox.includeFilesFromSubfolders
+                      | translate
+                  }}
+                </mat-checkbox>
+              </div>
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  name="strict"
+                  formControlName="strict"
+                >
+                  {{ translations.folders.checkbox.recreateProofs | translate }}
+                </mat-checkbox>
+              </div>
+              <div>
+                <mat-checkbox
+                  color="primary"
+                  name="prune"
+                  formControlName="prune"
+                >
+                  {{
+                    translations.folders.checkbox.deleteOldProofs | translate
+                  }}
+                </mat-checkbox>
+              </div>
+              <div *ngIf="folderForm.get('action').value === 'sign'">
+                <mat-checkbox
+                  color="primary"
+                  name="iDServerUnsecureSSL"
+                  formControlName="iDServerUnsecureSSL"
+                >
+                  {{
+                    translations.folders.checkbox.notCheckSSLCertificate
+                      | translate
+                  }}
+                </mat-checkbox>
+              </div>
+              <div>
+                <mat-form-field class="full-width">
+                  <mat-label>{{
+                    translations.folders.proveFilesMatchingRegularExpression
+                      | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    class="form-control"
+                    type="text"
+                    name="filter"
+                    formControlName="filter"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div>
+              <button
+                mat-raised-button
+                color="primary"
+                style="margin-right: 10px"
+                (click)="onClickFixReceipts(folderForm)"
+              >
+                {{ translations.folders.fixReceipts | translate }}
+              </button>
+              {{ translations.folders.renameOldReceiptsAndFix | translate }}
+            </div>
+            <span class="span-update-configuration">
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="folderForm.pristine || folderForm.invalid"
+                (click)="onClickUpdateFolderOptions(folderForm)"
+              >
+                {{ translations.folders.updateConfig | translate }}
+              </button>
+            </span>
+          </form>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </div>
 </div>
