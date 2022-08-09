@@ -5,7 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
+import * as fs from 'fs';
+import * as log from 'loglevel';
+import * as path from 'path';
 import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
+import { FolderParam } from '../misc/folderParam';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import {
   checkAndSubmit,
@@ -21,7 +25,7 @@ import { FoldersConfigService } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
 import { LanguageService } from '../services/language.service';
 import { SettingsMessageService } from '../services/settingsMessage.service';
-import { SharedService } from '../services/shared.service';
+import { adaptPath, SharedService } from '../services/shared.service';
 import { StoreService } from '../services/store.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
@@ -77,7 +81,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   initComponent() {
-    this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER = this.storeService.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER;
+    this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER =
+      this.storeService.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER;
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
@@ -87,7 +92,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       [this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]: [
         this.storeService.getProofReceiptsOfManualOperationsFolder(),
         [Validators.required],
-      ]
+      ],
     });
 
     if (this.identityService.arrayIdentityContent.length === 0) {
@@ -128,7 +133,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickCheckAndSubmit() {
-    storeManualActionsFolder(this.settingsFormGroup.get(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER).value, this.storeService);
+    const oldPath =
+      this.storeService.getProofReceiptsOfManualOperationsFolder();
+    const newPath = this.settingsFormGroup.get(
+      this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER
+    ).value;
+
+    if (oldPath !== newPath) {
+      this.updateFolderPathInFolderList(oldPath, newPath);
+      this.moveProofReceipts(oldPath, newPath);
+      storeManualActionsFolder(newPath, this.storeService);
+    }
+
     checkAndSubmit(
       this.http,
       this.settingsFormGroup,
@@ -136,6 +152,46 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.snackBar,
       null
     );
+  }
+
+  updateFolderPathInFolderList(oldPath: string, newPath: string) {
+    let anchorFolder: FolderParam;
+    let signFolder: FolderParam;
+    try {
+      anchorFolder = this.foldersConfigService.getFolderParamFromActionPath(
+        'anchor',
+        oldPath
+      );
+      anchorFolder.path = newPath;
+      this.foldersConfigService.updateFolderOptions(anchorFolder);
+    } catch (e) {
+      log.error(e);
+    }
+
+    try {
+      signFolder = this.foldersConfigService.getFolderParamFromActionPath(
+        'sign',
+        oldPath
+      );
+      signFolder.path = newPath;
+      this.foldersConfigService.updateFolderOptions(signFolder);
+    } catch (e) {
+      log.error(e);
+    }
+  }
+
+  moveProofReceipts(oldPath: string, newPath: string) {
+    fs.readdir(oldPath, (err, files) => {
+      files.forEach((file) => {
+        const currentPath = adaptPath(path.join(oldPath, file));
+        const destinationPath = adaptPath(path.join(newPath, file));
+        if (path.extname(file) === '.json') {
+          fs.rename(currentPath, destinationPath, (err) => {
+            if (err) throw err;
+          });
+        }
+      });
+    });
   }
 
   openClearSaveSettingsConfirmDialog() {

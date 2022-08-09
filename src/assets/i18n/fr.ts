@@ -48,7 +48,7 @@ const fr: typeof EN_Translations = {
     },
     introText: {
       anchor: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve d\'horodatage</b>. <br><br> Une fois le fichier ancré dans la blockchain Bitcoin, vous pourrez <b>retrouver son reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br> Ce reçu de preuve vous permettra de <b>prouver l\'existence de votre fichier à la date de l\'horodatage</b>.',
-      sign: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. Vous pourrez donc <b>retrouver le reçu de preuve</b> sur votre ordinateur. <br> Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
+      sign: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br><br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. <br>Vous pourrez donc <b>retrouver le reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br>  Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
     },
     dropFile: 'Déposez le fichier <br> (ou cliquez pour choisir)',
     labels: {

@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
+import * as log from 'loglevel';
 import { concatMap } from 'rxjs/operators';
 import { identityCheckerFactory } from '../folders/folders.component';
 import { LogContext } from '../misc/logs';
@@ -65,7 +66,8 @@ export class FilesComponent {
     private storeService: StoreService,
     private foldersConfigService: FoldersConfigService
   ) {
-    this.proofReceiptsOfManualOperationsFolder = this.storeService.getProofReceiptsOfManualOperationsFolder()
+    this.proofReceiptsOfManualOperationsFolder =
+      this.storeService.getProofReceiptsOfManualOperationsFolder();
     this.fileFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
       identityURL: [null],
@@ -271,7 +273,11 @@ export class FilesComponent {
             ) + this.storeService.getProofReceiptsOfManualOperationsFolder()
           );
           this.onCancel();
-          this.retrieveProofReceipt(proof.id, this.getCurrentMode(), identitySelected);
+          this.retrieveProofReceipt(
+            proof.id,
+            this.getCurrentMode(),
+            identitySelected
+          );
         },
         (error) => {
           console.error('Cannot create a seal: ', error);
@@ -324,43 +330,57 @@ export class FilesComponent {
       .subscribe((log) => (this.anchorCallbackResult = log));
   }
 
-  retrieveProofReceipt(anchorId: string, action: 'sign' | 'anchor', identitySelected?: IdentityContent) {
+  retrieveProofReceipt(
+    anchorId: string,
+    action: 'sign' | 'anchor',
+    identitySelected?: IdentityContent
+  ) {
     this.proofReceiptService
       .getReceiptById(anchorId, true)
       .subscribe((content) => {
         const type = action === 'sign' ? 'seal' : 'timestamp';
 
-        const fileName = adaptPath(`${this.proofReceiptsOfManualOperationsFolder}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`);
+        const fileName = adaptPath(
+          `${this.proofReceiptsOfManualOperationsFolder}/${this.selectedFile.name}-${anchorId}.${type}-pending.json`
+        );
         createNewFolder(this.proofReceiptsOfManualOperationsFolder);
-        console.log('lllaa: ', fileName)
         fs.writeFileSync(fileName, JSON.stringify(content, null, 2));
 
-        this.addFolderIfNeeded(action, this.proofReceiptsOfManualOperationsFolder, identitySelected);
+        this.addFolderIfNeeded(
+          action,
+          this.proofReceiptsOfManualOperationsFolder,
+          identitySelected
+        );
       });
   }
 
-  addFolderIfNeeded(action: 'sign' | 'anchor', folderPath: string, identitySelected: IdentityContent) {
-    const folderExists = this.foldersConfigService.folders?.some(
-      (folder) => folder.action === action && folder.path === folderPath
-    );
+  addFolderIfNeeded(
+    action: 'sign' | 'anchor',
+    folderPath: string,
+    identitySelected: IdentityContent
+  ) {
+    let folderExists;
+    try {
+      folderExists = this.foldersConfigService.getFolderParamFromActionPath(
+        action,
+        folderPath
+      );
+    } catch (e) {
+      log.error(e);
 
-    if (folderExists) {
-      return;
+      // Create and add folder if it does not exist
+      const folderDesc: FolderDesc = {
+        path: folderPath,
+        action: action,
+        private: false,
+        strict: false,
+        prune: false,
+        recursive: false,
+        filter: null,
+        identityName: (identitySelected && identitySelected.name) || null,
+        iDServerUnsecureSSL: null,
+      };
+      this.cliRunnerFolderInterface.addFolder(folderDesc);
     }
-
-    // Create and add folder if it does not exist
-    const folderDesc: FolderDesc = {
-      path: folderPath,
-      action: action,
-      private: false,
-      strict: false,
-      prune: false,
-      recursive: false,
-      filter: null,
-      identityName: identitySelected && identitySelected.name || null,
-      iDServerUnsecureSSL: null,
-    };
-
-    this.cliRunnerFolderInterface.addFolder(folderDesc);
   }
 }
