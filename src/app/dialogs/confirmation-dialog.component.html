@@ -1,0 +1,14 @@
+<div class="modal-custom fade-in">
+<div class="modal-content">
+  <div class="modal-title">{{ confirmationTitle }}</div>
+  <div class="modal-section">{{ confirmationText }}</div>
+  <div class="modal-action-btn">
+    <button class="btn mr" (click)="exitDialog.emit(false)">
+      {{ translations.commons.buttons.cancel | translate }}
+    </button>
+    <button class="btn btn-danger" (click)="exitDialog.emit(true)">
+      {{ translations.commons.buttons.confirm | translate }}
+    </button>
+  </div>
+</div>
+</div>

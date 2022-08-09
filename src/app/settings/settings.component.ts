@@ -1,23 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import {
-  tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd,
-  noDuplicateIdentityNameValidatorFactoryOnEdit
-} from '../misc/validators';
-import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
-import { IdentityService } from '../services/Identity.service';
-import { FoldersConfigService } from '../services/foldersConfig.service';
-import { SettingsMessageService } from '../services/settingsMessage.service';
-import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
-import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as remote from '@electron/remote';
-import { TranslationService } from '../services/translation.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog.component';
+import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
+import {
+  noDuplicateIdentityNameValidatorFactoryOnAdd,
+  noDuplicateIdentityNameValidatorFactoryOnEdit, tokenFormatValidator
+} from '../misc/validators';
+import { FoldersConfigService } from '../services/foldersConfig.service';
+import { IdentityService } from '../services/Identity.service';
 import { LanguageService } from '../services/language.service';
+import { SettingsMessageService } from '../services/settingsMessage.service';
+import { TranslationService } from '../services/translation.service';
+import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 
 @Component({
   selector: 'app-settings',

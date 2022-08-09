@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import * as log from 'loglevel';
-import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
 import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { FolderDesc } from '../services/foldersConfig.service';
@@ -14,16 +19,16 @@ import { TranslationService } from '../services/translation.service';
 @Component({
   selector: 'app-folders',
   templateUrl: './folders.component.html',
-  styleUrls: ['./folders.component.scss']
+  styleUrls: ['./folders.component.scss'],
 })
 export class FoldersComponent {
-
   public out: string;
   public folderFormGroup: FormGroup;
   public foldersFormGroup: FormGroup[];
   public foldersStatusCode: LogContext[];
   public addState: boolean;
-
+  openConfirmDialog = false;
+  folderFormSelectedForDeletion: FormGroup;
 
   constructor(
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
@@ -31,11 +36,15 @@ export class FoldersComponent {
     public identityService: IdentityService,
     private dialog: MatDialog,
     public translations: TranslationService,
-    private translateService: TranslateService) {
+    private translateService: TranslateService
+  ) {
     this.addState = false;
 
     this.folderFormGroup = formBuilder.group({
-      action: ['anchor', [Validators.required, Validators.pattern('anchor|sign')]],
+      action: [
+        'anchor',
+        [Validators.required, Validators.pattern('anchor|sign')],
+      ],
       path: ['', [Validators.required, noDuplicatePathValidatorFactory(this)]],
       public: [true],
       strict: [false],
@@ -48,26 +57,25 @@ export class FoldersComponent {
     this.fillFoldersFormGroup();
   }
 
-  openConfirmDeleteDialog(folderForm: FormGroup) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-    dialogRef.componentInstance.confirmationTitle = this.translateService.instant(this.translations.folders.removeFolder);
-    dialogRef.componentInstance.confirmationText = this.translateService.instant(this.translations.folders.removeFolderQuestion);
-    dialogRef.afterClosed().subscribe(confirmDelete => {
-      if (confirmDelete === true) {
-        try {
-          this.cliRunnerFolderInterface.deleteFolder(this.getFolderDescFromFormGroup(folderForm));
-          this.fillFoldersFormGroup();
-        } catch (error) {
-          log.error(error);
-        }
+  openConfirmDeleteDialog(confirmDelete: boolean) {
+    if (confirmDelete) {
+      try {
+        this.cliRunnerFolderInterface.deleteFolder(
+          this.getFolderDescFromFormGroup(this.folderFormSelectedForDeletion)
+        );
+        this.fillFoldersFormGroup();
+      } catch (error) {
+        log.error(error);
       }
-    });
+    }
+    this.folderFormSelectedForDeletion = null;
+    this.openConfirmDialog = false;
   }
 
   fillFoldersFormGroup() {
     this.foldersFormGroup = [];
     this.foldersStatusCode = [];
-    this.cliRunnerFolderInterface.folders.folders.forEach(folderParam => {
+    this.cliRunnerFolderInterface.folders.folders.forEach((folderParam) => {
       const tempfoldersFromGroup = this.formBuilder.group({
         action: [folderParam.action],
         path: [folderParam.path],
@@ -94,7 +102,9 @@ export class FoldersComponent {
       recursive: Boolean(form.get('recursive').value).valueOf(),
       filter: form.get('filter').value as string,
       identityName: form.get('identity').value as string,
-      iDServerUnsecureSSL: Boolean(form.get('iDServerUnsecureSSL').value).valueOf(),
+      iDServerUnsecureSSL: Boolean(
+        form.get('iDServerUnsecureSSL').value
+      ).valueOf(),
     };
     return folderDesc;
   }
@@ -102,12 +112,14 @@ export class FoldersComponent {
   onClickPopUpDirectory() {
     let path: string;
     try {
-      path = remote.dialog.showOpenDialogSync({ properties: ['openDirectory'] })[0];
+      path = remote.dialog.showOpenDialogSync({
+        properties: ['openDirectory'],
+      })[0];
     } catch (error) {
       path = '';
     } finally {
       this.folderFormGroup.patchValue({
-        path: path
+        path: path,
       });
       log.info(`Setting folder: ${this.folderFormGroup.get('path').value}`);
     }
@@ -133,18 +145,18 @@ export class FoldersComponent {
 
   resetPath() {
     this.folderFormGroup.patchValue({
-      path: ''
+      path: '',
     });
   }
 
   changeTab() {
     if (this.folderFormGroup.get('action').value === 'sign') {
       this.folderFormGroup.patchValue({
-        action: 'anchor'
+        action: 'anchor',
       });
     } else if (this.folderFormGroup.get('action').value === 'anchor') {
       this.folderFormGroup.patchValue({
-        action: 'sign'
+        action: 'sign',
       });
     }
     this.folderFormGroup.get('path').updateValueAndValidity();
@@ -175,11 +187,16 @@ export class FoldersComponent {
   }
 
   onClickRefresh(folderForm: FormGroup) {
-    this.cliRunnerFolderInterface.restartRunner(this.getFolderDescFromFormGroup(folderForm));
+    this.cliRunnerFolderInterface.restartRunner(
+      this.getFolderDescFromFormGroup(folderForm)
+    );
   }
 
   onClickFixReceipts(folderForm: FormGroup) {
-    this.cliRunnerFolderInterface.restartRunner(this.getFolderDescFromFormGroup(folderForm), true);
+    this.cliRunnerFolderInterface.restartRunner(
+      this.getFolderDescFromFormGroup(folderForm),
+      true
+    );
     this.fillFoldersFormGroup();
   }
 
@@ -192,48 +209,60 @@ export class FoldersComponent {
   }
 
   getStatusColor(rank: number) {
-    if(this.foldersStatusCode[rank].exitCode === 0) {
+    if (this.foldersStatusCode[rank].exitCode === 0) {
       return 'SUCCESS';
     }
 
-    if(this.foldersStatusCode[rank].exitCode > 0) {
+    if (this.foldersStatusCode[rank].exitCode > 0) {
       return 'FAILURE';
     }
 
-    if(this.foldersStatusCode[rank].exitCode < 0) {
+    if (this.foldersStatusCode[rank].exitCode < 0) {
       return 'PROCESSING';
     }
 
     return null;
   }
   getStatusTooltip(rank: number) {
-
     if (this.foldersStatusCode[rank].exitCode === 0) {
-      return this.translateService.instant(this.translations.folders.tooltips.executionSuccessful);
+      return this.translateService.instant(
+        this.translations.folders.tooltips.executionSuccessful
+      );
     }
 
     if (this.foldersStatusCode[rank].exitCode > 0) {
-      return this.translateService.instant(this.translations.folders.tooltips.failure);
+      return this.translateService.instant(
+        this.translations.folders.tooltips.failure
+      );
     }
 
     if (this.foldersStatusCode[rank].exitCode < 0) {
-      return this.translateService.instant(this.translations.folders.tooltips.processing);
+      return this.translateService.instant(
+        this.translations.folders.tooltips.processing
+      );
     }
-    return this.translateService.instant(this.translations.folders.tooltips.notYetStarted);
+    return this.translateService.instant(
+      this.translations.folders.tooltips.notYetStarted
+    );
   }
 }
 
 function noDuplicatePathValidatorFactory(thisParam) {
-  return function noDUplicatePathValidator(control: AbstractControl): ValidationErrors | null {
+  return function noDUplicatePathValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
     if (thisParam.folderFormGroup !== undefined) {
       if (!control.value) {
         return null;
       }
-      const foldersToCheck = thisParam.cliRunnerFolderInterface.folders.folders.filter(folder => {
-        return folder.action === thisParam.folderFormGroup.controls['action'].value;
-      });
+      const foldersToCheck =
+        thisParam.cliRunnerFolderInterface.folders.folders.filter((folder) => {
+          return (
+            folder.action === thisParam.folderFormGroup.controls['action'].value
+          );
+        });
       const separator = require('path').sep;
-      const duplicateFolder = foldersToCheck.some(folder => {
+      const duplicateFolder = foldersToCheck.some((folder) => {
         let pathToCheck = folder.path;
         if (pathToCheck.charAt(pathToCheck.length - 1) !== separator) {
           pathToCheck = pathToCheck + separator;
@@ -242,11 +271,14 @@ function noDuplicatePathValidatorFactory(thisParam) {
         if (valueToCheck.charAt(valueToCheck.length - 1) !== separator) {
           valueToCheck = valueToCheck + separator;
         }
-        return (pathToCheck.includes(valueToCheck) || valueToCheck.includes(pathToCheck));
+        return (
+          pathToCheck.includes(valueToCheck) ||
+          valueToCheck.includes(pathToCheck)
+        );
       });
       if (duplicateFolder) {
         return {
-          collidingPaths: true
+          collidingPaths: true,
         };
       }
     }
@@ -255,7 +287,9 @@ function noDuplicatePathValidatorFactory(thisParam) {
 }
 
 function identityCheckerFactory(thisParam) {
-  return function identityChecker(control: AbstractControl): ValidationErrors | null {
+  return function identityChecker(
+    control: AbstractControl
+  ): ValidationErrors | null {
     if (thisParam.folderFormGroup === undefined) {
       return null;
     }
@@ -264,12 +298,16 @@ function identityCheckerFactory(thisParam) {
     }
     if (!control.value) {
       return {
-        voidIdentity: true
+        voidIdentity: true,
       };
     }
-    if (!thisParam.identityService.arrayIdentityContent.some(elem => elem.name === control.value)) {
+    if (
+      !thisParam.identityService.arrayIdentityContent.some(
+        (elem) => elem.name === control.value
+      )
+    ) {
       return {
-        identityNotFound: true
+        identityNotFound: true,
       };
     }
     return null;

@@ -1,0 +1,43 @@
+.modal-custom {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(179, 179, 179, 0.3);
+
+  &.is-dropping-file {
+    border: 3px solid $main-color;
+  }
+
+  .modal-content {
+    word-break: keep-all;
+    padding: $standard-space * 4;
+    min-width: 300px;
+    max-width: 50%;
+    box-shadow: 0px 30px 60px $color-box-shadow;
+    border-radius: 10px;
+    max-height: fit-content;
+    background-color: $color-white;
+    overflow: auto;
+
+    .modal-title {
+      font-weight: $default-font-weight;
+      font-size: $default-font-size + 4;
+      margin-bottom: $standard-space * 4;
+    }
+
+    .modal-section {
+      margin-bottom: $standard-space * 4;
+    }
+
+    .modal-action-btn {
+      text-align: right;
+    }
+  }
+}

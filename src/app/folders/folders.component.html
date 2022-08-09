@@ -175,10 +175,7 @@
                   [appTooltip]="
                     translations.folders.tooltips.deleteFolder | translate
                   "
-                  (click)="
-                    $event.stopPropagation();
-                    openConfirmDeleteDialog(folderForm)
-                  "
+                  (click)="$event.stopPropagation(); openConfirmDialog = true; folderFormSelectedForDeletion = folderForm"
                 >
                   <i class="icon-trash trash-btn"></i>
                 </button>
@@ -329,3 +326,10 @@
     </mat-accordion>
   </div>
 </div>
+
+<app-confirmation-dialog
+  *ngIf="openConfirmDialog"
+  [confirmationTitle]="translations.folders.removeFolder | translate"
+  [confirmationText]="translations.folders.removeFolderQuestion | translate"
+  (exitDialog)="openConfirmDeleteDialog($event)"
+></app-confirmation-dialog>

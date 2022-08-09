@@ -1,0 +1,167 @@
+.fade-in {
+  animation-duration: 0.25s;
+  animation-name: fadeIn;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+.delay-display {
+  animation-duration: 2s;
+  animation-name: delayDisplay;
+
+  @keyframes delayDisplay {
+    0% {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    75% {
+      opacity: 0;
+    }
+
+    100% {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+.rotate {
+  animation-duration: 2s;
+  animation-name: rotation;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  @keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(359deg);
+    }
+  }
+}
+
+.blink {
+  animation: blinker 2s linear infinite;
+
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes go-left {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes go-down {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes logo-animation {
+  0% {
+    opacity: 0;
+    transform: scale(40) translate(0px, 945px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(0.52) translate(0px, 0px);
+  }
+}
+
+@keyframes title-animation {
+  0% {
+    opacity: 0;
+    transform: translate3d(0px, -10px, 0px);
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes subtitle-animation {
+  0% {
+    opacity: 0;
+    transform: translate3d(0px, -10px, 0px);
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes button-animation {
+  0% {
+    opacity: 0;
+    transform: translate3d(0px, -10px, 0px);
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes default-animation {
+  0% {
+    opacity: 0;
+    transform: translate3d(0px, -10px, 0px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animation-button {
+  animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s 1 normal both running default-animation;
+}
+
+.animation-form {
+  animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s 1 normal both running default-animation;
+}
+
+.animation-subtitle-page {
+  animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s 1 normal both running default-animation;
+}
+
+.animation-title-page {
+  animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s 1 normal both running default-animation;
+}
+
+.animated-div {
+  opacity: 1;
+  transform: none;
+  transition: all 0.2s ease-in-out 0s;
+}
