@@ -166,7 +166,10 @@
           mat-raised-button
           color="warn"
           [disabled]="isIdentityInUse(identityContent.name)"
-          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name)"
+          (click)="
+            confirmDeleteWIDConnectionDialog = true;
+            identitySelected = identityContent
+          "
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -278,7 +281,10 @@
           [disabled]="isIdentityInUse(identityContent.name)"
           mat-raised-button
           color="warn"
-          (click)="openConfirmDeleteWIDConnectionDialog(identityContent.name)"
+          (click)="
+            confirmDeleteWIDConnectionDialog = true;
+            identitySelected = identityContent
+          "
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -310,8 +316,15 @@
   <button
     mat-raised-button
     color="warn"
-    (click)="openClearSaveSettingsConfirmDialog()"
+    (click)="clearSaveSettingsConfirmDialog = true"
   >
     {{ translations.settings.resetSavedFoldersConfig | translate }}
   </button>
 </div>
+
+<app-confirmation-dialog
+  *ngIf="confirmDeleteWIDConnectionDialog || clearSaveSettingsConfirmDialog"
+  [confirmationTitle]="getDialogTitle()"
+  [confirmationText]="getDialogText()"
+  (exitDialog)="onExitDialog($event)"
+></app-confirmation-dialog>

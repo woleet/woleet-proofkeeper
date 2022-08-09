@@ -57,7 +57,7 @@ export class FoldersComponent {
     this.fillFoldersFormGroup();
   }
 
-  openConfirmDeleteDialog(confirmDelete: boolean) {
+  onExitDialog(confirmDelete: boolean) {
     if (confirmDelete) {
       try {
         this.cliRunnerFolderInterface.deleteFolder(

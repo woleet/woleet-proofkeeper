@@ -5,15 +5,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog.component';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
-import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
+import {
+  checkAndSubmit,
+  checkwIDConnectionGetAvailableKeys
+} from '../misc/settingsChecker';
 import {
   noDuplicateIdentityNameValidatorFactoryOnAdd,
-  noDuplicateIdentityNameValidatorFactoryOnEdit, tokenFormatValidator
+  noDuplicateIdentityNameValidatorFactoryOnEdit,
+  tokenFormatValidator
 } from '../misc/validators';
 import { FoldersConfigService } from '../services/foldersConfig.service';
-import { IdentityService } from '../services/Identity.service';
+import { IdentityContent, IdentityService } from '../services/Identity.service';
 import { LanguageService } from '../services/language.service';
 import { SettingsMessageService } from '../services/settingsMessage.service';
 import { TranslationService } from '../services/translation.service';
@@ -22,7 +25,7 @@ import { WoleetCliParametersService } from '../services/woleetcliParameters.serv
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit, OnDestroy {
   public addState: boolean;
@@ -35,8 +38,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
   public editPubKeyAddressGroup: PubKeyAddressGroup[];
   private settingsMessageSubscription: any;
   public languages: Array<string>;
+  confirmDeleteWIDConnectionDialog = false;
+  clearSaveSettingsConfirmDialog = false;
+  identitySelected: IdentityContent;
 
-  constructor(private cli: WoleetCliParametersService,
+  constructor(
+    private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     public snackBar: MatSnackBar,
     public identityService: IdentityService,
@@ -46,17 +53,20 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     public translations: TranslationService,
     private translateService: TranslateService,
-    private languageService: LanguageService) {
+    private languageService: LanguageService
+  ) {
     this.initComponent();
     this.languages = this.languageService.getSupportedLanguages();
   }
 
   ngOnInit() {
-    this.settingsMessageSubscription = this.settingsMessageService.getMessage().subscribe((message) => {
-      if (message === 'update') {
-        this.initComponent();
-      }
-    });
+    this.settingsMessageSubscription = this.settingsMessageService
+      .getMessage()
+      .subscribe((message) => {
+        if (message === 'update') {
+          this.initComponent();
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -69,7 +79,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.editPubKeyAddressGroup = [];
     this.settingsFormGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
-      url: [this.cli.getUrl()]
+      url: [this.cli.getUrl()],
     });
 
     if (this.identityService.arrayIdentityContent.length === 0) {
@@ -79,21 +89,33 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     this.addIdentityFormGroup = this.formBuilder.group({
-      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
+      name: [
+        '',
+        [
+          Validators.required,
+          noDuplicateIdentityNameValidatorFactoryOnAdd(this),
+        ],
+      ],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
-      pubKey: ['', [Validators.required]]
+      pubKey: ['', [Validators.required]],
     });
 
     this.editIdentityFormGroup = this.formBuilder.group({
-      name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnEdit(this)]],
+      name: [
+        '',
+        [
+          Validators.required,
+          noDuplicateIdentityNameValidatorFactoryOnEdit(this),
+        ],
+      ],
       url: ['', [Validators.required]],
       token: ['', [Validators.required]],
-      pubKey: ['', [Validators.required]]
+      pubKey: ['', [Validators.required]],
     });
 
     this.languageFormGroup = this.formBuilder.group({
-      language: [this.cli.getLang(), [Validators.required]]
+      language: [this.cli.getLang(), [Validators.required]],
     });
   }
 
@@ -101,16 +123,52 @@ export class SettingsComponent implements OnInit, OnDestroy {
     checkAndSubmit(this.http, this.settingsFormGroup, this.cli, this.snackBar);
   }
 
-  openClearSaveSettingsConfirmDialog() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-    dialogRef.componentInstance.confirmationTitle = this.translateService.instant(this.translations.settings.resetConfig);
-    dialogRef.componentInstance.confirmationText = this.translateService.instant(this.translations.settings.resetConfigQuestion);
-    dialogRef.afterClosed().subscribe(confirmDelete => {
-      if (confirmDelete === true) {
+  onExitDialog(confirm: boolean) {
+    if (confirm) {
+      if (this.confirmDeleteWIDConnectionDialog) {
+        this.identityService.deleteIdentity(this.identitySelected.name);
+        if (this.identityService.arrayIdentityContent.length === 0) {
+          this.addState = true;
+        }
+      }
+
+      if (this.clearSaveSettingsConfirmDialog) {
         this.cli.store.clear();
         remote.getCurrentWebContents().reload();
       }
-    });
+    }
+
+    this.confirmDeleteWIDConnectionDialog = false;
+    this.clearSaveSettingsConfirmDialog = false;
+    this.identitySelected = null;
+  }
+
+  getDialogTitle() {
+    if (this.confirmDeleteWIDConnectionDialog) {
+      return this.translateService.instant(
+        this.translations.settings.deleteIdentity
+      );
+    }
+
+    if (this.clearSaveSettingsConfirmDialog) {
+      return this.translateService.instant(
+        this.translations.settings.resetConfig
+      );
+    }
+  }
+
+  getDialogText() {
+    if (this.confirmDeleteWIDConnectionDialog) {
+      return this.translateService.instant(
+        this.translations.settings.deleteIdentityQuestion
+      );
+    }
+
+    if (this.clearSaveSettingsConfirmDialog) {
+      return this.translateService.instant(
+        this.translations.settings.resetConfigQuestion
+      );
+    }
   }
 
   addNewIdentityFromGroup() {
@@ -146,22 +204,28 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   openEditForm(editIdentityName: string) {
-    const currentIdentity = this.identityService.arrayIdentityContent.filter(elem => elem.name === editIdentityName)[0];
+    const currentIdentity = this.identityService.arrayIdentityContent.filter(
+      (elem) => elem.name === editIdentityName
+    )[0];
     this.editIdentityFormGroup.reset();
     this.editIdentityFormGroup.patchValue({ name: currentIdentity.name });
     this.editIdentityFormGroup.patchValue({ url: currentIdentity.apiURL });
     this.editIdentityFormGroup.patchValue({ token: currentIdentity.apiToken });
-    this.editIdentityFormGroup.patchValue({ pubKey: currentIdentity.publicKey });
+    this.editIdentityFormGroup.patchValue({
+      pubKey: currentIdentity.publicKey,
+    });
     this.identityOpened = editIdentityName;
   }
 
   saveEditForm() {
-    this.identityService.updateIdentity(this.foldersConfigService,
+    this.identityService.updateIdentity(
+      this.foldersConfigService,
       this.identityOpened,
       this.editIdentityFormGroup.get('name').value,
       this.editIdentityFormGroup.get('url').value,
       this.editIdentityFormGroup.get('token').value,
-      this.editIdentityFormGroup.get('pubKey').value);
+      this.editIdentityFormGroup.get('pubKey').value
+    );
     this.closeEditForm();
     while (this.editPubKeyAddressGroup.length) {
       this.editPubKeyAddressGroup.pop();
@@ -177,48 +241,50 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickAddwIDConnection() {
-    checkwIDConnectionGetAvailableKeys(this.http,
+    checkwIDConnectionGetAvailableKeys(
+      this.http,
       this.addIdentityFormGroup.get('url').value,
       this.addIdentityFormGroup.get('token').value,
       this.addPubKeyAddressGroup,
-      this.snackBar);
+      this.snackBar
+    );
   }
 
   isIdentityInUse(identityName: string) {
-    return this.foldersConfigService.folders.some(elem => elem.identityName === identityName);
-  }
-
-  openConfirmDeleteWIDConnectionDialog(identityName: string) {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent);
-    dialogRef.componentInstance.confirmationTitle = this.translateService.instant(this.translations.settings.deleteIdentity);
-    dialogRef.componentInstance.confirmationText = this.translateService.instant(this.translations.settings.deleteIdentityQuestion);;
-    dialogRef.afterClosed().subscribe(confirmDelete => {
-      if (confirmDelete === true) {
-        this.identityService.deleteIdentity(identityName);
-        if (this.identityService.arrayIdentityContent.length === 0) {
-          this.addState = true;
-        }
-      }
-    });
+    return this.foldersConfigService.folders.some(
+      (elem) => elem.identityName === identityName
+    );
   }
 
   async onClickEditwIDConnection() {
-    await checkwIDConnectionGetAvailableKeys(this.http,
+    await checkwIDConnectionGetAvailableKeys(
+      this.http,
       this.editIdentityFormGroup.get('url').value,
       this.editIdentityFormGroup.get('token').value,
       this.editPubKeyAddressGroup,
-      this.snackBar);
-    if (this.editPubKeyAddressGroup.length !== 0 && this.editIdentityFormGroup.get('pubKey')) {
-      this.editIdentityFormGroup.get('pubKey').setErrors({ unableToFindOldKey: true });
-      const match = this.editPubKeyAddressGroup.some(pubKeyAddressGroup => {
-        return pubKeyAddressGroup.pubKeyAddress.some(pubKeyAddress => {
-          if (pubKeyAddress.address === this.editIdentityFormGroup.get('pubKey').value) {
+      this.snackBar
+    );
+    if (
+      this.editPubKeyAddressGroup.length !== 0 &&
+      this.editIdentityFormGroup.get('pubKey')
+    ) {
+      this.editIdentityFormGroup
+        .get('pubKey')
+        .setErrors({ unableToFindOldKey: true });
+      const match = this.editPubKeyAddressGroup.some((pubKeyAddressGroup) => {
+        return pubKeyAddressGroup.pubKeyAddress.some((pubKeyAddress) => {
+          if (
+            pubKeyAddress.address ===
+            this.editIdentityFormGroup.get('pubKey').value
+          ) {
             return true;
           }
         });
       });
       if (match) {
-        this.editIdentityFormGroup.get('pubKey').setErrors({ unableToFindOldKey: false });
+        this.editIdentityFormGroup
+          .get('pubKey')
+          .setErrors({ unableToFindOldKey: false });
         this.editIdentityFormGroup.get('pubKey').updateValueAndValidity();
       }
     }
@@ -235,12 +301,25 @@ export class SettingsComponent implements OnInit, OnDestroy {
   onPubKeyChangeAdd() {
     let replaceName = false;
     let newName = '';
-    if (!this.addIdentityFormGroup.get('name').value) { replaceName = true; }
-    if (this.addPubKeyAddressGroup.length !== 0 && this.addIdentityFormGroup.get('pubKey')) {
-      this.addPubKeyAddressGroup.forEach(pubKeyAddressGroup => {
-        if (pubKeyAddressGroup.user === this.addIdentityFormGroup.get('name').value) { replaceName = true; }
-        pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
-          if (pubKeyAddress.address === this.addIdentityFormGroup.get('pubKey').value) {
+    if (!this.addIdentityFormGroup.get('name').value) {
+      replaceName = true;
+    }
+    if (
+      this.addPubKeyAddressGroup.length !== 0 &&
+      this.addIdentityFormGroup.get('pubKey')
+    ) {
+      this.addPubKeyAddressGroup.forEach((pubKeyAddressGroup) => {
+        if (
+          pubKeyAddressGroup.user ===
+          this.addIdentityFormGroup.get('name').value
+        ) {
+          replaceName = true;
+        }
+        pubKeyAddressGroup.pubKeyAddress.forEach((pubKeyAddress) => {
+          if (
+            pubKeyAddress.address ===
+            this.addIdentityFormGroup.get('pubKey').value
+          ) {
             newName = pubKeyAddressGroup.user;
           }
         });
@@ -250,16 +329,29 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.addIdentityFormGroup.patchValue({ name: newName });
     }
   }
-  
+
   onPubKeyChangeEdit() {
     let replaceName = false;
     let newName = '';
-    if (!this.editIdentityFormGroup.get('name').value) { replaceName = true; }
-    if (this.editPubKeyAddressGroup.length !== 0 && this.editIdentityFormGroup.get('pubKey')) {
-      this.editPubKeyAddressGroup.forEach(pubKeyAddressGroup => {
-        if (pubKeyAddressGroup.user === this.editIdentityFormGroup.get('name').value) { replaceName = true; }
-        pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
-          if (pubKeyAddress.address === this.editIdentityFormGroup.get('pubKey').value) {
+    if (!this.editIdentityFormGroup.get('name').value) {
+      replaceName = true;
+    }
+    if (
+      this.editPubKeyAddressGroup.length !== 0 &&
+      this.editIdentityFormGroup.get('pubKey')
+    ) {
+      this.editPubKeyAddressGroup.forEach((pubKeyAddressGroup) => {
+        if (
+          pubKeyAddressGroup.user ===
+          this.editIdentityFormGroup.get('name').value
+        ) {
+          replaceName = true;
+        }
+        pubKeyAddressGroup.pubKeyAddress.forEach((pubKeyAddress) => {
+          if (
+            pubKeyAddress.address ===
+            this.editIdentityFormGroup.get('pubKey').value
+          ) {
             newName = pubKeyAddressGroup.user;
           }
         });

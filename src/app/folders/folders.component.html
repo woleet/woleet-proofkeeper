@@ -331,5 +331,5 @@
   *ngIf="openConfirmDialog"
   [confirmationTitle]="translations.folders.removeFolder | translate"
   [confirmationText]="translations.folders.removeFolderQuestion | translate"
-  (exitDialog)="openConfirmDeleteDialog($event)"
+  (exitDialog)="onExitDialog($event)"
 ></app-confirmation-dialog>
