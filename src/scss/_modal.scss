@@ -1,9 +1,9 @@
-.modal-custom {
+.modal {
   position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10000;
+  z-index: 100;
   left: 0;
   top: 0;
   width: 100%;
@@ -25,6 +25,17 @@
     max-height: fit-content;
     background-color: $color-white;
     overflow: auto;
+
+    &.big-modal {
+      height: 80vh;
+      width: 80vw;
+      max-height: 100vh;
+      max-width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     .modal-title {
       font-weight: $default-font-weight;

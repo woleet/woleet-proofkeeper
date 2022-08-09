@@ -4,12 +4,8 @@
   flex-direction: column;
 }
 
-.mat-dialog-content {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  max-height: 90vh;
-  align-items: center;
+.page-content {
+  text-align: center;
 }
 
 .woleet-logo {
@@ -26,7 +22,7 @@
   font-size: 1em;
 }
 
-.form-content{
+.form-content {
   display: flex;
   flex-direction: column;
   margin-top: 5vh;
@@ -41,18 +37,4 @@
 
 .full-width {
   width: 100%;
-}
-
-.button-line-common{
-  display: inline-flex;
-}
-
-.button-line {
-  @extend .button-line-common;
-  margin-left: auto;
-}
-
-.button-line-last{
-  @extend .button-line-common;
-  margin: auto;
 }

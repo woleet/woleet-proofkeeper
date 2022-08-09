@@ -1,93 +1,121 @@
-<div class="dialog-container">
-  <mat-dialog-content *ngIf="screen === 0">
-    <h1 class="mat-h1 txt-align-center">{{ translations.deeplink.invalidConf | translate }}</h1>
-    <p class="mat-body-1">
-      {{ translations.deeplink.pleaseCheck | translate }}<br>
-    </p>
-  </mat-dialog-content>
-
-  <mat-dialog-content *ngIf="screen === 1">
-    <h1 class="mat-h1 txt-align-center">{{ translations.commons.setupAuthenticationToWoleetAPI | translate }}</h1>
-    <div>
+<div class="modal fade-in">
+  <div class="modal-content big-modal">
+    <div class="page-content" *ngIf="screen === 0">
+      <h1 class="mat-h1 txt-align-center">
+        {{ translations.deeplink.invalidConf | translate }}
+      </h1>
       <p class="mat-body-1">
-        {{ translations.deeplink.providedWoleetAPIToken | translate }}<br>
+        {{ translations.deeplink.pleaseCheck | translate }}<br />
       </p>
-      <div class="card card-part">
-        {{woleetToken}}
-      </div>
-      <mat-divider *ngIf="woleetUrl" ></mat-divider>
-      <p class="mat-body-1" *ngIf="woleetUrl">
-        {{ translations.deeplink.providedWoleetURL | translate }}
-      </p>
-      <div class="card card-part" *ngIf="woleetUrl">
-        {{woleetUrl}}
+    </div>
+
+    <div class="page-content" *ngIf="screen === 1">
+      <h1 class="mat-h1 txt-align-center">
+        {{ translations.commons.setupAuthenticationToWoleetAPI | translate }}
+      </h1>
+      <div>
+        <p class="mat-body-1">
+          {{ translations.deeplink.providedWoleetAPIToken | translate }}<br />
+        </p>
+        <div class="card card-part">
+          {{ woleetToken }}
+        </div>
+        <mat-divider *ngIf="woleetUrl"></mat-divider>
+        <p class="mat-body-1" *ngIf="woleetUrl">
+          {{ translations.deeplink.providedWoleetURL | translate }}
+        </p>
+        <div class="card card-part" *ngIf="woleetUrl">
+          {{ woleetUrl }}
+        </div>
       </div>
     </div>
-    </mat-dialog-content>
 
-    <mat-dialog-content *ngIf="screen ===2">
-    <h1 class="mat-h1 txt-align-center" *ngIf="(pubKeyAddressGroup.length === 0)" >{{ translations.deeplink.setupAuthenticationToWids | translate }}</h1>
-    <div *ngIf="pubKeyAddressGroup.length === 0">
-      <p class="mat-body-1">
-        {{ translations.deeplink.providedWidsAPIToken | translate }}<br>
-      </p>
-      <div class="card card-part">
-        {{widsToken}}
+    <div class="page-content" *ngIf="screen === 2">
+      <h1
+        class="mat-h1 txt-align-center"
+        *ngIf="pubKeyAddressGroup.length === 0"
+      >
+        {{ translations.deeplink.setupAuthenticationToWids | translate }}
+      </h1>
+      <div *ngIf="pubKeyAddressGroup.length === 0">
+        <p class="mat-body-1">
+          {{ translations.deeplink.providedWidsAPIToken | translate }}<br />
+        </p>
+        <div class="card card-part">
+          {{ widsToken }}
+        </div>
+        <mat-divider *ngIf="widsUrl"></mat-divider>
+        <p class="mat-body-1" *ngIf="widsUrl">
+          {{ translations.deeplink.providedWidsURL | translate }}
+        </p>
+        <div class="card card-part">
+          {{ widsUrl }}
+        </div>
       </div>
-      <mat-divider *ngIf="widsUrl" ></mat-divider>
-      <p class="mat-body-1" *ngIf="widsUrl">
-        {{ translations.deeplink.providedWidsURL | translate }}
-      </p>
-      <div class="card card-part">
-        {{widsUrl}}
-      </div>
+      <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
+        <mat-form-field class="full-width">
+          <mat-label>{{
+            translations.commons.labelNames.name | translate
+          }}</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error
+            *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')"
+          >
+            {{ translations.commons.errors.nameAlreadyPresent | translate }}
+          </mat-error>
+          <button
+            class="btn btn-without-background"
+            [appTooltip]="translations.commons.tooltips.giveName | translate"
+          >
+            <i class="icon-help_circle_icon"></i>
+          </button>
+        </mat-form-field>
+        <mat-form-field
+          class="full-width"
+          *ngIf="pubKeyAddressGroup.length !== 0"
+        >
+          <mat-label>{{
+            translations.commons.labelNames.publicKey | translate
+          }}</mat-label>
+          <mat-select
+            formControlName="pubKey"
+            (selectionChange)="onPubKeyChange()"
+          >
+            <mat-optgroup
+              *ngFor="let group of pubKeyAddressGroup"
+              [label]="group.user"
+            >
+              <mat-option
+                *ngFor="let pubKeyAddress of group.pubKeyAddress"
+                [value]="pubKeyAddress.address"
+              >
+                {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+      </form>
     </div>
-    <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
-      <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
-        <input matInput formControlName="name">
-        <mat-error *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')">
-          {{ translations.commons.errors.nameAlreadyPresent | translate }}
-        </mat-error>
-        <button mat-icon-button matSuffix [disableRipple]="true"
-                [matTooltip]="translations.commons.tooltips.giveName | translate"
-                [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
-          <mat-icon>help</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
-        <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
-        <mat-select formControlName="pubKey" (selectionChange)="onPubKeyChange()">
-          <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
-            <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
-              {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
-            </mat-option>
-          </mat-optgroup>
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </mat-dialog-content>
 
-  <mat-dialog-actions>
-    <div class="button-line">
-      <button mat-raised-button color="primary" *ngIf="screen === 1 && !isWids" (click)="saveParameters();">
-        {{ translations.commons.buttons.save | translate }}
+    <div class="modal-action-btn">
+      <button
+        class="btn btn-primary"
+        (click)="onButtonClick()"
+        [disabled]="
+          screen === 2 && pubKeyAddressGroup.length !== 0
+            ? widsFormGroup.invalid
+            : null
+        "
+      >
+        {{ getButtonText() }}
       </button>
-      <button mat-raised-button color="primary" *ngIf="screen === 1 && isWids" (click)="nextScreen();">
-        {{ translations.commons.buttons.next | translate }}
-      </button>
-      <button mat-raised-button color="primary" *ngIf="(screen === 2 && (pubKeyAddressGroup.length === 0))" (click)="onClickCheckwIDConnectionGetAvailableKeys();">
-        {{ translations.commons.buttons.check | translate }}
-      </button>
-      <button mat-raised-button color="primary" [disabled]="widsFormGroup.invalid" *ngIf="(screen === 2 && (pubKeyAddressGroup.length !== 0))" (click)="saveParameters(); ">
-        {{ translations.commons.buttons.save | translate }}
-      </button>
-      <button mat-raised-button color="primary" *ngIf="screen === 1 || screen === 2" (click)="closeDialog();">
+      <button
+        class="btn ml"
+        *ngIf="screen === 1 || screen === 2"
+        (click)="closeDialog()"
+      >
         {{ translations.commons.buttons.cancel | translate }}
       </button>
-      <button mat-raised-button color="primary" *ngIf="screen === 0" (click)="closeDialog();">
-        {{ translations.commons.buttons.close | translate }}
-      </button>
     </div>
-  </mat-dialog-actions>
+  </div>
 </div>

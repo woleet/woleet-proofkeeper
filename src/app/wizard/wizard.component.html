@@ -1,101 +1,168 @@
-<div class="dialog-container">
-  <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 1">
-    <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
-    <h1 class="mat-h1 dialog-title">{{ translations.wizard.welcome | translate }}</h1>
-    <h2 class="mat-h2 dialog-subtitle">{{ translations.wizard.subtitle | translate }}</h2>
-  </mat-dialog-content>
-  <mat-dialog-content *ngIf="screen[0] === 2">
-    <form class="form-content" [formGroup]="wizardTokenFromGroup">
-      <h1 class="mat-h1 txt-align-center">{{ translations.commons.setupAuthenticationToWoleetAPI | translate }}</h1>
-      <p class="mat-body-1">
-        <span [innerHTML]="translations.wizard.instruction | translate"></span>
-        <button mat-button color="primary" [style.padding.px]="0" (click)="clickOnDashboard();">
-          {{ translations.wizard.link | translate }}
-        </button>
-      </p>
-      <div>
-        <mat-form-field class="full-width">
-          <mat-label> {{ translations.commons.labelNames.woleetAPIToken | translate }}</mat-label>
-          <input type="text" matInput name="token" formControlName="token" required>
-          <mat-error *ngIf="wizardTokenFromGroup.get('token').getError('invalidJWTFormat')">
-            {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-content *ngIf="screen[0] === 3">
-    <form class="form-content" [formGroup]="wizardIdentityFromGroup">
-      <h1 class="mat-h1 txt-align-center">{{ translations.wizard.setupIdentities | translate }}</h1>
-      <p class="mat-body-1">
-        {{ translations.wizard.setupIdentityInstruction | translate }}
-      </p>
-      <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
-        <input matInput formControlName="name">
-        <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">
-          {{ translations.commons.errors.nameAlreadyPresent | translate }}
-        </mat-error>
-        <button mat-icon-button matSuffix [disableRipple]="true"
-          [matTooltip]="translations.commons.tooltips.giveName | translate"
-          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
-          <mat-icon>help</mat-icon>
-        </button>
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.widsSignatureAPIURL | translate }}</mat-label>
-        <input matInput formControlName="url"
-          (ngModelChange)="onURLTokenChanges();">
-        <mat-hint>ex: https://identity.acme.com:3002</mat-hint>
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label>{{ translations.commons.labelNames.widsAPIToken | translate }}</mat-label>
-        <input matInput formControlName="token"
-          (ngModelChange)="onURLTokenChanges();">
-        <button mat-icon-button matSuffix [disableRipple]="true"
-          [matTooltip]="translations.commons.tooltips.askAdmin | translate"
-          [matTooltipPosition]="'above'" [matTooltipClass]="'tooltip'" [style.font-size.px]="20">
-          <mat-icon>help</mat-icon>
-        </button>
-      </mat-form-field>
-      <button mat-raised-button color="primary" *ngIf="pubKeyAddressGroup.length === 0"
-        (click)="onClickCheckwIDConnectionGetAvailableKeys();">
-        {{ translations.commons.buttons.selectKeyFromWids | translate }}
-      </button>
-      <mat-form-field class="full-width" *ngIf="pubKeyAddressGroup.length !== 0">
-        <mat-label>{{ translations.commons.labelNames.publicKey | translate }}</mat-label>
-        <mat-select formControlName="pubKey" (selectionChange)="onPubKeyChange()">
-          <mat-optgroup *ngFor="let group of pubKeyAddressGroup" [label]="group.user">
-            <mat-option *ngFor="let pubKeyAddress of group.pubKeyAddress" [value]="pubKeyAddress.address">
-              {{pubKeyAddress.key}} - {{pubKeyAddress.address}}
-            </mat-option>
-          </mat-optgroup>
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-content class="welcome-content" *ngIf="screen[0] === 4">
-    <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png">
-    <h1 class="mat-h1 dialog-title">{{ translations.wizard.congratulations | translate }}</h1>
-    <h2 class="mat-h2 dialog-subtitle">{{ translations.wizard.congratulationSubtitle | translate }}</h2>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <div [ngClass]="(screen[0] !== 4)?'button-line':'button-line-last'">
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">
-        {{ translations.wizard.startConfig | translate }}
-      </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid"
-        (click)="saveTokenForm();">
-        {{ translations.commons.buttons.next | translate }}
-      </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFromGroup.invalid"
-        (click)="saveIdentityForm(); nextPage();">
-        {{ translations.commons.buttons.next | translate }}
-      </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 4" (click)="closeDialog();" class="last-button">
-        OK
-      </button>
-      <button mat-raised-button *ngIf="screen[0] !== 4" (click)="closeDialog();">{{ translations.commons.buttons.skip | translate }}</button>
+<div class="modal fade-in">
+  <div class="modal-content big-modal">
+    <div class="page-content" *ngIf="screen[0] === 1">
+      <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png" />
+      <h1 class="mat-h1 dialog-title">
+        {{ translations.wizard.welcome | translate }}
+      </h1>
+      <h2 class="mat-h2 dialog-subtitle">
+        {{ translations.wizard.subtitle | translate }}
+      </h2>
     </div>
-  </mat-dialog-actions>
+    <div class="page-content" *ngIf="screen[0] === 2">
+      <form class="form-content" [formGroup]="wizardTokenFromGroup">
+        <h1 class="mat-h1 txt-align-center">
+          {{ translations.commons.setupAuthenticationToWoleetAPI | translate }}
+        </h1>
+        <p class="mat-body-1">
+          <span
+            [innerHTML]="translations.wizard.instruction | translate"
+          ></span>
+          <button class="btn btn-primary" (click)="clickOnDashboard()">
+            {{ translations.wizard.link | translate }}
+          </button>
+        </p>
+        <div>
+          <mat-form-field class="full-width">
+            <mat-label>
+              {{
+                translations.commons.labelNames.woleetAPIToken | translate
+              }}</mat-label
+            >
+            <input
+              type="text"
+              matInput
+              name="token"
+              formControlName="token"
+              required
+            />
+            <mat-error
+              *ngIf="
+                wizardTokenFromGroup.get('token').getError('invalidJWTFormat')
+              "
+            >
+              {{
+                translations.commons.errors.invalidJWTTokenFormat | translate
+              }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <div class="page-content" *ngIf="screen[0] === 3">
+      <form class="form-content" [formGroup]="wizardIdentityFromGroup">
+        <h1 class="mat-h1 txt-align-center">
+          {{ translations.wizard.setupIdentities | translate }}
+        </h1>
+        <p class="mat-body-1">
+          {{ translations.wizard.setupIdentityInstruction | translate }}
+        </p>
+        <mat-form-field class="full-width">
+          <mat-label>{{
+            translations.commons.labelNames.name | translate
+          }}</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error
+            *ngIf="
+              wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')
+            "
+          >
+            {{ translations.commons.errors.nameAlreadyPresent | translate }}
+          </mat-error>
+          <button
+            class="btn btn-without-background"
+            [appTooltip]="translations.commons.tooltips.giveName | translate"
+          >
+            <i class="icon-help_circle_icon"></i>
+          </button>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{
+            translations.commons.labelNames.widsSignatureAPIURL | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="url"
+            (ngModelChange)="onURLTokenChanges()"
+          />
+          <mat-hint>ex: https://identity.acme.com:3002</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>{{
+            translations.commons.labelNames.widsAPIToken | translate
+          }}</mat-label>
+          <input
+            matInput
+            formControlName="token"
+            (ngModelChange)="onURLTokenChanges()"
+          />
+
+          <button
+            class="btn btn-without-background"
+            [appTooltip]="translations.commons.tooltips.askAdmin | translate"
+          >
+            <i class="icon-help_circle_icon"></i>
+          </button>
+        </mat-form-field>
+        <button
+          class="btn btn-primary"
+          *ngIf="pubKeyAddressGroup.length === 0"
+          (click)="onClickCheckwIDConnectionGetAvailableKeys()"
+        >
+          {{ translations.commons.buttons.selectKeyFromWids | translate }}
+        </button>
+        <mat-form-field
+          class="full-width"
+          *ngIf="pubKeyAddressGroup.length !== 0"
+        >
+          <mat-label>{{
+            translations.commons.labelNames.publicKey | translate
+          }}</mat-label>
+          <mat-select
+            formControlName="pubKey"
+            (selectionChange)="onPubKeyChange()"
+          >
+            <mat-optgroup
+              *ngFor="let group of pubKeyAddressGroup"
+              [label]="group.user"
+            >
+              <mat-option
+                *ngFor="let pubKeyAddress of group.pubKeyAddress"
+                [value]="pubKeyAddress.address"
+              >
+                {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="page-content" *ngIf="screen[0] === 4">
+      <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png" />
+      <h1 class="mat-h1 dialog-title">
+        {{ translations.wizard.congratulations | translate }}
+      </h1>
+      <h2 class="mat-h2 dialog-subtitle">
+        {{ translations.wizard.congratulationSubtitle | translate }}
+      </h2>
+    </div>
+    <div class="modal-action-btn">
+      <button
+        class="btn btn-primary"
+        (click)="onButtonClick()"
+        [disabled]="
+          screen[0] === 2
+            ? wizardTokenFromGroup.invalid
+            : screen[0] === 3
+            ? wizardIdentityFromGroup.invalid
+            : null
+        "
+      >
+        {{ getButtonText() }}
+      </button>
+      <button class="btn ml" *ngIf="screen[0] !== 4" (click)="closeDialog()">
+        {{ translations.commons.buttons.skip | translate }}
+      </button>
+    </div>
+  </div>
 </div>

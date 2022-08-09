@@ -36,3 +36,14 @@
     <app-infos *ngIf="active === 'infos'"></app-infos>
   </div>
 </div>
+
+<app-deeplink
+  *ngIf="openDeeplinkDialog"
+  [deeplinkingUrl]="deeplinkingUrl"
+  (exitDialog)="onExitDialog()"
+></app-deeplink>
+
+<app-wizard
+  *ngIf="openWizardDialog"
+  (exitDialog)="onExitDialog()"
+></app-wizard>

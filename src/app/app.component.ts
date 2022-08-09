@@ -13,75 +13,84 @@ import { WizardComponent } from './wizard/wizard.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
-
 export class AppComponent {
   public active: Menus;
   private wizardDialog: MatDialogRef<WizardComponent>;
   private deeplinkDialog: MatDialogRef<DeeplinkComponent>;
   private store: Store<any>;
+  openDeeplinkDialog = false;
+  openWizardDialog = false;
+  deeplinkingUrl: string;
 
-  constructor(storeService: StoreService,
+  constructor(
+    storeService: StoreService,
     public dialog: MatDialog,
     private settingsMessageService: SettingsMessageService,
     private zone: NgZone,
     private translateService: TranslateService,
     private languageService: LanguageService,
-    private cli: WoleetCliParametersService) {
+    private cli: WoleetCliParametersService
+  ) {
     this.setLanguage();
     this.store = storeService.store;
     if (!this.store.get('wizardBypass', false)) {
-      this.wizardDialog = dialog.open(WizardComponent, {
-        disableClose: true,
-        height: '90vh',
-        width: '90vw',
-        maxHeight: '100vh',
-        maxWidth: '100vw'
-      });
-      this.wizardDialog.afterClosed().subscribe(() => {
-        this.store.set('wizardBypass', true);
-        this.wizardDialog = undefined;
-      });
+      this.openWizardDialog = true;
     }
     this.setActiveFolders();
 
     ipcRenderer.on('deeplink', (event, deeplinkingUrl) => {
+      console.log('URL: ', deeplinkingUrl)
       this.zone.run(() => {
-        if (this.wizardDialog !== undefined) {
-          this.wizardDialog.close();
+        if (this.openWizardDialog) {
+          this.openWizardDialog = false;
         }
-        if (!this.deeplinkDialog) {
-          this.deeplinkDialog = this.dialog.open(DeeplinkComponent, {
-            disableClose: true,
-            data: {
-              url: deeplinkingUrl
-            }
-          });
-          this.deeplinkDialog.afterClosed().subscribe(() => {
-            this.deeplinkDialog = undefined;
-            if (this.active === 'settings') {
-              this.settingsMessageService.sendMessage('update');
-            }
-          });
-        }
+        this.openDeeplinkDialog = true;
+        this.deeplinkingUrl = deeplinkingUrl;
       });
     });
   }
 
-  setActiveFolders() { this.active = 'folders'; }
+  onExitDialog() {
+    if (this.openDeeplinkDialog) {
+      if (this.active === 'settings') {
+        this.settingsMessageService.sendMessage('update');
+      }
+    }
 
-  setActiveSettings() { this.active = 'settings'; }
+    if (this.openWizardDialog) {
+      this.store.set('wizardBypass', true);
+    }
 
-  setActiveLogs() { this.active = 'logs'; }
+    this.openDeeplinkDialog = false;
+    this.openWizardDialog = false;
+    this.deeplinkingUrl = null;
+  }
 
-  setActiveInfos() { this.active = 'infos'; }
+  setActiveFolders() {
+    this.active = 'folders';
+  }
+
+  setActiveSettings() {
+    this.active = 'settings';
+  }
+
+  setActiveLogs() {
+    this.active = 'logs';
+  }
+
+  setActiveInfos() {
+    this.active = 'infos';
+  }
 
   /**
-  * Set the browser default language on init webapp.
-  */
+   * Set the browser default language on init webapp.
+   */
   setLanguage(): void {
-    this.translateService.addLangs(this.languageService.getSupportedLanguages());
+    this.translateService.addLangs(
+      this.languageService.getSupportedLanguages()
+    );
     this.translateService.use(this.cli.getLang());
   }
 }
