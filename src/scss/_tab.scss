@@ -2,8 +2,19 @@
   display: flex;
   flex-wrap: wrap;
 
-  .align-to-search-input {
-    margin-top: 6px;
+  &.align-to-btn {
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .fill-max-content {
+    flex: 1;
+  }
+
+  .align-btn-content {
+    margin-left: $standard-space;
+    display: flex;
+    align-items: center;
   }
 }
 

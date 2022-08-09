@@ -25,7 +25,8 @@ export default {
       woleetAPIToken: 'Woleet API Token',
       widsSignatureAPIURL: 'Woleet.ID Server signature API URL',
       widsAPIToken: 'Woleet.ID Server API Token',
-      language: 'Language'
+      language: 'Language',
+      add: 'Add'
     },
     tooltips: {
       giveName: 'Give a name representing the identity of the legal person committing in seal operation.',
@@ -56,6 +57,7 @@ export default {
     folderToScan: 'Folder to scan',
     proveFilesMatchingRegularExpression: 'Only prove files matching this regular expression',
     addFolder: 'Add folder',
+    newFolder: 'New folder',
     tooltips: {
       notYetStarted: 'Not yet started. Click to restart.',
       executionSuccessful: 'Execution successful. Click to restart.',

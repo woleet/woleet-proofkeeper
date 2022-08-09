@@ -27,7 +27,8 @@ const fr: typeof EN_Translations = {
       woleetAPIToken: 'Token d\'API de Woleet',
       widsSignatureAPIURL: 'URL de l\'API de signature de Woleet.ID Server',
       widsAPIToken: 'Token d\'API de Woleet.ID Server',
-      language: 'Langue'
+      language: 'Langue',
+      add: 'Ajouter'
     },
     tooltips: {
       giveName: 'Donnez un nom représentant l\'identité de la personne morale qui s\'engage dans l\'opération de scellé.',
@@ -58,6 +59,7 @@ const fr: typeof EN_Translations = {
     folderToScan: 'Dossier à analyser',
     proveFilesMatchingRegularExpression: 'Ne prouver que les fichiers correspondant à cette expression régulière',
     addFolder: 'Ajouter le dossier',
+    newFolder: 'Nouveau dossier',
     tooltips: {
       notYetStarted: 'Pas encore démarré. Cliquez pour redémarrer.',
       executionSuccessful: 'Exécution réussie. Cliquez pour redémarrer.',

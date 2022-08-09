@@ -1,37 +1,38 @@
 <div class="card">
-  <button
-    mat-fab
-    color="primary"
-    class="folder-add-button"
-    [disabled]="addState"
-    (click)="onAddFolderClick()"
-  >
-    <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
-  </button>
-  <div class="tab-flex">
-    <a
-      class="custom-tab-button"
-      [ngClass]="{ active: isOnAnchorTab() }"
-      (click)="changeTab()"
-    >
-      <i class="icon icon-clock"></i>
-      <span class="ml-1">{{
-        translations.folders.tabs.filesToTimestamp | translate
-      }}</span>
-    </a>
-    <a
-      class="custom-tab-button"
-      [ngClass]="{ active: isOnSignTab() }"
-      (click)="changeTab()"
-    >
-      <i class="icon icon-seal"></i>
-      <span class="ml-1">{{
-        translations.folders.tabs.filesToSeal | translate
-      }}</span>
-    </a>
-  </div>
-  <hr class="hr-tab" />
+  <div class="flex-tab align-to-btn">
+    <div class="fill-max-content">
+      <a
+        class="custom-tab-button"
+        [ngClass]="{ active: isOnAnchorTab() }"
+        (click)="changeTab()"
+      >
+        <i class="icon icon-clock"></i>
+        <span class="ml-1">{{
+          translations.folders.tabs.filesToTimestamp | translate
+        }}</span>
+      </a>
+      <a
+        class="custom-tab-button"
+        [ngClass]="{ active: isOnSignTab() }"
+        (click)="changeTab()"
+      >
+        <i class="icon icon-seal"></i>
+        <span class="ml-1">{{
+          translations.folders.tabs.filesToSeal | translate
+        }}</span>
+      </a>
 
+      <hr class="hr-tab" />
+    </div>
+    <button
+      class="btn btn-primary align-btn-content"
+      [disabled]="addState"
+      (click)="onAddFolderClick()"
+    >
+      <i class="icon-add mr"></i>
+      {{ translations.folders.newFolder | translate }}
+    </button>
+  </div>
   <form [formGroup]="folderFormGroup" *ngIf="addState">
     <mat-form-field class="full-width">
       <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
@@ -41,7 +42,7 @@
         (click)="resetPath()"
         class="btn btn-without-background"
       >
-        <i class="icon-close"></i>
+        <i class="icon-close mr"></i>
       </button>
       <button class="btn btn-primary" (click)="onClickPopUpDirectory()">
         {{ translations.folders.chooseFolder | translate }}
@@ -143,7 +144,7 @@
       >
         {{ translations.folders.addFolder | translate }}
       </button>
-      <button class="btn danger" (click)="onCancelAddClick()">
+      <button class="btn btn-danger" (click)="onCancelAddClick()">
         {{ translations.commons.buttons.cancel | translate }}
       </button>
     </span>
@@ -175,7 +176,11 @@
                   [appTooltip]="
                     translations.folders.tooltips.deleteFolder | translate
                   "
-                  (click)="$event.stopPropagation(); openConfirmDialog = true; folderFormSelectedForDeletion = folderForm"
+                  (click)="
+                    $event.stopPropagation();
+                    openConfirmDialog = true;
+                    folderFormSelectedForDeletion = folderForm
+                  "
                 >
                   <i class="icon-trash trash-btn"></i>
                 </button>

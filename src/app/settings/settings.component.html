@@ -17,8 +17,7 @@
     <input type="text" matInput name="URL" formControlName="url" />
   </mat-form-field>
   <button
-    mat-raised-button
-    color="primary"
+    class="btn btn-primary"
     [disabled]="settingsFormGroup.invalid"
     (click)="onClickcheckAndSubmit()"
   >
@@ -26,20 +25,10 @@
   </button>
 </form>
 
-<button
-  mat-fab
-  color="primary"
-  class="identity-add-button identity-button"
-  [disabled]="addState"
-  (click)="onAddIdentityClick()"
->
-  <mat-icon [inline]="true" [style.font-size.px]="48">add</mat-icon>
-</button>
-
 <div class="card card-part" *ngIf="addState">
   <h3 class="mat-h3">{{ translations.settings.addIdentity | translate }}</h3>
   <div>
-    <form [formGroup]="addIdentityFormGroup">
+    <form class="mb" [formGroup]="addIdentityFormGroup">
       <mat-form-field class="full-width">
         <mat-label>{{
           translations.commons.labelNames.name | translate
@@ -74,9 +63,7 @@
         />
       </mat-form-field>
       <button
-        mat-raised-button
-        color="primary"
-        class="full-width identity-button"
+        class="btn btn-primary full-width mb"
         *ngIf="addPubKeyAddressGroup.length === 0"
         (click)="onClickAddwIDConnection()"
       >
@@ -108,18 +95,14 @@
       </mat-form-field>
     </form>
     <button
-      mat-raised-button
-      color="primary"
-      class="identity-button"
+      class="btn btn-primary"
       [disabled]="addIdentityFormGroup.invalid"
       (click)="addNewIdentityFromGroup()"
     >
       {{ translations.commons.buttons.save | translate }}
     </button>
     <button
-      mat-raised-button
-      color="warn"
-      class="identity-button"
+      class="btn btn-danger ml"
       [disabled]="this.identityService.arrayIdentityContent.length === 0"
       (click)="onAddIdentityClick()"
     >
@@ -132,6 +115,14 @@
   class="card card-part"
   *ngIf="identityService.arrayIdentityContent.length !== 0"
 >
+  <button
+    class="btn btn-primary identity-add-button"
+    [disabled]="addState"
+    (click)="onAddIdentityClick()"
+  >
+    <i class="icon-add"></i>
+    {{ translations.commons.labelNames.add | translate }}
+  </button>
   <h3 class="mat-h3">{{ translations.settings.sealIdentities | translate }}</h3>
   <mat-list-item
     *ngFor="
@@ -145,38 +136,30 @@
       *ngIf="identityOpened !== identityContent.name"
     >
       <button
-        mat-button
-        class="identity-name identity-button"
+        class="btn full-width"
         (click)="openEditForm(identityContent.name)"
       >
         {{ identityContent.name }}
       </button>
-      <span
-        class="remove-button identity-button"
-        matTooltipPosition="above"
-        [matTooltipClass]="'tooltip'"
-        [matTooltip]="
+      <button
+        class="btn btn-danger ml"
+        [disabled]="isIdentityInUse(identityContent.name)"
+        [appTooltip]="
           (isIdentityInUse(identityContent.name)
             ? translations.settings.identityUsedInOneFolder
             : translations.settings.deleteIdentity
           ) | translate
         "
+        (click)="
+          confirmDeleteWIDConnectionDialog = true;
+          identitySelected = identityContent
+        "
       >
-        <button
-          mat-raised-button
-          color="warn"
-          [disabled]="isIdentityInUse(identityContent.name)"
-          (click)="
-            confirmDeleteWIDConnectionDialog = true;
-            identitySelected = identityContent
-          "
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </span>
+        <i class="icon-trash"></i>
+      </button>
     </div>
     <div
-      class="identity-spacer"
+      class="identity-spacer editing"
       *ngIf="identityOpened === identityContent.name"
     >
       <form [formGroup]="editIdentityFormGroup">
@@ -208,9 +191,7 @@
           />
         </mat-form-field>
         <button
-          mat-raised-button
-          color="primary"
-          class="full-width"
+          class="btn btn-primary full-width mb"
           *ngIf="editPubKeyAddressGroup.length === 0"
           (click)="onClickEditwIDConnection()"
         >
@@ -249,9 +230,7 @@
         </mat-form-field>
       </form>
       <button
-        mat-raised-button
-        color="primary"
-        class="identity-button"
+        class="btn btn-primary"
         [disabled]="
           editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0
         "
@@ -259,36 +238,25 @@
       >
         {{ translations.commons.buttons.save | translate }}
       </button>
-      <button
-        mat-raised-button
-        class="identity-button"
-        (click)="closeEditForm()"
-      >
+      <button class="btn btn-danger ml" (click)="closeEditForm()">
         {{ translations.commons.buttons.cancel | translate }}
       </button>
-      <span
-        class="remove-button identity-button"
-        matTooltipPosition="above"
-        [matTooltipClass]="'tooltip'"
-        [matTooltip]="
+      <button
+        [disabled]="isIdentityInUse(identityContent.name)"
+        class="btn btn-danger ml"
+        (click)="
+          confirmDeleteWIDConnectionDialog = true;
+          identitySelected = identityContent
+        "
+        [appTooltip]="
           (isIdentityInUse(identityContent.name)
             ? translations.settings.identityUsedInOneFolder
             : translations.settings.deleteIdentity
           ) | translate
         "
       >
-        <button
-          [disabled]="isIdentityInUse(identityContent.name)"
-          mat-raised-button
-          color="warn"
-          (click)="
-            confirmDeleteWIDConnectionDialog = true;
-            identitySelected = identityContent
-          "
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </span>
+        <i class="icon-trash"></i>
+      </button>
     </div>
   </mat-list-item>
 </div>
@@ -312,15 +280,12 @@
   </form>
 </div>
 
-<div class="clear-button">
-  <button
-    mat-raised-button
-    color="warn"
-    (click)="clearSaveSettingsConfirmDialog = true"
-  >
-    {{ translations.settings.resetSavedFoldersConfig | translate }}
-  </button>
-</div>
+<button
+  class="btn btn-danger clear-button"
+  (click)="clearSaveSettingsConfirmDialog = true"
+>
+  {{ translations.settings.resetSavedFoldersConfig | translate }}
+</button>
 
 <app-confirmation-dialog
   *ngIf="confirmDeleteWIDConnectionDialog || clearSaveSettingsConfirmDialog"

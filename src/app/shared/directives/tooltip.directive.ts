@@ -1,14 +1,12 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: '[appTooltip]',
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   @Input() appTooltip = ''; // The text for the tooltip to display
-  @Input() delay? = 190; // Optional delay input, in ms
 
   private myPopup;
-  private timer;
 
   constructor(private el: ElementRef) {}
 
@@ -19,20 +17,17 @@ export class TooltipDirective {
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    this.timer = setTimeout(() => {
-      let x =
-        this.el.nativeElement.getBoundingClientRect().left +
-        this.el.nativeElement.offsetWidth / 2; // Get the middle of the element
-      let y =
-        this.el.nativeElement.getBoundingClientRect().top +
-        this.el.nativeElement.offsetHeight +
-        6; // Get the bottom of the element, plus a little extra
-      this.createTooltipPopup(x, y);
-    }, this.delay);
+    let x =
+      this.el.nativeElement.getBoundingClientRect().left +
+      this.el.nativeElement.offsetWidth / 2; // Get the middle of the element
+    let y =
+      this.el.nativeElement.getBoundingClientRect().top +
+      this.el.nativeElement.offsetHeight +
+      6; // Get the bottom of the element, plus a little extra
+    this.createTooltipPopup(x, y);
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    if (this.timer) clearTimeout(this.timer);
     if (this.myPopup) {
       this.myPopup.remove();
     }
@@ -46,8 +41,5 @@ export class TooltipDirective {
     popup.style.left = x.toString() + 'px';
     document.body.appendChild(popup);
     this.myPopup = popup;
-    setTimeout(() => {
-      if (this.myPopup) this.myPopup.remove();
-    }, 5000); // Remove tooltip after 5 seconds
   }
 }

@@ -1,3 +1,5 @@
+@import '../../scss/variables';
+
 .full-width {
   width: 100%;
 }
@@ -7,28 +9,19 @@
   text-align: left;
 }
 
-.clear-button {
-  margin-top: 5vh;
-}
-
 .identity-add-button {
-  top: 22px;
-  z-index: 1;
-  float: right;
-}
-
-.identity-button{
-  margin: 4px;
-  margin-top: 8px;
-}
-
-.remove-button {
-  justify-self: flex-end;
   position: absolute;
+  right: $standard-space * 4;
 }
 
 .identity-spacer {
-  margin-bottom: 5px;
+  display: flex;
+  margin-top: $standard-space;
+  margin-bottom: $standard-space;
+
+  &.editing {
+    display: block;
+  }
 }
 
 .identity-name {
