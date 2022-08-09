@@ -6,7 +6,6 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import * as log from 'loglevel';
@@ -34,7 +33,6 @@ export class FoldersComponent {
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private dialog: MatDialog,
     public translations: TranslationService,
     private translateService: TranslateService
   ) {

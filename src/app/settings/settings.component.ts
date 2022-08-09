@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
@@ -49,7 +48,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
     public identityService: IdentityService,
     public foldersConfigService: FoldersConfigService,
     private settingsMessageService: SettingsMessageService,
-    private dialog: MatDialog,
     private http: HttpClient,
     public translations: TranslationService,
     private translateService: TranslateService,
