@@ -1,12 +1,10 @@
 <div class="card card-part" *ngIf="folders.length !== 0">
-  <mat-form-field [style.width.%]="100">
-    <mat-label>{{ translations.logs.logsOfFolder | translate }}</mat-label>
-    <mat-select placeholder="Logs of folder" [(ngModel)]="folder">
-      <mat-option *ngFor="let folder of folders" [value]="folder">
-        {{ translateLegacyAction(folder.action) }} {{ folder.path }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <select class="default-input mb" [ngModel]="folder" (ngModelChange)="folder = $event">
+    <option selected disabled>{{ translations.logs.logsOfFolder | translate }}</option>
+    <option *ngFor="let folder of folders" [ngValue]="folder" >
+      {{ translateLegacyAction(folder.action) }} {{ folder.path }}
+    </option>
+  </select>
 
   <table>
     <!-- Column names -->

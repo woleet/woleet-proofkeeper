@@ -4,6 +4,10 @@ select {
   -webkit-appearance: none !important;
   background: transparent url('data:image/gif;base64,R0lGODlhBgAGAKEDAFVVVX9/f9TU1CgmNyH5BAEKAAMALAAAAAAGAAYAAAIODA4hCDKWxlhNvmCnGwUAOw==') right center no-repeat !important;
   background-position: calc(100% - 20px) center !important;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 input {
