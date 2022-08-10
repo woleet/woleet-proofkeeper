@@ -59,7 +59,7 @@ export class WizardComponent {
   }
 
   nextPage() {
-    this.screen[0] = this.screen[0] + 2;
+    this.screen[0] = this.screen[0] + 1;
   }
 
   clickOnDashboard() {

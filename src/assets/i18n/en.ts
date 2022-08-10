@@ -109,7 +109,7 @@ export default {
   wizard: {
     welcome: 'Welcome to ProofKeeper',
     subtitle: 'Timestamp and seal your files dynamically',
-    instruction: `Accessing the Woleet API requires an API token.<br>You can create one using your Woleet account ("Developer" menu -> "API" tab) or by clicking this`,
+    instruction: `Accessing the Woleet API requires an API token.<br>You can create one using your Woleet account ("Developer" menu -> "API" tab) or by clicking this `,
     link: 'link',
     setupIdentities: 'Set up identities for seal',
     setupIdentityInstruction: 'If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one seal identity (you will be able to add more seal identities using the settings after the wizard):',

@@ -4,9 +4,7 @@
       <h1 class="mat-h1 txt-align-center">
         {{ translations.deeplink.invalidConf | translate }}
       </h1>
-      <p class="mat-body-1">
-        {{ translations.deeplink.pleaseCheck | translate }}<br />
-      </p>
+      <p>{{ translations.deeplink.pleaseCheck | translate }}<br /></p>
     </div>
 
     <div class="page-content" *ngIf="screen === 1">
@@ -14,14 +12,14 @@
         {{ translations.commons.setupAuthenticationToWoleetAPI | translate }}
       </h1>
       <div>
-        <p class="mat-body-1">
+        <p>
           {{ translations.deeplink.providedWoleetAPIToken | translate }}<br />
         </p>
         <div class="card card-part">
           {{ woleetToken }}
         </div>
         <mat-divider *ngIf="woleetUrl"></mat-divider>
-        <p class="mat-body-1" *ngIf="woleetUrl">
+        <p *ngIf="woleetUrl">
           {{ translations.deeplink.providedWoleetURL | translate }}
         </p>
         <div class="card card-part" *ngIf="woleetUrl">
@@ -38,14 +36,14 @@
         {{ translations.deeplink.setupAuthenticationToWids | translate }}
       </h1>
       <div *ngIf="pubKeyAddressGroup.length === 0">
-        <p class="mat-body-1">
+        <p>
           {{ translations.deeplink.providedWidsAPIToken | translate }}<br />
         </p>
         <div class="card card-part">
           {{ widsToken }}
         </div>
         <mat-divider *ngIf="widsUrl"></mat-divider>
-        <p class="mat-body-1" *ngIf="widsUrl">
+        <p *ngIf="widsUrl">
           {{ translations.deeplink.providedWidsURL | translate }}
         </p>
         <div class="card card-part">
@@ -53,23 +51,33 @@
         </div>
       </div>
       <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
-        <mat-form-field class="full-width">
-          <mat-label>{{
-            translations.commons.labelNames.name | translate
-          }}</mat-label>
-          <input matInput formControlName="name" />
-          <mat-error
-            *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')"
-          >
-            {{ translations.commons.errors.nameAlreadyPresent | translate }}
-          </mat-error>
+        <div class="input-section no-margin-bottom">
+          <input
+            type="text"
+            class="default-input"
+            [ngClass]="{
+              'is-invalid': widsFormGroup
+                .get('name')
+                .getError('nameAlreadyPresent')
+            }"
+            [placeholder]="translations.commons.labelNames.name | translate"
+            formControlName="name"
+          />
+
           <button
-            class="btn btn-without-background"
+            class="btn btn-without-background btn-inside-input"
             [appTooltip]="translations.commons.tooltips.giveName | translate"
           >
             <i class="icon-help_circle_icon"></i>
           </button>
-        </mat-form-field>
+        </div>
+        <div
+          class="input-error"
+          *ngIf="widsFormGroup.get('name').getError('nameAlreadyPresent')"
+        >
+          {{ translations.commons.errors.nameAlreadyPresent | translate }}
+        </div>
+
         <mat-form-field
           class="full-width"
           *ngIf="pubKeyAddressGroup.length !== 0"

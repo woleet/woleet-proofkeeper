@@ -34,23 +34,36 @@
     </button>
   </div>
   <form [formGroup]="folderFormGroup" *ngIf="addState">
-    <mat-form-field class="full-width">
-      <mat-label>{{ translations.folders.folderToScan | translate }}</mat-label>
-      <input matInput type="text" formControlName="path" />
+    <div class="d-flex mt mb">
+      <div class="input-with-close-icon">
+        <input
+        type="text"
+        class="default-input"
+        [ngClass]="{
+          'is-invalid': folderFormGroup.get('path').getError('collidingPaths')
+        }"
+        [placeholder]="translations.folders.folderToScan | translate"
+        formControlName="path"
+      />
       <button
         *ngIf="folderFormGroup.get('path').value"
         (click)="resetPath()"
-        class="btn btn-without-background"
+        class="btn btn-without-background btn-inside-input"
       >
         <i class="icon-close mr"></i>
       </button>
-      <button class="btn btn-primary" (click)="onClickPopUpDirectory()">
+    </div>
+
+      <button class="btn btn-primary ml" (click)="onClickPopUpDirectory()">
         {{ translations.folders.chooseFolder | translate }}
       </button>
-      <mat-error *ngIf="folderFormGroup.get('path').getError('collidingPaths')">
-        {{ translations.folders.errors.folderAlreadyPresent | translate }}
-      </mat-error>
-    </mat-form-field>
+    </div>
+    <div
+      class="input-error"
+      *ngIf="folderFormGroup.get('path').getError('collidingPaths')"
+    >
+      {{ translations.folders.errors.folderAlreadyPresent | translate }}
+    </div>
     <div *ngIf="folderFormGroup.get('action').value == 'sign'">
       <mat-form-field>
         <mat-label>{{
@@ -116,19 +129,15 @@
       {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
     </label>
 
-    <div>
-      <mat-form-field class="full-width">
-        <mat-label>{{
+    <div class="input-section">
+      <input
+        type="text"
+        class="default-input"
+        [placeholder]="
           translations.folders.proveFilesMatchingRegularExpression | translate
-        }}</mat-label>
-        <input
-          matInput
-          class="form-control"
-          type="text"
-          name="filter"
-          formControlName="filter"
-        />
-      </mat-form-field>
+        "
+        formControlName="filter"
+      />
     </div>
     <span class="align-end">
       <button
@@ -230,45 +239,50 @@
                 folderFormGroup.get('action').value
               "
             >
+              <label class="checkbox-content">
+                <input type="checkbox" formControlName="public" />
+                {{
+                  translations.folders.checkbox.makeProofsPublicly | translate
+                }}
+              </label>
 
-            <label class="checkbox-content">
-              <input type="checkbox" formControlName="public" />
-              {{ translations.folders.checkbox.makeProofsPublicly | translate }}
-            </label>
+              <label class="checkbox-content">
+                <input type="checkbox" formControlName="recursive" />
+                {{
+                  translations.folders.checkbox.includeFilesFromSubfolders
+                    | translate
+                }}
+              </label>
 
-            <label class="checkbox-content">
-              <input type="checkbox" formControlName="recursive" />
-              {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
-            </label>
+              <label class="checkbox-content">
+                <input type="checkbox" formControlName="strict" />
+                {{ translations.folders.checkbox.recreateProofs | translate }}
+              </label>
 
-            <label class="checkbox-content">
-              <input type="checkbox" formControlName="strict" />
-              {{ translations.folders.checkbox.recreateProofs | translate }}
-            </label>
+              <label class="checkbox-content">
+                <input type="checkbox" formControlName="prune" />
+                {{ translations.folders.checkbox.deleteOldProofs | translate }}
+              </label>
 
-            <label class="checkbox-content">
-              <input type="checkbox" formControlName="prune" />
-              {{ translations.folders.checkbox.deleteOldProofs | translate }}
-            </label>
-
-            <label *ngIf="folderForm.get('action').value === 'sign'" class="checkbox-content">
-              <input type="checkbox" formControlName="iDServerUnsecureSSL" />
-              {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
-            </label>
-              <div>
-                <mat-form-field class="full-width">
-                  <mat-label>{{
-                    translations.folders.proveFilesMatchingRegularExpression
-                      | translate
-                  }}</mat-label>
-                  <input
-                    matInput
-                    class="form-control"
-                    type="text"
-                    name="filter"
-                    formControlName="filter"
-                  />
-                </mat-form-field>
+              <label
+                *ngIf="folderForm.get('action').value === 'sign'"
+                class="checkbox-content"
+              >
+                <input type="checkbox" formControlName="iDServerUnsecureSSL" />
+                {{
+                  translations.folders.checkbox.notCheckSSLCertificate
+                    | translate
+                }}
+              </label>
+              <div class="input-section">
+                <input
+                  type="text"
+                  class="default-input"
+                  [placeholder]="
+                    translations.folders.proveFilesMatchingRegularExpression | translate
+                  "
+                  formControlName="filter"
+                />
               </div>
             </div>
             <div>

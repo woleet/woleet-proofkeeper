@@ -41,7 +41,6 @@ export class AppComponent {
     this.setActiveFolders();
 
     ipcRenderer.on('deeplink', (event, deeplinkingUrl) => {
-      console.log('URL: ', deeplinkingUrl)
       this.zone.run(() => {
         if (this.openWizardDialog) {
           this.openWizardDialog = false;

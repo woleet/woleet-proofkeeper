@@ -5,11 +5,12 @@ $material-icons-font-path: '~material-design-icons/iconfont/';
 @import 'commons';
 @import 'card';
 @import 'tab';
-@import 'btn';
+@import 'button';
 @import 'tooltip';
 @import 'modal';
 @import 'animations';
 @import 'checkbox';
+@import 'input';
 
 @include mat.core();
 

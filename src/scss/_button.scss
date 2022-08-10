@@ -1,5 +1,9 @@
 @use 'sass:math';
 
+button {
+  font-family: inherit;
+}
+
 .btn {
   color: $color-text-button;
   padding: 10px 12px;
@@ -141,6 +145,3 @@
   }
 }
 
-input[type='radio']:checked + * {
-  font-weight: $default-font-weight;
-}

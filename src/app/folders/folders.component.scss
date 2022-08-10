@@ -1,12 +1,9 @@
 @import '../../scss/variables';
 
-.full-width {
-  width: 100%;
-}
-
 .align-end {
   display: flex;
   justify-content: flex-end;
+  position: relative;
 }
 
 .span-expansion-panel-header {
@@ -82,4 +79,9 @@
 .btn-on-right {
   display: flex;
   align-items: center;
+}
+
+.input-with-close-icon {
+  position: relative;
+  width: 100%;
 }

@@ -1,0 +1,95 @@
+select {
+  // To have a decent arrow for selector in firefox
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
+  background: transparent url('data:image/gif;base64,R0lGODlhBgAGAKEDAFVVVX9/f9TU1CgmNyH5BAEKAAMALAAAAAAGAAYAAAIODA4hCDKWxlhNvmCnGwUAOw==') right center no-repeat !important;
+  background-position: calc(100% - 20px) center !important;
+}
+
+input {
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+input[type='radio']:checked + * {
+  font-weight: $default-font-weight;
+}
+
+.input-section {
+  margin-top: $standard-space * 2;
+  margin-bottom: $standard-space * 2;
+  width: 100%;
+  position: relative;
+
+  &.no-margin-bottom {
+    margin-bottom: 0;
+  }
+}
+
+.default-input {
+  transition: all 0.3s;
+  padding: 10px;
+  border: $main-border-width solid $color-grey-light-02;
+  border-radius: $standard-space;
+  background: $color-white;
+  width: 100%;
+
+  &.input-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &.is-valid-input {
+
+    &:focus,
+    &:hover {
+      border-color: $color-state-available;
+    }
+
+    border-color: $color-state-available;
+  }
+
+  &.is-invalid {
+
+    &:focus,
+    &:hover {
+      border-color: $color-state-error;
+    }
+
+    border-color: $color-state-error;
+  }
+
+  &:hover {
+    border: $main-border-width solid $color-grey-light-border;
+  }
+
+  &:focus {
+    border: $main-border-width solid $main-color;
+  }
+
+  &::placeholder {
+    color: $color-grey;
+  }
+
+  &.no-background {
+    font-size: smaller;
+    font-weight: bold;
+    word-break: break-word;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+.btn-inside-input {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.input-error {
+  color: $color-state-error;
+  font-size: smaller;
+  margin-top: $standard-space;
+}

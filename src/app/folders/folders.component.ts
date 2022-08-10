@@ -159,7 +159,6 @@ export class FoldersComponent {
     }
     this.folderFormGroup.get('path').updateValueAndValidity();
     this.folderFormGroup.get('identity').updateValueAndValidity();
-    console.log( this.foldersFormGroup )
   }
 
   onAddFolderClick() {

@@ -1,21 +1,31 @@
 <form class="card card-part" [formGroup]="settingsFormGroup">
-  <mat-form-field>
-    <mat-label>{{
-      translations.commons.labelNames.woleetAPIToken | translate
-    }}</mat-label>
-    <input type="text" matInput name="token" formControlName="token" required />
-    <mat-error
-      *ngIf="settingsFormGroup.get('token').getError('invalidJWTFormat')"
-    >
-      {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>{{
-      translations.settings.overrideWoleetAPIURL | translate
-    }}</mat-label>
-    <input type="text" matInput name="URL" formControlName="url" />
-  </mat-form-field>
+  <div class="input-section no-margin-bottom">
+    <input
+      type="text"
+      class="default-input"
+      [ngClass]="{
+        'is-invalid': settingsFormGroup
+          .get('token')
+          .getError('invalidJWTFormat')
+      }"
+      [placeholder]="translations.commons.labelNames.woleetAPIToken | translate"
+      formControlName="token"
+    />
+  </div>
+  <div
+    class="input-error"
+    *ngIf="settingsFormGroup.get('token').getError('invalidJWTFormat')"
+  >
+    {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
+  </div>
+  <div class="input-section">
+    <input
+      type="text"
+      class="default-input"
+      [placeholder]="translations.settings.overrideWoleetAPIURL | translate"
+      formControlName="url"
+    />
+  </div>
   <button
     class="btn btn-primary"
     [disabled]="settingsFormGroup.invalid"
@@ -29,39 +39,49 @@
   <h3 class="mat-h3">{{ translations.settings.addIdentity | translate }}</h3>
   <div>
     <form class="mb" [formGroup]="addIdentityFormGroup">
-      <mat-form-field class="full-width">
-        <mat-label>{{
-          translations.commons.labelNames.name | translate
-        }}</mat-label>
-        <input matInput formControlName="name" />
-        <mat-error
-          *ngIf="
-            addIdentityFormGroup.get('name').getError('nameAlreadyPresent')
-          "
-        >
-          {{ translations.commons.errors.nameAlreadyPresent | translate }}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label>{{
-          translations.commons.labelNames.widsSignatureAPIURL | translate
-        }}</mat-label>
+      <div class="input-section no-margin-bottom">
         <input
-          matInput
+          type="text"
+          class="default-input"
+          [ngClass]="{
+            'is-invalid': addIdentityFormGroup
+              .get('name')
+              .getError('nameAlreadyPresent')
+          }"
+          [placeholder]="translations.commons.labelNames.name | translate"
+          formControlName="name"
+        />
+      </div>
+      <div
+        class="input-error"
+        *ngIf="addIdentityFormGroup.get('name').getError('nameAlreadyPresent')"
+      >
+        {{ translations.commons.errors.nameAlreadyPresent | translate }}
+      </div>
+
+      <div class="input-section">
+        <input
+          type="text"
+          class="default-input"
+          [placeholder]="
+            translations.commons.labelNames.widsSignatureAPIURL | translate
+          "
           formControlName="url"
           (ngModelChange)="onAddURLTokenChanges()"
         />
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label>{{
-          translations.commons.labelNames.widsAPIToken | translate
-        }}</mat-label>
+      </div>
+
+      <div class="input-section">
         <input
-          matInput
+          type="text"
+          class="default-input"
+          [placeholder]="
+            translations.commons.labelNames.widsAPIToken | translate
+          "
           formControlName="token"
           (ngModelChange)="onAddURLTokenChanges()"
         />
-      </mat-form-field>
+      </div>
       <button
         class="btn btn-primary full-width mb"
         *ngIf="addPubKeyAddressGroup.length === 0"
@@ -163,33 +183,36 @@
       *ngIf="identityOpened === identityContent.name"
     >
       <form [formGroup]="editIdentityFormGroup">
-        <mat-form-field class="full-width">
-          <mat-label>{{
-            translations.commons.labelNames.name | translate
-          }}</mat-label>
-          <input matInput formControlName="name" />
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>{{
-            translations.commons.labelNames.widsSignatureAPIURL | translate
-          }}</mat-label>
+        <div class="input-section no-margin-bottom">
           <input
-            matInput
+            type="text"
+            class="default-input"
+            [placeholder]="translations.commons.labelNames.name | translate"
+            formControlName="name"
+          />
+        </div>
+        <div class="input-section no-margin-bottom">
+          <input
+            type="text"
+            class="default-input"
+            [placeholder]="
+              translations.commons.labelNames.widsSignatureAPIURL | translate
+            "
             formControlName="url"
             (ngModelChange)="onEditURLTokenChanges()"
           />
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <mat-label>{{
-            translations.commons.labelNames.widsAPIToken | translate
-          }}</mat-label>
+        </div>
+        <div class="input-section">
           <input
-            matInput
-            placeholder="Woleet.ID Server API Token"
+            type="text"
+            class="default-input"
+            [placeholder]="
+              translations.commons.labelNames.widsAPIToken | translate
+            "
             formControlName="token"
             (ngModelChange)="onEditURLTokenChanges()"
           />
-        </mat-form-field>
+        </div>
         <button
           class="btn btn-primary full-width mb"
           *ngIf="editPubKeyAddressGroup.length === 0"
@@ -229,34 +252,36 @@
           </mat-error>
         </mat-form-field>
       </form>
-      <button
-        class="btn btn-primary"
-        [disabled]="
-          editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0
-        "
-        (click)="saveEditForm()"
-      >
-        {{ translations.commons.buttons.save | translate }}
-      </button>
-      <button class="btn btn-danger ml" (click)="closeEditForm()">
-        {{ translations.commons.buttons.cancel | translate }}
-      </button>
-      <button
-        [disabled]="isIdentityInUse(identityContent.name)"
-        class="btn btn-danger ml"
-        (click)="
-          confirmDeleteWIDConnectionDialog = true;
-          identitySelected = identityContent
-        "
-        [appTooltip]="
-          (isIdentityInUse(identityContent.name)
-            ? translations.settings.identityUsedInOneFolder
-            : translations.settings.deleteIdentity
-          ) | translate
-        "
-      >
-        <i class="icon-trash"></i>
-      </button>
+      <div class="mt">
+        <button
+          class="btn btn-primary"
+          [disabled]="
+            editIdentityFormGroup.invalid || editPubKeyAddressGroup.length === 0
+          "
+          (click)="saveEditForm()"
+        >
+          {{ translations.commons.buttons.save | translate }}
+        </button>
+        <button class="btn btn-danger ml" (click)="closeEditForm()">
+          {{ translations.commons.buttons.cancel | translate }}
+        </button>
+        <button
+          [disabled]="isIdentityInUse(identityContent.name)"
+          class="btn btn-danger ml"
+          (click)="
+            confirmDeleteWIDConnectionDialog = true;
+            identitySelected = identityContent
+          "
+          [appTooltip]="
+            (isIdentityInUse(identityContent.name)
+              ? translations.settings.identityUsedInOneFolder
+              : translations.settings.deleteIdentity
+            ) | translate
+          "
+        >
+          <i class="icon-trash"></i>
+        </button>
+      </div>
     </div>
   </mat-list-item>
 </div>

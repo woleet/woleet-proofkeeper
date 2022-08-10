@@ -111,7 +111,7 @@ const fr: typeof EN_Translations = {
   wizard: {
     welcome: 'Bienvenue sur ProofKeeper',
     subtitle: 'Horodater et sceller vos fichiers dynamiquement',
-    instruction: `L'accès à l'API Woleet nécessite un token d'API.<br>Vous pouvez en créer un en utilisant votre compte Woleet (menu "Developer" -> onglet "API") ou en cliquant sur ce`,
+    instruction: `L'accès à l'API Woleet nécessite un token d'API.<br>Vous pouvez en créer un en utilisant votre compte Woleet (menu "Developer" -> onglet "API") ou en cliquant sur ce `,
     link: 'lien',
     setupIdentities: 'Configurer les identités pour le scellé',
     setupIdentityInstruction: 'Si vous voulez que ProofKeeper scelle les fichiers et crée des preuves de scellé horodatées, vous devez configurer au moins une identité de scellé (vous pourrez ajouter d\'autres identités de scellé en utilisant les paramètres après l\'assistant) :',
