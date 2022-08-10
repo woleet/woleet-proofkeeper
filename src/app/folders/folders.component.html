@@ -87,41 +87,35 @@
       </mat-form-field>
     </div>
     <br />
-    <div>
-      <mat-checkbox color="primary" name="public" formControlName="public">
-        {{ translations.folders.checkbox.makeProofsPublicly | translate }}
-      </mat-checkbox>
-    </div>
-    <div>
-      <mat-checkbox
-        color="primary"
-        name="recursive"
-        formControlName="recursive"
-      >
-        {{
-          translations.folders.checkbox.includeFilesFromSubfolders | translate
-        }}
-      </mat-checkbox>
-    </div>
-    <div>
-      <mat-checkbox color="primary" name="strict" formControlName="strict">
-        {{ translations.folders.checkbox.recreateProofs | translate }}
-      </mat-checkbox>
-    </div>
-    <div>
-      <mat-checkbox color="primary" name="prune" formControlName="prune">
-        {{ translations.folders.checkbox.deleteOldProofs | translate }}
-      </mat-checkbox>
-    </div>
-    <div *ngIf="folderFormGroup.controls['action'].value === 'sign'">
-      <mat-checkbox
-        color="primary"
-        name="iDServerUnsecureSSL"
-        formControlName="iDServerUnsecureSSL"
-      >
-        {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
-      </mat-checkbox>
-    </div>
+
+    <label class="checkbox-content">
+      <input type="checkbox" formControlName="public" />
+      {{ translations.folders.checkbox.makeProofsPublicly | translate }}
+    </label>
+
+    <label class="checkbox-content">
+      <input type="checkbox" formControlName="recursive" />
+      {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
+    </label>
+
+    <label class="checkbox-content">
+      <input type="checkbox" formControlName="strict" />
+      {{ translations.folders.checkbox.recreateProofs | translate }}
+    </label>
+
+    <label class="checkbox-content">
+      <input type="checkbox" formControlName="prune" />
+      {{ translations.folders.checkbox.deleteOldProofs | translate }}
+    </label>
+
+    <label
+      *ngIf="folderFormGroup.controls['action'].value === 'sign'"
+      class="checkbox-content"
+    >
+      <input type="checkbox" formControlName="iDServerUnsecureSSL" />
+      {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
+    </label>
+
     <div>
       <mat-form-field class="full-width">
         <mat-label>{{
@@ -236,61 +230,31 @@
                 folderFormGroup.get('action').value
               "
             >
-              <div>
-                <mat-checkbox
-                  color="primary"
-                  name="public"
-                  formControlName="public"
-                >
-                  {{
-                    translations.folders.checkbox.makeProofsPublicly | translate
-                  }}
-                </mat-checkbox>
-              </div>
-              <div>
-                <mat-checkbox
-                  color="primary"
-                  name="recursive"
-                  formControlName="recursive"
-                >
-                  {{
-                    translations.folders.checkbox.includeFilesFromSubfolders
-                      | translate
-                  }}
-                </mat-checkbox>
-              </div>
-              <div>
-                <mat-checkbox
-                  color="primary"
-                  name="strict"
-                  formControlName="strict"
-                >
-                  {{ translations.folders.checkbox.recreateProofs | translate }}
-                </mat-checkbox>
-              </div>
-              <div>
-                <mat-checkbox
-                  color="primary"
-                  name="prune"
-                  formControlName="prune"
-                >
-                  {{
-                    translations.folders.checkbox.deleteOldProofs | translate
-                  }}
-                </mat-checkbox>
-              </div>
-              <div *ngIf="folderForm.get('action').value === 'sign'">
-                <mat-checkbox
-                  color="primary"
-                  name="iDServerUnsecureSSL"
-                  formControlName="iDServerUnsecureSSL"
-                >
-                  {{
-                    translations.folders.checkbox.notCheckSSLCertificate
-                      | translate
-                  }}
-                </mat-checkbox>
-              </div>
+
+            <label class="checkbox-content">
+              <input type="checkbox" formControlName="public" />
+              {{ translations.folders.checkbox.makeProofsPublicly | translate }}
+            </label>
+
+            <label class="checkbox-content">
+              <input type="checkbox" formControlName="recursive" />
+              {{ translations.folders.checkbox.includeFilesFromSubfolders | translate }}
+            </label>
+
+            <label class="checkbox-content">
+              <input type="checkbox" formControlName="strict" />
+              {{ translations.folders.checkbox.recreateProofs | translate }}
+            </label>
+
+            <label class="checkbox-content">
+              <input type="checkbox" formControlName="prune" />
+              {{ translations.folders.checkbox.deleteOldProofs | translate }}
+            </label>
+
+            <label *ngIf="folderForm.get('action').value === 'sign'" class="checkbox-content">
+              <input type="checkbox" formControlName="iDServerUnsecureSSL" />
+              {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
+            </label>
               <div>
                 <mat-form-field class="full-width">
                   <mat-label>{{

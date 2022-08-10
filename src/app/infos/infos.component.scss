@@ -1,11 +1,9 @@
-.form-content {
-  display: flex;
-  flex-direction: column;
+@import '../../scss/variables';
+
+.info-title {
+  color: $color-text-second;
 }
 
-.full-width {
-  width: 100%;
-}
 
 .fake-href {
   color: -webkit-link;

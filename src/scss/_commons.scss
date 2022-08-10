@@ -37,3 +37,19 @@
 .pr {
   padding-right: $standard-space;
 }
+
+hr {
+  width: 100%;
+  border: 0;
+  border-top: $main-border-width solid $color-grey-light-02;
+
+  &.hr-tab {
+    margin-top: 11px;
+    margin-bottom: $standard-space * 2;
+
+
+    &.disabled-tab-with-tooltip {
+      margin-top: 2px;
+    }
+  }
+}

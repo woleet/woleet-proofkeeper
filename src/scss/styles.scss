@@ -9,6 +9,7 @@ $material-icons-font-path: '~material-design-icons/iconfont/';
 @import 'tooltip';
 @import 'modal';
 @import 'animations';
+@import 'checkbox';
 
 @include mat.core();
 

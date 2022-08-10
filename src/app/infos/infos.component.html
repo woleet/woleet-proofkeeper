@@ -1,18 +1,18 @@
 <div class="card">
-  <mat-list>
-    <h3 mat-subheader>{{ translations.infos.versions | translate }}</h3>
-    <mat-list-item> {{proofKeeperVersion}} </mat-list-item>
-    <mat-list-item> {{cliVersion}} </mat-list-item>
-    <mat-divider></mat-divider>
-    <h3 mat-subheader>{{ translations.infos.links | translate }}</h3>
-    <mat-list-item> 
-      <a class="fake-href" (click)="clickOnGithub();">Github</a> 
-    </mat-list-item>
-    <mat-list-item>
-      <a class="fake-href" (click)="clickOnWoleet();">Woleet</a>
-    </mat-list-item>
-    <mat-list-item>
-      <a class="fake-href" (click)="clickOnLicense();">{{ translations.infos.licence | translate }}</a>
-    </mat-list-item>
-   </mat-list>
-  </div>
+  <p class="info-title">{{ translations.infos.versions | translate }}</p>
+  <p>{{ proofKeeperVersion }}</p>
+  <p>{{ cliVersion }}</p>
+  <hr />
+  <p class="info-title">{{ translations.infos.links | translate }}</p>
+  <p>
+    <a class="fake-href" (click)="clickOnGithub()">Github</a>
+  </p>
+  <p>
+    <a class="fake-href" (click)="clickOnWoleet()">Woleet</a>
+  </p>
+  <p>
+    <a class="fake-href" (click)="clickOnLicense()">{{
+      translations.infos.licence | translate
+    }}</a>
+  </p>
+</div>

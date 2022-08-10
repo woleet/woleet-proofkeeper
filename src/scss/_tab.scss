@@ -43,18 +43,3 @@
     margin-right: $standard-space;
   }
 }
-
-hr {
-  &.hr-tab {
-    margin-top: 11px;
-    margin-bottom: $standard-space * 2;
-    width: 100%;
-
-    &.disabled-tab-with-tooltip {
-      margin-top: 2px;
-    }
-  }
-
-  border: 0;
-  border-top: $main-border-width solid $color-grey-light-02;
-}
