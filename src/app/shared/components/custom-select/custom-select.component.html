@@ -7,20 +7,57 @@
   <input
     type="button"
     class="default-input"
-    [ngClass]="{ 'input-dropdown-opened': showSelectOptions, 'is-invalid': onError }"
+    [ngClass]="{
+      'input-dropdown-opened': showSelectOptions,
+      'is-invalid': onError
+    }"
     [value]="selectedOption"
     (click)="showSelectOptions = !this.showSelectOptions"
   />
   <i class="icon-play btn-inside-input arrow-icon"></i>
 
-  <div *ngIf="showSelectOptions" class="option-section">
+  <div *ngIf="showSelectOptions && !forPublicKeyMode" class="option-section">
     <div *ngFor="let option of options; let last = last" class="select-option">
-      <label [ngClass]="{ last: last }" (click)="changeOption(option)">
+      <label
+        [ngClass]="{
+          last: last,
+          'selected-option':
+            option === selectedOption ||
+            translateLegacyAction(option.action) + ' ' + option.path ===
+              selectedOption
+        }"
+        (click)="changeOption(option)"
+      >
         {{
           forLogMode
             ? translateLegacyAction(option.action) + ' ' + option.path
             : option
         }}
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="showSelectOptions && forPublicKeyMode" class="option-section">
+    <div
+      *ngFor="let group of options; let lastGroup = last"
+      class="select-option"
+    >
+      <label class="group-label">
+        {{ group.user }}
+      </label>
+      <label
+        *ngFor="
+          let pubKeyAddress of group.pubKeyAddress;
+          let lastPubKeyAddress = last
+        "
+        class="group-value"
+        [ngClass]="{
+          last: lastGroup && lastPubKeyAddress,
+          'selected-option': pubKeyAddress.address === selectedOption
+        }"
+        (click)="changeOption(pubKeyAddress)"
+      >
+        {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
       </label>
     </div>
   </div>

@@ -4,6 +4,7 @@
   margin-bottom: $standard-space;
   color: $color-text-second;
   font-weight: $font-weight-medium;
+  text-align: left;
 }
 
 .select-content {
@@ -38,6 +39,7 @@
       margin: 0;
       cursor: pointer;
       display: inline-block;
+      text-align: left;
 
       &:hover {
         background-color: $color-grey-light-01;
@@ -45,6 +47,20 @@
 
       &.last {
         border-bottom: 0;
+      }
+
+      &.selected-option {
+        background-color: $color-grey-light-01;
+      }
+
+      &.group-label {
+        color: $color-text-second;
+        pointer-events: none;
+        font-weight: $font-weight-medium;
+      }
+
+      &.group-value {
+        padding-left: $standard-space * 5;
       }
     }
   }

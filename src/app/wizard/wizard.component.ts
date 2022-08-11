@@ -3,7 +3,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import {
+  PubKeyAddress,
+  PubKeyAddressGroup
+} from '../misc/identitiesFromServer';
 import {
   checkAndSubmit,
   checkwIDConnectionGetAvailableKeys
@@ -29,6 +32,7 @@ export class WizardComponent {
   public pubKeyAddressGroup: PubKeyAddressGroup[];
   public wizardTokenFromGroup: FormGroup;
   public wizardIdentityFromGroup: FormGroup;
+  pubKeyAddressKey: string;
 
   constructor(
     private cli: WoleetCliParametersService,
@@ -111,9 +115,25 @@ export class WizardComponent {
     this.pubKeyAddressGroup = [];
   }
 
-  onPubKeyChange() {
+  getSelectedPubKeyName() {
+    if (!this.wizardIdentityFromGroup.get('pubKey').value) {
+      return this.translateService.instant(
+        this.translations.commons.labelNames.select
+      );
+    }
+    return (
+      this.pubKeyAddressKey +
+      ' - ' +
+      this.wizardIdentityFromGroup.get('pubKey').value
+    );
+  }
+
+  onPubKeyChange(pubKeyAddress: PubKeyAddress) {
     let replaceName = false;
     let newName = '';
+    this.wizardIdentityFromGroup.get('pubKey').setValue(pubKeyAddress.address);
+    this.pubKeyAddressKey = pubKeyAddress.key;
+
     if (!this.wizardIdentityFromGroup.get('name').value) {
       replaceName = true;
     }

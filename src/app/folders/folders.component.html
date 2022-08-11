@@ -71,7 +71,7 @@
       <app-custom-select
         [labelName]="translations.folders.identityToUse | translate"
         [options]="getIdentityNames()"
-        [onError]="errorOnSelectIdentity()"
+        [onError]="errorOnSelectIdentity(folderFormGroup)"
         [selectedOption]="
           folderFormGroup.get('identity').value ||
           (translations.commons.labelNames.select | translate)
@@ -79,8 +79,8 @@
         (onChangeOption)="folderFormGroup.get('identity').setValue($event)"
       >
       </app-custom-select>
-      <div *ngIf="errorOnSelectIdentity()" class="input-error">
-        {{ errorTextOnSelectIdentity() }}
+      <div *ngIf="errorOnSelectIdentity(folderFormGroup)" class="input-error">
+        {{ errorTextOnSelectIdentity(folderFormGroup) }}
       </div>
     </div>
     <br />
@@ -175,47 +175,24 @@
             </div>
           </mat-expansion-panel-header>
           <form [formGroup]="folderForm">
-            <div *ngIf="folderForm.get('action').value === 'sign'">
-              <mat-form-field>
-                <mat-select
-                  class="custom-select"
-                  formControlName="identity"
-                  name="identity"
-                  placeholder="Identity to use"
-                >
-                  <mat-option
-                    *ngFor="
-                      let identityName of identityService.arrayIdentityContent
-                    "
-                    [value]="identityName.name"
-                  >
-                    {{ identityName.name }}
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="identityService.arrayIdentityContent.length === 0"
-                >
-                  {{
-                    translations.folders.errors.addAtLeastOneIdentity
-                      | translate
-                  }}
-                </mat-error>
-                <mat-error
-                  *ngIf="
-                    identityService.arrayIdentityContent.length !== 0 &&
-                    folderForm.get('identity').getError('voidIdentity')
-                  "
-                >
-                  {{ translations.folders.errors.identityRequired | translate }}
-                </mat-error>
-                <mat-error
-                  *ngIf="
-                    folderForm.get('identity').getError('identityNotFound')
-                  "
-                >
-                  {{ translations.folders.errors.notFound | translate }}
-                </mat-error>
-              </mat-form-field>
+            <div
+              *ngIf="folderForm.get('action').value === 'sign'"
+              class="select-identity"
+            >
+              <app-custom-select
+                [labelName]="translations.folders.identityToUse | translate"
+                [options]="getIdentityNames()"
+                [onError]="errorOnSelectIdentity(folderForm)"
+                [selectedOption]="folderForm.get('identity').value"
+                (onChangeOption)="onChangingFormFolder(i, $event)"
+              >
+              </app-custom-select>
+              <div
+                *ngIf="errorOnSelectIdentity(folderForm)"
+                class="input-error"
+              >
+                {{ errorTextOnSelectIdentity(folderForm) }}
+              </div>
             </div>
             <div
               *ngIf="

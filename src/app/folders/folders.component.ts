@@ -250,16 +250,25 @@ export class FoldersComponent {
     );
   }
 
-  errorOnSelectIdentity() {
+  onChangingFormFolder(i, value) {
+    if (value !== this.foldersFormGroup[i].get('identity').value) {
+      this.foldersFormGroup[i].markAsDirty();
+    }
+    this.foldersFormGroup[i].get('identity').setValue(value);
+   
+    this.foldersFormGroup[i].get('identity').updateValueAndValidity();
+  }
+
+  errorOnSelectIdentity(form: FormGroup) {
     return (
       this.identityService.arrayIdentityContent.length === 0 ||
       (this.identityService.arrayIdentityContent.length !== 0 &&
-        this.folderFormGroup.get('identity').getError('voidIdentity')) ||
-      this.folderFormGroup.get('identity').getError('identityNotFound')
+        form.get('identity').getError('voidIdentity')) ||
+        form.get('identity').getError('identityNotFound')
     );
   }
 
-  errorTextOnSelectIdentity() {
+  errorTextOnSelectIdentity(form: FormGroup) {
     if (this.identityService.arrayIdentityContent.length === 0) {
       return this.translateService.instant(
         this.translations.folders.errors.addAtLeastOneIdentity
@@ -268,14 +277,14 @@ export class FoldersComponent {
 
     if (
       this.identityService.arrayIdentityContent.length !== 0 &&
-      this.folderFormGroup.get('identity').getError('voidIdentity')
+      form.get('identity').getError('voidIdentity')
     ) {
       return this.translateService.instant(
         this.translations.folders.errors.identityRequired
       );
     }
 
-    if (this.folderFormGroup.get('identity').getError('identityNotFound')) {
+    if (form.get('identity').getError('identityNotFound')) {
       return this.translateService.instant(
         this.translations.folders.errors.notFound
       );

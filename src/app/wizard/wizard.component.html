@@ -91,30 +91,17 @@
         >
           {{ translations.commons.buttons.selectKeyFromWids | translate }}
         </button>
-        <mat-form-field
-          class="full-width"
+
+        <app-custom-select
           *ngIf="pubKeyAddressGroup.length !== 0"
+          [labelName]="translations.commons.labelNames.publicKey | translate"
+          [options]="pubKeyAddressGroup"
+          [forPublicKeyMode]="true"
+          [selectedOption]="getSelectedPubKeyName()"
+          (onChangeOption)="onPubKeyChange($event)"
+          [onError]="wizardIdentityFromGroup.invalid"
         >
-          <mat-label>{{
-            translations.commons.labelNames.publicKey | translate
-          }}</mat-label>
-          <mat-select
-            formControlName="pubKey"
-            (selectionChange)="onPubKeyChange()"
-          >
-            <mat-optgroup
-              *ngFor="let group of pubKeyAddressGroup"
-              [label]="group.user"
-            >
-              <mat-option
-                *ngFor="let pubKeyAddress of group.pubKeyAddress"
-                [value]="pubKeyAddress.address"
-              >
-                {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
-              </mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
+        </app-custom-select>
       </form>
     </div>
     <div class="page-content" *ngIf="screen[0] === 4">
