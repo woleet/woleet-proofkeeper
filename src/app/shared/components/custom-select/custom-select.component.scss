@@ -1,0 +1,52 @@
+@import '../../../../scss/variables';
+
+.select-title {
+  margin-bottom: $standard-space;
+  color: $color-text-second;
+  font-weight: $font-weight-medium;
+}
+
+.select-content {
+  position: relative;
+  margin-bottom: $standard-space * 2;
+
+  input {
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .arrow-icon {
+    transform: rotate(90deg);
+  }
+}
+
+.option-section {
+  border: $main-border-width solid $color-grey-light-02;
+  border-radius: 0 0 $standard-space $standard-space;
+  border-top: 0;
+  position: absolute;
+  z-index: 1;
+  background-color: $color-white;
+  width: 100%;
+
+  .select-option {
+    label {
+      line-height: 1;
+      padding: $default-font-size;
+      border-bottom: $main-border-width solid $color-grey-light-02;
+      width: 100%;
+      margin: 0;
+      margin: 0;
+      cursor: pointer;
+      display: inline-block;
+
+      &:hover {
+        background-color: $color-grey-light-01;
+      }
+
+      &.last {
+        border-bottom: 0;
+      }
+    }
+  }
+}

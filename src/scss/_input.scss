@@ -1,22 +1,9 @@
-select {
-  // To have a decent arrow for selector in firefox
-  -moz-appearance: none !important;
-  -webkit-appearance: none !important;
-  background: transparent url('data:image/gif;base64,R0lGODlhBgAGAKEDAFVVVX9/f9TU1CgmNyH5BAEKAAMALAAAAAAGAAYAAAIODA4hCDKWxlhNvmCnGwUAOw==') right center no-repeat !important;
-  background-position: calc(100% - 20px) center !important;
-  outline: none;
-  box-sizing: border-box;
-  font-family: inherit;
-  cursor: pointer;
-}
-
 input {
   outline: none;
-  box-sizing: border-box;
   font-family: inherit;
 }
 
-input[type='radio']:checked + * {
+input[type='radio']:checked+* {
   font-weight: $default-font-weight;
 }
 
@@ -83,6 +70,11 @@ input[type='radio']:checked + * {
     border: none;
     padding: 0;
     background-color: transparent;
+  }
+
+  &.input-dropdown-opened {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 }
 

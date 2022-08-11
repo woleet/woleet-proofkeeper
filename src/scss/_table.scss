@@ -16,7 +16,7 @@ table {
         font-weight: $font-weight-medium;
         color: $color-text-second;
         text-align: left;
-
+        word-break: normal;
       }
     }
   }
@@ -30,7 +30,7 @@ table {
     // Table data cell
     td {
       border-top: $main-border-width solid $color-grey-light-02;
-      padding: $standard-space $standard-space * 4;
+      padding: $standard-space * 2 $standard-space * 4;
       font-size: $default-font-size;
       vertical-align: middle;
 

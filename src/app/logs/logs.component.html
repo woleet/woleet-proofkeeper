@@ -1,10 +1,31 @@
 <div class="card card-part" *ngIf="folders.length !== 0">
-  <select class="default-input mb" [ngModel]="folder" (ngModelChange)="folder = $event">
-    <option selected disabled>{{ translations.logs.logsOfFolder | translate }}</option>
-    <option *ngFor="let folder of folders" [ngValue]="folder" >
-      {{ translateLegacyAction(folder.action) }} {{ folder.path }}
-    </option>
-  </select>
+  <!-- 
+  <div class="select-content" appClickOutside (clickOutside)="showSelectOptions = false">
+    
+    <input
+      type="button"
+      class="default-input"
+      [ngClass]="{ 'input-dropdown-opened': showSelectOptions }"
+      [value]="translateLegacyAction(folder.action) + ' ' + folder.path"
+      (click)="showSelectOptions = !this.showSelectOptions"
+    />
+    <i class=" icon-play btn-inside-input arrow-icon"></i>
+
+    <div *ngIf="showSelectOptions" class="option-section">
+      <div *ngFor="let folder of folders; let last = last"  class="select-option">
+        <label [ngClass]="{'last': last}" (click)="changeFolder(folder)">{{ translateLegacyAction(folder.action) }} {{ folder.path }}</label>
+      </div>
+    </div>
+  </div> -->
+
+  <app-custom-select
+    [labelName]="translations.logs.logsOfFolder | translate"
+    [options]="folders"
+    [selectedOption]="translateLegacyAction(folder.action) + ' ' + folder.path"
+    [forLogMode]="true"
+    (onChangeOption)="folder = $event"
+  >
+  </app-custom-select>
 
   <table>
     <!-- Column names -->

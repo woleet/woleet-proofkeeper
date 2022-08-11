@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FolderParam } from '../misc/folderParam';
 import { FoldersConfigService } from '../services/foldersConfig.service';
+import { SharedService } from '../services/shared.service';
 import { TranslationService } from '../services/translation.service';
 
 @Component({
@@ -11,22 +12,23 @@ import { TranslationService } from '../services/translation.service';
 export class LogsComponent {
   public folder: FolderParam;
   public folders: FolderParam[];
+  showSelectOptions = false;
 
   constructor(
     foldersConfigService: FoldersConfigService,
-    public translations: TranslationService
+    public translations: TranslationService,
+    private sharedService: SharedService
   ) {
     this.folders = foldersConfigService.folders;
     this.folder = this.folders[0];
   }
 
+  changeFolder(folder) {
+    this.folder = folder;
+    this.showSelectOptions = false;
+  }
+
   translateLegacyAction(action: string): string {
-    if (action === 'anchor') {
-      return 'timestamp';
-    }
-    if (action === 'sign') {
-      return 'seal';
-    }
-    return action;
+    return this.sharedService.translateLegacyAction(action);
   }
 }
