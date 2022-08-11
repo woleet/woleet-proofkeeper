@@ -243,6 +243,44 @@ export class FoldersComponent {
       this.translations.folders.tooltips.notYetStarted
     );
   }
+
+  getIdentityNames() {
+    return this.identityService.arrayIdentityContent.map(
+      (identity) => identity.name
+    );
+  }
+
+  errorOnSelectIdentity() {
+    return (
+      this.identityService.arrayIdentityContent.length === 0 ||
+      (this.identityService.arrayIdentityContent.length !== 0 &&
+        this.folderFormGroup.get('identity').getError('voidIdentity')) ||
+      this.folderFormGroup.get('identity').getError('identityNotFound')
+    );
+  }
+
+  errorTextOnSelectIdentity() {
+    if (this.identityService.arrayIdentityContent.length === 0) {
+      return this.translateService.instant(
+        this.translations.folders.errors.addAtLeastOneIdentity
+      );
+    }
+
+    if (
+      this.identityService.arrayIdentityContent.length !== 0 &&
+      this.folderFormGroup.get('identity').getError('voidIdentity')
+    ) {
+      return this.translateService.instant(
+        this.translations.folders.errors.identityRequired
+      );
+    }
+
+    if (this.folderFormGroup.get('identity').getError('identityNotFound')) {
+      return this.translateService.instant(
+        this.translations.folders.errors.notFound
+      );
+    }
+  }
 }
 
 function noDuplicatePathValidatorFactory(thisParam) {

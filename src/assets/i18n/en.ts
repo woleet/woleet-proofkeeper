@@ -26,7 +26,8 @@ export default {
       widsSignatureAPIURL: 'Woleet.ID Server signature API URL',
       widsAPIToken: 'Woleet.ID Server API Token',
       language: 'Language',
-      add: 'Add'
+      add: 'Add',
+      select: 'Select'
     },
     tooltips: {
       giveName: 'Give a name representing the identity of the legal person committing in seal operation.',

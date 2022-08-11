@@ -11,6 +11,7 @@ export class CustomSelectComponent {
   @Input() options;
   @Input() selectedOption;
   @Input() forLogMode : boolean;
+  @Input() onError: boolean;
   @Output() readonly onChangeOption = new EventEmitter();
 
   showSelectOptions = false;

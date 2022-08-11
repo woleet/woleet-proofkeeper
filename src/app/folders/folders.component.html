@@ -37,22 +37,22 @@
     <div class="d-flex mt mb">
       <div class="input-with-close-icon">
         <input
-        type="text"
-        class="default-input"
-        [ngClass]="{
-          'is-invalid': folderFormGroup.get('path').getError('collidingPaths')
-        }"
-        [placeholder]="translations.folders.folderToScan | translate"
-        formControlName="path"
-      />
-      <button
-        *ngIf="folderFormGroup.get('path').value"
-        (click)="resetPath()"
-        class="btn btn-without-background btn-inside-input"
-      >
-        <i class="icon-close mr"></i>
-      </button>
-    </div>
+          type="text"
+          class="default-input"
+          [ngClass]="{
+            'is-invalid': folderFormGroup.get('path').getError('collidingPaths')
+          }"
+          [placeholder]="translations.folders.folderToScan | translate"
+          formControlName="path"
+        />
+        <button
+          *ngIf="folderFormGroup.get('path').value"
+          (click)="resetPath()"
+          class="btn btn-without-background btn-inside-input"
+        >
+          <i class="icon-close mr"></i>
+        </button>
+      </div>
 
       <button class="btn btn-primary ml" (click)="onClickPopUpDirectory()">
         {{ translations.folders.chooseFolder | translate }}
@@ -64,40 +64,24 @@
     >
       {{ translations.folders.errors.folderAlreadyPresent | translate }}
     </div>
-    <div *ngIf="folderFormGroup.get('action').value == 'sign'">
-      <mat-form-field>
-        <mat-label>{{
-          translations.folders.identityToUse | translate
-        }}</mat-label>
-        <mat-select
-          class="custom-select"
-          formControlName="identity"
-          name="identity"
-        >
-          <mat-option
-            *ngFor="let identityName of identityService.arrayIdentityContent"
-            [value]="identityName.name"
-          >
-            {{ identityName.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-          {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            identityService.arrayIdentityContent.length !== 0 &&
-            folderFormGroup.get('identity').getError('voidIdentity')
-          "
-        >
-          {{ translations.folders.errors.identityRequired | translate }}
-        </mat-error>
-        <mat-error
-          *ngIf="folderFormGroup.get('identity').getError('identityNotFound')"
-        >
-          {{ translations.folders.errors.notFound | translate }}
-        </mat-error>
-      </mat-form-field>
+    <div
+      *ngIf="folderFormGroup.get('action').value == 'sign'"
+      class="select-identity"
+    >
+      <app-custom-select
+        [labelName]="translations.folders.identityToUse | translate"
+        [options]="getIdentityNames()"
+        [onError]="errorOnSelectIdentity()"
+        [selectedOption]="
+          folderFormGroup.get('identity').value ||
+          (translations.commons.labelNames.select | translate)
+        "
+        (onChangeOption)="folderFormGroup.get('identity').setValue($event)"
+      >
+      </app-custom-select>
+      <div *ngIf="errorOnSelectIdentity()" class="input-error">
+        {{ errorTextOnSelectIdentity() }}
+      </div>
     </div>
     <br />
 
@@ -279,7 +263,8 @@
                   type="text"
                   class="default-input"
                   [placeholder]="
-                    translations.folders.proveFilesMatchingRegularExpression | translate
+                    translations.folders.proveFilesMatchingRegularExpression
+                      | translate
                   "
                   formControlName="filter"
                 />
