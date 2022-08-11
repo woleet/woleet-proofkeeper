@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
-import { tokenFormatValidator, noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
-import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
-import { IdentityService } from '../services/Identity.service';
-import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import { checkAndSubmit, checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
+import { noDuplicateIdentityNameValidatorFactoryOnAdd, tokenFormatValidator } from '../misc/validators';
+import { IdentityService } from '../services/Identity.service';
 import { TranslationService } from '../services/translation.service';
+import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 const { shell } = require('electron');
 
 @Component({
@@ -19,8 +19,8 @@ const { shell } = require('electron');
 export class WizardComponent {
   public screen: number[]; // Used to pass the page number by reference
   public pubKeyAddressGroup: PubKeyAddressGroup[];
-  public wizardTokenFromGroup: FormGroup;
-  public wizardIdentityFromGroup: FormGroup;
+  public wizardTokenFormGroup: FormGroup;
+  public wizardIdentityFormGroup: FormGroup;
 
   constructor(private dialogRef: MatDialogRef<WizardComponent>,
     private cli: WoleetCliParametersService,
@@ -31,10 +31,10 @@ export class WizardComponent {
     public translations: TranslationService) {
       this.screen = [1];
       this.pubKeyAddressGroup = [];
-      this.wizardTokenFromGroup = formBuilder.group({
+      this.wizardTokenFormGroup = formBuilder.group({
         token: ['', [Validators.required, tokenFormatValidator]]
       });
-      this.wizardIdentityFromGroup = formBuilder.group({
+      this.wizardIdentityFormGroup = formBuilder.group({
         name: ['', [Validators.required, noDuplicateIdentityNameValidatorFactoryOnAdd(this)]],
         url: ['', [Validators.required]],
         token: ['', [Validators.required]],
@@ -51,20 +51,20 @@ export class WizardComponent {
   }
 
   saveTokenForm() {
-    checkAndSubmit(this.http, this.wizardTokenFromGroup, this.cli, this.snackBar, this.screen);
+    checkAndSubmit(this.http, this.wizardTokenFormGroup, this.cli, this.snackBar, this.screen);
   }
 
   saveIdentityForm() {
-    const tempURL = this.wizardIdentityFromGroup.get('url').value;
-    const tempToken = this.wizardIdentityFromGroup.get('token').value;
+    const tempURL = this.wizardIdentityFormGroup.get('url').value;
+    const tempToken = this.wizardIdentityFormGroup.get('token').value;
     this.identityService.addIdentity(
-      this.wizardIdentityFromGroup.get('name').value,
+      this.wizardIdentityFormGroup.get('name').value,
       tempURL,
       tempToken,
-      this.wizardIdentityFromGroup.get('pubKey').value);
-    this.wizardIdentityFromGroup.reset();
-    this.wizardIdentityFromGroup.patchValue({ url: tempURL });
-    this.wizardIdentityFromGroup.patchValue({ token: tempToken });
+      this.wizardIdentityFormGroup.get('pubKey').value);
+    this.wizardIdentityFormGroup.reset();
+    this.wizardIdentityFormGroup.patchValue({ url: tempURL });
+    this.wizardIdentityFormGroup.patchValue({ token: tempToken });
     while (this.pubKeyAddressGroup.length) {
       this.pubKeyAddressGroup.pop();
     }
@@ -76,8 +76,8 @@ export class WizardComponent {
 
   onClickCheckwIDConnectionGetAvailableKeys() {
     checkwIDConnectionGetAvailableKeys(this.http,
-      this.wizardIdentityFromGroup.get('url').value,
-      this.wizardIdentityFromGroup.get('token').value,
+      this.wizardIdentityFormGroup.get('url').value,
+      this.wizardIdentityFormGroup.get('token').value,
       this.pubKeyAddressGroup,
       this.snackBar);
   }
@@ -89,21 +89,20 @@ export class WizardComponent {
   onPubKeyChange() {
     let replaceName = false;
     let newName = '';
-    if (!this.wizardIdentityFromGroup.get('name').value) { replaceName = true; }
-    if (this.pubKeyAddressGroup.length !== 0 && this.wizardIdentityFromGroup.get('pubKey')) {
+    if (!this.wizardIdentityFormGroup.get('name').value) { replaceName = true; }
+    if (this.pubKeyAddressGroup.length !== 0 && this.wizardIdentityFormGroup.get('pubKey')) {
       this.pubKeyAddressGroup.forEach(pubKeyAddressGroup => {
-        if (pubKeyAddressGroup.user === this.wizardIdentityFromGroup.get('name').value) { replaceName = true; }
+        if (pubKeyAddressGroup.user === this.wizardIdentityFormGroup.get('name').value) { replaceName = true; }
         pubKeyAddressGroup.pubKeyAddress.forEach(pubKeyAddress => {
-          if (pubKeyAddress.address === this.wizardIdentityFromGroup.get('pubKey').value) {
+          if (pubKeyAddress.address === this.wizardIdentityFormGroup.get('pubKey').value) {
             newName = pubKeyAddressGroup.user;
           }
         });
       });
     }
     if (replaceName && newName) {
-      this.wizardIdentityFromGroup.patchValue({ name: newName });
+      this.wizardIdentityFormGroup.patchValue({ name: newName });
     }
   }
 
 }
-

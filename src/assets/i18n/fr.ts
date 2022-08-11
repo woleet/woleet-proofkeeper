@@ -19,7 +19,8 @@ const fr: typeof EN_Translations = {
     },
     errors: {
       nameAlreadyPresent: 'Nom déjà existant',
-      invalidJWTTokenFormat: 'Format de token JWT non valide'
+      invalidJWTTokenFormat: 'Format de token JWT non valide',
+      noApiToken: 'Le token d\'API de Woleet doit être défini'
     },
     labelNames: {
       name: 'Nom',
@@ -27,13 +28,48 @@ const fr: typeof EN_Translations = {
       woleetAPIToken: 'Token d\'API de Woleet',
       widsSignatureAPIURL: 'URL de l\'API de signature de Woleet.ID Server',
       widsAPIToken: 'Token d\'API de Woleet.ID Server',
-      language: 'Langue'
+      language: 'Langue',
+      value: 'Valeur',
+      identityToUse: 'Identité à utiliser',
+      status: 'Statut :',
+      content: 'Contenu :',
+      proofReceiptsOfManualOperationsFolder: 'Dossier par défaut pour les opérations manuelles',
     },
     tooltips: {
       giveName: 'Donnez un nom représentant l\'identité de la personne morale qui s\'engage dans l\'opération de scellé.',
       askAdmin: 'Demandez à l\'administrateur de votre Woleet.ID Server un token d\'API.'
     },
     setupAuthenticationToWoleetAPI: 'Configurer l\'authentification à l\'API Woleet',
+  },
+  files: {
+    tabs: {
+      anchor: 'Fichier à horodater',
+      sign: 'Fichier à certifier',
+    },
+    introText: {
+      anchor: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve d\'horodatage</b>. <br><br> Une fois le fichier ancré dans la blockchain Bitcoin, vous pourrez <b>retrouver son reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br> Ce reçu de preuve vous permettra de <b>prouver l\'existence de votre fichier à la date de l\'horodatage</b>.',
+      sign: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br><br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. <br>Vous pourrez donc <b>retrouver le reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br>  Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
+    },
+    dropFile: 'Déposez le fichier <br> (ou cliquez pour choisir)',
+    labels: {
+      tags: 'Tags',
+      newTag: 'Nouveau tag...',
+      identityURL: 'URL d\'identité',
+      public: 'Public',
+      callbackURL: 'URL de callback',
+      url: 'URL',
+      testURL: 'Tester l\'URL',
+      metadata: 'Métadonnées'
+    },
+    hashing: 'Calcul du hash…',
+    buttons: {
+      anchor: 'Horodater le fichier',
+      sign: 'Signer avec mon serveur d\'identité'
+    },
+    successTexts: {
+      anchor: 'Horodatage créée dans le dossier suivant : ',
+      sign: 'Preuve de scellé créé dans le dossier suivant : '
+    }
   },
   folders: {
     tabs: {
@@ -53,7 +89,6 @@ const fr: typeof EN_Translations = {
       deleteOldProofs: 'Supprimer les anciennes preuves si les fichiers sont modifiés',
       notCheckSSLCertificate: 'Ne pas vérifier le certificat SSL de Woleet.ID Server (à utiliser uniquement en développement)'
     },
-    identityToUse: 'Identité à utiliser',
     chooseFolder: 'Choisir dossier',
     folderToScan: 'Dossier à analyser',
     proveFilesMatchingRegularExpression: 'Ne prouver que les fichiers correspondant à cette expression régulière',
@@ -114,7 +149,7 @@ const fr: typeof EN_Translations = {
     setupIdentities: 'Configurer les identités pour le scellé',
     setupIdentityInstruction: 'Si vous voulez que ProofKeeper scelle les fichiers et crée des preuves de scellé horodatées, vous devez configurer au moins une identité de scellé (vous pourrez ajouter d\'autres identités de scellé en utilisant les paramètres après l\'assistant) :',
     congratulations: 'Félicitations !',
-    congratulationSubtitle: 'Vous pouvez maintenant configurer les dossiers pour l\'horodatage et le scellé.',
+    congratulationSubtitle: 'Vous pouvez maintenant configurer les dossiers pour l\'horodatage et le scellé ou en créer.',
     startConfig: 'Démarrer la configuration'
   }
 };

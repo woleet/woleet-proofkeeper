@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { Validators, AbstractControl, FormGroup, FormBuilder, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import * as log from 'loglevel';
+import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
+import { LogContext } from '../misc/logs';
+import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
-import * as remote from '@electron/remote';
-import * as log from 'loglevel';
-import * as nodepath from 'path';
-import { LogContext } from '../misc/logs';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../dialogs/confirmationDialog.component';
-import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
+import { SharedService } from '../services/shared.service';
 import { TranslationService } from '../services/translation.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-folders',
@@ -32,7 +31,9 @@ export class FoldersComponent {
     public identityService: IdentityService,
     private dialog: MatDialog,
     public translations: TranslationService,
-    private translateService: TranslateService) {
+    private translateService: TranslateService,
+    private sharedService: SharedService
+  ) {
     this.addState = false;
 
     this.folderFormGroup = formBuilder.group({
@@ -69,7 +70,7 @@ export class FoldersComponent {
     this.foldersFormGroup = [];
     this.foldersStatusCode = [];
     this.cliRunnerFolderInterface.folders.folders.forEach(folderParam => {
-      const tempfoldersFromGroup = this.formBuilder.group({
+      const tempfoldersFormGroup = this.formBuilder.group({
         action: [folderParam.action],
         path: [folderParam.path],
         public: [!folderParam.private],
@@ -80,7 +81,7 @@ export class FoldersComponent {
         identity: [folderParam.identityName, identityCheckerFactory(this)],
         iDServerUnsecureSSL: [folderParam.iDServerUnsecureSSL],
       });
-      this.foldersFormGroup.push(tempfoldersFromGroup);
+      this.foldersFormGroup.push(tempfoldersFormGroup);
       this.foldersStatusCode.push(folderParam.logContext);
     });
   }
@@ -101,17 +102,7 @@ export class FoldersComponent {
   }
 
   onClickPopUpDirectory() {
-    let path: string;
-    try {
-      path = remote.dialog.showOpenDialogSync({ properties: ['openDirectory'] })[0];
-    } catch (error) {
-      path = '';
-    } finally {
-      this.folderFormGroup.patchValue({
-        path: path
-      });
-      log.info(`Setting folder: ${this.folderFormGroup.get('path').value}`);
-    }
+    this.sharedService.openPopupDirectory(this.folderFormGroup, 'path', this.folderFormGroup.get('path').value);
   }
 
   onClickAdd() {
@@ -133,9 +124,7 @@ export class FoldersComponent {
   }
 
   resetPath() {
-    this.folderFormGroup.patchValue({
-      path: ''
-    });
+    this.sharedService.resetPath(this.folderFormGroup);
   }
 
   onTabChange(index: number) {
@@ -216,7 +205,7 @@ function noDuplicatePathValidatorFactory(thisParam) {
   };
 }
 
-function identityCheckerFactory(thisParam) {
+export function identityCheckerFactory(thisParam) {
   return function identityChecker(control: AbstractControl): ValidationErrors | null {
     if (thisParam.folderFormGroup === undefined) {
       return null;
@@ -237,3 +226,4 @@ function identityCheckerFactory(thisParam) {
     return null;
   };
 }
+

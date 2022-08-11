@@ -1,10 +1,10 @@
-import { Injectable, ApplicationRef, NgZone } from '@angular/core';
-import { FoldersConfigService, FolderDesc } from './foldersConfig.service';
-import { WoleetCliParametersService } from './woleetcliParameters.service';
-import { LogMessageService } from './logMessage.service';
+import { ApplicationRef, Injectable, NgZone } from '@angular/core';
+import * as log from 'loglevel';
 import { IndependentCliRunnerService } from '../misc/independentCliRunner';
 import { FolderDoneService } from './folderDone.service';
-import * as log from 'loglevel';
+import { FolderDesc, FoldersConfigService } from './foldersConfig.service';
+import { LogMessageService } from './logMessage.service';
+import { WoleetCliParametersService } from './woleetcliParameters.service';
 
 @Injectable()
 export class CliRunnerFolderInterface {

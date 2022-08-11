@@ -1,14 +1,15 @@
-import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
+import { FolderParam } from '../misc/folderParam';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { LogMessageService } from '../services/logMessage.service';
-import { FolderParam } from '../misc/folderParam';
+import { SharedService } from '../services/shared.service';
 import { TranslationService } from '../services/translation.service';
 
 @Component({
   selector: 'app-logs',
   templateUrl: './logs.component.html',
-  styleUrls: ['./logs.component.scss']
+  styleUrls: ['./logs.component.scss'],
 })
 export class LogsComponent implements OnInit, OnDestroy {
   public folder: FolderParam;
@@ -17,20 +18,25 @@ export class LogsComponent implements OnInit, OnDestroy {
   private logMessageSubscription: any;
   @ViewChild(MatTable) mattable: MatTable<any>;
 
-  constructor(foldersConfigService: FoldersConfigService,
+  constructor(
+    foldersConfigService: FoldersConfigService,
     private logMessageService: LogMessageService,
-    public translations: TranslationService) {
+    public translations: TranslationService,
+    private sharedService: SharedService
+  ) {
     this.folders = foldersConfigService.folders;
     this.folder = this.folders[0];
     this.displayedColumns = ['level', 'msg'];
   }
 
   ngOnInit() {
-    this.logMessageSubscription = this.logMessageService.getMessage().subscribe((message) => {
-      if (this.folder.path === message) {
-        this.mattable.renderRows();
-      }
-    });
+    this.logMessageSubscription = this.logMessageService
+      .getMessage()
+      .subscribe((message) => {
+        if (this.folder.path === message) {
+          this.mattable.renderRows();
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -38,8 +44,6 @@ export class LogsComponent implements OnInit, OnDestroy {
   }
 
   translateLegacyAction(action: string): string {
-    if (action === 'anchor') { return 'timestamp'; }
-    if (action === 'sign') { return 'seal'; }
-    return action;
+    return this.sharedService.translateLegacyAction(action);
   }
 }

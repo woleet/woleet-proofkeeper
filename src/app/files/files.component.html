@@ -1,0 +1,273 @@
+<div>
+  <mat-card class="full-size-card">
+    <mat-tab-group
+      class="action-tab"
+      (selectedIndexChange)="onTabChange($event)"
+    >
+      <mat-tab [label]="translations.files.tabs.anchor | translate"></mat-tab>
+      <mat-tab [label]="translations.files.tabs.sign | translate"></mat-tab>
+    </mat-tab-group>
+    <div *ngIf="!fileHash" class="default-text">
+      <div
+        [innerHTML]="translations.files.introText[getCurrentMode()] | translate: {pathFolder: proofReceiptsOfManualOperationsFolder}"
+      ></div>
+
+      <!-- Drag and drop file to hash -->
+
+      <div
+        class="dropzone"
+        appDragDrop
+        (fileDropped)="onFileDropped($event)"
+        (startDropping)="isDroppingAFile = true"
+        (stopDropping)="isDroppingAFile = false"
+        [ngClass]="{ 'is-dropping': isDroppingAFile }"
+      >
+        <input
+          #fileInput
+          type="file"
+          (change)="onSelectedFile($event); fileInput.value = null"
+          class="dropzone-file-input"
+          [ngClass]="{ 'not-clickable': isHashing }"
+        />
+        <div *ngIf="!isHashing">
+          <mat-icon
+            class="drop-icon"
+            [ngClass]="{ 'is-dropping': isDroppingAFile }"
+            >note_add</mat-icon
+          >
+          <div
+            class="drop-text"
+            [innerHTML]="translations.files.dropFile | translate"
+          ></div>
+        </div>
+
+        <div *ngIf="isHashing">
+          <img src="assets/images/loading-woleet-api.svg" />
+          <div class="hash-progress">{{ progress | percent }}</div>
+          <div class="hash-text">
+            <em>{{ translations.files.hashing | translate }}</em>
+          </div>
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="cancelFileHash()"
+            class="cancel-file-hash"
+          >
+            {{ translations.commons.buttons.cancel | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="fileFormGroup" *ngIf="fileHash">
+      <mat-form-field *ngIf="getCurrentMode() === 'sign'">
+        <mat-label>{{
+          translations.commons.labelNames.identityToUse | translate
+        }}</mat-label>
+        <mat-select
+          class="custom-select"
+          formControlName="identity"
+          name="identity"
+        >
+          <mat-option
+            *ngFor="let identityName of identityService.arrayIdentityContent"
+            [value]="identityName.name"
+          >
+            {{ identityName.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
+          {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            identityService.arrayIdentityContent.length !== 0 &&
+            fileFormGroup.get('identity').getError('voidIdentity')
+          "
+        >
+          {{ translations.folders.errors.identityRequired | translate }}
+        </mat-error>
+        <mat-error
+          *ngIf="fileFormGroup.get('identity').getError('identityNotFound')"
+        >
+          {{ translations.folders.errors.notFound | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>{{
+          translations.commons.labelNames.name | translate
+        }}</mat-label>
+        <input matInput type="text" formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>{{ translations.files.labels.tags | translate }}</mat-label>
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
+            {{ tag }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            [placeholder]="translations.files.labels.newTag | translate"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="addTag($event)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="getCurrentMode() === 'sign'" class="full-width">
+        <mat-label>{{
+          translations.files.labels.identityURL | translate
+        }}</mat-label>
+        <input matInput type="text" formControlName="identityURL" />
+      </mat-form-field>
+
+      <mat-checkbox color="primary" name="public" formControlName="public">
+        {{ translations.files.labels.public | translate }}
+      </mat-checkbox>
+      <div class="accordion-section">
+        <mat-accordion>
+          <mat-expansion-panel
+            (opened)="openCallbackURLPanel = true"
+            (closed)="openCallbackURLPanel = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{
+                translations.files.labels.callbackURL | translate
+              }}</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-form-field class="full-width">
+              <mat-label>{{
+                translations.files.labels.url | translate
+              }}</mat-label>
+              <input matInput type="text" formControlName="callbackURL" />
+            </mat-form-field>
+            <button
+              type="button"
+              mat-raised-button
+              color="primary"
+              class="span-folder-add-button"
+              [disabled]="!fileFormGroup.get('callbackURL').value"
+              (click)="testCallbackURL()"
+            >
+              {{ translations.files.labels.testURL | translate }}
+            </button>
+
+            <!-- Result of an anchor callback -->
+            <mat-card
+              *ngIf="anchorCallbackResult"
+              class="test-url-response"
+              [ngClass]="
+                anchorCallbackResult.status >= 200 &&
+                anchorCallbackResult.status <= 299
+                  ? 'success'
+                  : 'error'
+              "
+            >
+              <div *ngIf="!!anchorCallbackResult.status">
+                {{ translations.commons.labelNames.status | translate }}
+                {{ anchorCallbackResult.status }}
+              </div>
+              <div *ngIf="!!anchorCallbackResult.message">
+                {{ translations.commons.labelNames.content | translate }}
+                {{ anchorCallbackResult.message }}
+              </div>
+            </mat-card>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="accordion-section">
+        <mat-accordion>
+          <mat-expansion-panel
+            (opened)="openMetadataPanel = true"
+            (closed)="openMetadataPanel = false"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{
+                  translations.files.labels.metadata | translate
+                }}</mat-panel-title
+              >
+            </mat-expansion-panel-header>
+            <div class="metadata">
+              <ul>
+                <li *ngFor="let data of metadata | keyvalue">
+                  <div class="key-value">
+                    {{ data.key }}: {{ data.value }}
+                    <mat-icon (click)="deleteMetadata(data.key)" class="delete">
+                      delete
+                    </mat-icon>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="d-flex">
+                <mat-form-field class="name">
+                  <mat-label>{{
+                    translations.commons.labelNames.name | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="metadataName"
+                    (keyup.enter)="metadataIsValid() ? addMetadata() : null"
+                  />
+                </mat-form-field>
+                <mat-form-field class="value">
+                  <mat-label>{{
+                    translations.commons.labelNames.value | translate
+                  }}</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="metadataValue"
+                    (keyup.enter)="metadataIsValid() ? addMetadata() : null"
+                  />
+                </mat-form-field>
+              </div>
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                (click)="addMetadata()"
+                [disabled]="!metadataIsValid()"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="align-right">
+        <div>
+          <button
+            type="button"
+            mat-raised-button
+            color="primary"
+            class="span-folder-add-button"
+            [disabled]="fileFormGroup.invalid || !noApiTokenSet"
+            (click)="onSubmit()"
+          >
+            {{ translations.files.buttons[getCurrentMode()] | translate }}
+          </button>
+          <button
+            type="button"
+            mat-raised-button
+            color="warn"
+            (click)="onCancel()"
+          >
+            {{ translations.commons.buttons.cancel | translate }}
+          </button>
+        </div>
+        <mat-error *ngIf="!noApiTokenSet" class="no-api-token">
+          {{ translations.commons.errors.noApiToken | translate }}
+        </mat-error>
+      </div>
+    </form>
+  </mat-card>
+</div>

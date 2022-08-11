@@ -5,7 +5,7 @@
     <h2 class="mat-h2 dialog-subtitle">{{ translations.wizard.subtitle | translate }}</h2>
   </mat-dialog-content>
   <mat-dialog-content *ngIf="screen[0] === 2">
-    <form class="form-content" [formGroup]="wizardTokenFromGroup">
+    <form class="form-content" [formGroup]="wizardTokenFormGroup">
       <h1 class="mat-h1 txt-align-center">{{ translations.commons.setupAuthenticationToWoleetAPI | translate }}</h1>
       <p class="mat-body-1">
         <span [innerHTML]="translations.wizard.instruction | translate"></span>
@@ -17,7 +17,7 @@
         <mat-form-field class="full-width">
           <mat-label> {{ translations.commons.labelNames.woleetAPIToken | translate }}</mat-label>
           <input type="text" matInput name="token" formControlName="token" required>
-          <mat-error *ngIf="wizardTokenFromGroup.get('token').getError('invalidJWTFormat')">
+          <mat-error *ngIf="wizardTokenFormGroup.get('token').getError('invalidJWTFormat')">
             {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
           </mat-error>
         </mat-form-field>
@@ -25,7 +25,7 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-content *ngIf="screen[0] === 3">
-    <form class="form-content" [formGroup]="wizardIdentityFromGroup">
+    <form class="form-content" [formGroup]="wizardIdentityFormGroup">
       <h1 class="mat-h1 txt-align-center">{{ translations.wizard.setupIdentities | translate }}</h1>
       <p class="mat-body-1">
         {{ translations.wizard.setupIdentityInstruction | translate }}
@@ -33,7 +33,7 @@
       <mat-form-field class="full-width">
         <mat-label>{{ translations.commons.labelNames.name | translate }}</mat-label>
         <input matInput formControlName="name">
-        <mat-error *ngIf="wizardIdentityFromGroup.get('name').getError('nameAlreadyPresent')">
+        <mat-error *ngIf="wizardIdentityFormGroup.get('name').getError('nameAlreadyPresent')">
           {{ translations.commons.errors.nameAlreadyPresent | translate }}
         </mat-error>
         <button mat-icon-button matSuffix [disableRipple]="true"
@@ -84,11 +84,11 @@
       <button mat-raised-button color="primary" *ngIf="screen[0] === 1" (click)="nextPage();">
         {{ translations.wizard.startConfig | translate }}
       </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFromGroup.invalid"
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 2" [disabled]="wizardTokenFormGroup.invalid"
         (click)="saveTokenForm();">
         {{ translations.commons.buttons.next | translate }}
       </button>
-      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFromGroup.invalid"
+      <button mat-raised-button color="primary" *ngIf="screen[0] === 3" [disabled]="wizardIdentityFormGroup.invalid"
         (click)="saveIdentityForm(); nextPage();">
         {{ translations.commons.buttons.next | translate }}
       </button>
