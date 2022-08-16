@@ -1,5 +1,5 @@
 <form class="card card-part" [formGroup]="settingsFormGroup">
-  <div class="input-section no-margin-bottom">
+  <div class="input-section no-mb">
     <input
       type="text"
       class="default-input"
@@ -39,7 +39,7 @@
   <h3 class="mat-h3">{{ translations.settings.addIdentity | translate }}</h3>
   <div>
     <form class="mb" [formGroup]="addIdentityFormGroup">
-      <div class="input-section no-margin-bottom">
+      <div class="input-section no-mb">
         <input
           type="text"
           class="default-input"
@@ -183,7 +183,7 @@
       *ngIf="identityOpened === identityContent.name"
     >
       <form [formGroup]="editIdentityFormGroup">
-        <div class="input-section no-margin-bottom">
+        <div class="input-section no-mb">
           <input
             type="text"
             class="default-input"
@@ -191,7 +191,7 @@
             formControlName="name"
           />
         </div>
-        <div class="input-section no-margin-bottom">
+        <div class="input-section no-mb">
           <input
             type="text"
             class="default-input"

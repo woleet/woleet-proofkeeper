@@ -13,7 +13,7 @@ input[type='radio']:checked+* {
   width: 100%;
   position: relative;
 
-  &.no-margin-bottom {
+  &.no-mb {
     margin-bottom: 0;
   }
 }

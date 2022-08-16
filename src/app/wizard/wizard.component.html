@@ -22,7 +22,7 @@
             translations.wizard.link | translate
           }}</a>
         </p>
-        <div class="input-section no-margin-bottom">
+        <div class="input-section no-mb">
           <input
             type="text"
             class="default-input"
@@ -54,7 +54,35 @@
           {{ translations.wizard.setupIdentityInstruction | translate }}
         </p>
 
-        <div class="input-section">
+        <div class="input-section no-mb">
+          <input
+            type="text"
+            class="default-input"
+            [placeholder]="translations.commons.labelNames.name | translate"
+            [ngClass]="{
+              'is-invalid': wizardIdentityFormGroup
+                .get('name')
+                .getError('nameAlreadyPresent')
+            }"
+            formControlName="name"
+          />
+          <button
+            class="btn btn-without-background btn-inside-input"
+            [appTooltip]="translations.commons.tooltips.giveName | translate"
+          >
+            <i class="icon-help_circle_icon"></i>
+          </button>
+        </div>
+        <div
+          class="input-error"
+          *ngIf="
+            wizardIdentityFormGroup.get('name').getError('nameAlreadyPresent')
+          "
+        >
+          {{ translations.commons.errors.nameAlreadyPresent | translate }}
+        </div>
+
+        <div class="input-section no-mb">
           <input
             type="text"
             class="default-input"
@@ -99,7 +127,7 @@
           [forPublicKeyMode]="true"
           [selectedOption]="getSelectedPubKeyName()"
           (onChangeOption)="onPubKeyChange($event)"
-          [onError]="wizardIdentityFormGroup.invalid"
+          [onError]="wizardIdentityFormGroup.get('pubKey').invalid"
         >
         </app-custom-select>
       </form>

@@ -1,7 +1,46 @@
-.m-0 {
+// No margins
+.no-m {
   margin: 0;
 }
 
+.no-mt {
+  margin-top: 0;
+}
+
+.no-mb {
+  margin-bottom: 0;
+}
+
+.no-ml {
+  margin-left: 0;
+}
+
+.no-mr {
+  margin-right: 0;
+}
+
+// No paddings
+.no-p {
+  padding: 0;
+}
+
+.no-pt {
+  padding-top: 0;
+}
+
+.no-pb {
+  padding-bottom: 0;
+}
+
+.no-pl {
+  padding-left: 0;
+}
+
+.no-pr {
+  padding-right: 0;
+}
+
+// Add margins
 .mt {
   margin-top: $standard-space;
 }
@@ -18,10 +57,7 @@
   margin-right: $standard-space;
 }
 
-.p-0 {
-  padding: 0;
-}
-
+// Add paddings
 .pt {
   padding-top: $standard-space;
 }
@@ -68,6 +104,8 @@ hr {
   width: 100%;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
