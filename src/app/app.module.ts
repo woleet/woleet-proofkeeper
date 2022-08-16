@@ -36,10 +36,12 @@ import { StoreService } from './services/store.service';
 import { TranslationService } from './services/translation.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { SettingsComponent } from './settings/settings.component';
+import { CustomSelectComponent } from './shared/components/custom-select/custom-select.component';
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { TooltipDirective } from './shared/directives/tooltip.directive';
+import { LangPipe } from './shared/pipes/lang.pipe';
+import { LogPipe } from './shared/pipes/log.pipe';
 import { WizardComponent } from './wizard/wizard.component';
-import { CustomSelectComponent } from './shared/components/custom-select/custom-select.component';
 
 // To call manually a service
 export let AppInjector: Injector;
@@ -62,7 +64,9 @@ export class WebpackTranslateLoader implements TranslateLoader {
     ConfirmationDialogComponent,
     TooltipDirective,
     ClickOutsideDirective,
-    CustomSelectComponent
+    CustomSelectComponent,
+    LangPipe,
+    LogPipe
   ],
   imports: [
     FormsModule,

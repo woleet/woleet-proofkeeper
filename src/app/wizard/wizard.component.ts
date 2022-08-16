@@ -116,51 +116,16 @@ export class WizardComponent {
   }
 
   getSelectedPubKeyName() {
-    if (!this.wizardIdentityFormGroup.get('pubKey').value) {
-      return this.translateService.instant(
-        this.translations.commons.labelNames.select
-      );
-    }
-    return (
-      this.pubKeyAddressKey +
-      ' - ' +
-      this.wizardIdentityFormGroup.get('pubKey').value
-    );
+    return this.identityService.getSelectedPubKeyName(this.wizardIdentityFormGroup, this.pubKeyAddressKey);
   }
 
   onPubKeyChange(pubKeyAddress: PubKeyAddress) {
-    let replaceName = false;
-    let newName = '';
-    this.wizardIdentityFormGroup.get('pubKey').setValue(pubKeyAddress.address);
     this.pubKeyAddressKey = pubKeyAddress.key;
-
-    if (!this.wizardIdentityFormGroup.get('name').value) {
-      replaceName = true;
-    }
-    if (
-      this.pubKeyAddressGroup.length !== 0 &&
-      this.wizardIdentityFormGroup.get('pubKey')
-    ) {
-      this.pubKeyAddressGroup.forEach((pubKeyAddressGroup) => {
-        if (
-          pubKeyAddressGroup.user ===
-          this.wizardIdentityFormGroup.get('name').value
-        ) {
-          replaceName = true;
-        }
-        pubKeyAddressGroup.pubKeyAddress.forEach((pubKeyAddress) => {
-          if (
-            pubKeyAddress.address ===
-            this.wizardIdentityFormGroup.get('pubKey').value
-          ) {
-            newName = pubKeyAddressGroup.user;
-          }
-        });
-      });
-    }
-    if (replaceName && newName) {
-      this.wizardIdentityFormGroup.patchValue({ name: newName });
-    }
+    this.identityService.onPubKeyChange(
+      pubKeyAddress,
+      this.wizardIdentityFormGroup,
+      this.pubKeyAddressGroup
+    );
   }
 
   getButtonText(): string {

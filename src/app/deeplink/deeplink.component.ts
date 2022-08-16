@@ -4,7 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import * as log from 'loglevel';
-import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import {
+  PubKeyAddress,
+  PubKeyAddressGroup
+} from '../misc/identitiesFromServer';
 import { checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
 import { IdentityService } from '../services/Identity.service';
@@ -19,6 +22,7 @@ import { WoleetCliParametersService } from '../services/woleetcliParameters.serv
 export class DeeplinkComponent implements OnInit {
   @Input() deeplinkingUrl: string;
   @Output() readonly exitDialog = new EventEmitter<boolean>();
+  pubKeyAddressKey: string;
 
   public isApi = false;
   public isWids = false;
@@ -147,32 +151,20 @@ export class DeeplinkComponent implements OnInit {
     this.exitDialog.emit(false);
   }
 
-  onPubKeyChange() {
-    let replaceName = false;
-    let newName = '';
-    if (!this.widsFormGroup.get('name').value) {
-      replaceName = true;
-    }
-    if (
-      this.pubKeyAddressGroup.length !== 0 &&
-      this.widsFormGroup.get('pubKey')
-    ) {
-      this.pubKeyAddressGroup.forEach((pubKeyAddressGroup) => {
-        if (pubKeyAddressGroup.user === this.widsFormGroup.get('name').value) {
-          replaceName = true;
-        }
-        pubKeyAddressGroup.pubKeyAddress.forEach((pubKeyAddress) => {
-          if (
-            pubKeyAddress.address === this.widsFormGroup.get('pubKey').value
-          ) {
-            newName = pubKeyAddressGroup.user;
-          }
-        });
-      });
-    }
-    if (replaceName && newName) {
-      this.widsFormGroup.patchValue({ name: newName });
-    }
+  getSelectedPubKeyName() {
+    return this.identityService.getSelectedPubKeyName(
+      this.widsFormGroup,
+      this.pubKeyAddressKey
+    );
+  }
+
+  onPubKeyChange(pubKeyAddress: PubKeyAddress) {
+    this.pubKeyAddressKey = pubKeyAddress.key;
+    this.identityService.onPubKeyChange(
+      pubKeyAddress,
+      this.widsFormGroup,
+      this.pubKeyAddressGroup
+    );
   }
 
   getButtonText(): string {

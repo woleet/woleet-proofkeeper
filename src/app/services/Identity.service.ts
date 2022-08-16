@@ -1,7 +1,14 @@
 import { Injectable } from '@angular/core';
-import { StoreService } from './store.service';
-import { FoldersConfigService } from './foldersConfig.service';
+import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import * as Store from 'electron-store';
+import {
+  PubKeyAddress,
+  PubKeyAddressGroup
+} from '../misc/identitiesFromServer';
+import { FoldersConfigService } from './foldersConfig.service';
+import { StoreService } from './store.service';
+import { TranslationService } from './translation.service';
 
 export interface IdentityContent {
   name: string;
@@ -15,7 +22,11 @@ export class IdentityService {
   public store: Store<any>;
   public arrayIdentityContent: Array<IdentityContent>;
 
-  public constructor(storeService: StoreService) {
+  public constructor(
+    storeService: StoreService,
+    private translateService: TranslateService,
+    private translations: TranslationService
+  ) {
     this.store = storeService.store;
     if (this.store.has('arrayIdentityContent')) {
       this.arrayIdentityContent = this.store.get('arrayIdentityContent');
@@ -24,11 +35,16 @@ export class IdentityService {
     }
   }
 
-  public addIdentity(name: string, url: string, token: string, publicKey?: string) {
+  public addIdentity(
+    name: string,
+    url: string,
+    token: string,
+    publicKey?: string
+  ) {
     const tempIdentityContent: IdentityContent = {
       name: '',
       apiURL: '',
-      apiToken: ''
+      apiToken: '',
     };
     tempIdentityContent.name = name;
     tempIdentityContent.apiURL = url;
@@ -36,24 +52,28 @@ export class IdentityService {
     if (publicKey) {
       tempIdentityContent.publicKey = publicKey;
     }
-    if (this.arrayIdentityContent.some(elem => elem.name === name)) {
+    if (this.arrayIdentityContent.some((elem) => elem.name === name)) {
       throw new Error(`Identity named ${name} already present`);
     }
     this.arrayIdentityContent.push(tempIdentityContent);
     this.saveIdentities();
   }
 
-  public updateIdentity(foldersConfigService: FoldersConfigService,
+  public updateIdentity(
+    foldersConfigService: FoldersConfigService,
     originalName: string,
     name: string,
     url: string,
     token: string,
-    publicKey?: string) {
-    if (!this.arrayIdentityContent.some(elem => elem.name === originalName)) {
+    publicKey?: string
+  ) {
+    if (!this.arrayIdentityContent.some((elem) => elem.name === originalName)) {
       throw new Error(`Identity named ${name} not found`);
     }
     if (originalName === name) {
-      const elementToUpdate = this.arrayIdentityContent.filter(elem => elem.name === originalName)[0];
+      const elementToUpdate = this.arrayIdentityContent.filter(
+        (elem) => elem.name === originalName
+      )[0];
       elementToUpdate.apiURL = url;
       elementToUpdate.apiToken = token;
       if (publicKey) {
@@ -64,7 +84,7 @@ export class IdentityService {
       this.saveIdentities();
     } else {
       this.addIdentity(name, url, token, publicKey);
-      foldersConfigService.folders.forEach(folder => {
+      foldersConfigService.folders.forEach((folder) => {
         if (folder.identityName) {
           if (folder.identityName === originalName) {
             folder.identityName = name;
@@ -77,8 +97,10 @@ export class IdentityService {
   }
 
   public deleteIdentity(identityName: string) {
-    if (this.arrayIdentityContent.some(elem => elem.name === identityName)) {
-      this.arrayIdentityContent = this.arrayIdentityContent.filter(elem => elem.name !== identityName);
+    if (this.arrayIdentityContent.some((elem) => elem.name === identityName)) {
+      this.arrayIdentityContent = this.arrayIdentityContent.filter(
+        (elem) => elem.name !== identityName
+      );
       this.saveIdentities();
     } else {
       throw new Error(`Identity named ${identityName} not found for deletion`);
@@ -87,5 +109,43 @@ export class IdentityService {
 
   private saveIdentities() {
     this.store.set('arrayIdentityContent', this.arrayIdentityContent);
+  }
+
+  onPubKeyChange(
+    pubKeyAddress: PubKeyAddress,
+    form: FormGroup,
+    pubKeyAddressGroup: Array<PubKeyAddressGroup>
+  ) {
+    let replaceName = false;
+    let newName = '';
+    form.get('pubKey').setValue(pubKeyAddress.address);
+
+    if (!form.get('name').value) {
+      replaceName = true;
+    }
+    if (pubKeyAddressGroup.length !== 0 && form.get('pubKey')) {
+      pubKeyAddressGroup.forEach((pubKeyAddressGroup) => {
+        if (pubKeyAddressGroup.user === form.get('name').value) {
+          replaceName = true;
+        }
+        pubKeyAddressGroup.pubKeyAddress.forEach((pubKeyAddress) => {
+          if (pubKeyAddress.address === form.get('pubKey').value) {
+            newName = pubKeyAddressGroup.user;
+          }
+        });
+      });
+    }
+    if (replaceName && newName) {
+      form.patchValue({ name: newName });
+    }
+  }
+
+  getSelectedPubKeyName(form: FormGroup, pubKeyAddressKey: string) {
+    if (!form.get('pubKey').value) {
+      return this.translateService.instant(
+        this.translations.commons.labelNames.select
+      );
+    }
+    return pubKeyAddressKey + ' - ' + form.get('pubKey').value;
   }
 }

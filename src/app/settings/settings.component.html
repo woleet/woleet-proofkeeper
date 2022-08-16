@@ -288,20 +288,17 @@
 
 <div class="card card-part">
   <form [formGroup]="languageFormGroup">
-    <mat-form-field>
-      <mat-label>{{
-        translations.commons.labelNames.language | translate
-      }}</mat-label>
-      <mat-select
-        class="custom-select"
-        formControlName="language"
-        (selectionChange)="onLanguageChange()"
-      >
-        <mat-option *ngFor="let language of languages" [value]="language">
-          {{ translations.languages[language] | translate }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-custom-select
+      [labelName]="translations.commons.labelNames.language | translate"
+      [options]="languages"
+      [activeLangPipe]="true"
+      [selectedOption]="
+        translations.languages[languageFormGroup.get('language').value]
+          | translate
+      "
+      (onChangeOption)="onLanguageChange($event)"
+    >
+    </app-custom-select>
   </form>
 </div>
 

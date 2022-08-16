@@ -1,13 +1,13 @@
 <div class="modal fade-in">
   <div class="modal-content big-modal">
-    <div class="page-content" *ngIf="screen === 0">
+    <div class="full-width" *ngIf="screen === 0">
       <h1 class="mat-h1 txt-align-center">
         {{ translations.deeplink.invalidConf | translate }}
       </h1>
       <p>{{ translations.deeplink.pleaseCheck | translate }}<br /></p>
     </div>
 
-    <div class="page-content" *ngIf="screen === 1">
+    <div class="full-width" *ngIf="screen === 1">
       <h1 class="mat-h1 txt-align-center">
         {{ translations.commons.setupAuthenticationToWoleetAPI | translate }}
       </h1>
@@ -18,7 +18,7 @@
         <div class="card card-part">
           {{ woleetToken }}
         </div>
-        <mat-divider *ngIf="woleetUrl"></mat-divider>
+        <hr *ngIf="woleetUrl">
         <p *ngIf="woleetUrl">
           {{ translations.deeplink.providedWoleetURL | translate }}
         </p>
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="page-content" *ngIf="screen === 2">
+    <div class="full-width" *ngIf="screen === 2">
       <h1
         class="mat-h1 txt-align-center"
         *ngIf="pubKeyAddressGroup.length === 0"
@@ -42,7 +42,7 @@
         <div class="card card-part">
           {{ widsToken }}
         </div>
-        <mat-divider *ngIf="widsUrl"></mat-divider>
+        <hr *ngIf="widsUrl">
         <p *ngIf="widsUrl">
           {{ translations.deeplink.providedWidsURL | translate }}
         </p>
@@ -77,31 +77,19 @@
         >
           {{ translations.commons.errors.nameAlreadyPresent | translate }}
         </div>
-
-        <mat-form-field
-          class="full-width"
+        <div class="input-section">
+          <app-custom-select
           *ngIf="pubKeyAddressGroup.length !== 0"
+          [labelName]="translations.commons.labelNames.publicKey | translate"
+          [options]="pubKeyAddressGroup"
+          [forPublicKeyMode]="true"
+          [selectedOption]="getSelectedPubKeyName()"
+          (onChangeOption)="onPubKeyChange($event)"
+          [onError]="widsFormGroup.get('pubKey').invalid"
         >
-          <mat-label>{{
-            translations.commons.labelNames.publicKey | translate
-          }}</mat-label>
-          <mat-select
-            formControlName="pubKey"
-            (selectionChange)="onPubKeyChange()"
-          >
-            <mat-optgroup
-              *ngFor="let group of pubKeyAddressGroup"
-              [label]="group.user"
-            >
-              <mat-option
-                *ngFor="let pubKeyAddress of group.pubKeyAddress"
-                [value]="pubKeyAddress.address"
-              >
-                {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
-              </mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field>
+        </app-custom-select>
+        </div>
+    
       </form>
     </div>
 

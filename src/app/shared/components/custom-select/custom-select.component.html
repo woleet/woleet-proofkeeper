@@ -14,7 +14,10 @@
     [value]="selectedOption"
     (click)="showSelectOptions = !this.showSelectOptions"
   />
-  <i class="icon-play btn-inside-input arrow-icon"></i>
+  <i
+    class="icon-play btn-inside-input arrow-icon"
+    (click)="showSelectOptions = !this.showSelectOptions"
+  ></i>
 
   <div *ngIf="showSelectOptions && !forPublicKeyMode" class="option-section">
     <div *ngFor="let option of options; let last = last" class="select-option">
@@ -22,15 +25,17 @@
         [ngClass]="{
           last: last,
           'selected-option':
-            option === selectedOption ||
-            translateLegacyAction(option.action) + ' ' + option.path ===
-              selectedOption
+            (option | langPipe) === selectedOption ||
+            (option | logPipe) === selectedOption ||
+            option === selectedOption
         }"
         (click)="changeOption(option)"
       >
         {{
-          forLogMode
-            ? translateLegacyAction(option.action) + ' ' + option.path
+          activeLangPipe
+            ? (option | langPipe)
+            : activeLogPipe
+            ? (option | logPipe)
             : option
         }}
       </label>

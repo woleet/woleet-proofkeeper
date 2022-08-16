@@ -82,6 +82,7 @@ input[type='radio']:checked+* {
   position: absolute;
   top: 12px;
   right: 12px;
+  cursor: initial;
 }
 
 .input-error {

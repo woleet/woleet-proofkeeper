@@ -6,13 +6,13 @@ import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import {
-    checkAndSubmit,
-    checkwIDConnectionGetAvailableKeys
+  checkAndSubmit,
+  checkwIDConnectionGetAvailableKeys
 } from '../misc/settingsChecker';
 import {
-    noDuplicateIdentityNameValidatorFactoryOnAdd,
-    noDuplicateIdentityNameValidatorFactoryOnEdit,
-    tokenFormatValidator
+  noDuplicateIdentityNameValidatorFactoryOnAdd,
+  noDuplicateIdentityNameValidatorFactoryOnEdit,
+  tokenFormatValidator
 } from '../misc/validators';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { IdentityContent, IdentityService } from '../services/Identity.service';
@@ -360,8 +360,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onLanguageChange() {
-    this.cli.setWoleetCliLang(this.languageFormGroup.get('language').value);
-    this.translateService.use(this.languageFormGroup.get('language').value);
+  onLanguageChange(lang: string) {
+    this.languageFormGroup.get('language').setValue(lang);
+    this.cli.setWoleetCliLang(lang);
+    this.translateService.use(lang);
   }
 }

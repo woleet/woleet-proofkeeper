@@ -3,7 +3,7 @@
     [labelName]="translations.logs.logsOfFolder | translate"
     [options]="folders"
     [selectedOption]="translateLegacyAction(folder.action) + ' ' + folder.path"
-    [forLogMode]="true"
+    [activeLogPipe]="true"
     (onChangeOption)="folder = $event"
   >
   </app-custom-select>
