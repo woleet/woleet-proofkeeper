@@ -77,11 +77,11 @@ const fr: typeof EN_Translations = {
   deeplink: {
     invalidConf: 'Configuration invalide transmise par deeplinking',
     pleaseCheck: 'Veuillez vérifier auprès de la personne qui vous a fourni le lien.',
-    providedWoleetAPIToken: 'Token d\'API fourni par Woleet :',
-    providedWoleetURL: 'URL fournie par Woleet :',
+    providedWoleetAPIToken: 'Token d\'API fourni par Woleet :',
+    providedWoleetURL: 'URL fournie par Woleet :',
     setupAuthenticationToWids: 'Configurer l\'authentification à Woleet.ID Server',
-    providedWidsAPIToken: 'Token d\'API fourni par Woleet.ID Server :',
-    providedWidsURL: 'URL fournie par Woleet.ID Server :'
+    providedWidsAPIToken: 'Token d\'API fourni par Woleet.ID Server :',
+    providedWidsURL: 'URL fournie par Woleet.ID Server :'
   },
   infos: {
     versions: 'Versions',
@@ -96,8 +96,8 @@ const fr: typeof EN_Translations = {
   },
   settings: {
     overrideWoleetAPIURL: 'Remplacer l\'URL de l\'API Woleet',
-    addIdentity: 'Ajouter une identité :',
-    sealIdentities: 'Identités de scellé :',
+    addIdentity: 'Ajouter une identité :',
+    sealIdentities: 'Identités de scellé :',
     identityUsedInOneFolder: 'Cette identité est encore utilisée dans la configuration d\'un de vos dossiers.',
     deleteIdentity: 'Supprimer l\'identité',
     deleteIdentityQuestion: 'Êtes-vous sûr de vouloir supprimer cette identité ?',
@@ -115,7 +115,7 @@ const fr: typeof EN_Translations = {
     instruction: `L'accès à l'API Woleet nécessite un token d'API.<br>Vous pouvez en créer un en utilisant votre compte Woleet (menu "Developer" -> onglet "API") ou en cliquant sur ce `,
     link: 'lien',
     setupIdentities: 'Configurer les identités pour la certification',
-    setupIdentityInstruction: 'Si vous voulez que ProofKeeper scelle les fichiers et crée des preuves de scellé horodatées, vous devez configurer au moins une identité de scellé (vous pourrez ajouter d\'autres identités de scellé en utilisant les paramètres après l\'assistant) :',
+    setupIdentityInstruction: 'Si vous voulez que ProofKeeper scelle les fichiers et crée des preuves de scellé horodatées, vous devez configurer au moins une identité de scellé (vous pourrez ajouter d\'autres identités de scellé en utilisant les paramètres après l\'assistant) :',
     congratulations: 'Félicitations !',
     congratulationSubtitle: 'Vous pouvez maintenant configurer les dossiers pour l\'horodatage et la certification.',
     startConfig: 'Démarrer la configuration'
