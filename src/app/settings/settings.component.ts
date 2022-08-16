@@ -6,13 +6,13 @@ import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import { PubKeyAddressGroup } from '../misc/identitiesFromServer';
 import {
-  checkAndSubmit,
-  checkwIDConnectionGetAvailableKeys
+    checkAndSubmit,
+    checkwIDConnectionGetAvailableKeys
 } from '../misc/settingsChecker';
 import {
-  noDuplicateIdentityNameValidatorFactoryOnAdd,
-  noDuplicateIdentityNameValidatorFactoryOnEdit,
-  tokenFormatValidator
+    noDuplicateIdentityNameValidatorFactoryOnAdd,
+    noDuplicateIdentityNameValidatorFactoryOnEdit,
+    tokenFormatValidator
 } from '../misc/validators';
 import { FoldersConfigService } from '../services/foldersConfig.service';
 import { IdentityContent, IdentityService } from '../services/Identity.service';
@@ -169,7 +169,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  addNewIdentityFromGroup() {
+  addNewIdentityFormGroup() {
     const tempURL = this.addIdentityFormGroup.get('url').value;
     const tempToken = this.addIdentityFormGroup.get('token').value;
     this.identityService.addIdentity(

@@ -30,8 +30,8 @@ export class WizardComponent {
 
   public screen: number[]; // Used to pass the page number by reference
   public pubKeyAddressGroup: PubKeyAddressGroup[];
-  public wizardTokenFromGroup: FormGroup;
-  public wizardIdentityFromGroup: FormGroup;
+  public wizardTokenFormGroup: FormGroup;
+  public wizardIdentityFormGroup: FormGroup;
   pubKeyAddressKey: string;
 
   constructor(
@@ -45,10 +45,10 @@ export class WizardComponent {
   ) {
     this.screen = [1];
     this.pubKeyAddressGroup = [];
-    this.wizardTokenFromGroup = this.formBuilder.group({
+    this.wizardTokenFormGroup = this.formBuilder.group({
       token: ['', [Validators.required, tokenFormatValidator]],
     });
-    this.wizardIdentityFromGroup = this.formBuilder.group({
+    this.wizardIdentityFormGroup = this.formBuilder.group({
       name: [
         '',
         [
@@ -73,7 +73,7 @@ export class WizardComponent {
   saveTokenForm() {
     checkAndSubmit(
       this.http,
-      this.wizardTokenFromGroup,
+      this.wizardTokenFormGroup,
       this.cli,
       this.snackBar,
       this.screen
@@ -81,17 +81,17 @@ export class WizardComponent {
   }
 
   saveIdentityForm() {
-    const tempURL = this.wizardIdentityFromGroup.get('url').value;
-    const tempToken = this.wizardIdentityFromGroup.get('token').value;
+    const tempURL = this.wizardIdentityFormGroup.get('url').value;
+    const tempToken = this.wizardIdentityFormGroup.get('token').value;
     this.identityService.addIdentity(
-      this.wizardIdentityFromGroup.get('name').value,
+      this.wizardIdentityFormGroup.get('name').value,
       tempURL,
       tempToken,
-      this.wizardIdentityFromGroup.get('pubKey').value
+      this.wizardIdentityFormGroup.get('pubKey').value
     );
-    this.wizardIdentityFromGroup.reset();
-    this.wizardIdentityFromGroup.patchValue({ url: tempURL });
-    this.wizardIdentityFromGroup.patchValue({ token: tempToken });
+    this.wizardIdentityFormGroup.reset();
+    this.wizardIdentityFormGroup.patchValue({ url: tempURL });
+    this.wizardIdentityFormGroup.patchValue({ token: tempToken });
     while (this.pubKeyAddressGroup.length) {
       this.pubKeyAddressGroup.pop();
     }
@@ -104,8 +104,8 @@ export class WizardComponent {
   onClickCheckwIDConnectionGetAvailableKeys() {
     checkwIDConnectionGetAvailableKeys(
       this.http,
-      this.wizardIdentityFromGroup.get('url').value,
-      this.wizardIdentityFromGroup.get('token').value,
+      this.wizardIdentityFormGroup.get('url').value,
+      this.wizardIdentityFormGroup.get('token').value,
       this.pubKeyAddressGroup,
       this.snackBar
     );
@@ -116,7 +116,7 @@ export class WizardComponent {
   }
 
   getSelectedPubKeyName() {
-    if (!this.wizardIdentityFromGroup.get('pubKey').value) {
+    if (!this.wizardIdentityFormGroup.get('pubKey').value) {
       return this.translateService.instant(
         this.translations.commons.labelNames.select
       );
@@ -124,34 +124,34 @@ export class WizardComponent {
     return (
       this.pubKeyAddressKey +
       ' - ' +
-      this.wizardIdentityFromGroup.get('pubKey').value
+      this.wizardIdentityFormGroup.get('pubKey').value
     );
   }
 
   onPubKeyChange(pubKeyAddress: PubKeyAddress) {
     let replaceName = false;
     let newName = '';
-    this.wizardIdentityFromGroup.get('pubKey').setValue(pubKeyAddress.address);
+    this.wizardIdentityFormGroup.get('pubKey').setValue(pubKeyAddress.address);
     this.pubKeyAddressKey = pubKeyAddress.key;
 
-    if (!this.wizardIdentityFromGroup.get('name').value) {
+    if (!this.wizardIdentityFormGroup.get('name').value) {
       replaceName = true;
     }
     if (
       this.pubKeyAddressGroup.length !== 0 &&
-      this.wizardIdentityFromGroup.get('pubKey')
+      this.wizardIdentityFormGroup.get('pubKey')
     ) {
       this.pubKeyAddressGroup.forEach((pubKeyAddressGroup) => {
         if (
           pubKeyAddressGroup.user ===
-          this.wizardIdentityFromGroup.get('name').value
+          this.wizardIdentityFormGroup.get('name').value
         ) {
           replaceName = true;
         }
         pubKeyAddressGroup.pubKeyAddress.forEach((pubKeyAddress) => {
           if (
             pubKeyAddress.address ===
-            this.wizardIdentityFromGroup.get('pubKey').value
+            this.wizardIdentityFormGroup.get('pubKey').value
           ) {
             newName = pubKeyAddressGroup.user;
           }
@@ -159,7 +159,7 @@ export class WizardComponent {
       });
     }
     if (replaceName && newName) {
-      this.wizardIdentityFromGroup.patchValue({ name: newName });
+      this.wizardIdentityFormGroup.patchValue({ name: newName });
     }
   }
 
