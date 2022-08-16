@@ -89,30 +89,19 @@
       >
         {{ translations.commons.buttons.selectKeyFromWids | translate }}
       </button>
-      <mat-form-field
-        class="full-width"
-        *ngIf="addPubKeyAddressGroup.length !== 0"
-      >
-        <mat-label>{{
-          translations.commons.labelNames.publicKey | translate
-        }}</mat-label>
-        <mat-select
-          formControlName="pubKey"
-          (selectionChange)="onPubKeyChangeAdd()"
+
+      <div class="input-section">
+        <app-custom-select
+          *ngIf="addPubKeyAddressGroup.length !== 0"
+          [labelName]="translations.commons.labelNames.publicKey | translate"
+          [options]="addPubKeyAddressGroup"
+          [forPublicKeyMode]="true"
+          [selectedOption]="getSelectedPubKeyNameForAdd()"
+          (onChangeOption)="onPubKeyChangeAdd($event)"
+          [onError]="addIdentityFormGroup.get('pubKey').invalid"
         >
-          <mat-optgroup
-            *ngFor="let group of addPubKeyAddressGroup"
-            [label]="group.user"
-          >
-            <mat-option
-              *ngFor="let pubKeyAddress of group.pubKeyAddress"
-              [value]="pubKeyAddress.address"
-            >
-              {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
-            </mat-option>
-          </mat-optgroup>
-        </mat-select>
-      </mat-form-field>
+        </app-custom-select>
+      </div>
     </form>
     <button
       class="btn btn-primary"
@@ -220,37 +209,29 @@
         >
           {{ translations.commons.buttons.selectKeyFromWids | translate }}
         </button>
-        <mat-form-field
-          class="full-width"
-          *ngIf="editPubKeyAddressGroup.length !== 0"
-        >
-          <mat-label>{{
-            translations.commons.labelNames.publicKey | translate
-          }}</mat-label>
-          <mat-select
-            formControlName="pubKey"
-            (selectionChange)="onPubKeyChangeEdit()"
+        <div class="input-section">
+          <app-custom-select
+            *ngIf="editPubKeyAddressGroup.length !== 0"
+            [labelName]="translations.commons.labelNames.publicKey | translate"
+            [options]="editPubKeyAddressGroup"
+            [forPublicKeyMode]="true"
+            [selectedOption]="getSelectedPubKeyNameForEdit()"
+            (onChangeOption)="onPubKeyChangeEdit($event)"
+            [onError]="
+              editIdentityFormGroup.get('pubKey').invalid ||
+              editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')
+            "
           >
-            <mat-optgroup
-              *ngFor="let group of editPubKeyAddressGroup"
-              [label]="group.user"
-            >
-              <mat-option
-                *ngFor="let pubKeyAddress of group.pubKeyAddress"
-                [value]="pubKeyAddress.address"
-              >
-                {{ pubKeyAddress.key }} - {{ pubKeyAddress.address }}
-              </mat-option>
-            </mat-optgroup>
-          </mat-select>
-          <mat-error
+          </app-custom-select>
+          <div
+            class="input-error"
             *ngIf="
               editIdentityFormGroup.get('pubKey').getError('unableToFindOldKey')
             "
           >
             {{ translations.settings.errors.unableFindFormerKey | translate }}
-          </mat-error>
-        </mat-form-field>
+          </div>
+        </div>
       </form>
       <div class="mt">
         <button

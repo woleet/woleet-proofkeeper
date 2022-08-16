@@ -25,8 +25,8 @@
         [ngClass]="{
           last: last,
           'selected-option':
-            (option | langPipe) === selectedOption ||
-            (option | logPipe) === selectedOption ||
+          (activeLangPipe && (option | langPipe) === selectedOption) ||
+            (activeLogPipe && (option | logPipe) === selectedOption) ||
             option === selectedOption
         }"
         (click)="changeOption(option)"

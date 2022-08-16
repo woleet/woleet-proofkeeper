@@ -12,7 +12,7 @@ export async function checkAndSubmit(http: HttpClient,
   cliService: WoleetCliParametersService,
   snackBar: MatSnackBar,
   screenPage?: number[]) {
-  let apiURL = `https://api.woleet.localhost/v1`;
+  let apiURL = `https://api.woleet.io/v1`;
   if (formGroup.get('url')) {
     if (formGroup.get('url').value) {
       apiURL = formGroup.get('url').value;
@@ -24,7 +24,7 @@ export async function checkAndSubmit(http: HttpClient,
       openSnackBarError(snackBar);
       return;
     }
-    if (apiURL === `https://api.woleet.localhost/v1`) {
+    if (apiURL === `https://api.woleet.io/v1`) {
       cliService.setWoleetCliParameters(formGroup.get('token').value);
     } else {
       cliService.setWoleetCliParameters(formGroup.get('token').value, formGroup.get('url').value);

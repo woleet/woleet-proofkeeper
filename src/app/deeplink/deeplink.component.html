@@ -18,7 +18,7 @@
         <div class="card card-part">
           {{ woleetToken }}
         </div>
-        <hr *ngIf="woleetUrl">
+        <hr *ngIf="woleetUrl" />
         <p *ngIf="woleetUrl">
           {{ translations.deeplink.providedWoleetURL | translate }}
         </p>
@@ -42,7 +42,7 @@
         <div class="card card-part">
           {{ widsToken }}
         </div>
-        <hr *ngIf="widsUrl">
+        <hr *ngIf="widsUrl" />
         <p *ngIf="widsUrl">
           {{ translations.deeplink.providedWidsURL | translate }}
         </p>
@@ -79,17 +79,16 @@
         </div>
         <div class="input-section">
           <app-custom-select
-          *ngIf="pubKeyAddressGroup.length !== 0"
-          [labelName]="translations.commons.labelNames.publicKey | translate"
-          [options]="pubKeyAddressGroup"
-          [forPublicKeyMode]="true"
-          [selectedOption]="getSelectedPubKeyName()"
-          (onChangeOption)="onPubKeyChange($event)"
-          [onError]="widsFormGroup.get('pubKey').invalid"
-        >
-        </app-custom-select>
+            *ngIf="pubKeyAddressGroup.length !== 0"
+            [labelName]="translations.commons.labelNames.publicKey | translate"
+            [options]="pubKeyAddressGroup"
+            [forPublicKeyMode]="true"
+            [selectedOption]="getSelectedPubKeyName()"
+            (onChangeOption)="onPubKeyChange($event)"
+            [onError]="widsFormGroup.get('pubKey').invalid"
+          >
+          </app-custom-select>
         </div>
-    
       </form>
     </div>
 

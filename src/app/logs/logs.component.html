@@ -2,7 +2,7 @@
   <app-custom-select
     [labelName]="translations.logs.logsOfFolder | translate"
     [options]="folders"
-    [selectedOption]="translateLegacyAction(folder.action) + ' ' + folder.path"
+    [selectedOption]="folder | logPipe"
     [activeLogPipe]="true"
     (onChangeOption)="folder = $event"
   >
