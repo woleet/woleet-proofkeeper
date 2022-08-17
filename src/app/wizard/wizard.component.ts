@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import {
   PubKeyAddress,
@@ -16,6 +15,7 @@ import {
   tokenFormatValidator
 } from '../misc/validators';
 import { IdentityService } from '../services/Identity.service';
+import { ToastService } from '../services/toast.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 const { shell } = require('electron');
@@ -38,10 +38,10 @@ export class WizardComponent {
     private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
-    private snackBar: MatSnackBar,
     private http: HttpClient,
     public translations: TranslationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) {
     this.screen = [1];
     this.pubKeyAddressGroup = [];
@@ -75,7 +75,7 @@ export class WizardComponent {
       this.http,
       this.wizardTokenFormGroup,
       this.cli,
-      this.snackBar,
+      this.toastService,
       this.screen
     );
   }
@@ -107,7 +107,7 @@ export class WizardComponent {
       this.wizardIdentityFormGroup.get('url').value,
       this.wizardIdentityFormGroup.get('token').value,
       this.pubKeyAddressGroup,
-      this.snackBar
+      this.toastService
     );
   }
 

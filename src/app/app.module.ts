@@ -7,14 +7,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import {
+  MatFormFieldModule,
+  MAT_FORM_FIELD_DEFAULT_OPTIONS
+} from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,11 +34,13 @@ import { CliRunnerFolderInterface } from './services/cliRunnerFolderInterface.se
 import { FoldersConfigService } from './services/foldersConfig.service';
 import { IdentityService } from './services/Identity.service';
 import { StoreService } from './services/store.service';
+import { ToastService } from './services/toast.service';
 import { TranslationService } from './services/translation.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 import { SettingsComponent } from './settings/settings.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
 import { CustomSelectComponent } from './shared/components/custom-select/custom-select.component';
+import { ToastComponent } from './shared/components/toast/toast.component';
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { TooltipDirective } from './shared/directives/tooltip.directive';
 import { LangPipe } from './shared/pipes/lang.pipe';
@@ -66,7 +70,8 @@ export class WebpackTranslateLoader implements TranslateLoader {
     ClickOutsideDirective,
     CustomSelectComponent,
     LangPipe,
-    LogPipe
+    LogPipe,
+    ToastComponent,
   ],
   imports: [
     FormsModule,
@@ -86,7 +91,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
     MatChipsModule,
     MatTooltipModule,
     MatIconModule,
-    MatSnackBarModule,
     MatTabsModule,
     MatExpansionModule,
     HttpClientModule,
@@ -94,9 +98,9 @@ export class WebpackTranslateLoader implements TranslateLoader {
       loader: {
         provide: TranslateLoader,
         deps: [HttpClient],
-        useClass: WebpackTranslateLoader
-      }
-    })
+        useClass: WebpackTranslateLoader,
+      },
+    }),
   ],
   providers: [
     StoreService,
@@ -104,12 +108,14 @@ export class WebpackTranslateLoader implements TranslateLoader {
     WoleetCliParametersService,
     IdentityService,
     CliRunnerFolderInterface,
+    ToastService,
     TranslationService,
-    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'standard'}}
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'standard' },
+    },
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
   constructor(private injector: Injector) {

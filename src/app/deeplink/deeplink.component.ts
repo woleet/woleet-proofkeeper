@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import * as log from 'loglevel';
 import {
@@ -11,6 +10,7 @@ import {
 import { checkwIDConnectionGetAvailableKeys } from '../misc/settingsChecker';
 import { noDuplicateIdentityNameValidatorFactoryOnAdd } from '../misc/validators';
 import { IdentityService } from '../services/Identity.service';
+import { ToastService } from '../services/toast.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 
@@ -38,10 +38,10 @@ export class DeeplinkComponent implements OnInit {
     private formBuilder: FormBuilder,
     private cli: WoleetCliParametersService,
     public identityService: IdentityService,
-    private snackBar: MatSnackBar,
     private http: HttpClient,
     public translations: TranslationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -116,7 +116,7 @@ export class DeeplinkComponent implements OnInit {
       this.widsUrl,
       this.widsToken,
       this.pubKeyAddressGroup,
-      this.snackBar
+      this.toastService
     );
   }
 

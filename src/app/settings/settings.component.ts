@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import { PubKeyAddress, PubKeyAddressGroup } from '../misc/identitiesFromServer';
@@ -18,6 +17,7 @@ import { FoldersConfigService } from '../services/foldersConfig.service';
 import { IdentityContent, IdentityService } from '../services/Identity.service';
 import { LanguageService } from '../services/language.service';
 import { SettingsMessageService } from '../services/settingsMessage.service';
+import { ToastService } from '../services/toast.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 
@@ -46,14 +46,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   constructor(
     private cli: WoleetCliParametersService,
     private formBuilder: FormBuilder,
-    public snackBar: MatSnackBar,
     public identityService: IdentityService,
     public foldersConfigService: FoldersConfigService,
     private settingsMessageService: SettingsMessageService,
     private http: HttpClient,
     public translations: TranslationService,
     private translateService: TranslateService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private toastService: ToastService
   ) {
     this.initComponent();
     this.languages = this.languageService.getSupportedLanguages();
@@ -120,7 +120,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickcheckAndSubmit() {
-    checkAndSubmit(this.http, this.settingsFormGroup, this.cli, this.snackBar);
+    checkAndSubmit(this.http, this.settingsFormGroup, this.cli, this.toastService);
   }
 
   onExitDialog(confirm: boolean) {
@@ -246,7 +246,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.addIdentityFormGroup.get('url').value,
       this.addIdentityFormGroup.get('token').value,
       this.addPubKeyAddressGroup,
-      this.snackBar
+      this.toastService
     );
   }
 
@@ -262,7 +262,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.editIdentityFormGroup.get('url').value,
       this.editIdentityFormGroup.get('token').value,
       this.editPubKeyAddressGroup,
-      this.snackBar
+      this.toastService
     );
     if (
       this.editPubKeyAddressGroup.length !== 0 &&

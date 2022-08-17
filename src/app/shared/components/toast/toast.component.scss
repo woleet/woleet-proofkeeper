@@ -1,0 +1,51 @@
+@import '../../../../scss/variables';
+
+%default-toast {
+  z-index: 200;
+  position: absolute;
+  top: 0;
+  right: 0rem;
+  margin: 2vh 2vw;
+  padding: $standard-space * 3;
+  display: inline-flex;
+  width: 350px;
+  height: 90px;
+  box-shadow: 6px 6px 12px $color-box-shadow;
+
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  border-left: $standard-space solid $text-color;
+
+  border-radius: $standard-space;
+  background-color: $color-white;
+}
+
+// Default toast
+.toast-class {
+  @extend %default-toast;
+}
+
+// Success
+.success-toast {
+  @extend %default-toast;
+  border-left: $standard-space solid $color-state-available;
+}
+
+// Warning
+.warning-toast {
+  @extend %default-toast;
+  border-left: $standard-space solid $color-state-warning;
+}
+
+// Danger
+.danger-toast {
+  @extend %default-toast;
+  border-left: $standard-space solid $color-state-error;
+}
+
+.dismiss-icon {
+  cursor: pointer;
+  font-size: larger;
+  margin-left: $standard-space;
+}

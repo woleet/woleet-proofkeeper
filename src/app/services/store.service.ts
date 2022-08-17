@@ -4,9 +4,7 @@ import * as Store from 'electron-store';
 @Injectable({
   providedIn: 'root',
 })
-
 export class StoreService {
-
   public store: Store<any>;
 
   public constructor() {
