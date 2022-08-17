@@ -1,14 +1,14 @@
 <div class="modal fade-in">
   <div class="modal-content big-modal">
     <div class="full-width" *ngIf="screen === 0">
-      <h1 class="mat-h1 text-center">
+      <h1 class="text-center">
         {{ translations.deeplink.invalidConf | translate }}
       </h1>
       <p>{{ translations.deeplink.pleaseCheck | translate }}<br /></p>
     </div>
 
     <div class="full-width" *ngIf="screen === 1">
-      <h1 class="mat-h1 text-center">
+      <h1 class="text-center">
         {{ translations.commons.setupAuthenticationToWoleetAPI | translate }}
       </h1>
       <div>
@@ -30,7 +30,7 @@
 
     <div class="full-width" *ngIf="screen === 2">
       <h1
-        class="mat-h1 text-center"
+        class="text-center"
         *ngIf="pubKeyAddressGroup.length === 0"
       >
         {{ translations.deeplink.setupAuthenticationToWids | translate }}

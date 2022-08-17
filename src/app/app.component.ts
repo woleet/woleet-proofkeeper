@@ -1,14 +1,11 @@
 import { Component, NgZone } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { ipcRenderer } from 'electron';
 import * as Store from 'electron-store';
-import { DeeplinkComponent } from './deeplink/deeplink.component';
 import { LanguageService } from './services/language.service';
 import { SettingsMessageService } from './services/settingsMessage.service';
 import { StoreService } from './services/store.service';
 import { WoleetCliParametersService } from './services/woleetcliParameters.service';
-import { WizardComponent } from './wizard/wizard.component';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +14,6 @@ import { WizardComponent } from './wizard/wizard.component';
 })
 export class AppComponent {
   public active: Menus;
-  private wizardDialog: MatDialogRef<WizardComponent>;
-  private deeplinkDialog: MatDialogRef<DeeplinkComponent>;
   private store: Store<any>;
   openDeeplinkDialog = false;
   openWizardDialog = false;
@@ -26,7 +21,6 @@ export class AppComponent {
 
   constructor(
     storeService: StoreService,
-    public dialog: MatDialog,
     private settingsMessageService: SettingsMessageService,
     private zone: NgZone,
     private translateService: TranslateService,

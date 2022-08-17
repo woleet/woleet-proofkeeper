@@ -36,7 +36,7 @@
 </form>
 
 <div class="card card-part" *ngIf="addState">
-  <h3 class="mat-h3">{{ translations.settings.addIdentity | translate }}</h3>
+  <h3>{{ translations.settings.addIdentity | translate }}</h3>
   <div>
     <form class="mb" [formGroup]="addIdentityFormGroup">
       <div class="input-section no-mb">
@@ -132,13 +132,13 @@
     <i class="icon-add"></i>
     {{ translations.commons.labelNames.add | translate }}
   </button>
-  <h3 class="mat-h3">{{ translations.settings.sealIdentities | translate }}</h3>
-  <mat-list-item
+  <h3>{{ translations.settings.sealIdentities | translate }}</h3>
+  <div
     *ngFor="
       let identityContent of identityService.arrayIdentityContent;
       last as last
     "
-    role="listitem"
+    
   >
     <div
       class="identity-spacer"
@@ -264,7 +264,7 @@
         </button>
       </div>
     </div>
-  </mat-list-item>
+  </div>
 </div>
 
 <div class="card card-part">

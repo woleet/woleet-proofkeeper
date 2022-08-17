@@ -123,3 +123,14 @@ hr {
 .text-center {
   text-align: center
 }
+
+h1 {
+  font-weight: $default-font-weight;
+  margin: $standard-space * 3 0;
+  font-size: 1.5rem;
+}
+
+h3 {
+  margin: 9px 0;
+  font-weight: $default-font-weight;
+}
