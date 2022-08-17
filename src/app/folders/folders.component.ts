@@ -61,6 +61,7 @@ export class FoldersComponent {
   onExitDialog(confirmDelete: boolean) {
     if (confirmDelete) {
       try {
+        this.panelsOpened.fill(false);
         this.cliRunnerFolderInterface.deleteFolder(
           this.getFolderDescFromFormGroup(this.folderFormSelectedForDeletion)
         );
