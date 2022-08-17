@@ -1,6 +1,3 @@
-@use '@angular/material' as mat;
-$material-icons-font-path: '~material-design-icons/iconfont/';
-@import '~material-design-icons/iconfont/material-icons.css';
 @import 'variables';
 @import 'commons';
 @import 'card';
@@ -13,50 +10,6 @@ $material-icons-font-path: '~material-design-icons/iconfont/';
 @import 'input';
 @import 'table';
 @import 'collapse';
-
-@include mat.core();
-
-// Generated with: http://mcg.mbitson.com/#!?mcgpalette0=%234814ad&themename=mcgtheme
-$woleet-palette: (
-  50 : #e9e3f5,
-  100 : #c8b9e6,
-  200 : #a48ad6,
-  300 : #7f5bc6,
-  400 : #6337b9,
-  500 : #4814ad,
-  600 : #4112a6,
-  700 : #380e9c,
-  800 : #300b93,
-  900 : #210683,
-  A100 : #beb1ff,
-  A200 : #937eff,
-  A400 : #684bff,
-  A700 : #5331ff,
-  contrast: (50 : #000000,
-    100 : #000000,
-    200 : #000000,
-    300 : #000000,
-    400 : #000000,
-    500 : #ffffff,
-    600 : #ffffff,
-    700 : #ffffff,
-    800 : #ffffff,
-    900 : #ffffff,
-    A100 : #000000,
-    A200 : #000000,
-    A400 : #000000,
-    A700 : #000000,
-  )
-);
-
-$primary: mat.define-palette($woleet-palette);
-$warn: mat.define-palette(mat.$red-palette);
-$accent: mat.define-palette(mat.$red-palette, 400);
-@include mat.all-component-themes(mat.define-light-theme($primary, $accent));
-
-.dark-theme {
-  @include mat.all-component-themes(mat.define-dark-theme($primary, $accent));
-}
 
 html,
 body,

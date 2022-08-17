@@ -1,24 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injector, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
-import {
-  MatFormFieldModule,
-  MAT_FORM_FIELD_DEFAULT_OPTIONS
-} from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -78,21 +60,6 @@ export class WebpackTranslateLoader implements TranslateLoader {
     ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatGridListModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    MatChipsModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatTabsModule,
-    MatExpansionModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
@@ -109,11 +76,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     IdentityService,
     CliRunnerFolderInterface,
     ToastService,
-    TranslationService,
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'standard' },
-    },
+    TranslationService
   ],
   bootstrap: [AppComponent],
 })
