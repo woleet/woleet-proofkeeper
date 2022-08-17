@@ -138,19 +138,16 @@
   </form>
   <br />
   <div class="collapse">
-    <div
-      *ngFor="
-        let folderForm of foldersFormGroup;
-        let i = index;
-        let first = first
-      "
-    >
+    <div *ngFor="let folderForm of foldersFormGroup; let i = index">
       <div
         *ngIf="
           folderForm.get('action').value === folderFormGroup.get('action').value
         "
         class="collapse-panel"
-        [ngClass]="{ selected: panelsOpened[i], first: first }"
+        [ngClass]="{
+          selected: panelsOpened[i],
+          first: checkIsFirstElement(folderForm)
+        }"
         (click)="panelsOpened[i] = !this.panelsOpened[i]"
       >
         <div

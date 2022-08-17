@@ -20,7 +20,7 @@ import { collapseAnimation } from '../shared/animations/customs.animation';
   selector: 'app-folders',
   templateUrl: './folders.component.html',
   styleUrls: ['./folders.component.scss'],
-  animations: [collapseAnimation]
+  animations: [collapseAnimation],
 })
 export class FoldersComponent {
   public out: string;
@@ -151,6 +151,7 @@ export class FoldersComponent {
   }
 
   changeTab() {
+    this.panelsOpened.fill(false);
     if (this.folderFormGroup.get('action').value === 'sign') {
       this.folderFormGroup.patchValue({
         action: 'anchor',
@@ -162,6 +163,18 @@ export class FoldersComponent {
     }
     this.folderFormGroup.get('path').updateValueAndValidity();
     this.folderFormGroup.get('identity').updateValueAndValidity();
+  }
+
+  checkIsFirstElement(folderFormGroup: FormGroup) {
+    return (
+      this.foldersFormGroup
+        .filter(
+          (folder) =>
+            folder.get('action').value ===
+            this.folderFormGroup.get('action').value
+        )
+        .indexOf(folderFormGroup) === 0
+    );
   }
 
   onAddFolderClick() {
@@ -258,7 +271,6 @@ export class FoldersComponent {
       this.foldersFormGroup[i].markAsDirty();
     }
     this.foldersFormGroup[i].get('identity').setValue(value);
-   
     this.foldersFormGroup[i].get('identity').updateValueAndValidity();
   }
 
@@ -267,7 +279,7 @@ export class FoldersComponent {
       this.identityService.arrayIdentityContent.length === 0 ||
       (this.identityService.arrayIdentityContent.length !== 0 &&
         form.get('identity').getError('voidIdentity')) ||
-        form.get('identity').getError('identityNotFound')
+      form.get('identity').getError('identityNotFound')
     );
   }
 
@@ -293,7 +305,6 @@ export class FoldersComponent {
       );
     }
   }
-
 }
 
 function noDuplicatePathValidatorFactory(thisParam) {
