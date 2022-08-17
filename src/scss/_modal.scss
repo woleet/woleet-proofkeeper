@@ -15,6 +15,8 @@
     border: 3px solid $main-color;
   }
 
+
+
   .modal-content {
     word-break: keep-all;
     padding: $standard-space * 4;
@@ -25,6 +27,15 @@
     max-height: fit-content;
     background-color: $color-white;
     overflow: auto;
+
+    .dialog-title {
+      font-size: 2em;
+      margin-top: 20vh;
+    }
+    
+    .dialog-subtitle {
+      font-size: 1em;
+    }
 
     &.big-modal {
       height: 80vh;

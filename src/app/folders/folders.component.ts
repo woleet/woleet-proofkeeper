@@ -14,11 +14,13 @@ import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.s
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
 import { TranslationService } from '../services/translation.service';
+import { collapseAnimation } from '../shared/animations/customs.animation';
 
 @Component({
   selector: 'app-folders',
   templateUrl: './folders.component.html',
   styleUrls: ['./folders.component.scss'],
+  animations: [collapseAnimation]
 })
 export class FoldersComponent {
   public out: string;
@@ -28,6 +30,7 @@ export class FoldersComponent {
   public addState: boolean;
   openConfirmDialog = false;
   folderFormSelectedForDeletion: FormGroup;
+  panelsOpened: Array<boolean> = [];
 
   constructor(
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
@@ -290,6 +293,7 @@ export class FoldersComponent {
       );
     }
   }
+
 }
 
 function noDuplicatePathValidatorFactory(thisParam) {

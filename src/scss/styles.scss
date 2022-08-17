@@ -12,6 +12,7 @@ $material-icons-font-path: '~material-design-icons/iconfont/';
 @import 'checkbox';
 @import 'input';
 @import 'table';
+@import 'collapse';
 
 @include mat.core();
 

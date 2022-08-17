@@ -37,7 +37,7 @@
     <div class="d-flex mt mb">
       <div class="input-with-close-icon">
         <input
-          type="text"
+          type="collapse-panel-text"
           class="default-input"
           [ngClass]="{
             'is-invalid': folderFormGroup.get('path').getError('collidingPaths')
@@ -115,7 +115,7 @@
 
     <div class="input-section">
       <input
-        type="text"
+        type="collapse-panel-text"
         class="default-input"
         [placeholder]="
           translations.folders.proveFilesMatchingRegularExpression | translate
@@ -137,138 +137,146 @@
     </span>
   </form>
   <br />
-  <div class="watchedFolders">
-    <mat-accordion>
-      <ng-container *ngFor="let folderForm of foldersFormGroup; let i = index">
-        <mat-expansion-panel
+  <div class="collapse">
+    <div
+      *ngFor="
+        let folderForm of foldersFormGroup;
+        let i = index;
+        let first = first
+      "
+    >
+      <div
+        *ngIf="
+          folderForm.get('action').value === folderFormGroup.get('action').value
+        "
+        class="collapse-panel"
+        [ngClass]="{ selected: panelsOpened[i], first: first }"
+        (click)="panelsOpened[i] = !this.panelsOpened[i]"
+      >
+        <div
+          class="collapse-panel-text"
+          [ngClass]="{ selected: panelsOpened[i] }"
+        >
+          {{ folderForm.get('path').value }}
+        </div>
+        <div class="btn-on-right">
+          <div
+            class="state mr"
+            [class]="getStatusColor(i)"
+            [appTooltip]="getStatusTooltip(i)"
+            (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
+          ></div>
+          <button
+            class="btn btn-danger btn-without-background"
+            [appTooltip]="
+              translations.folders.tooltips.deleteFolder | translate
+            "
+            (click)="
+              $event.stopPropagation();
+              openConfirmDialog = true;
+              folderFormSelectedForDeletion = folderForm
+            "
+          >
+            <i class="icon-trash trash-btn"></i>
+          </button>
+          <i
+            class="icon-play for-collapse"
+            [ngClass]="!panelsOpened[i] ? 'selected' : ''"
+          ></i>
+        </div>
+      </div>
+      <form
+        *ngIf="panelsOpened[i] === true"
+        [formGroup]="folderForm"
+        [@collapseAnimation]
+        class="collapse-container"
+      >
+        <div
+          *ngIf="folderForm.get('action').value === 'sign'"
+          class="select-identity"
+        >
+          <app-custom-select
+            [labelName]="translations.folders.identityToUse | translate"
+            [options]="getIdentityNames()"
+            [onError]="errorOnSelectIdentity(folderForm)"
+            [selectedOption]="folderForm.get('identity').value"
+            (onChangeOption)="onChangingFormFolder(i, $event)"
+          >
+          </app-custom-select>
+          <div *ngIf="errorOnSelectIdentity(folderForm)" class="input-error">
+            {{ errorTextOnSelectIdentity(folderForm) }}
+          </div>
+        </div>
+        <div
           *ngIf="
             folderForm.get('action').value ===
             folderFormGroup.get('action').value
           "
         >
-          <mat-expansion-panel-header>
-            <div class="span-expansion-panel-header">
-              <span class="span-folder-name">{{
-                folderForm.get('path').value
-              }}</span>
-              <div class="btn-on-right">
-                <div
-                  class="state mr"
-                  [class]="getStatusColor(i)"
-                  [appTooltip]="getStatusTooltip(i)"
-                  (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
-                ></div>
-                <button
-                  class="btn btn-danger btn-without-background"
-                  [appTooltip]="
-                    translations.folders.tooltips.deleteFolder | translate
-                  "
-                  (click)="
-                    $event.stopPropagation();
-                    openConfirmDialog = true;
-                    folderFormSelectedForDeletion = folderForm
-                  "
-                >
-                  <i class="icon-trash trash-btn"></i>
-                </button>
-              </div>
-            </div>
-          </mat-expansion-panel-header>
-          <form [formGroup]="folderForm">
-            <div
-              *ngIf="folderForm.get('action').value === 'sign'"
-              class="select-identity"
-            >
-              <app-custom-select
-                [labelName]="translations.folders.identityToUse | translate"
-                [options]="getIdentityNames()"
-                [onError]="errorOnSelectIdentity(folderForm)"
-                [selectedOption]="folderForm.get('identity').value"
-                (onChangeOption)="onChangingFormFolder(i, $event)"
-              >
-              </app-custom-select>
-              <div
-                *ngIf="errorOnSelectIdentity(folderForm)"
-                class="input-error"
-              >
-                {{ errorTextOnSelectIdentity(folderForm) }}
-              </div>
-            </div>
-            <div
-              *ngIf="
-                folderForm.get('action').value ===
-                folderFormGroup.get('action').value
+          <label class="checkbox-content">
+            <input type="checkbox" formControlName="public" />
+            {{ translations.folders.checkbox.makeProofsPublicly | translate }}
+          </label>
+
+          <label class="checkbox-content">
+            <input type="checkbox" formControlName="recursive" />
+            {{
+              translations.folders.checkbox.includeFilesFromSubfolders
+                | translate
+            }}
+          </label>
+
+          <label class="checkbox-content">
+            <input type="checkbox" formControlName="strict" />
+            {{ translations.folders.checkbox.recreateProofs | translate }}
+          </label>
+
+          <label class="checkbox-content">
+            <input type="checkbox" formControlName="prune" />
+            {{ translations.folders.checkbox.deleteOldProofs | translate }}
+          </label>
+
+          <label
+            *ngIf="folderForm.get('action').value === 'sign'"
+            class="checkbox-content"
+          >
+            <input type="checkbox" formControlName="iDServerUnsecureSSL" />
+            {{
+              translations.folders.checkbox.notCheckSSLCertificate | translate
+            }}
+          </label>
+          <div class="input-section">
+            <input
+              type="collapse-panel-text"
+              class="default-input"
+              [placeholder]="
+                translations.folders.proveFilesMatchingRegularExpression
+                  | translate
               "
-            >
-              <label class="checkbox-content">
-                <input type="checkbox" formControlName="public" />
-                {{
-                  translations.folders.checkbox.makeProofsPublicly | translate
-                }}
-              </label>
-
-              <label class="checkbox-content">
-                <input type="checkbox" formControlName="recursive" />
-                {{
-                  translations.folders.checkbox.includeFilesFromSubfolders
-                    | translate
-                }}
-              </label>
-
-              <label class="checkbox-content">
-                <input type="checkbox" formControlName="strict" />
-                {{ translations.folders.checkbox.recreateProofs | translate }}
-              </label>
-
-              <label class="checkbox-content">
-                <input type="checkbox" formControlName="prune" />
-                {{ translations.folders.checkbox.deleteOldProofs | translate }}
-              </label>
-
-              <label
-                *ngIf="folderForm.get('action').value === 'sign'"
-                class="checkbox-content"
-              >
-                <input type="checkbox" formControlName="iDServerUnsecureSSL" />
-                {{
-                  translations.folders.checkbox.notCheckSSLCertificate
-                    | translate
-                }}
-              </label>
-              <div class="input-section">
-                <input
-                  type="text"
-                  class="default-input"
-                  [placeholder]="
-                    translations.folders.proveFilesMatchingRegularExpression
-                      | translate
-                  "
-                  formControlName="filter"
-                />
-              </div>
-            </div>
-            <div>
-              <button
-                class="btn btn-primary mr"
-                (click)="onClickFixReceipts(folderForm)"
-              >
-                {{ translations.folders.fixReceipts | translate }}
-              </button>
-              {{ translations.folders.renameOldReceiptsAndFix | translate }}
-            </div>
-            <span class="span-update-configuration">
-              <button
-                class="btn btn-primary"
-                [disabled]="folderForm.pristine || folderForm.invalid"
-                (click)="onClickUpdateFolderOptions(folderForm)"
-              >
-                {{ translations.folders.updateConfig | translate }}
-              </button>
-            </span>
-          </form>
-        </mat-expansion-panel>
-      </ng-container>
-    </mat-accordion>
+              formControlName="filter"
+            />
+          </div>
+        </div>
+        <div>
+          <button
+            class="btn btn-primary mr"
+            (click)="onClickFixReceipts(folderForm)"
+          >
+            {{ translations.folders.fixReceipts | translate }}
+          </button>
+          {{ translations.folders.renameOldReceiptsAndFix | translate }}
+        </div>
+        <span class="span-update-configuration">
+          <button
+            class="btn btn-primary"
+            [disabled]="folderForm.pristine || folderForm.invalid"
+            (click)="onClickUpdateFolderOptions(folderForm)"
+          >
+            {{ translations.folders.updateConfig | translate }}
+          </button>
+        </span>
+      </form>
+    </div>
   </div>
 </div>
 

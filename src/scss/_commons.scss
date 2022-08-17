@@ -109,3 +109,17 @@ hr {
 *::after {
   box-sizing: border-box;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.align-end {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.text-center {
+  text-align: center
+}

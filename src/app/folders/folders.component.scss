@@ -1,34 +1,8 @@
 @import '../../scss/variables';
 
-.align-end {
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-}
-
-.span-expansion-panel-header {
-  display: flex;
-  flex: 1;
-  justify-content: space-between;
-  margin-right: 30px;
-  width: calc(100% - 30px);
-}
-
-.span-folder-name {
-  align-self: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  direction: rtl;
-}
-
 .span-update-configuration {
   display: flex;
   justify-content: flex-end;
-}
-
-.icon-in-input {
-  padding: 0;
 }
 
 .trash-btn {

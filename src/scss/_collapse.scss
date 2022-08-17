@@ -1,0 +1,53 @@
+.collapse {
+  position: relative;
+  transition: all 0.25s ease-in-out;
+
+  .collapse-panel {
+    border-color: $color-grey-light-02;
+    padding: $standard-space * 2;
+    border-bottom-style: solid;
+    border-bottom-width: $main-border-width;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+
+    &.first {
+      border-top-style: solid;
+      border-top-width: $main-border-width;
+    }
+
+    &:hover,
+    &.selected {
+      cursor: pointer;
+      background-color: $color-grey-light-02;
+    }
+
+    .collapse-panel-text {
+      align-self: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: rtl;
+
+      &.selected {
+        font-weight: $default-font-weight;
+      }
+    }
+
+    .for-collapse {
+      margin-left: $standard-space * 4;
+      transform: rotate(270deg);
+      transition-duration: 0.25s;
+
+      &.selected {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  .collapse-container {
+    overflow: hidden;
+    background: $color-grey-light-02;
+    padding: $standard-space * 2 $standard-space * 4;
+  }
+}
