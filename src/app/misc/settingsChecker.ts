@@ -2,19 +2,23 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AppInjector } from '../app.module';
+import { getDefaultApiUrl } from '../services/shared.service';
+import { StoreService } from '../services/store.service';
 import { ToastService, TOAST_STATE } from '../services/toast.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
 import { PubKeyAddressGroup } from './identitiesFromServer';
 
 export async function checkAndSubmit(
+  
   http: HttpClient,
   formGroup: FormGroup,
   cliService: WoleetCliParametersService,
   toastService: ToastService,
   screenPage?: number[]
 ) {
-  let apiURL = `https://api.woleet.io/v1`;
+  let apiURL = getDefaultApiUrl();
+
   if (formGroup.get('url')) {
     if (formGroup.get('url').value) {
       apiURL = formGroup.get('url').value;
@@ -31,7 +35,7 @@ export async function checkAndSubmit(
       openToastBarError(toastService);
       return;
     }
-    if (apiURL === `https://api.woleet.io/v1`) {
+    if (apiURL === getDefaultApiUrl()) {
       cliService.setWoleetCliParameters(formGroup.get('token').value);
     } else {
       cliService.setWoleetCliParameters(
@@ -51,6 +55,13 @@ export async function checkAndSubmit(
     );
     return;
   }
+}
+
+export function storeManualActionsFolder(
+  value: string,
+  storeService: StoreService
+) {
+  storeService.setProofReceiptsOfManualOperationsFolder(value);
 }
 
 export async function checkwIDConnectionGetAvailableKeys(

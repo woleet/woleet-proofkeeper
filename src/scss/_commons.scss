@@ -104,6 +104,23 @@ hr {
   width: 100%;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.icon-btn {
+  top: 6px;
+  font-size: 14px;
+}
+
+.align-right {
+  text-align: right;
+}
+
 *,
 *::before,
 *::after {
@@ -133,4 +150,9 @@ h1 {
 h3 {
   margin: 9px 0;
   font-weight: $default-font-weight;
+}
+
+.input-with-close-icon {
+  position: relative;
+  width: 100%;
 }

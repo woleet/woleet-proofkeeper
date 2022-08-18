@@ -9,6 +9,7 @@ import { from } from 'rxjs';
 import { pluck } from 'rxjs/operators';
 import { AppComponent } from './app.component';
 import { DeeplinkComponent } from './deeplink/deeplink.component';
+import { FilesComponent } from './files/files.component';
 import { FoldersComponent } from './folders/folders.component';
 import { InfosComponent } from './infos/infos.component';
 import { LogsComponent } from './logs/logs.component';
@@ -24,6 +25,7 @@ import { ConfirmationDialogComponent } from './shared/components/confirmation-di
 import { CustomSelectComponent } from './shared/components/custom-select/custom-select.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+import { DragDropDirective } from './shared/directives/drag-drop.directive';
 import { TooltipDirective } from './shared/directives/tooltip.directive';
 import { LangPipe } from './shared/pipes/lang.pipe';
 import { LogPipe } from './shared/pipes/log.pipe';
@@ -54,6 +56,8 @@ export class WebpackTranslateLoader implements TranslateLoader {
     LangPipe,
     LogPipe,
     ToastComponent,
+    FilesComponent,
+    DragDropDirective,
   ],
   imports: [
     FormsModule,
@@ -76,7 +80,7 @@ export class WebpackTranslateLoader implements TranslateLoader {
     IdentityService,
     CliRunnerFolderInterface,
     ToastService,
-    TranslationService
+    TranslationService,
   ],
   bootstrap: [AppComponent],
 })

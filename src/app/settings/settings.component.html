@@ -26,10 +26,40 @@
       formControlName="url"
     />
   </div>
+
+  <div class="input-label">
+    {{  translations.commons.labelNames[DEFAULT_VALUE_MANUAL_OPERATION_FOLDER] | translate }}
+  </div>
+  <div class="select-folder-input">
+    <div class="input-with-close-icon">
+      <input
+        type="text"
+        class="default-input"
+        [placeholder]="
+          translations.commons.labelNames[DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]
+            | translate
+        "
+        [formControlName]="DEFAULT_VALUE_MANUAL_OPERATION_FOLDER"
+      />
+      <button
+        *ngIf="
+          settingsFormGroup.get(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER).value
+        "
+        (click)="resetPath(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)"
+        class="btn btn-without-background btn-inside-input"
+      >
+        <i class="icon-close mr"></i>
+      </button>
+    </div>
+    <button class="btn btn-primary ml" (click)="onClickPopUpDirectory(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)">
+      {{ translations.folders.chooseFolder | translate }}
+    </button>
+  </div>
+
   <button
     class="btn btn-primary"
     [disabled]="settingsFormGroup.invalid"
-    (click)="onClickcheckAndSubmit()"
+    (click)="onClickCheckAndSubmit()"
   >
     {{ translations.commons.buttons.save | translate }}
   </button>
@@ -138,7 +168,6 @@
       let identityContent of identityService.arrayIdentityContent;
       last as last
     "
-    
   >
     <div
       class="identity-spacer"

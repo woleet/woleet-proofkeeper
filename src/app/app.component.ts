@@ -5,7 +5,6 @@ import * as Store from 'electron-store';
 import { LanguageService } from './services/language.service';
 import { SettingsMessageService } from './services/settingsMessage.service';
 import { StoreService } from './services/store.service';
-import { WoleetCliParametersService } from './services/woleetcliParameters.service';
 
 @Component({
   selector: 'app-root',
@@ -24,15 +23,14 @@ export class AppComponent {
     private settingsMessageService: SettingsMessageService,
     private zone: NgZone,
     private translateService: TranslateService,
-    private languageService: LanguageService,
-    private cli: WoleetCliParametersService
+    private languageService: LanguageService
   ) {
-    this.setLanguage();
     this.store = storeService.store;
+    this.setLanguage();
     if (!this.store.get('wizardBypass', false)) {
       this.openWizardDialog = true;
     }
-    this.setActiveFolders();
+    this.setActiveFiles();
 
     ipcRenderer.on('deeplink', (event, deeplinkingUrl) => {
       this.zone.run(() => {
@@ -61,6 +59,10 @@ export class AppComponent {
     this.deeplinkingUrl = null;
   }
 
+  setActiveFiles() {
+    this.active = 'files';
+  }
+
   setActiveFolders() {
     this.active = 'folders';
   }
@@ -84,8 +86,8 @@ export class AppComponent {
     this.translateService.addLangs(
       this.languageService.getSupportedLanguages()
     );
-    this.translateService.use(this.cli.getLang());
+    this.translateService.use(this.store.get('lang'));
   }
 }
 
-type Menus = 'folders' | 'settings' | 'logs' | 'infos';
+type Menus = 'files' | 'folders' | 'settings' | 'logs' | 'infos';

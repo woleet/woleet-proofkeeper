@@ -1,6 +1,13 @@
 <div class="app-body">
   <div class="sidebar">
     <a
+      (click)="setActiveFiles()"
+      class="menu-button"
+      [ngClass]="{ active: active === 'files' }"
+    >
+      <i class="icon-document menu-button-icon"></i>
+    </a>
+    <a
       (click)="setActiveFolders()"
       class="menu-button"
       [ngClass]="{ active: active === 'folders' }"
@@ -30,6 +37,7 @@
     </a>
   </div>
   <div class="main-screen">
+    <app-files *ngIf="active === 'files'"></app-files>
     <app-folders *ngIf="active === 'folders'"></app-folders>
     <app-settings *ngIf="active === 'settings'"></app-settings>
     <app-logs *ngIf="active === 'logs'"></app-logs>
@@ -43,9 +51,6 @@
   (exitDialog)="onExitDialog()"
 ></app-deeplink>
 
-<app-wizard
-  *ngIf="openWizardDialog"
-  (exitDialog)="onExitDialog()"
-></app-wizard>
+<app-wizard *ngIf="openWizardDialog" (exitDialog)="onExitDialog()"></app-wizard>
 
-<app-toast></app-toast> 
+<app-toast></app-toast>

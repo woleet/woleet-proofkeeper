@@ -6,17 +6,24 @@ const { shell } = require('electron');
 @Component({
   selector: 'app-infos',
   templateUrl: './infos.component.html',
-  styleUrls: ['./infos.component.scss']
+  styleUrls: ['./infos.component.scss'],
 })
 export class InfosComponent {
   public cliVersion: string;
   public proofKeeperVersion: string;
 
-  constructor(private cli: WoleetCliParametersService, public translations: TranslationService) {
+  constructor(
+    private cli: WoleetCliParametersService,
+    public translations: TranslationService
+  ) {
     // tslint:disable-next-line: max-line-length
-    const cliResult = require('child_process').spawnSync(this.cli.woleetCli.getCliPath(), ['--version'], {stdio: 'pipe', windowsHide: true});
+    const cliResult = require('child_process').spawnSync(
+      this.cli.woleetCli.getCliPath(),
+      ['--version'],
+      { stdio: 'pipe', windowsHide: true }
+    );
     this.cliVersion = cliResult.stdout.toString().replace('version ', '');
-    const {app} = require('@electron/remote');
+    const { app } = require('@electron/remote');
     this.proofKeeperVersion = `${app.getName()} ${app.getVersion()}`;
   }
 
@@ -29,6 +36,8 @@ export class InfosComponent {
   }
 
   clickOnLicense() {
-    shell.openExternal('https://raw.githubusercontent.com/woleet/woleet-proofkeeper/master/LICENSE');
+    shell.openExternal(
+      'https://raw.githubusercontent.com/woleet/woleet-proofkeeper/master/LICENSE'
+    );
   }
 }

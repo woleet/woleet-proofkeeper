@@ -7,6 +7,19 @@ input[type='radio']:checked+* {
   font-weight: $default-font-weight;
 }
 
+.select-folder-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: $standard-space * 2;
+}
+
+.input-label {
+  margin-bottom: $standard-space;
+  color: $color-text-second;
+  font-weight: $font-weight-medium;
+  text-align: left;
+}
+
 .input-section {
   margin-top: $standard-space * 2;
   margin-bottom: $standard-space * 2;

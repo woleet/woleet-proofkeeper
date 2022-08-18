@@ -29,10 +29,7 @@
     </div>
 
     <div class="full-width" *ngIf="screen === 2">
-      <h1
-        class="text-center"
-        *ngIf="pubKeyAddressGroup.length === 0"
-      >
+      <h1 class="text-center" *ngIf="pubKeyAddressGroup.length === 0">
         {{ translations.deeplink.setupAuthenticationToWids | translate }}
       </h1>
       <div *ngIf="pubKeyAddressGroup.length === 0">

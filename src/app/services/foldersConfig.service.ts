@@ -1,13 +1,12 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { StoreService } from './store.service';
-import { FolderParam } from '../misc/folderParam';
-import { IdentityService } from './Identity.service';
-import { FolderDoneService } from './folderDone.service';
-import { Subscription } from 'rxjs';
 import * as remote from '@electron/remote';
-import * as semver from 'semver';
 import * as Store from 'electron-store';
-import * as log from 'loglevel';
+import { Subscription } from 'rxjs';
+import * as semver from 'semver';
+import { FolderParam } from '../misc/folderParam';
+import { FolderDoneService } from './folderDone.service';
+import { IdentityService } from './Identity.service';
+import { StoreService } from './store.service';
 
 export interface FolderDesc {
   action: string;
@@ -22,10 +21,18 @@ export interface FolderDesc {
 }
 
 function populateDefaultsFolderDesc(folderDesc: FolderDesc) {
-  if (!folderDesc.private) { folderDesc.private = false; }
-  if (!folderDesc.strict) { folderDesc.strict = false; }
-  if (!folderDesc.prune) { folderDesc.prune = false; }
-  if (!folderDesc.recursive) { folderDesc.recursive = false; }
+  if (!folderDesc.private) {
+    folderDesc.private = false;
+  }
+  if (!folderDesc.strict) {
+    folderDesc.strict = false;
+  }
+  if (!folderDesc.prune) {
+    folderDesc.prune = false;
+  }
+  if (!folderDesc.recursive) {
+    folderDesc.recursive = false;
+  }
 
   if (folderDesc.action === 'sign') {
     if (!folderDesc.iDServerUnsecureSSL) {
@@ -37,7 +44,6 @@ function populateDefaultsFolderDesc(folderDesc: FolderDesc) {
 @Injectable({
   providedIn: 'root',
 })
-
 export class FoldersConfigService implements OnDestroy {
   public folders: FolderParam[] = [];
   public store: Store<any>;
@@ -45,20 +51,28 @@ export class FoldersConfigService implements OnDestroy {
   private folderDoneSubscription: Subscription;
   private foldersToCheck: FolderParam[] = [];
 
-  public constructor(storeService: StoreService, private identityService: IdentityService, private folderDoneService: FolderDoneService) {
+  public constructor(
+    storeService: StoreService,
+    private identityService: IdentityService,
+    private folderDoneService: FolderDoneService
+  ) {
     this.store = storeService.store;
     this.checkUpgradePath();
     this.fixReceipts = this.store.get('fixReceipts');
     if (this.store.has('folders')) {
       const folders: FolderDesc[] = this.store.get('folders');
-      this.folders = folders.map(e => new FolderParam(e, this.fixReceipts, identityService));
-      this.folders.forEach(folder => {
+      this.folders = folders.map(
+        (e) => new FolderParam(e, this.fixReceipts, identityService)
+      );
+      this.folders.forEach((folder) => {
         populateDefaultsFolderDesc(folder);
       });
       if (this.fixReceipts) {
-        this.folderDoneSubscription = this.folderDoneService.getFolderParam().subscribe((folderParam) => {
-          this.receiveFolderDone(folderParam);
-        });
+        this.folderDoneSubscription = this.folderDoneService
+          .getFolderParam()
+          .subscribe((folderParam) => {
+            this.receiveFolderDone(folderParam);
+          });
         this.foldersToCheck = Array.from(this.folders);
       }
     }
@@ -71,10 +85,14 @@ export class FoldersConfigService implements OnDestroy {
   }
 
   private receiveFolderDone(folderParam: FolderParam) {
-    const index = this.folders.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
+    const index = this.folders.findIndex(
+      (f) => folderParam.path === f.path && folderParam.action === f.action
+    );
     if (index !== -1) {
       if (folderParam.logContext.exitCode === 0) {
-        const indexToCheck = this.foldersToCheck.findIndex(f => ((folderParam.path === f.path) && (folderParam.action === f.action)));
+        const indexToCheck = this.foldersToCheck.findIndex(
+          (f) => folderParam.path === f.path && folderParam.action === f.action
+        );
         if (index !== -1) {
           this.foldersToCheck.splice(indexToCheck, 1);
           this.folders[index].fixReceipts = false;
@@ -97,12 +115,18 @@ export class FoldersConfigService implements OnDestroy {
   }
 
   public addFolderFromInterface(folderDesc: FolderDesc) {
-    const newFolderParam = new FolderParam(folderDesc, false, this.identityService);
+    const newFolderParam = new FolderParam(
+      folderDesc,
+      false,
+      this.identityService
+    );
     this.addFolderFromClass(newFolderParam);
   }
 
   public deleteFolder(folder: FolderDesc) {
-    const index = this.folders.findIndex(f => ((folder.path === f.path) && (folder.action === f.action)));
+    const index = this.folders.findIndex(
+      (f) => folder.path === f.path && folder.action === f.action
+    );
 
     if (index === -1) {
       throw new Error('Unable to find the folder to delete');
@@ -113,7 +137,9 @@ export class FoldersConfigService implements OnDestroy {
   }
 
   public updateFolderOptions(folder: FolderDesc) {
-    const found = this.folders.find(elem => ((folder.path === elem.path) && (folder.action === elem.action)));
+    const found = this.folders.find(
+      (elem) => folder.path === elem.path && folder.action === elem.action
+    );
 
     if (!found) {
       throw new Error('Unable to find the folder to update');
@@ -133,8 +159,8 @@ export class FoldersConfigService implements OnDestroy {
 
   public saveFolders() {
     const retFolderParam: any[] = [];
-    this.folders.forEach(folder => {
-      const tempfolder = ({ ...folder }); // Used to copy the object
+    this.folders.forEach((folder) => {
+      const tempfolder = { ...folder }; // Used to copy the object
       delete tempfolder.logContext;
       delete tempfolder.identityService;
       delete tempfolder.fixReceipts;
@@ -146,8 +172,13 @@ export class FoldersConfigService implements OnDestroy {
     this.store.set('folders', retFolderParam);
   }
 
-  public getFolderParamFromActionPath(action: string, path: string): FolderParam {
-    const foundFolder = this.folders.find(elem => ((action === elem.action) && (path === elem.path)));
+  public getFolderParamFromActionPath(
+    action: string,
+    path: string
+  ): FolderParam {
+    const foundFolder = this.folders.find(
+      (elem) => action === elem.action && path === elem.path
+    );
     if (!foundFolder) {
       throw new Error('Unable to find the folder to get params from');
     }

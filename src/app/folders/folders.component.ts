@@ -6,13 +6,13 @@ import {
   ValidationErrors,
   Validators
 } from '@angular/forms';
-import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
 import * as log from 'loglevel';
 import { LogContext } from '../misc/logs';
 import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.service';
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
+import { SharedService } from '../services/shared.service';
 import { TranslationService } from '../services/translation.service';
 import { collapseAnimation } from '../shared/animations/customs.animation';
 
@@ -37,7 +37,8 @@ export class FoldersComponent {
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     public translations: TranslationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private sharedService: SharedService
   ) {
     this.addState = false;
 
@@ -112,19 +113,11 @@ export class FoldersComponent {
   }
 
   onClickPopUpDirectory() {
-    let path: string;
-    try {
-      path = remote.dialog.showOpenDialogSync({
-        properties: ['openDirectory'],
-      })[0];
-    } catch (error) {
-      path = '';
-    } finally {
-      this.folderFormGroup.patchValue({
-        path: path,
-      });
-      log.info(`Setting folder: ${this.folderFormGroup.get('path').value}`);
-    }
+    this.sharedService.openPopupDirectory(
+      this.folderFormGroup,
+      'path',
+      this.folderFormGroup.get('path').value
+    );
   }
 
   onClickAdd() {
@@ -146,9 +139,7 @@ export class FoldersComponent {
   }
 
   resetPath() {
-    this.folderFormGroup.patchValue({
-      path: '',
-    });
+    this.sharedService.resetPath(this.folderFormGroup);
   }
 
   changeTab() {
@@ -347,7 +338,7 @@ function noDuplicatePathValidatorFactory(thisParam) {
   };
 }
 
-function identityCheckerFactory(thisParam) {
+export function identityCheckerFactory(thisParam) {
   return function identityChecker(
     control: AbstractControl
   ): ValidationErrors | null {

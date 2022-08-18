@@ -3,10 +3,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as remote from '@electron/remote';
 import { TranslateService } from '@ngx-translate/core';
-import { PubKeyAddress, PubKeyAddressGroup } from '../misc/identitiesFromServer';
+import * as fs from 'fs';
+import * as log from 'loglevel';
+import * as path from 'path';
+import { FolderParam } from '../misc/folderParam';
+import {
+  PubKeyAddress,
+  PubKeyAddressGroup
+} from '../misc/identitiesFromServer';
 import {
   checkAndSubmit,
-  checkwIDConnectionGetAvailableKeys
+  checkwIDConnectionGetAvailableKeys,
+  storeManualActionsFolder
 } from '../misc/settingsChecker';
 import {
   noDuplicateIdentityNameValidatorFactoryOnAdd,
@@ -17,6 +25,8 @@ import { FoldersConfigService } from '../services/foldersConfig.service';
 import { IdentityContent, IdentityService } from '../services/Identity.service';
 import { LanguageService } from '../services/language.service';
 import { SettingsMessageService } from '../services/settingsMessage.service';
+import { adaptPath, SharedService } from '../services/shared.service';
+import { StoreService } from '../services/store.service';
 import { ToastService } from '../services/toast.service';
 import { TranslationService } from '../services/translation.service';
 import { WoleetCliParametersService } from '../services/woleetcliParameters.service';
@@ -42,9 +52,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
   identitySelected: IdentityContent;
   addPubKeyAddressKey: string;
   editPubKeyAddressKey: string;
+  DEFAULT_VALUE_MANUAL_OPERATION_FOLDER: string;
 
   constructor(
     private cli: WoleetCliParametersService,
+    private storeService: StoreService,
     private formBuilder: FormBuilder,
     public identityService: IdentityService,
     public foldersConfigService: FoldersConfigService,
@@ -53,7 +65,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     public translations: TranslationService,
     private translateService: TranslateService,
     private languageService: LanguageService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private sharedService: SharedService
   ) {
     this.initComponent();
     this.languages = this.languageService.getSupportedLanguages();
@@ -74,12 +87,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   initComponent() {
+    this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER =
+      this.storeService.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER;
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
     this.settingsFormGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()],
+      [this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]: [
+        this.storeService.getProofReceiptsOfManualOperationsFolder(),
+        [Validators.required],
+      ],
     });
 
     if (this.identityService.arrayIdentityContent.length === 0) {
@@ -115,12 +134,70 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
 
     this.languageFormGroup = this.formBuilder.group({
-      language: [this.cli.getLang(), [Validators.required]],
+      language: [this.storeService.getLang(), [Validators.required]],
     });
   }
 
-  onClickcheckAndSubmit() {
-    checkAndSubmit(this.http, this.settingsFormGroup, this.cli, this.toastService);
+  onClickCheckAndSubmit() {
+    const oldPath =
+      this.storeService.getProofReceiptsOfManualOperationsFolder();
+    const newPath = this.settingsFormGroup.get(
+      this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER
+    ).value;
+
+    if (oldPath !== newPath) {
+      this.updateFolderPathInFolderList(oldPath, newPath);
+      this.moveProofReceipts(oldPath, newPath);
+      storeManualActionsFolder(newPath, this.storeService);
+    }
+
+    checkAndSubmit(
+      this.http,
+      this.settingsFormGroup,
+      this.cli,
+      this.toastService,
+      null
+    );
+  }
+
+  updateFolderPathInFolderList(oldPath: string, newPath: string) {
+    let anchorFolder: FolderParam;
+    let signFolder: FolderParam;
+    try {
+      anchorFolder = this.foldersConfigService.getFolderParamFromActionPath(
+        'anchor',
+        oldPath
+      );
+      anchorFolder.path = newPath;
+      this.foldersConfigService.updateFolderOptions(anchorFolder);
+    } catch (e) {
+      log.error(e);
+    }
+
+    try {
+      signFolder = this.foldersConfigService.getFolderParamFromActionPath(
+        'sign',
+        oldPath
+      );
+      signFolder.path = newPath;
+      this.foldersConfigService.updateFolderOptions(signFolder);
+    } catch (e) {
+      log.error(e);
+    }
+  }
+
+  moveProofReceipts(oldPath: string, newPath: string) {
+    fs.readdir(oldPath, (err, files) => {
+      files.forEach((file) => {
+        const currentPath = adaptPath(path.join(oldPath, file));
+        const destinationPath = adaptPath(path.join(newPath, file));
+        if (path.extname(file) === '.json') {
+          fs.rename(currentPath, destinationPath, (err) => {
+            if (err) throw err;
+          });
+        }
+      });
+    });
   }
 
   onExitDialog(confirm: boolean) {
@@ -333,7 +410,19 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onLanguageChange(lang: string) {
     this.languageFormGroup.get('language').setValue(lang);
-    this.cli.setWoleetCliLang(lang);
+    this.storeService.setLang(lang);
     this.translateService.use(lang);
+  }
+
+  onClickPopUpDirectory(type: string) {
+    this.sharedService.openPopupDirectory(
+      this.settingsFormGroup,
+      type,
+      this.settingsFormGroup.get(type).value
+    );
+  }
+
+  resetPath(type: string) {
+    this.sharedService.resetPath(this.settingsFormGroup, type);
   }
 }

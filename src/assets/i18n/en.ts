@@ -17,7 +17,8 @@ export default {
     },
     errors: {
       nameAlreadyPresent: 'Name already present',
-      invalidJWTTokenFormat: 'Invalid JWT Token format'
+      invalidJWTTokenFormat: 'Invalid JWT Token format',
+      noApiToken: 'The Woleet API token must be defined'
     },
     labelNames: {
       name: 'Name',
@@ -26,6 +27,11 @@ export default {
       widsSignatureAPIURL: 'Woleet.ID Server signature API URL',
       widsAPIToken: 'Woleet.ID Server API Token',
       language: 'Language',
+      identityToUse: 'Identity to use',
+      value: 'Value',
+      status: 'Status:',
+      content: 'Content:',
+      proofReceiptsOfManualOperationsFolder: 'Default folder for manual operations',
       add: 'Add',
       select: 'Select'
     },
@@ -34,6 +40,36 @@ export default {
       askAdmin: 'Ask the administrator of your Woleet.ID Server for an API token.'
     },
     setupAuthenticationToWoleetAPI: 'Set up authentication to Woleet API'
+  },
+  files: {
+    tabs: {
+      anchor: 'File to timestamp',
+      sign: 'File to seal',
+    },
+    introText: {
+      anchor: 'Drop here the files for which you want to <b>create a proof of timestamp</b>. <br><br> Once the file are anchored in the Bitcoin blockchain, you will be able to <b>retrieve its proof receipt</b> in this folder: <br> <small><i>{{ pathFolder }}<i></small> <br><br> This proof receipt will allow you to <b>prove the existence of your file on the date of the timestamp</b>.',
+      sign: 'Drop here the file for which you want to <b>create a proof of seal</b>. <br><br> Once the file is signed, the signature is automatically anchored in the Bitcoin blockchain. <br>You will thus be able to <b>retrieve the proof receipt</b> in this folder: <br> <small><i>{{ pathFolder }}<i></small> <br><br>  This proof receipt will allow to <b>prove the validity and the date of the signature</b>.'
+    },
+    dropFile: 'Drop the file here <br> (or click to browse)',
+    labels: {
+      tags: 'Tags',
+      newTag: 'New tag...',
+      identityURL: 'Identity URL',
+      public: 'Public',
+      callbackURL: 'Callback URL',
+      url: 'URL',
+      testURL: 'Test URL',
+      metadata: 'Metadata'
+    },
+    hashing: 'Computing fingerprint…',
+    buttons: {
+      anchor: 'Timestamp the file',
+      sign: 'Sign with my identity server'
+    },
+    successTexts: {
+      anchor: 'Timestamping created in the following folder: ',
+      sign: 'Seal created created in the following folder: '
+    }
   },
   folders: {
     tabs: {
@@ -53,7 +89,6 @@ export default {
       deleteOldProofs: 'Delete old proofs if files are modified',
       notCheckSSLCertificate: 'Do not check the SSL certificate of Woleet.ID server (only use in development)'
     },
-    identityToUse: 'Identity to use',
     chooseFolder: 'Choose folder',
     folderToScan: 'Folder to scan',
     proveFilesMatchingRegularExpression: 'Only prove files matching this regular expression',
@@ -115,7 +150,7 @@ export default {
     setupIdentities: 'Set up identities for seal',
     setupIdentityInstruction: 'If you want ProofKeeper to seal files and create timestamped proofs of seal, you need to configure at least one seal identity (you will be able to add more seal identities using the settings after the wizard):',
     congratulations: 'Congratulations !',
-    congratulationSubtitle: 'You can now configure the folders for timestamping and seal.',
+    congratulationSubtitle: 'You can now configure or create the folders for timestamping and seal.',
     startConfig: 'Start configuration'
   }
 };
