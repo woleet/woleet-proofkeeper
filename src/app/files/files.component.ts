@@ -103,6 +103,30 @@ export class FilesComponent {
     this.fileFormGroup.get('identity').updateValueAndValidity();
   }
 
+  changeTab() {
+    if (this.getCurrentMode() === 'sign') {
+      this.fileFormGroup.patchValue({
+        action: 'anchor',
+      });
+
+      this.fileFormGroup.get('identity').removeValidators(Validators.required);
+    } else if (this.getCurrentMode() === 'anchor') {
+      this.fileFormGroup.patchValue({
+        action: 'sign',
+      });
+      this.fileFormGroup.get('identity').addValidators(Validators.required);
+    }
+    this.fileFormGroup.get('identity').updateValueAndValidity();
+  }
+
+  isOnAnchorTab() {
+    return this.getCurrentMode() === 'anchor';
+  }
+
+  isOnSignTab() {
+    return this.getCurrentMode() === 'sign';
+  }
+
   onCancel() {
     this.cancelFileHash();
     this.metadata = {};
