@@ -49,7 +49,7 @@
         <i
           class="icon-create_document drop-icon"
           [ngClass]="{ 'is-dropping': isDroppingAFile }"
-          ></i>
+        ></i>
         <div
           class="drop-text"
           [innerHTML]="translations.files.dropFile | translate"
@@ -73,213 +73,217 @@
       </div>
     </div>
   </div>
-  <!-- <form [formGroup]="fileFormGroup" *ngIf="fileHash">
-    <mat-form-field *ngIf="getCurrentMode() === 'sign'">
-      <mat-label>{{
-        translations.commons.labelNames.identityToUse | translate
-      }}</mat-label>
-      <mat-select
-        class="custom-select"
-        formControlName="identity"
-        name="identity"
-      >
-        <mat-option
-          *ngFor="let identityName of identityService.arrayIdentityContent"
-          [value]="identityName.name"
-        >
-          {{ identityName.name }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="identityService.arrayIdentityContent.length === 0">
-        {{ translations.folders.errors.addAtLeastOneIdentity | translate }}
-      </mat-error>
-      <mat-error
-        *ngIf="
-          identityService.arrayIdentityContent.length !== 0 &&
-          fileFormGroup.get('identity').getError('voidIdentity')
+  <form [formGroup]="fileFormGroup" *ngIf="fileHash">
+    <div *ngIf="getCurrentMode() === 'sign'" class="select-identity">
+      <app-custom-select
+        [labelName]="translations.commons.labelNames.identityToUse | translate"
+        [options]="getIdentityNames()"
+        [onError]="
+          fileFormGroup.get('identity').invalid ||
+          errorOnSelectIdentity(fileFormGroup)
         "
+        [selectedOption]="
+          fileFormGroup.get('identity').value ||
+          (translations.commons.labelNames.select | translate)
+        "
+        (onChangeOption)="fileFormGroup.get('identity').setValue($event)"
       >
-        {{ translations.folders.errors.identityRequired | translate }}
-      </mat-error>
-      <mat-error
-        *ngIf="fileFormGroup.get('identity').getError('identityNotFound')"
-      >
-        {{ translations.folders.errors.notFound | translate }}
-      </mat-error>
-    </mat-form-field>
+      </app-custom-select>
+      <div *ngIf="errorOnSelectIdentity(fileFormGroup)" class="input-error">
+        {{ errorTextOnSelectIdentity(fileFormGroup) }}
+      </div>
+    </div>
 
-    <mat-form-field class="full-width">
-      <mat-label>{{
-        translations.commons.labelNames.name | translate
-      }}</mat-label>
-      <input matInput type="text" formControlName="name" />
-    </mat-form-field>
+    <div class="input-section">
+      <input
+        type="text"
+        class="default-input"
+        [ngClass]="{
+          'is-invalid': fileFormGroup.get('name').invalid
+        }"
+        [placeholder]="translations.commons.labelNames.name | translate"
+        formControlName="name"
+      />
+    </div>
 
-    <mat-form-field class="full-width">
-      <mat-label>{{ translations.files.labels.tags | translate }}</mat-label>
-      <mat-chip-list #chipList>
-        <mat-chip *ngFor="let tag of tags" (removed)="removeTag(tag)">
-          {{ tag }}
-          <button matChipRemove>
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip>
-        <input
-          [placeholder]="translations.files.labels.newTag | translate"
-          [matChipInputFor]="chipList"
-          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-          [matChipInputAddOnBlur]="addOnBlur"
-          (matChipInputTokenEnd)="addTag($event)"
-        />
-      </mat-chip-list>
-    </mat-form-field>
+    <div class="input-section" [ngClass]="{ 'no-mb': tags.length }">
+      <input
+        type="text"
+        class="default-input"
+        [placeholder]="translations.files.labels.newTag | translate"
+        formControlName="currentTag"
+        (keyup.enter)="addTag()"
+      />
+    </div>
 
-    <mat-form-field *ngIf="getCurrentMode() === 'sign'" class="full-width">
-      <mat-label>{{
-        translations.files.labels.identityURL | translate
-      }}</mat-label>
-      <input matInput type="text" formControlName="identityURL" />
-    </mat-form-field>
+    <div *ngIf="tags.length" class="tags-content">
+      <button *ngFor="let tag of tags" class="btn btn-tag">
+        {{ tag }}
+        <i class="icon-clear delete-tag" (click)="removeTag(tag)"></i>
+      </button>
+    </div>
 
-    <mat-checkbox color="primary" name="public" formControlName="public">
+    <div *ngIf="getCurrentMode() === 'sign'" class="input-section">
+      <input
+        type="text"
+        class="default-input"
+        [placeholder]="translations.files.labels.identityURL | translate"
+        formControlName="identityURL"
+      />
+    </div>
+
+    <label class="checkbox-content">
+      <input type="checkbox" formControlName="public" />
       {{ translations.files.labels.public | translate }}
-    </mat-checkbox>
-    <div class="accordion-section">
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="openCallbackURLPanel = true"
-          (closed)="openCallbackURLPanel = false"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>{{
-              translations.files.labels.callbackURL | translate
-            }}</mat-panel-title>
-          </mat-expansion-panel-header>
+    </label>
 
-          <mat-form-field class="full-width">
-            <mat-label>{{
-              translations.files.labels.url | translate
-            }}</mat-label>
-            <input matInput type="text" formControlName="callbackURL" />
-          </mat-form-field>
-          <button
-            type="button"
-            mat-raised-button
-            color="primary"
-            class="span-folder-add-button"
-            [disabled]="!fileFormGroup.get('callbackURL').value"
-            (click)="testCallbackURL()"
-          >
-            {{ translations.files.labels.testURL | translate }}
-          </button>
-          <mat-card
-            *ngIf="anchorCallbackResult"
-            class="test-url-response"
-            [ngClass]="
-              anchorCallbackResult.status >= 200 &&
-              anchorCallbackResult.status <= 299
-                ? 'success'
-                : 'error'
-            "
-          >
-            <div *ngIf="!!anchorCallbackResult.status">
-              {{ translations.commons.labelNames.status | translate }}
-              {{ anchorCallbackResult.status }}
-            </div>
-            <div *ngIf="!!anchorCallbackResult.message">
-              {{ translations.commons.labelNames.content | translate }}
-              {{ anchorCallbackResult.message }}
-            </div>
-          </mat-card>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-    <div class="accordion-section">
-      <mat-accordion>
-        <mat-expansion-panel
-          (opened)="openMetadataPanel = true"
-          (closed)="openMetadataPanel = false"
+    <div class="collapse add-mt-mb">
+      <div
+        class="collapse-panel first"
+        [ngClass]="{
+          selected: openCallbackURLPanel
+        }"
+        (click)="openCallbackURLPanel = !openCallbackURLPanel"
+      >
+        <div
+          class="collapse-panel-text"
+          [ngClass]="{ selected: openCallbackURLPanel }"
         >
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{
-                translations.files.labels.metadata | translate
-              }}</mat-panel-title
-            >
-          </mat-expansion-panel-header>
-          <div class="metadata">
-            <ul>
-              <li *ngFor="let data of metadata | keyvalue">
-                <div class="key-value">
-                  {{ data.key }}: {{ data.value }}
-                  <mat-icon (click)="deleteMetadata(data.key)" class="delete">
-                    delete
-                  </mat-icon>
-                </div>
-              </li>
-            </ul>
+          {{ translations.files.labels.callbackURL | translate }}
+        </div>
+        <i
+          class="icon-play for-collapse"
+          [ngClass]="!openCallbackURLPanel ? 'selected' : ''"
+        ></i>
+      </div>
+      <div
+        *ngIf="openCallbackURLPanel"
+        [@collapseAnimation]
+        class="collapse-container"
+      >
+        <div class="input-section">
+          <input
+            type="text"
+            class="default-input"
+            [placeholder]="translations.files.labels.url | translate"
+            formControlName="callbackURL"
+          />
+        </div>
 
-            <div class="d-flex">
-              <mat-form-field class="name">
-                <mat-label>{{
-                  translations.commons.labelNames.name | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  type="text"
-                  formControlName="metadataName"
-                  (keyup.enter)="metadataIsValid() ? addMetadata() : null"
-                />
-              </mat-form-field>
-              <mat-form-field class="value">
-                <mat-label>{{
-                  translations.commons.labelNames.value | translate
-                }}</mat-label>
-                <input
-                  matInput
-                  type="text"
-                  formControlName="metadataValue"
-                  (keyup.enter)="metadataIsValid() ? addMetadata() : null"
-                />
-              </mat-form-field>
-            </div>
-            <button
-              type="button"
-              mat-raised-button
-              color="primary"
-              (click)="addMetadata()"
-              [disabled]="!metadataIsValid()"
-            >
-              <mat-icon>add</mat-icon>
-            </button>
+        <button
+          type="button"
+          class="btn btn-primary mr"
+          [disabled]="!fileFormGroup.get('callbackURL').value"
+          (click)="testCallbackURL()"
+        >
+          {{ translations.files.labels.testURL | translate }}
+        </button>
+
+        <div
+          *ngIf="anchorCallbackResult"
+          class="card test-url-response"
+          [ngClass]="
+            anchorCallbackResult.status >= 200 &&
+            anchorCallbackResult.status <= 299
+              ? 'success'
+              : 'error'
+          "
+        >
+          <div *ngIf="!!anchorCallbackResult.status">
+            {{ translations.commons.labelNames.status | translate }}
+            {{ anchorCallbackResult.status }}
           </div>
-        </mat-expansion-panel>
-      </mat-accordion>
+          <div *ngIf="!!anchorCallbackResult.message">
+            {{ translations.commons.labelNames.content | translate }}
+            {{ anchorCallbackResult.message }}
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="collapse-panel"
+        [ngClass]="{
+          selected: openMetadataPanel
+        }"
+        (click)="openMetadataPanel = !openMetadataPanel"
+      >
+        <div
+          class="collapse-panel-text"
+          [ngClass]="{ selected: openMetadataPanel }"
+        >
+          {{ translations.files.labels.metadata | translate }}
+        </div>
+        <i
+          class="icon-play for-collapse"
+          [ngClass]="!openMetadataPanel ? 'selected' : ''"
+        ></i>
+      </div>
+      <div
+        *ngIf="openMetadataPanel"
+        [@collapseAnimation]
+        class="collapse-container"
+      >
+        <ul class="metadata">
+          <li *ngFor="let data of metadata | keyvalue">
+            <div class="key-value">
+              {{ data.key }}: {{ data.value }}
+              <i
+                class="icon-trash delete-metadata"
+                (click)="deleteMetadata(data.key)"
+              ></i>
+            </div>
+          </li>
+        </ul>
+
+        <div class="d-flex">
+          <div class="input-section">
+            <input
+              type="text"
+              class="default-input"
+              [placeholder]="translations.commons.labelNames.name | translate"
+              formControlName="metadataName"
+              (keyup.enter)="metadataIsValid() ? addMetadata() : null"
+            />
+          </div>
+          <div class="input-section ml">
+            <input
+              type="text"
+              class="default-input"
+              [placeholder]="translations.commons.labelNames.value | translate"
+              formControlName="metadataValue"
+              (keyup.enter)="metadataIsValid() ? addMetadata() : null"
+            />
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="addMetadata()"
+          [disabled]="!metadataIsValid()"
+        >
+          <i class="icon-add"></i>
+          {{ translations.commons.labelNames.add | translate }}
+        </button>
+      </div>
     </div>
+
     <div class="align-right">
       <div>
         <button
           type="button"
-          mat-raised-button
-          color="primary"
-          class="span-folder-add-button"
+          class="btn btn-primary"
           [disabled]="fileFormGroup.invalid || !noApiTokenSet"
           (click)="onSubmit()"
         >
           {{ translations.files.buttons[getCurrentMode()] | translate }}
         </button>
-        <button
-          type="button"
-          mat-raised-button
-          color="warn"
-          (click)="onCancel()"
-        >
+        <button type="button" class="btn btn-danger ml" (click)="onCancel()">
           {{ translations.commons.buttons.cancel | translate }}
         </button>
       </div>
-      <mat-error *ngIf="!noApiTokenSet" class="no-api-token">
+      <div *ngIf="!noApiTokenSet" class="no-api-token">
         {{ translations.commons.errors.noApiToken | translate }}
-      </mat-error>
+      </div>
     </div>
-  </form> -->
+  </form>
 </div>

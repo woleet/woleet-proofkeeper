@@ -20,10 +20,6 @@
   float: right;
 }
 
-.span-folder-add-button {
-  margin-right: 4px;
-}
-
 .span-expansion-panel-header {
   display: flex;
   flex: 1;
@@ -118,22 +114,23 @@
   margin-top: $standard-space;
 }
 
-.accordion-section {
-  margin-top: $standard-space * 3;
-  margin-bottom: $standard-space * 2;
-
-  .name,
-  .value {
-    width: 100%;
-  }
-
+.collapse {
   .value {
     margin-left: $standard-space * 2;
   }
 
-  .delete {
+  .metadata {
+    margin: 0;
+    line-height: 2;
+  }
+
+  .delete-metadata {
     cursor: pointer;
     margin-left: $standard-space * 2;
+
+    &:hover {
+      color: $color-state-error;
+    }
   }
 
   .key-value {
@@ -145,9 +142,10 @@
     font-family: monospace;
     word-break: break-word;
     margin-top: $standard-space * 2;
+    background-color: $color-white;
 
     &.success {
-      color: $main-color;
+      color: $color-state-available;
     }
 
     &.error {
@@ -160,4 +158,11 @@
   margin-top: $standard-space;
   font-style: italic;
   font-size: smaller;
+}
+
+.tags-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: $standard-space * 3;
 }

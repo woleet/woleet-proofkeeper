@@ -21,6 +21,7 @@
   z-index: 1;
   background-color: $color-white;
   width: 100%;
+  box-shadow: 6px 6px 12px $color-box-shadow;
 
   .select-option {
     label {
@@ -40,6 +41,7 @@
 
       &.last {
         border-bottom: 0;
+        border-radius: 0 0 $standard-space $standard-space;
       }
 
       &.selected-option {

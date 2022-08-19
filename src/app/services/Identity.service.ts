@@ -148,4 +148,40 @@ export class IdentityService {
     }
     return pubKeyAddressKey + ' - ' + form.get('pubKey').value;
   }
+
+  getIdentityNames() {
+    return this.arrayIdentityContent.map((identity) => identity.name);
+  }
+
+  errorOnSelectIdentity(form: FormGroup) {
+    return (
+      this.arrayIdentityContent.length === 0 ||
+      (this.arrayIdentityContent.length !== 0 &&
+        form.get('identity').getError('voidIdentity')) ||
+      form.get('identity').getError('identityNotFound')
+    );
+  }
+
+  errorTextOnSelectIdentity(form: FormGroup) {
+    if (globalThis.arrayIdentityContent.length === 0) {
+      return this.translateService.instant(
+        this.translations.folders.errors.addAtLeastOneIdentity
+      );
+    }
+
+    if (
+      this.arrayIdentityContent.length !== 0 &&
+      form.get('identity').getError('voidIdentity')
+    ) {
+      return this.translateService.instant(
+        this.translations.folders.errors.identityRequired
+      );
+    }
+
+    if (form.get('identity').getError('identityNotFound')) {
+      return this.translateService.instant(
+        this.translations.folders.errors.notFound
+      );
+    }
+  }
 }

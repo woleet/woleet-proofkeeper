@@ -2,6 +2,11 @@
   position: relative;
   transition: all 0.25s ease-in-out;
 
+  &.add-mt-mb {
+    margin-top: $standard-space * 3;
+    margin-bottom: $standard-space * 3;
+  }
+
   .collapse-panel {
     border-color: $color-grey-light-02;
     padding: $standard-space * 2;

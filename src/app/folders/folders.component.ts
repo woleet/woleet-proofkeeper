@@ -252,12 +252,6 @@ export class FoldersComponent {
     );
   }
 
-  getIdentityNames() {
-    return this.identityService.arrayIdentityContent.map(
-      (identity) => identity.name
-    );
-  }
-
   onChangingFormFolder(i, value) {
     if (value !== this.foldersFormGroup[i].get('identity').value) {
       this.foldersFormGroup[i].markAsDirty();
@@ -266,36 +260,16 @@ export class FoldersComponent {
     this.foldersFormGroup[i].get('identity').updateValueAndValidity();
   }
 
+  getIdentityNames() {
+    return this.identityService.getIdentityNames();
+  }
+
   errorOnSelectIdentity(form: FormGroup) {
-    return (
-      this.identityService.arrayIdentityContent.length === 0 ||
-      (this.identityService.arrayIdentityContent.length !== 0 &&
-        form.get('identity').getError('voidIdentity')) ||
-      form.get('identity').getError('identityNotFound')
-    );
+    return this.identityService. errorOnSelectIdentity(form);
   }
 
   errorTextOnSelectIdentity(form: FormGroup) {
-    if (this.identityService.arrayIdentityContent.length === 0) {
-      return this.translateService.instant(
-        this.translations.folders.errors.addAtLeastOneIdentity
-      );
-    }
-
-    if (
-      this.identityService.arrayIdentityContent.length !== 0 &&
-      form.get('identity').getError('voidIdentity')
-    ) {
-      return this.translateService.instant(
-        this.translations.folders.errors.identityRequired
-      );
-    }
-
-    if (form.get('identity').getError('identityNotFound')) {
-      return this.translateService.instant(
-        this.translations.folders.errors.notFound
-      );
-    }
+    return this.identityService.errorTextOnSelectIdentity(form);
   }
 }
 

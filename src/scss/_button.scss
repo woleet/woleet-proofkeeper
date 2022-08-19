@@ -63,9 +63,10 @@ button {
 
   &.btn-primary {
     color: $color-white;
-    border-color: $main-color !important;
-    background-color: $main-color !important;
+    border-color: $main-color  !important;
+    background-color: $main-color  !important;
     border-radius: $main-border-radius;
+
     &:hover {
       background-color: lighten($main-color, 5%) !important;
     }
@@ -74,6 +75,7 @@ button {
   &.btn-outline-default {
     border: $main-border-width solid $color-grey-light-border;
     background-color: transparent;
+
     &:hover {
       background-color: $color-grey-light-01;
     }
@@ -93,15 +95,15 @@ button {
 
   &.btn-outline-primary {
     border-radius: $main-border-radius;
-    border: 1px solid $main-color !important;
+    border: 1px solid $main-color  !important;
     background: transparent;
     padding: $standard-space + 2 $standard-space * 2;
     align-items: center;
-    color: $text-color !important;
+    color: $text-color  !important;
 
     &:hover,
     &:active {
-      background-color: $main-color-transparent-02 !important;
+      background-color: $main-color-transparent-02  !important;
     }
 
     &:focus {
@@ -111,15 +113,17 @@ button {
 
   &.btn-info {
     color: $color-white;
-    background-color: $color-secondary !important;
-    border-color: $color-secondary !important;
+    background-color: $color-secondary  !important;
+    border-color: $color-secondary  !important;
+
     &:hover {
       background-color: lighten($color-secondary, 2%) !important;
     }
   }
 
   &.btn-warn {
-    background-color: $color-state-warning !important;
+    background-color: $color-state-warning  !important;
+
     &:hover {
       background-color: lighten($color-state-warning, 2%) !important;
     }
@@ -135,6 +139,7 @@ button {
     border: 0;
     padding: 0;
     background-color: transparent;
+
     &:hover {
       color: $color-secondary;
       background-color: transparent;
@@ -144,5 +149,22 @@ button {
   &.btn-without-shadow-onfocus:focus {
     box-shadow: 0 0 0 0;
   }
-}
 
+  &.btn-tag {
+    padding: $standard-space / 2 $standard-space;
+    margin-right: $standard-space ;
+    margin-top: $standard-space ;
+    display: flex;
+    align-items: center;
+    cursor: text;
+
+    .delete-tag {
+      cursor: pointer;
+      margin: $standard-space / 2;
+
+      &:hover {
+        color: $color-state-error;
+      }
+    }
+  }
+}

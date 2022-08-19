@@ -1,7 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { MatChipInputEvent } from '@angular/material/chips';
 import { TranslateService } from '@ngx-translate/core';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
@@ -22,6 +21,7 @@ import { SignatureRequestService } from '../services/signature-request.service';
 import { StoreService } from '../services/store.service';
 import { ToastService, TOAST_STATE } from '../services/toast.service';
 import { TranslationService } from '../services/translation.service';
+import { collapseAnimation } from '../shared/animations/customs.animation';
 import { Proof } from '../shared/interfaces/i-proof';
 import { ParametersForWIDSSignature } from '../shared/interfaces/i-signature-request';
 import { UserLog } from '../shared/interfaces/i-user';
@@ -30,6 +30,7 @@ import { UserLog } from '../shared/interfaces/i-user';
   selector: 'app-files',
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.scss'],
+  animations: [collapseAnimation],
 })
 export class FilesComponent {
   public fileFormGroup: FormGroup;
@@ -81,6 +82,7 @@ export class FilesComponent {
       identity: [null, identityCheckerFactory(this)],
       metadataName: [null],
       metadataValue: [null],
+      currentTag: [null],
     });
   }
 
@@ -206,16 +208,12 @@ export class FilesComponent {
     this.onFileDropped(file);
   }
 
-  addTag(event: any) {
-    const value = (event.value || '').trim();
-
-    // Add our tag
-    if (value) {
-      this.tags.push(value);
+  addTag() {
+    const tag = this.fileFormGroup.get('currentTag').value;
+    if (tag && tag !== '' && !this.tags.includes(tag)) {
+      this.tags.push(tag);
     }
-
-    // Clear the input value
-    event.chipInput!.clear();
+    this.fileFormGroup.get('currentTag').setValue('');
   }
 
   removeTag(tag: string) {
@@ -408,5 +406,17 @@ export class FilesComponent {
       };
       this.cliRunnerFolderInterface.addFolder(folderDesc);
     }
+  }
+
+  getIdentityNames() {
+    return this.identityService.getIdentityNames();
+  }
+
+  errorOnSelectIdentity(form: FormGroup) {
+    return this.identityService.errorOnSelectIdentity(form);
+  }
+
+  errorTextOnSelectIdentity(form: FormGroup) {
+    return this.identityService.errorTextOnSelectIdentity(form);
   }
 }
