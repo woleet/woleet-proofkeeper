@@ -24,7 +24,7 @@ table {
   // Table row
   tr {
     &:hover {
-      background-color: $color-grey-light-01 !important;
+      background-color: $color-grey-light-01;
     }
 
     // Table data cell
@@ -34,6 +34,9 @@ table {
       font-size: $default-font-size;
       vertical-align: middle;
 
+      &.alert {
+        color: $color-state-error;
+      }
     }
   }
 
