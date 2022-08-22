@@ -1,6 +1,6 @@
-<div class="modal fade-in">
-  <div class="modal-content big-modal">
-    <div class="page-content" *ngIf="screen[0] === 1">
+<div class="modal">
+  <div class="modal-content big-modal text-center">
+    <div *ngIf="screen[0] === 1">
       <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png" />
       <h1 class="dialog-title">
         {{ translations.wizard.welcome | translate }}
@@ -9,7 +9,7 @@
         {{ translations.wizard.subtitle | translate }}
       </div>
     </div>
-    <div class="page-content" *ngIf="screen[0] === 2">
+    <div *ngIf="screen[0] === 2">
       <form class="form-content" [formGroup]="wizardTokenFormGroup">
         <h1 class="text-center">
           {{ translations.commons.setupAuthenticationToWoleetAPI | translate }}
@@ -45,7 +45,7 @@
         </div>
       </form>
     </div>
-    <div class="page-content" *ngIf="screen[0] === 3">
+    <div *ngIf="screen[0] === 3">
       <form class="form-content" [formGroup]="wizardIdentityFormGroup">
         <h1 class="text-center">
           {{ translations.wizard.setupIdentities | translate }}
@@ -134,7 +134,7 @@
         </app-custom-select>
       </form>
     </div>
-    <div class="page-content" *ngIf="screen[0] === 4">
+    <div *ngIf="screen[0] === 4">
       <img class="woleet-logo" src="assets/images/woleet-logo-white-big.png" />
       <h1 class="dialog-title">
         {{ translations.wizard.congratulations | translate }}

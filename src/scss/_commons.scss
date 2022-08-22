@@ -94,6 +94,10 @@ hr {
   color: -webkit-link;
   cursor: pointer;
   text-decoration: underline;
+
+  &:hover {
+    color: $color-secondary;
+  }
 }
 
 .d-flex {
@@ -106,6 +110,10 @@ hr {
 
 .align-items-center {
   align-items: center;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .justify-content-center {

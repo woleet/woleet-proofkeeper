@@ -49,6 +49,10 @@
   cursor: pointer;
   font-size: larger;
   margin-left: $standard-space;
+
+  &:hover {
+    color: $color-text-second;
+  }
 }
 
 .toast-message {

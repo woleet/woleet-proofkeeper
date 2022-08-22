@@ -8,7 +8,7 @@
   >
   </app-custom-select>
 
-  <table class="mt">
+  <table class="mt" *ngIf="folder.logContext.logs.length">
     <!-- Column names -->
     <thead>
       <tr>
@@ -41,6 +41,10 @@
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="!folder.logContext.logs.length" class="no-log">
+    {{ translations.logs.noLog | translate }}
+  </div>
 </div>
 <div class="card" *ngIf="folders.length === 0">
   <h1>

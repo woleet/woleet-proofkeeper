@@ -1,4 +1,3 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
@@ -48,9 +47,6 @@ export class FilesComponent {
   anchorCallbackResult: UserLog;
   noApiTokenSet = this.storeService.store.get('token');
   proofReceiptsOfManualOperationsFolder: string;
-
-  addOnBlur = true;
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
   tags: Array<string> = [];
 
   constructor(

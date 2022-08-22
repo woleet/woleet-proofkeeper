@@ -26,6 +26,10 @@ input[type='radio']:checked+* {
   width: 100%;
   position: relative;
 
+  &.no-mt {
+    margin-top: 0;
+  }
+
   &.no-mb {
     margin-bottom: 0;
   }

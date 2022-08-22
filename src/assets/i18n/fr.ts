@@ -31,8 +31,8 @@ const fr: typeof EN_Translations = {
       language: 'Langue',
       value: 'Valeur',
       identityToUse: 'Identité à utiliser',
-      status: 'Statut :',
-      content: 'Contenu :',
+      status: 'Statut :',
+      content: 'Contenu :',
       proofReceiptsOfManualOperationsFolder: 'Dossier par défaut pour les opérations manuelles',
       add: 'Ajouter',
       select: 'Sélectionnez'
@@ -49,8 +49,8 @@ const fr: typeof EN_Translations = {
       sign: 'Fichier à certifier',
     },
     introText: {
-      anchor: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve d\'horodatage</b>. <br><br> Une fois le fichier ancré dans la blockchain Bitcoin, vous pourrez <b>retrouver son reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br> Ce reçu de preuve vous permettra de <b>prouver l\'existence de votre fichier à la date de l\'horodatage</b>.',
-      sign: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br><br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. <br>Vous pourrez donc <b>retrouver le reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br>  Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
+      anchor: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve d\'horodatage</b>. <br><br> Une fois le fichier ancré dans la blockchain Bitcoin.<br>Vous pourrez <b>retrouver son reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br> Ce reçu de preuve vous permettra de <b>prouver l\'existence de votre fichier à la date de l\'horodatage</b>.',
+      sign: 'Déposez ici le fichier pour lequel vous souhaitez <b>créer une preuve de scellé</b>. <br><br> Une fois le fichier signé, la signature est automatiquement ancrée dans la blockchain Bitcoin. <br>Vous pourrez donc <b>retrouver le reçu de preuve</b> dans ce dossier : <br> <small><i>{{ pathFolder }}<i></small> <br><br>  Ce reçu de preuve permettra de <b>prouver la validité et la date de la signature</b>.'
     },
     dropFile: 'Déposez le fichier <br> (ou cliquez pour choisir)',
     labels: {
@@ -69,8 +69,8 @@ const fr: typeof EN_Translations = {
       sign: 'Signer avec mon serveur d\'identité'
     },
     successTexts: {
-      anchor: 'Horodatage créée dans le dossier suivant : ',
-      sign: 'Preuve de scellé créé dans le dossier suivant : '
+      anchor: '<b>Horodatage créée dans le dossier suivant : </b>',
+      sign: '<b>Preuve de scellé créé dans le dossier suivant : </b>'
     }
   },
   folders: {
@@ -127,7 +127,8 @@ const fr: typeof EN_Translations = {
     logsOfFolder: 'Logs du dossier',
     level: 'Niveau',
     message: 'Message',
-    noConfiguredFolders: 'Pas de dossiers configurés'
+    noConfiguredFolders: 'Pas de dossiers configurés',
+    noLog: 'Aucun log pour ce dossier.'
   },
   settings: {
     overrideWoleetAPIURL: 'Remplacer l\'URL de l\'API Woleet',

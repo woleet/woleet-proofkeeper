@@ -163,7 +163,7 @@ export class IdentityService {
   }
 
   errorTextOnSelectIdentity(form: FormGroup) {
-    if (globalThis.arrayIdentityContent.length === 0) {
+    if (this.arrayIdentityContent.length === 0) {
       return this.translateService.instant(
         this.translations.folders.errors.addAtLeastOneIdentity
       );

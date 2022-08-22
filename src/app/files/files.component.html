@@ -37,6 +37,9 @@
       (startDropping)="isDroppingAFile = true"
       (stopDropping)="isDroppingAFile = false"
       [ngClass]="{ 'is-dropping': isDroppingAFile }"
+      (click)="$event.stopPropagation()"
+      (mouseover)="isDroppingAFile = true"
+      (mouseout)="isDroppingAFile = false"
     >
       <input
         #fileInput
@@ -62,12 +65,7 @@
         <div class="hash-text">
           <em>{{ translations.files.hashing | translate }}</em>
         </div>
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="cancelFileHash()"
-          class="cancel-file-hash"
-        >
+        <button (click)="cancelFileHash()" class="btn cancel-file-hash">
           {{ translations.commons.buttons.cancel | translate }}
         </button>
       </div>
@@ -106,9 +104,7 @@
       />
     </div>
 
-    <div
-      class="default-input tag-input"
-    >
+    <div class="default-input tag-input">
       <button *ngFor="let tag of tags" class="btn btn-tag">
         {{ tag }}
         <i class="icon-clear delete-tag" (click)="removeTag(tag)"></i>
