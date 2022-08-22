@@ -45,7 +45,6 @@ export class FilesComponent {
   openMetadataPanel = false;
   openCallbackURLPanel = false;
   anchorCallbackResult: UserLog;
-  noApiTokenSet = this.storeService.store.get('token');
   proofReceiptsOfManualOperationsFolder: string;
   tags: Array<string> = [];
 
@@ -80,6 +79,10 @@ export class FilesComponent {
       metadataValue: [null],
       currentTag: [null],
     });
+  }
+
+  get apiToken() {
+    return this.storeService.store.get('token');
   }
 
   getCurrentMode(): 'anchor' | 'sign' {

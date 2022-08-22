@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as Store from 'electron-store';
 import { LanguageService } from './language.service';
-import { createNewFolder, getDefaultFolderPathForManualActions } from './shared.service';
+import {
+  createNewFolder,
+  getDefaultFolderPathForManualActions
+} from './shared.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +13,8 @@ export class StoreService {
   public store: Store<any>;
   private lang: string;
   private proofReceiptsOfManualOperationsFolder: string;
-  DEFAULT_VALUE_MANUAL_OPERATION_FOLDER = 'proofReceiptsOfManualOperationsFolder';
+  DEFAULT_VALUE_MANUAL_OPERATION_FOLDER =
+    'proofReceiptsOfManualOperationsFolder';
   DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME = 'proofReceiptsOfManualOperations';
 
   public constructor(languageService: LanguageService) {
@@ -25,18 +29,30 @@ export class StoreService {
       this.setLang(languageService.getBrowserLanguage());
     }
 
+    createNewFolder(
+      getDefaultFolderPathForManualActions(
+        this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME
+      )
+    );
+
     if (this.store.has(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)) {
       if (!!this.store.get(this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)) {
         this.proofReceiptsOfManualOperationsFolder = this.store.get(
           this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER
         );
       } else {
-        createNewFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
-        this.setProofReceiptsOfManualOperationsFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
+        this.setProofReceiptsOfManualOperationsFolder(
+          getDefaultFolderPathForManualActions(
+            this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME
+          )
+        );
       }
     } else {
-      createNewFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
-      this.setProofReceiptsOfManualOperationsFolder(getDefaultFolderPathForManualActions(this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME));
+      this.setProofReceiptsOfManualOperationsFolder(
+        getDefaultFolderPathForManualActions(
+          this.DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME
+        )
+      );
     }
   }
 

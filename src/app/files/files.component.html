@@ -267,7 +267,7 @@
         <button
           type="button"
           class="btn btn-primary"
-          [disabled]="fileFormGroup.invalid || !noApiTokenSet"
+          [disabled]="fileFormGroup.invalid || !apiToken"
           (click)="onSubmit()"
         >
           {{ translations.files.buttons[getCurrentMode()] | translate }}
@@ -276,7 +276,7 @@
           {{ translations.commons.buttons.cancel | translate }}
         </button>
       </div>
-      <div *ngIf="!noApiTokenSet" class="no-api-token">
+      <div *ngIf="!apiToken" class="no-api-token">
         {{ translations.commons.errors.noApiToken | translate }}
       </div>
     </div>
