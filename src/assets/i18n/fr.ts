@@ -55,7 +55,7 @@ const fr: typeof EN_Translations = {
     dropFile: 'Déposez le fichier <br> (ou cliquez pour choisir)',
     labels: {
       tags: 'Tags',
-      newTag: 'Nouveau tag...',
+      addTag: 'Ajouter un tag...',
       identityURL: 'URL d\'identité',
       public: 'Public',
       callbackURL: 'URL de callback',

@@ -53,7 +53,7 @@ export default {
     dropFile: 'Drop the file here <br> (or click to browse)',
     labels: {
       tags: 'Tags',
-      newTag: 'New tag...',
+      addTag: 'Add tag...',
       identityURL: 'Identity URL',
       public: 'Public',
       callbackURL: 'Callback URL',

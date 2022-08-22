@@ -76,11 +76,25 @@ input[type='radio']:checked+* {
     color: $color-grey;
   }
 
+  &.tag-input {
+    margin-top: $standard-space * 2;
+    margin-bottom: $standard-space * 3;
+    padding: 2px $standard-space;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &:focus-within {
+      border-color: $main-color;
+    }
+  }
+
   &.no-background {
     word-break: break-word;
     border: none;
-    padding: 0;
+    padding: $standard-space;
     background-color: transparent;
+    flex: 1;
   }
 
   &.input-dropdown-opened {

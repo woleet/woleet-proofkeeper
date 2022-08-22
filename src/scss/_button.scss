@@ -1,5 +1,3 @@
-@use 'sass:math';
-
 button {
   font-family: inherit;
 }
@@ -7,7 +5,7 @@ button {
 .btn {
   color: $color-text-button;
   padding: 10px 12px;
-  border: math.div($main-border-width, 2) solid $color-grey-light-border;
+  border: calc($main-border-width / 2) solid $color-grey-light-border;
   border-radius: $standard-space;
   font-weight: $font-weight-medium;
   font-size: $default-font-size - 1;
@@ -151,16 +149,16 @@ button {
   }
 
   &.btn-tag {
-    padding: $standard-space / 2 $standard-space;
-    margin-right: $standard-space ;
-    margin-top: $standard-space ;
-    display: flex;
+    padding: 1px $standard-space;
+    margin: calc($standard-space / 2);
+    display: inline-flex;
     align-items: center;
     cursor: text;
 
     .delete-tag {
       cursor: pointer;
-      margin: $standard-space / 2;
+      padding: calc($standard-space / 2);
+      padding-left: $standard-space;
 
       &:hover {
         color: $color-state-error;

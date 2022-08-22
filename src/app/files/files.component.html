@@ -106,21 +106,20 @@
       />
     </div>
 
-    <div class="input-section" [ngClass]="{ 'no-mb': tags.length }">
-      <input
-        type="text"
-        class="default-input"
-        [placeholder]="translations.files.labels.newTag | translate"
-        formControlName="currentTag"
-        (keyup.enter)="addTag()"
-      />
-    </div>
-
-    <div *ngIf="tags.length" class="tags-content">
+    <div
+      class="default-input tag-input"
+    >
       <button *ngFor="let tag of tags" class="btn btn-tag">
         {{ tag }}
         <i class="icon-clear delete-tag" (click)="removeTag(tag)"></i>
       </button>
+      <input
+        type="text"
+        class="default-input no-background"
+        [placeholder]="translations.files.labels.addTag | translate"
+        formControlName="currentTag"
+        (keyup.enter)="addTag()"
+      />
     </div>
 
     <div *ngIf="getCurrentMode() === 'sign'" class="input-section">
