@@ -12,7 +12,9 @@ The tool automatically scans a set of folders that you define, and timestamps or
 
 Once the proof receipts are ready, the tool automatically gathers them from the Woleet platform and stores them beside the timestamped or sealed files (in a Chainpoint file named 'filename'-'proofID'.(timestamp|seal)-receipt.json).
 
-The tool rescans the folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or sealed. 
+The tool rescans the folders every 15 minutes, so any file added to one of the folders will be automatically timestamped or sealed.
+
+It is also possible to make timestamping or sealing file by file. With this manual action, the proof receipts will be saved in a defined folder.
 
 To sum up, this tool can be used to generate and maintain the set of proofs of timestamp or proof of seal for all the files of a set of directories.
 
