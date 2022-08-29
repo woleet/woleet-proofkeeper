@@ -161,8 +161,14 @@
             class="state mr"
             [class]="getStatusColor(i)"
             [appTooltip]="getStatusTooltip(i)"
-            (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
           ></div>
+          <button
+          class="btn btn-danger btn-without-background refresh-btn"
+          [appTooltip]="translations.folders.tooltips.restart | translate"
+          (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
+        >
+          <i class="icon-refresh"></i>
+        </button>
           <button
             class="btn btn-danger btn-without-background"
             [appTooltip]="
@@ -256,7 +262,7 @@
             />
           </div>
         </div>
-        <div>
+        <div class="mb">
           <button
             class="btn btn-primary mr"
             (click)="onClickFixReceipts(folderForm)"

@@ -1,17 +1,23 @@
 <div class="card">
+  <h1>Informations</h1>
   <p class="info-title">{{ translations.infos.versions | translate }}</p>
   <p>{{ proofKeeperVersion }}</p>
   <p>{{ cliVersion }}</p>
   <hr />
-  <p class="info-title">{{ translations.infos.links | translate }}</p>
-  <p>
-    <a class="fake-href" (click)="clickOnGithub()">Github</a>
+  <p class="info-title">
+    {{ translations.infos.links | translate }}
   </p>
-  <p>
-    <a class="fake-href" (click)="clickOnWoleet()">Woleet</a>
+  <p class="align-icon-link">
+    <i class="icon icon-github"></i>
+    <a class="link" (click)="clickOnGithub()">Github</a>
   </p>
-  <p>
-    <a class="fake-href" (click)="clickOnLicense()">{{
+  <p class="align-icon-link">
+    <i class="icon icon-woleet"></i>
+    <a class="link" (click)="clickOnWoleet()">Woleet</a>
+  </p>
+  <p class="align-icon-link">
+    <i class="icon icon-balance"></i>
+    <a class="link" (click)="clickOnLicense()">{{
       translations.infos.licence | translate
     }}</a>
   </p>

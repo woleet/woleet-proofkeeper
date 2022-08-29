@@ -61,12 +61,12 @@ button {
 
   &.btn-primary {
     color: $color-white;
-    border-color: $main-color  !important;
-    background-color: $main-color  !important;
+    border-color: $main-color;
+    background-color: $main-color;
     border-radius: $main-border-radius;
 
     &:hover {
-      background-color: lighten($main-color, 5%) !important;
+      background-color: lighten($main-color, 5%);
     }
   }
 

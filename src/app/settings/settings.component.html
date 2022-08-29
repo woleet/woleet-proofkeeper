@@ -28,7 +28,10 @@
   </div>
 
   <div class="input-label">
-    {{  translations.commons.labelNames[DEFAULT_VALUE_MANUAL_OPERATION_FOLDER] | translate }}
+    {{
+      translations.commons.labelNames[DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]
+        | translate
+    }}
   </div>
   <div class="select-folder-input">
     <div class="input-with-close-icon">
@@ -51,7 +54,10 @@
         <i class="icon-close mr"></i>
       </button>
     </div>
-    <button class="btn btn-primary ml" (click)="onClickPopUpDirectory(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)">
+    <button
+      class="btn btn-primary ml"
+      (click)="onClickPopUpDirectory(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)"
+    >
       {{ translations.folders.chooseFolder | translate }}
     </button>
   </div>
@@ -160,7 +166,6 @@
     (click)="onAddIdentityClick()"
   >
     <i class="icon-add"></i>
-    {{ translations.commons.labelNames.add | translate }}
   </button>
   <h3>{{ translations.settings.sealIdentities | translate }}</h3>
   <div
@@ -175,6 +180,13 @@
     >
       <button
         class="btn full-width"
+        [ngClass]="{ 'is-used': isIdentityInUse(identityContent.name) }"
+        [appTooltip]="
+          (isIdentityInUse(identityContent.name)
+            ? translations.settings.identityUsedInOneFolder
+            : null
+          ) | translate
+        "
         (click)="openEditForm(identityContent.name)"
       >
         {{ identityContent.name }}
@@ -182,12 +194,7 @@
       <button
         class="btn btn-danger ml"
         [disabled]="isIdentityInUse(identityContent.name)"
-        [appTooltip]="
-          (isIdentityInUse(identityContent.name)
-            ? translations.settings.identityUsedInOneFolder
-            : translations.settings.deleteIdentity
-          ) | translate
-        "
+        [appTooltip]="translations.settings.deleteIdentity | translate"
         (click)="
           confirmDeleteWIDConnectionDialog = true;
           identitySelected = identityContent
@@ -197,7 +204,7 @@
       </button>
     </div>
     <div
-      class="identity-spacer editing"
+      class="identity-spacer editing card"
       *ngIf="identityOpened === identityContent.name"
     >
       <form [formGroup]="editIdentityFormGroup">
@@ -282,12 +289,7 @@
             confirmDeleteWIDConnectionDialog = true;
             identitySelected = identityContent
           "
-          [appTooltip]="
-            (isIdentityInUse(identityContent.name)
-              ? translations.settings.identityUsedInOneFolder
-              : translations.settings.deleteIdentity
-            ) | translate
-          "
+          [appTooltip]="translations.settings.deleteIdentity | translate"
         >
           <i class="icon-trash"></i>
         </button>

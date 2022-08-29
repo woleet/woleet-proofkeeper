@@ -22,20 +22,22 @@ table {
   }
 
   // Table row
-  tr {
-    &:hover {
-      background-color: $color-grey-light-01;
-    }
+  tbody {
+    tr {
+      &:hover {
+        background-color: $color-grey-light-01;
+      }
 
-    // Table data cell
-    td {
-      border-top: $main-border-width solid $color-grey-light-02;
-      padding: $standard-space * 2 $standard-space * 4;
-      font-size: $default-font-size;
-      vertical-align: middle;
+      // Table data cell
+      td {
+        border-top: $main-border-width solid $color-grey-light-02;
+        padding: $standard-space * 2 $standard-space * 4;
+        font-size: $default-font-size;
+        vertical-align: middle;
 
-      &.alert {
-        color: $color-state-error;
+        &.alert {
+          color: $color-state-error;
+        }
       }
     }
   }

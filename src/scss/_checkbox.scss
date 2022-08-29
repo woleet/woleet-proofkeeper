@@ -6,6 +6,7 @@
   grid-template-columns: $standard-space * 2 auto;
   gap: $standard-space;
   line-height: 1;
+  padding-left: 10px;
 
   &.disabled {
     color: $color-grey;

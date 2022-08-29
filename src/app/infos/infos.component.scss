@@ -3,3 +3,17 @@
 .info-title {
   color: $color-text-second;
 }
+
+.link {
+  margin-left: $standard-space;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+
+.align-icon-link {
+  display: flex;
+  align-items: center;
+}

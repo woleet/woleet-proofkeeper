@@ -3,6 +3,13 @@
 .identity-add-button {
   position: absolute;
   right: $standard-space * 4;
+  color: $main-color;
+  background-color: $color-white;
+
+  &:hover {
+    color: $color-white;
+    background-color: $main-color;
+  }
 }
 
 .identity-spacer {
@@ -12,5 +19,11 @@
 
   &.editing {
     display: block;
+    border-color: $main-color;
   }
+}
+
+
+.is-used {
+  border-color: $text-color;
 }

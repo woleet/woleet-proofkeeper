@@ -97,9 +97,10 @@ const fr: typeof EN_Translations = {
     addFolder: 'Ajouter le dossier',
     newFolder: 'Nouveau dossier',
     tooltips: {
-      notYetStarted: 'Pas encore démarré. Cliquez pour redémarrer.',
-      executionSuccessful: 'Exécution réussie. Cliquez pour redémarrer.',
-      failure: 'Échec. Cliquez pour redémarrer.',
+      restart: 'Redémarrer',
+      notYetStarted: 'Pas encore démarré. Cliquez sur redémarrer.',
+      executionSuccessful: 'Exécution réussie',
+      failure: 'Échec. Cliquez sur redémarrer.',
       processing: 'Traitement en cours',
       deleteFolder: 'Supprimer le dossier'
     },

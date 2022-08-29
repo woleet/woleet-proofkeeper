@@ -95,9 +95,10 @@ export default {
     addFolder: 'Add folder',
     newFolder: 'New folder',
     tooltips: {
-      notYetStarted: 'Not yet started. Click to restart.',
-      executionSuccessful: 'Execution successful. Click to restart.',
-      failure: 'Failure. Click to restart.',
+      restart: 'Restart',
+      notYetStarted: 'Not yet started. Click on restart.',
+      executionSuccessful: 'Execution successful',
+      failure: 'Failure. Click on restart.',
       processing: 'Processing',
       deleteFolder: 'Delete folder'
     },

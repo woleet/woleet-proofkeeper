@@ -4,10 +4,26 @@
   font-size: large;
 }
 
+
+.refresh-btn {
+  margin-top: 2px;
+  margin-right: $standard-space;
+
+  .icon-refresh {
+    font-size: 16px;
+    color: $text-color;
+
+    &:hover {
+      color: $color-secondary;
+    }
+  }
+}
+
 .state {
   padding: $standard-space;
   border-radius: 50%;
   background-color: $color-text-second;
+  cursor: initial;
 
   &:hover {
     border-color: rgba($color-text-second, 0.75);
