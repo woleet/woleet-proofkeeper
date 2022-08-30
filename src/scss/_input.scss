@@ -33,6 +33,14 @@ input[type='radio']:checked+* {
   &.no-mb {
     margin-bottom: 0;
   }
+
+  &.add-mt {
+    margin-top: $standard-space * 3;
+  }
+
+  &.add-mb {
+    margin-bottom: $standard-space * 3;
+  }
 }
 
 .default-input {
@@ -81,8 +89,7 @@ input[type='radio']:checked+* {
   }
 
   &.tag-input {
-    margin-top: $standard-space * 2;
-    margin-bottom: $standard-space * 3;
+    margin-bottom: $standard-space * 2;
     padding: 2px $standard-space;
     display: flex;
     align-items: center;

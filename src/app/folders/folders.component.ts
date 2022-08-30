@@ -55,7 +55,10 @@ export class FoldersComponent {
       prune: [false],
       recursive: [false],
       filter: [''],
-      identity: [this.storeService.getDefaultIdentity(), identityCheckerFactory(this)],
+      identity: [
+        this.storeService.getDefaultIdentity(),
+        identityCheckerFactory(this),
+      ],
       iDServerUnsecureSSL: [false],
     });
     this.fillFoldersFormGroup();
@@ -187,11 +190,20 @@ export class FoldersComponent {
   }
 
   resetAddFolderFormGroup() {
-    this.folderFormGroup.reset({
-      action: this.folderFormGroup.get('action').value,
-      path: '',
-      public: true,
-    });
+    if (this.folderFormGroup.get('action').value === 'sign') {
+      this.folderFormGroup.reset({
+        action: this.folderFormGroup.get('action').value,
+        path: '',
+        public: true,
+        identity: this.storeService.getDefaultIdentity(),
+      });
+    } else {
+      this.folderFormGroup.reset({
+        action: this.folderFormGroup.get('action').value,
+        path: '',
+        public: true,
+      });
+    }
   }
 
   onClickRefresh(folderForm: FormGroup) {
@@ -267,7 +279,7 @@ export class FoldersComponent {
   }
 
   errorOnSelectIdentity(form: FormGroup) {
-    return this.identityService. errorOnSelectIdentity(form);
+    return this.identityService.errorOnSelectIdentity(form);
   }
 
   errorTextOnSelectIdentity(form: FormGroup) {

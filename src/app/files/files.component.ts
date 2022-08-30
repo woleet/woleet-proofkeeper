@@ -74,7 +74,10 @@ export class FilesComponent {
         [Validators.required, Validators.pattern('anchor|sign')],
       ],
       public: [true],
-      identity: [this.storeService.getDefaultIdentity(), identityCheckerFactory(this)],
+      identity: [
+        this.storeService.getDefaultIdentity(),
+        identityCheckerFactory(this),
+      ],
       metadataName: [null],
       metadataValue: [null],
       currentTag: [null],
@@ -138,10 +141,18 @@ export class FilesComponent {
   }
 
   resetAddFileFormGroup() {
-    this.fileFormGroup.reset({
-      action: this.getCurrentMode(),
-      public: true,
-    });
+    if (this.getCurrentMode() === 'sign') {
+      this.fileFormGroup.reset({
+        action: this.getCurrentMode(),
+        public: true,
+        identity: this.storeService.getDefaultIdentity(),
+      });
+    } else {
+      this.fileFormGroup.reset({
+        action: this.getCurrentMode(),
+        public: true,
+      });
+    }
   }
 
   onFileDropped(file: File) {

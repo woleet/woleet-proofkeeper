@@ -93,6 +93,9 @@
     </div>
 
     <div class="input-section">
+      <div class="input-label">
+        {{ translations.commons.labelNames.name | translate }}
+      </div>
       <input
         type="text"
         class="default-input"
@@ -104,6 +107,9 @@
       />
     </div>
 
+    <div class="input-label">
+      {{ translations.commons.labelNames.tags | translate }}
+    </div>
     <div class="default-input tag-input">
       <button *ngFor="let tag of tags" class="btn btn-tag">
         {{ tag }}
@@ -118,7 +124,10 @@
       />
     </div>
 
-    <div *ngIf="getCurrentMode() === 'sign'" class="input-section">
+    <div *ngIf="getCurrentMode() === 'sign'" class="input-section add-mb">
+      <div class="input-label">
+        {{ translations.files.labels.identityURL | translate }}
+      </div>
       <input
         type="text"
         class="default-input"
@@ -127,7 +136,7 @@
       />
     </div>
 
-    <label class="checkbox-content">
+    <label class="checkbox-content add-mt">
       <input type="checkbox" formControlName="public" />
       {{ translations.files.labels.public | translate }}
     </label>
@@ -232,6 +241,9 @@
 
         <div class="d-flex">
           <div class="input-section">
+            <div class="input-label">
+              {{ translations.commons.labelNames.name | translate }}
+            </div>
             <input
               type="text"
               class="default-input"
@@ -241,6 +253,9 @@
             />
           </div>
           <div class="input-section ml">
+            <div class="input-label">
+              {{ translations.commons.labelNames.value | translate }}
+            </div>
             <input
               type="text"
               class="default-input"

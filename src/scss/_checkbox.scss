@@ -12,6 +12,10 @@
     color: $color-grey;
     cursor: not-allowed;
   }
+
+  &.add-mt {
+    margin-top: $standard-space * 3;
+  }
 }
 
 .checkbox-content+.checkbox-content {

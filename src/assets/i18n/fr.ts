@@ -35,7 +35,8 @@ const fr: typeof EN_Translations = {
       content: 'Contenu :',
       proofReceiptsOfManualOperationsFolder: 'Dossier par défaut pour les opérations manuelles',
       add: 'Ajouter',
-      select: 'Sélectionnez'
+      select: 'Sélectionnez',
+      tags: 'Tags'
     },
     tooltips: {
       giveName: 'Donnez un nom représentant l\'identité de la personne morale qui s\'engage dans l\'opération de scellé.',

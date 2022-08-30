@@ -34,7 +34,10 @@
     </button>
   </div>
   <form [formGroup]="folderFormGroup" *ngIf="addState" class="mt">
-    <div class="select-folder-input mt">
+    <div class="input-label">
+      {{ translations.folders.folderToScan | translate }}
+    </div>
+    <div class="select-folder-input">
       <div class="input-with-close-icon">
         <input
           type="text"
@@ -113,7 +116,10 @@
       {{ translations.folders.checkbox.notCheckSSLCertificate | translate }}
     </label>
 
-    <div class="input-section">
+    <div class="input-section add-mt add-mb">
+      <div class="input-label">
+        {{ translations.folders.proveFilesMatchingRegularExpression | translate }}
+      </div>
       <input
         type="text"
         class="default-input"
@@ -250,7 +256,10 @@
               translations.folders.checkbox.notCheckSSLCertificate | translate
             }}
           </label>
-          <div class="input-section">
+          <div class="input-section add-mt add-mb">
+            <div class="input-label">
+              {{ translations.folders.proveFilesMatchingRegularExpression | translate }}
+            </div>
             <input
               type="text"
               class="default-input"

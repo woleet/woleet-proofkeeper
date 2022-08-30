@@ -33,7 +33,8 @@ export default {
       content: 'Content:',
       proofReceiptsOfManualOperationsFolder: 'Default folder for manual operations',
       add: 'Add',
-      select: 'Select'
+      select: 'Select',
+      tags: 'Tags'
     },
     tooltips: {
       giveName: 'Give a name representing the identity of the legal person committing in seal operation.',
