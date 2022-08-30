@@ -10,8 +10,11 @@
 
 .icon {
   font-size: 24px;
-}
 
+  &.icon-balance {
+    font-size: 20px;
+  }
+}
 
 .align-icon-link {
   display: flex;

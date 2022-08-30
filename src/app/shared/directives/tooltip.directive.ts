@@ -1,10 +1,16 @@
-import { Directive, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnDestroy
+} from '@angular/core';
 
 @Directive({
   selector: '[appTooltip]',
 })
 export class TooltipDirective implements OnDestroy {
-  @Input() appTooltip = ''; // The text for the tooltip to display
+  @Input() appTooltip: string; // The text for the tooltip to display
 
   private myPopup;
 
@@ -17,14 +23,16 @@ export class TooltipDirective implements OnDestroy {
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    let x =
-      this.el.nativeElement.getBoundingClientRect().left +
-      this.el.nativeElement.offsetWidth / 2; // Get the middle of the element
-    let y =
-      this.el.nativeElement.getBoundingClientRect().top +
-      this.el.nativeElement.offsetHeight +
-      6; // Get the bottom of the element, plus a little extra
-    this.createTooltipPopup(x, y);
+    if (this.appTooltip) {
+      let x =
+        this.el.nativeElement.getBoundingClientRect().left +
+        this.el.nativeElement.offsetWidth / 2; // Get the middle of the element
+      let y =
+        this.el.nativeElement.getBoundingClientRect().top +
+        this.el.nativeElement.offsetHeight +
+        6; // Get the bottom of the element, plus a little extra
+      this.createTooltipPopup(x, y);
+    }
   }
 
   @HostListener('mouseleave') onMouseLeave() {

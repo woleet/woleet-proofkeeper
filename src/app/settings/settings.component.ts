@@ -53,6 +53,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   addPubKeyAddressKey: string;
   editPubKeyAddressKey: string;
   DEFAULT_VALUE_MANUAL_OPERATION_FOLDER: string;
+  defaultIdentitySelected: string;
+  defaultIdentitySelectedIndex = 0;
 
   constructor(
     private cli: WoleetCliParametersService,
@@ -89,6 +91,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   initComponent() {
     this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER =
       this.storeService.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER;
+    this.defaultIdentitySelected = this.storeService.getDefaultIdentity();
     this.identityOpened = '';
     this.addPubKeyAddressGroup = [];
     this.editPubKeyAddressGroup = [];
@@ -258,6 +261,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.addIdentityFormGroup.get('pubKey').value
     );
     this.addState = false;
+
+    if (!this.defaultIdentitySelected) {
+      this.defaultIdentitySelected = this.storeService.getDefaultIdentity();
+    }
+
     this.addIdentityFormGroup.reset();
     while (this.addPubKeyAddressGroup.length) {
       this.addPubKeyAddressGroup.pop();
@@ -424,5 +432,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   resetPath(type: string) {
     this.sharedService.resetPath(this.settingsFormGroup, type);
+  }
+
+  selectNewDefaultIdentity(name: string) {
+    this.storeService.setDefaultIdentity(name);
+    this.defaultIdentitySelected = name;
   }
 }

@@ -23,7 +23,29 @@
   }
 }
 
-
 .is-used {
   border-color: $text-color;
+}
+
+.default-identity {
+  border-color: $color-state-available;
+}
+
+
+.identity-name {
+  position: relative;
+}
+
+.icon-checkbox_rounded {
+  position: absolute;
+  right: $standard-space * 2;
+  font-size: 14px;
+
+  &.default-identity {
+    color: $color-state-available;
+  }
+
+  &:hover {
+    color: $color-secondary;
+  }
 }

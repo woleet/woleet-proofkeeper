@@ -131,8 +131,8 @@ export default {
   },
   settings: {
     overrideWoleetAPIURL: 'Override Woleet API URL',
-    addIdentity: 'Add identity:',
-    sealIdentities: 'Seal identities:',
+    addIdentity: 'Add identity',
+    sealIdentities: 'Seal identities',
     identityUsedInOneFolder: 'This identity is still in use in one of your folder\'s configuration',
     deleteIdentity: 'Delete identity',
     deleteIdentityQuestion: 'Are you sure you want to delete this identity?',
@@ -142,7 +142,9 @@ export default {
     },
     resetSavedFoldersConfig: 'Reset saved folders and configuration',
     resetConfig: 'Reset config',
-    resetConfigQuestion: 'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.' 
+    resetConfigQuestion: 'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.',
+    identitySelectedByDefault: 'Identity selected by default',
+    selectIdentityAsDefault: 'Select this identity as default'
   },
   wizard: {
     welcome: 'Welcome to ProofKeeper',

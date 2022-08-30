@@ -16,6 +16,7 @@ export class StoreService {
   DEFAULT_VALUE_MANUAL_OPERATION_FOLDER =
     'proofReceiptsOfManualOperationsFolder';
   DEFAULT_MANUAL_OPERATION_SUB_FOLDER_NAME = 'proofReceiptsOfManualOperations';
+  private defaultIdentity: string;
 
   public constructor(languageService: LanguageService) {
     this.store = new Store();
@@ -27,6 +28,30 @@ export class StoreService {
       }
     } else {
       this.setLang(languageService.getBrowserLanguage());
+    }
+
+    if (this.store.has('defaultIdentity')) {
+      if (!!this.store.get('defaultIdentity')) {
+        this.defaultIdentity = this.store.get('defaultIdentity');
+      } else {
+        if (
+          this.store.has('arrayIdentityContent') &&
+          this.store.get('arrayIdentityContent')[0] &&
+          this.store.get('arrayIdentityContent')[0].name
+        ) {
+          this.setDefaultIdentity(
+            this.store.get('arrayIdentityContent')[0].name
+          );
+        }
+      }
+    } else {
+      if (
+        this.store.has('arrayIdentityContent') &&
+        this.store.get('arrayIdentityContent')[0] &&
+        this.store.get('arrayIdentityContent')[0].name
+      ) {
+        this.setDefaultIdentity(this.store.get('arrayIdentityContent')[0].name);
+      }
     }
 
     createNewFolder(
@@ -60,6 +85,11 @@ export class StoreService {
     return this.lang;
   }
 
+  public setLang(lang: string) {
+    this.store.set('lang', lang);
+    this.lang = lang;
+  }
+
   public getProofReceiptsOfManualOperationsFolder(): string {
     return this.proofReceiptsOfManualOperationsFolder;
   }
@@ -69,8 +99,12 @@ export class StoreService {
     this.proofReceiptsOfManualOperationsFolder = path;
   }
 
-  public setLang(lang: string) {
-    this.store.set('lang', lang);
-    this.lang = lang;
+  public getDefaultIdentity() {
+    return this.defaultIdentity;
+  }
+
+  public setDefaultIdentity(name: string) {
+    this.store.set('defaultIdentity', name);
+    this.defaultIdentity = name;
   }
 }

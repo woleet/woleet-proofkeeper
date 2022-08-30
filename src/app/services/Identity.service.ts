@@ -23,7 +23,7 @@ export class IdentityService {
   public arrayIdentityContent: Array<IdentityContent>;
 
   public constructor(
-    storeService: StoreService,
+    private storeService: StoreService,
     private translateService: TranslateService,
     private translations: TranslationService
   ) {
@@ -57,6 +57,10 @@ export class IdentityService {
     }
     this.arrayIdentityContent.push(tempIdentityContent);
     this.saveIdentities();
+
+    if (!this.store.has('defaultIdentity')) {
+      this.storeService.setDefaultIdentity(name);
+    }
   }
 
   public updateIdentity(

@@ -13,6 +13,7 @@ import { CliRunnerFolderInterface } from '../services/cliRunnerFolderInterface.s
 import { FolderDesc } from '../services/foldersConfig.service';
 import { IdentityService } from '../services/Identity.service';
 import { SharedService } from '../services/shared.service';
+import { StoreService } from '../services/store.service';
 import { TranslationService } from '../services/translation.service';
 import { collapseAnimation } from '../shared/animations/customs.animation';
 
@@ -38,7 +39,8 @@ export class FoldersComponent {
     public identityService: IdentityService,
     public translations: TranslationService,
     private translateService: TranslateService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private storeService: StoreService
   ) {
     this.addState = false;
 
@@ -53,7 +55,7 @@ export class FoldersComponent {
       prune: [false],
       recursive: [false],
       filter: [''],
-      identity: ['', identityCheckerFactory(this)],
+      identity: [this.storeService.getDefaultIdentity(), identityCheckerFactory(this)],
       iDServerUnsecureSSL: [false],
     });
     this.fillFoldersFormGroup();

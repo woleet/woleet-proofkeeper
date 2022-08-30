@@ -133,8 +133,8 @@ const fr: typeof EN_Translations = {
   },
   settings: {
     overrideWoleetAPIURL: 'Remplacer l\'URL de l\'API Woleet',
-    addIdentity: 'Ajouter une identité :',
-    sealIdentities: 'Identités de scellé :',
+    addIdentity: 'Ajouter une identité',
+    sealIdentities: 'Identités de scellé',
     identityUsedInOneFolder: 'Cette identité est encore utilisée dans la configuration d\'un de vos dossiers.',
     deleteIdentity: 'Supprimer l\'identité',
     deleteIdentityQuestion: 'Êtes-vous sûr de vouloir supprimer cette identité ?',
@@ -144,7 +144,9 @@ const fr: typeof EN_Translations = {
     },
     resetSavedFoldersConfig: 'Réinitialiser les dossiers enregistrés et la configuration',
     resetConfig: 'Réinitialiser la configuration',
-    resetConfigQuestion: 'Êtes-vous sûr de vouloir réinitialiser votre configuration ? Tous les paramètres actuels et les dossiers configurés seront supprimés de ProofKeeper.' 
+    resetConfigQuestion: 'Êtes-vous sûr de vouloir réinitialiser votre configuration ? Tous les paramètres actuels et les dossiers configurés seront supprimés de ProofKeeper.',
+    identitySelectedByDefault: 'Identité sélectionnée par défaut',
+    selectIdentityAsDefault: 'Sélectionner cette identité comme par défaut'
   },
   wizard: {
     welcome: 'Bienvenue sur ProofKeeper',

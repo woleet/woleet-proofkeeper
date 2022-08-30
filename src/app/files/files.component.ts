@@ -74,7 +74,7 @@ export class FilesComponent {
         [Validators.required, Validators.pattern('anchor|sign')],
       ],
       public: [true],
-      identity: [null, identityCheckerFactory(this)],
+      identity: [this.storeService.getDefaultIdentity(), identityCheckerFactory(this)],
       metadataName: [null],
       metadataValue: [null],
       currentTag: [null],
