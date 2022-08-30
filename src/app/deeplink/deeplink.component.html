@@ -19,7 +19,7 @@
           {{ woleetToken }}
         </div>
         <hr *ngIf="woleetUrl" />
-        <p *ngIf="woleetUrl">
+        <p *ngIf="woleetUrl" class="add-margin-top">
           {{ translations.deeplink.providedWoleetURL | translate }}
         </p>
         <div class="card card-part" *ngIf="woleetUrl">
@@ -40,7 +40,7 @@
           {{ widsToken }}
         </div>
         <hr *ngIf="widsUrl" />
-        <p *ngIf="widsUrl">
+        <p *ngIf="widsUrl" class="add-margin-top">
           {{ translations.deeplink.providedWidsURL | translate }}
         </p>
         <div class="card card-part">
@@ -48,7 +48,10 @@
         </div>
       </div>
       <form [formGroup]="widsFormGroup" *ngIf="pubKeyAddressGroup.length !== 0">
-        <div class="input-section no-mb">
+        <div class="input-label">
+          {{ translations.commons.labelNames.name | translate }}
+        </div>
+        <div class="input-section no-mt">
           <input
             type="text"
             class="default-input"

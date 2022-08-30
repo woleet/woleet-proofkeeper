@@ -23,6 +23,9 @@
           }}</a>
         </p>
         <div class="input-section no-mb">
+          <div class="input-label">
+            {{ translations.commons.labelNames.woleetAPIToken | translate }}
+          </div>
           <input
             type="text"
             class="default-input"
@@ -54,7 +57,10 @@
           {{ translations.wizard.setupIdentityInstruction | translate }}
         </p>
 
-        <div class="input-section no-mb">
+        <div class="input-label">
+          {{ translations.commons.labelNames.name | translate }}
+        </div>
+        <div class="input-section no-mt no-mb">
           <input
             type="text"
             class="default-input"
@@ -83,7 +89,12 @@
           {{ translations.commons.errors.nameAlreadyPresent | translate }}
         </div>
 
-        <div class="input-section no-mb">
+        <div class="input-section">
+          <div class="input-label">
+            {{
+              translations.commons.labelNames.widsSignatureAPIURL | translate
+            }}
+          </div>
           <input
             type="text"
             class="default-input"
@@ -95,7 +106,10 @@
           />
         </div>
 
-        <div class="input-section">
+        <div class="input-label">
+          {{ translations.commons.labelNames.widsAPIToken | translate }}
+        </div>
+        <div class="input-section no-mt">
           <input
             type="text"
             class="default-input"
