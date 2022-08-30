@@ -12,7 +12,7 @@ import { TranslationService } from '../services/translation.service';
 export class LogsComponent {
   public folder: FolderParam;
   public folders: FolderParam[];
-  showSelectOptions = false;
+  isSorting = false;
 
   constructor(
     foldersConfigService: FoldersConfigService,
@@ -23,12 +23,20 @@ export class LogsComponent {
     this.folder = this.folders[0];
   }
 
-  changeFolder(folder) {
-    this.folder = folder;
-    this.showSelectOptions = false;
-  }
-
   translateLegacyAction(action: string): string {
     return this.sharedService.translateLegacyAction(action);
+  }
+
+  sortByLevel() {
+    this.isSorting = !this.isSorting;
+    if (this.isSorting) {
+      this.folder.logContext.logs.sort((a, b) =>
+        a.level.localeCompare(b.level)
+      );
+    } else {
+      this.folder.logContext.logs.sort((a, b) =>
+        b.level.localeCompare(a.level)
+      );
+    }
   }
 }

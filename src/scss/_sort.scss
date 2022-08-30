@@ -1,0 +1,19 @@
+.sortable {
+  cursor: pointer;
+
+  .icon-play {
+    position: absolute;
+    margin-top: 3px;
+    margin-left: 4px;
+    transform: rotate(90deg);
+    transition-duration: 0.25s;
+    display: none;
+    margin-right: 5px;
+    display: inline-block;
+
+    &.isAsc {
+      transform: rotate(270deg);
+      transition-duration: 0.25s;
+    }
+  }
+}

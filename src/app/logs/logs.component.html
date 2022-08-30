@@ -8,12 +8,13 @@
   >
   </app-custom-select>
 
-  <table class="mt" *ngIf="folder.logContext.logs.length">
+  <table class="mt" *ngIf="folder?.logContext?.logs?.length">
     <!-- Column names -->
     <thead>
       <tr>
-        <th class="column-name">
+        <th class="column-name sortable" (click)="sortByLevel()">
           {{ translations.logs.level | translate }}
+          <span class="icon-play active" [ngClass]="{'isAsc': isSorting}"></span>
         </th>
         <th class="column-name">
           {{ translations.logs.message | translate }}
@@ -42,7 +43,7 @@
     </tbody>
   </table>
 
-  <div *ngIf="!folder.logContext.logs.length" class="no-log">
+  <div *ngIf="!folder?.logContext?.logs?.length" class="no-log">
     {{ translations.logs.noLog | translate }}
   </div>
 </div>
