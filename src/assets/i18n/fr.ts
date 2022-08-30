@@ -132,6 +132,7 @@ const fr: typeof EN_Translations = {
     noLog: 'Aucun log pour ce dossier.'
   },
   settings: {
+    settingsForWoleetAPI: 'Paramètres pour l\'API Woleet',
     overrideWoleetAPIURL: 'Remplacer l\'URL de l\'API Woleet',
     addIdentity: 'Ajouter une identité',
     sealIdentities: 'Identités de scellé',

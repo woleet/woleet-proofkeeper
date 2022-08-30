@@ -130,6 +130,7 @@ export default {
     noLog: 'No log for this folder.'
   },
   settings: {
+    settingsForWoleetAPI: 'Settings for Woleet API',
     overrideWoleetAPIURL: 'Override Woleet API URL',
     addIdentity: 'Add identity',
     sealIdentities: 'Seal identities',

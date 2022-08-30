@@ -1,5 +1,9 @@
 <form class="card card-part" [formGroup]="settingsFormGroup">
+  <h3>{{ translations.settings.settingsForWoleetAPI | translate }}</h3>
   <div class="input-section no-mt no-mb">
+    <div class="input-label">
+      {{ translations.commons.labelNames.woleetAPIToken | translate }}
+    </div>
     <input
       type="text"
       class="default-input"
@@ -19,6 +23,9 @@
     {{ translations.commons.errors.invalidJWTTokenFormat | translate }}
   </div>
   <div class="input-section">
+    <div class="input-label">
+      {{ translations.settings.overrideWoleetAPIURL | translate }}
+    </div>
     <input
       type="text"
       class="default-input"
@@ -27,12 +34,22 @@
     />
   </div>
 
-  <div class="input-label">
+  <button
+    class="btn btn-primary"
+    [disabled]="settingsFormGroup.invalid"
+    (click)="onClickCheckAndSubmit()"
+  >
+    {{ translations.commons.buttons.save | translate }}
+  </button>
+</form>
+
+<form class="card card-part" [formGroup]="folderPathFormGroup">
+  <h3>
     {{
       translations.commons.labelNames[DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]
         | translate
     }}
-  </div>
+  </h3>
   <div class="select-folder-input">
     <div class="input-with-close-icon">
       <input
@@ -46,7 +63,7 @@
       />
       <button
         *ngIf="
-          settingsFormGroup.get(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER).value
+          folderPathFormGroup.get(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER).value
         "
         (click)="resetPath(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)"
         class="btn btn-without-background btn-inside-input"
@@ -61,21 +78,16 @@
       <i class="icon-folder-open"></i>
     </button>
   </div>
-
-  <button
-    class="btn btn-primary"
-    [disabled]="settingsFormGroup.invalid"
-    (click)="onClickCheckAndSubmit()"
-  >
-    {{ translations.commons.buttons.save | translate }}
-  </button>
 </form>
 
 <div class="card card-part" *ngIf="addState">
   <h3>{{ translations.settings.addIdentity | translate }}</h3>
   <div>
     <form class="mb" [formGroup]="addIdentityFormGroup">
-      <div class="input-section no-mb">
+      <div class="input-section no-mt">
+        <div class="input-label">
+          {{ translations.commons.labelNames.name | translate }}
+        </div>
         <input
           type="text"
           class="default-input"
@@ -96,6 +108,9 @@
       </div>
 
       <div class="input-section">
+        <div class="input-label">
+          {{ translations.commons.labelNames.widsSignatureAPIURL | translate }}
+        </div>
         <input
           type="text"
           class="default-input"
@@ -108,6 +123,9 @@
       </div>
 
       <div class="input-section">
+        <div class="input-label">
+          {{ translations.commons.labelNames.widsAPIToken | translate }}
+        </div>
         <input
           type="text"
           class="default-input"
@@ -172,7 +190,7 @@
     *ngFor="
       let identityContent of identityService.arrayIdentityContent;
       last as last;
-      let i = index;
+      let i = index
     "
   >
     <div
@@ -191,21 +209,28 @@
             : null
         "
         (click)="openEditForm(identityContent.name)"
-        (mouseenter)="defaultIdentitySelectedIndex = i" (mouseleave)="defaultIdentitySelectedIndex = null"
+        (mouseenter)="defaultIdentitySelectedIndex = i"
+        (mouseleave)="defaultIdentitySelectedIndex = null"
       >
         {{ identityContent.name }}
         <i
-          *ngIf="identityContent.name === defaultIdentitySelected || defaultIdentitySelectedIndex === i"
+          *ngIf="
+            identityContent.name === defaultIdentitySelected ||
+            defaultIdentitySelectedIndex === i
+          "
           class="icon-checkbox_rounded"
           [ngClass]="{
             'default-identity': identityContent.name === defaultIdentitySelected
           }"
           [appTooltip]="
-          identityContent.name === defaultIdentitySelected
-            ? (translations.settings.identitySelectedByDefault | translate)
-            : (translations.settings.selectIdentityAsDefault | translate)
-        "
-        (click)="$event.stopPropagation(); selectNewDefaultIdentity(identityContent.name)"
+            identityContent.name === defaultIdentitySelected
+              ? (translations.settings.identitySelectedByDefault | translate)
+              : (translations.settings.selectIdentityAsDefault | translate)
+          "
+          (click)="
+            $event.stopPropagation();
+            selectNewDefaultIdentity(identityContent.name)
+          "
         ></i>
       </button>
       <button
@@ -226,6 +251,9 @@
     >
       <form [formGroup]="editIdentityFormGroup">
         <div class="input-section no-mb">
+          <div class="input-label">
+            {{ translations.commons.labelNames.name | translate }}
+          </div>
           <input
             type="text"
             class="default-input"
@@ -234,6 +262,11 @@
           />
         </div>
         <div class="input-section no-mb">
+          <div class="input-label">
+            {{
+              translations.commons.labelNames.widsSignatureAPIURL | translate
+            }}
+          </div>
           <input
             type="text"
             class="default-input"
@@ -245,6 +278,9 @@
           />
         </div>
         <div class="input-section">
+          <div class="input-label">
+            {{ translations.commons.labelNames.widsAPIToken | translate }}
+          </div>
           <input
             type="text"
             class="default-input"
@@ -316,9 +352,9 @@
 </div>
 
 <div class="card card-part">
+  <h3>{{ translations.commons.labelNames.language | translate }}</h3>
   <form [formGroup]="languageFormGroup">
     <app-custom-select
-      [labelName]="translations.commons.labelNames.language | translate"
       [options]="languages"
       [activeLangPipe]="true"
       [selectedOption]="

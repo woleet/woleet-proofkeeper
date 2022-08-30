@@ -40,6 +40,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   public addState: boolean;
   public identityOpened: string;
   public settingsFormGroup: FormGroup;
+  public folderPathFormGroup: FormGroup;
   public addIdentityFormGroup: FormGroup;
   public editIdentityFormGroup: FormGroup;
   public languageFormGroup: FormGroup;
@@ -98,6 +99,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.settingsFormGroup = this.formBuilder.group({
       token: [this.cli.getToken(), [Validators.required, tokenFormatValidator]],
       url: [this.cli.getUrl()],
+    });
+
+    this.folderPathFormGroup = this.formBuilder.group({
       [this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER]: [
         this.storeService.getProofReceiptsOfManualOperationsFolder(),
         [Validators.required],
@@ -142,18 +146,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   onClickCheckAndSubmit() {
-    const oldPath =
-      this.storeService.getProofReceiptsOfManualOperationsFolder();
-    const newPath = this.settingsFormGroup.get(
-      this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER
-    ).value;
-
-    if (oldPath !== newPath) {
-      this.updateFolderPathInFolderList(oldPath, newPath);
-      this.moveProofReceipts(oldPath, newPath);
-      storeManualActionsFolder(newPath, this.storeService);
-    }
-
     checkAndSubmit(
       this.http,
       this.settingsFormGroup,
@@ -424,14 +416,26 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   onClickPopUpDirectory(type: string) {
     this.sharedService.openPopupDirectory(
-      this.settingsFormGroup,
+      this.folderPathFormGroup,
       type,
-      this.settingsFormGroup.get(type).value
+      this.folderPathFormGroup.get(type).value
     );
+
+    const oldPath =
+      this.storeService.getProofReceiptsOfManualOperationsFolder();
+    const newPath = this.folderPathFormGroup.get(
+      this.DEFAULT_VALUE_MANUAL_OPERATION_FOLDER
+    ).value;
+
+    if (oldPath !== newPath) {
+      this.updateFolderPathInFolderList(oldPath, newPath);
+      this.moveProofReceipts(oldPath, newPath);
+      storeManualActionsFolder(newPath, this.storeService);
+    }
   }
 
   resetPath(type: string) {
-    this.sharedService.resetPath(this.settingsFormGroup, type);
+    this.sharedService.resetPath(this.folderPathFormGroup, type);
   }
 
   selectNewDefaultIdentity(name: string) {
