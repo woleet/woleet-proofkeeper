@@ -41,12 +41,9 @@ export class FilesComponent {
   fileStream: fs.ReadStream;
   isHashing = false;
   progress = 0;
-  metadata = {};
-  openMetadataPanel = false;
   openCallbackURLPanel = false;
   anchorCallbackResult: UserLog;
   proofReceiptsOfManualOperationsFolder: string;
-  tags: Array<string> = [];
 
   constructor(
     public cliRunnerFolderInterface: CliRunnerFolderInterface,
@@ -68,7 +65,6 @@ export class FilesComponent {
       name: ['', Validators.required],
       identityURL: [null],
       callbackURL: [null],
-      metadata: [null],
       action: [
         'anchor',
         [Validators.required, Validators.pattern('anchor|sign')],
@@ -78,9 +74,6 @@ export class FilesComponent {
         this.storeService.getDefaultIdentity(),
         identityCheckerFactory(this),
       ],
-      metadataName: [null],
-      metadataValue: [null],
-      currentTag: [null],
     });
   }
 
@@ -133,9 +126,6 @@ export class FilesComponent {
 
   onCancel() {
     this.cancelFileHash();
-    this.metadata = {};
-    this.tags = [];
-    this.openMetadataPanel = false;
     this.openCallbackURLPanel = false;
     this.resetAddFileFormGroup();
   }
@@ -216,40 +206,6 @@ export class FilesComponent {
   onSelectedFile(event: Event) {
     const file = (event?.target as HTMLInputElement)?.files[0];
     this.onFileDropped(file);
-  }
-
-  addTag() {
-    const tag = this.fileFormGroup.get('currentTag').value;
-    if (tag && tag !== '' && !this.tags.includes(tag)) {
-      this.tags.push(tag);
-    }
-    this.fileFormGroup.get('currentTag').setValue('');
-  }
-
-  removeTag(tag: string) {
-    const index = this.tags.indexOf(tag);
-
-    if (index >= 0) {
-      this.tags.splice(index, 1);
-    }
-  }
-
-  metadataIsValid(): boolean {
-    const name = this.fileFormGroup.get('metadataName').value;
-    const value = this.fileFormGroup.get('metadataValue').value;
-    return !!name && !!value;
-  }
-
-  addMetadata() {
-    const name = this.fileFormGroup.get('metadataName').value;
-    const value = this.fileFormGroup.get('metadataValue').value;
-    this.metadata[name] = value;
-    this.fileFormGroup.get('metadataName').reset();
-    this.fileFormGroup.get('metadataValue').reset();
-  }
-
-  deleteMetadata(key: string) {
-    delete this.metadata[key];
   }
 
   onSubmit() {
@@ -337,20 +293,12 @@ export class FilesComponent {
     proof.name = formValues.name;
     proof.public = formValues.public;
 
-    if (this.tags && this.tags.length) {
-      proof.tags = this.tags;
-    }
-
     if (!!formValues.identityURL) {
       proof.identityURL = formValues.identityURL;
     }
 
     if (!!formValues.callbackURL) {
       proof.callbackURL = formValues.callbackURL;
-    }
-
-    if (this.metadata && Object.keys(this.metadata).length) {
-      proof.metadata = this.metadata;
     }
 
     return proof;

@@ -106,24 +106,6 @@
         formControlName="name"
       />
     </div>
-
-    <div class="input-label">
-      {{ translations.commons.labelNames.tags | translate }}
-    </div>
-    <div class="default-input tag-input">
-      <button *ngFor="let tag of tags" class="btn btn-tag">
-        {{ tag }}
-        <i class="icon-clear delete-tag" (click)="removeTag(tag)"></i>
-      </button>
-      <input
-        type="text"
-        class="default-input no-background"
-        [placeholder]="translations.files.labels.addTag | translate"
-        formControlName="currentTag"
-        (keyup.enter)="addTag()"
-      />
-    </div>
-
     <div *ngIf="getCurrentMode() === 'sign'" class="input-section add-mb">
       <div class="input-label">
         {{ translations.files.labels.identityURL | translate }}
@@ -165,7 +147,7 @@
         [@collapseAnimation]
         class="collapse-container"
       >
-        <div class="input-section">
+        <div class="input-section no-mt">
           <input
             type="text"
             class="default-input"
@@ -202,78 +184,6 @@
             {{ anchorCallbackResult.message }}
           </div>
         </div>
-      </div>
-
-      <div
-        class="collapse-panel"
-        [ngClass]="{
-          selected: openMetadataPanel
-        }"
-        (click)="openMetadataPanel = !openMetadataPanel"
-      >
-        <div
-          class="collapse-panel-text"
-          [ngClass]="{ selected: openMetadataPanel }"
-        >
-          {{ translations.files.labels.metadata | translate }}
-        </div>
-        <i
-          class="icon-play for-collapse"
-          [ngClass]="!openMetadataPanel ? 'selected' : ''"
-        ></i>
-      </div>
-      <div
-        *ngIf="openMetadataPanel"
-        [@collapseAnimation]
-        class="collapse-container"
-      >
-        <ul class="metadata">
-          <li *ngFor="let data of metadata | keyvalue">
-            <div class="key-value">
-              {{ data.key }}: {{ data.value }}
-              <i
-                class="icon-trash delete-metadata"
-                (click)="deleteMetadata(data.key)"
-              ></i>
-            </div>
-          </li>
-        </ul>
-
-        <div class="d-flex">
-          <div class="input-section">
-            <div class="input-label">
-              {{ translations.commons.labelNames.name | translate }}
-            </div>
-            <input
-              type="text"
-              class="default-input"
-              [placeholder]="translations.commons.labelNames.name | translate"
-              formControlName="metadataName"
-              (keyup.enter)="metadataIsValid() ? addMetadata() : null"
-            />
-          </div>
-          <div class="input-section ml">
-            <div class="input-label">
-              {{ translations.commons.labelNames.value | translate }}
-            </div>
-            <input
-              type="text"
-              class="default-input"
-              [placeholder]="translations.commons.labelNames.value | translate"
-              formControlName="metadataValue"
-              (keyup.enter)="metadataIsValid() ? addMetadata() : null"
-            />
-          </div>
-        </div>
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="addMetadata()"
-          [disabled]="!metadataIsValid()"
-        >
-          <i class="icon-add"></i>
-          {{ translations.commons.labelNames.add | translate }}
-        </button>
       </div>
     </div>
 
