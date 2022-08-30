@@ -31,6 +31,7 @@ const fr: typeof EN_Translations = {
       language: 'Langue',
       value: 'Valeur',
       identityToUse: 'Identité à utiliser',
+      identityToUseByDefault: 'Identité à utiliser par défaut',
       status: 'Statut :',
       content: 'Contenu :',
       proofReceiptsOfManualOperationsFolder: 'Dossier par défaut pour les opérations manuelles',
@@ -148,7 +149,9 @@ const fr: typeof EN_Translations = {
     resetConfig: 'Réinitialiser la configuration',
     resetConfigQuestion: 'Êtes-vous sûr de vouloir réinitialiser votre configuration ? Tous les paramètres actuels et les dossiers configurés seront supprimés de ProofKeeper.',
     identitySelectedByDefault: 'Identité sélectionnée par défaut',
-    selectIdentityAsDefault: 'Sélectionner cette identité comme par défaut'
+    selectIdentityAsDefault: 'Sélectionner cette identité comme par défaut',
+    selectFolder: 'Sélectionner un dossier',
+    editIdentities: 'Éditer vos identités'
   },
   wizard: {
     welcome: 'Bienvenue sur ProofKeeper',

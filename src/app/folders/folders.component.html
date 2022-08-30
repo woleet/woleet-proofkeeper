@@ -57,7 +57,11 @@
         </button>
       </div>
 
-      <button class="btn btn-primary ml" (click)="onClickPopUpDirectory()">
+      <button
+        class="btn btn-primary outline ml"
+        (click)="onClickPopUpDirectory()"
+        [appTooltip]="translations.settings.selectFolder | translate"
+      >
         <i class="icon-folder-open"></i>
       </button>
     </div>
@@ -118,7 +122,9 @@
 
     <div class="input-section add-mt add-mb">
       <div class="input-label">
-        {{ translations.folders.proveFilesMatchingRegularExpression | translate }}
+        {{
+          translations.folders.proveFilesMatchingRegularExpression | translate
+        }}
       </div>
       <input
         type="text"
@@ -169,12 +175,12 @@
             [appTooltip]="getStatusTooltip(i)"
           ></div>
           <button
-          class="btn btn-danger btn-without-background refresh-btn"
-          [appTooltip]="translations.folders.tooltips.restart | translate"
-          (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
-        >
-          <i class="icon-refresh"></i>
-        </button>
+            class="btn btn-danger btn-without-background refresh-btn"
+            [appTooltip]="translations.folders.tooltips.restart | translate"
+            (click)="$event.stopPropagation(); onClickRefresh(folderForm)"
+          >
+            <i class="icon-refresh"></i>
+          </button>
           <button
             class="btn btn-danger btn-without-background"
             [appTooltip]="
@@ -258,7 +264,10 @@
           </label>
           <div class="input-section add-mt add-mb">
             <div class="input-label">
-              {{ translations.folders.proveFilesMatchingRegularExpression | translate }}
+              {{
+                translations.folders.proveFilesMatchingRegularExpression
+                  | translate
+              }}
             </div>
             <input
               type="text"

@@ -55,7 +55,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   editPubKeyAddressKey: string;
   DEFAULT_VALUE_MANUAL_OPERATION_FOLDER: string;
   defaultIdentitySelected: string;
-  defaultIdentitySelectedIndex = 0;
 
   constructor(
     private cli: WoleetCliParametersService,
@@ -441,5 +440,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
   selectNewDefaultIdentity(name: string) {
     this.storeService.setDefaultIdentity(name);
     this.defaultIdentitySelected = name;
+  }
+
+  getIdentityNames() {
+    return this.identityService.getIdentityNames();
   }
 }

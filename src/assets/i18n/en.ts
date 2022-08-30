@@ -28,6 +28,7 @@ export default {
       widsAPIToken: 'Woleet.ID Server API Token',
       language: 'Language',
       identityToUse: 'Identity to use',
+      identityToUseByDefault: 'Identity to use by default',
       value: 'Value',
       status: 'Status:',
       content: 'Content:',
@@ -146,7 +147,9 @@ export default {
     resetConfig: 'Reset config',
     resetConfigQuestion: 'Are you sure you want to reset your config? All current settings and configured folders will be removed from ProofKeeper.',
     identitySelectedByDefault: 'Identity selected by default',
-    selectIdentityAsDefault: 'Select this identity as default'
+    selectIdentityAsDefault: 'Select this identity as default',
+    selectFolder: 'Select folder',
+    editIdentities: 'Edit your identities'
   },
   wizard: {
     welcome: 'Welcome to ProofKeeper',

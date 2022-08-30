@@ -68,6 +68,16 @@ button {
     &:hover {
       background-color: lighten($main-color, 5%);
     }
+
+    &.outline {
+      color: $main-color;
+      background-color: $color-white;
+
+      &:hover {
+        color: $color-white;
+        background-color: $main-color;
+      }
+    }
   }
 
   &.btn-outline-default {
@@ -88,24 +98,6 @@ button {
 
     &:hover {
       background-color: $color-grey-light-01;
-    }
-  }
-
-  &.btn-outline-primary {
-    border-radius: $main-border-radius;
-    border: 1px solid $main-color  !important;
-    background: transparent;
-    padding: $standard-space + 2 $standard-space * 2;
-    align-items: center;
-    color: $text-color  !important;
-
-    &:hover,
-    &:active {
-      background-color: $main-color-transparent-02  !important;
-    }
-
-    &:focus {
-      box-shadow: none !important;
     }
   }
 

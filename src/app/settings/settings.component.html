@@ -72,8 +72,9 @@
       </button>
     </div>
     <button
-      class="btn btn-primary ml"
+      class="btn btn-primary outline ml"
       (click)="onClickPopUpDirectory(DEFAULT_VALUE_MANUAL_OPERATION_FOLDER)"
+      [appTooltip]="translations.settings.selectFolder | translate"
     >
       <i class="icon-folder-open"></i>
     </button>
@@ -179,13 +180,33 @@
   *ngIf="identityService.arrayIdentityContent.length !== 0"
 >
   <button
-    class="btn btn-primary identity-add-button"
-    [disabled]="addState"
+    *ngIf="!addState"
+    class="btn btn-primary outline identity-add-button"
     (click)="onAddIdentityClick()"
+    [appTooltip]="translations.settings.addIdentity | translate"
   >
     <i class="icon-add"></i>
   </button>
+
   <h3>{{ translations.settings.sealIdentities | translate }}</h3>
+
+  <div class="input-section">
+    <app-custom-select
+      *ngIf="defaultIdentitySelected"
+      [labelName]="
+        translations.commons.labelNames.identityToUseByDefault | translate
+      "
+      [options]="getIdentityNames()"
+      [selectedOption]="defaultIdentitySelected"
+      (onChangeOption)="selectNewDefaultIdentity($event)"
+    >
+    </app-custom-select>
+  </div>
+
+  <div class="input-label add-mt">
+    {{ translations.settings.editIdentities | translate }}
+  </div>
+
   <div
     *ngFor="
       let identityContent of identityService.arrayIdentityContent;
@@ -200,8 +221,7 @@
       <button
         class="btn full-width identity-name"
         [ngClass]="{
-          'is-used': isIdentityInUse(identityContent.name),
-          'default-identity': identityContent.name === defaultIdentitySelected
+          'is-used': isIdentityInUse(identityContent.name)
         }"
         [appTooltip]="
           isIdentityInUse(identityContent.name)
@@ -209,29 +229,8 @@
             : null
         "
         (click)="openEditForm(identityContent.name)"
-        (mouseenter)="defaultIdentitySelectedIndex = i"
-        (mouseleave)="defaultIdentitySelectedIndex = null"
       >
         {{ identityContent.name }}
-        <i
-          *ngIf="
-            identityContent.name === defaultIdentitySelected ||
-            defaultIdentitySelectedIndex === i
-          "
-          class="icon-checkbox_rounded"
-          [ngClass]="{
-            'default-identity': identityContent.name === defaultIdentitySelected
-          }"
-          [appTooltip]="
-            identityContent.name === defaultIdentitySelected
-              ? (translations.settings.identitySelectedByDefault | translate)
-              : (translations.settings.selectIdentityAsDefault | translate)
-          "
-          (click)="
-            $event.stopPropagation();
-            selectNewDefaultIdentity(identityContent.name)
-          "
-        ></i>
       </button>
       <button
         class="btn btn-danger ml"
