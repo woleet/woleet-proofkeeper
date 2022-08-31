@@ -179,16 +179,18 @@
   class="card card-part"
   *ngIf="identityService.arrayIdentityContent.length !== 0"
 >
-  <button
-    *ngIf="!addState"
-    class="btn btn-primary outline identity-add-button"
-    (click)="onAddIdentityClick()"
-    [appTooltip]="translations.settings.addIdentity | translate"
-  >
-    <i class="icon-add"></i>
-  </button>
 
-  <h3>{{ translations.settings.sealIdentities | translate }}</h3>
+  <div class="w-100 d-flex">
+    <h3>{{ translations.settings.sealIdentities | translate }}</h3>
+    <button
+      *ngIf="!addState"
+      class="btn btn-primary outline identity-add-button"
+      (click)="onAddIdentityClick()"
+      [appTooltip]="translations.settings.addIdentity | translate"
+    >
+      <i class="icon-add"></i>
+    </button>
+  </div>
 
   <div class="input-section">
     <app-custom-select
