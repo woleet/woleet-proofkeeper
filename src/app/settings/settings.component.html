@@ -180,8 +180,8 @@
   *ngIf="identityService.arrayIdentityContent.length !== 0"
 >
 
-  <div class="w-100 d-flex">
-    <h3>{{ translations.settings.sealIdentities | translate }}</h3>
+  <div class="w-100 d-flex mb">
+    <h3 class="no-mb">{{ translations.settings.sealIdentities | translate }}</h3>
     <button
       *ngIf="!addState"
       class="btn btn-primary outline identity-add-button"
