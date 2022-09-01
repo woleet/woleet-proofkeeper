@@ -133,7 +133,7 @@ export default {
   },
   settings: {
     settingsForWoleetAPI: 'Settings for Woleet API',
-    overrideWoleetAPIURL: 'Override Woleet API URL',
+    woleetAPIURL: 'Woleet API URL',
     addIdentity: 'Add identity',
     sealIdentities: 'Seal identities',
     identityUsedInOneFolder: 'This identity is still in use in one of your folder\'s configuration',

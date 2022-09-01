@@ -135,7 +135,7 @@ const fr: typeof EN_Translations = {
   },
   settings: {
     settingsForWoleetAPI: 'Paramètres pour l\'API Woleet',
-    overrideWoleetAPIURL: 'Remplacer l\'URL de l\'API Woleet',
+    woleetAPIURL: 'URL de l\'API Woleet',
     addIdentity: 'Ajouter une identité',
     sealIdentities: 'Identités de scellé',
     identityUsedInOneFolder: 'Cette identité est encore utilisée dans la configuration d\'un de vos dossiers.',
