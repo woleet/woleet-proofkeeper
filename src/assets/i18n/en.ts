@@ -49,7 +49,7 @@ export default {
       sign: 'File to seal',
     },
     introText: {
-      anchor: 'Drop here the files for which you want to <b>create a proof of timestamp</b>. <br><br> Once the file are anchored in the Bitcoin blockchain.<br>You will be able to <b>retrieve its proof receipt</b> in this folder: <br> <small><i>{{ pathFolder }}<i></small> <br><br> This proof receipt will allow you to <b>prove the existence of your file on the date of the timestamp</b>.',
+      anchor: 'Drop here the file for which you want to <b>create a proof of timestamp</b>. <br><br> Once the file are anchored in the Bitcoin blockchain.<br>You will be able to <b>retrieve its proof receipt</b> in this folder: <br> <small><i>{{ pathFolder }}<i></small> <br><br> This proof receipt will allow you to <b>prove the existence of your file on the date of the timestamp</b>.',
       sign: 'Drop here the file for which you want to <b>create a proof of seal</b>. <br><br> Once the file is signed, the signature is automatically anchored in the Bitcoin blockchain. <br>You will thus be able to <b>retrieve the proof receipt</b> in this folder: <br> <small><i>{{ pathFolder }}<i></small> <br><br>  This proof receipt will allow to <b>prove the validity and the date of the signature</b>.'
     },
     dropFile: 'Drop the file here <br> (or click to browse)',
