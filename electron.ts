@@ -8,7 +8,7 @@ import * as url from 'url';
 initializeRemote();
 Store.initRenderer();
 
-let win, liveenv, tray, nativcon;
+let win, liveenv, tray, nativcon, splash;
 let willQuitApp = false;
 
 const args = process.argv.slice(1);
@@ -59,12 +59,27 @@ function createWindowTray() {
     minWidth: 400,
     minHeight: 300,
     icon: nativcon,
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
       sandbox: false
     }
   });
+
+  // Create a splash
+  splash = new BrowserWindow({
+    width: 900,
+    height: 652,
+    minWidth: 400,
+    minHeight: 290
+  });
+
+  splash.loadURL(url.format({
+    pathname: path.join(__dirname, 'dist/ProofKeeper/assets/splash.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
 
   if (process.platform === 'darwin') {
     tray = new Tray(nativcon.resize({ width: 20, height: 20 }));
@@ -93,6 +108,14 @@ function createWindowTray() {
 
   tray.setToolTip('ProofKeeper');
   tray.setContextMenu(contextMenu);
+
+  win.once('ready-to-show', () => {
+    setTimeout(function(){
+      splash.close();
+      win.show();
+    }, 1000);
+  });
+
 
   win.on('minimize', () => {
     win.hide();
