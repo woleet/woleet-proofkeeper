@@ -63,7 +63,6 @@ export class FilesComponent {
       this.storeService.getProofReceiptsOfManualOperationsFolder();
     this.fileFormGroup = this.formBuilder.group({
       name: ['', Validators.required],
-      identityURL: [null],
       callbackURL: [null],
       action: [
         'anchor',
@@ -294,10 +293,6 @@ export class FilesComponent {
 
     proof.name = formValues.name;
     proof.public = formValues.public;
-
-    if (!!formValues.identityURL) {
-      proof.identityURL = formValues.identityURL;
-    }
 
     if (!!formValues.callbackURL) {
       proof.callbackURL = formValues.callbackURL;
