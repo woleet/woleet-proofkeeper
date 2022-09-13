@@ -13,7 +13,6 @@ import { WoleetCliParametersService } from './woleetcliParameters.service';
 export class SignatureRequestService {
   constructor(
     private http: HttpClient,
-    private cli: WoleetCliParametersService,
     private sharedService: SharedService
   ) {}
 

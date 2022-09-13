@@ -106,17 +106,6 @@
         formControlName="name"
       />
     </div>
-    <div *ngIf="getCurrentMode() === 'sign'" class="input-section add-mb">
-      <div class="input-label">
-        {{ translations.files.labels.identityURL | translate }}
-      </div>
-      <input
-        type="text"
-        class="default-input"
-        [placeholder]="translations.files.labels.identityURL | translate"
-        formControlName="identityURL"
-      />
-    </div>
 
     <label class="checkbox-content add-mt">
       <input type="checkbox" formControlName="public" />

@@ -329,7 +329,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   isIdentityInUse(identityName: string) {
     return this.foldersConfigService.folders.some(
       (elem) => elem.identityName === identityName
-    );
+    ) || this.storeService.getDefaultIdentity() === identityName;
   }
 
   async onClickEditwIDConnection() {

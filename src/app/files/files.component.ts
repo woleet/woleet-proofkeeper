@@ -240,14 +240,16 @@ export class FilesComponent {
   }
 
   sealFile() {
-    const params: ParametersForWIDSSignature = {
-      hashToSign: this.fileHash,
-      identityToSign: 'ALL',
-    };
 
     const identitySelected = this.identityService.arrayIdentityContent.filter(
       (identity) => identity.name === this.fileFormGroup.get('identity').value
     )[0];
+
+    const params: ParametersForWIDSSignature = {
+      hashToSign: this.fileHash,
+      identityToSign: 'ALL',
+      pubKey: identitySelected.publicKey
+    };
 
     this.signatureRequestService
       .signHashWithWIDS(params, identitySelected)
@@ -276,7 +278,7 @@ export class FilesComponent {
           console.error('Cannot create a seal: ', error);
           this.toastService.showToast(
             TOAST_STATE.danger,
-            'Cannot create a seal: ' + error.status
+            'Cannot create a seal: ' + error.error.message
           );
         }
       );
