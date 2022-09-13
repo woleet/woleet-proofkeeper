@@ -120,6 +120,7 @@ export default {
     providedWidsURL: 'Provided Woleet.ID Server URL:'
   },
   infos: {
+    title: 'Information',
     versions: 'Versions',
     links: 'Links',
     licence: 'Licence'

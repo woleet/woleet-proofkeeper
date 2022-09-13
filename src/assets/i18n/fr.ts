@@ -122,6 +122,7 @@ const fr: typeof EN_Translations = {
     providedWidsURL: 'URL fournie par Woleet.ID Server :'
   },
   infos: {
+    title: 'Informations',
     versions: 'Versions',
     links: 'Liens',
     licence: 'Licence'

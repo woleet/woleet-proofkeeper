@@ -1,5 +1,5 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
-import { initialize as initializeRemote, enable as enableRemote } from '@electron/remote/main';
+import { enable as enableRemote, initialize as initializeRemote } from '@electron/remote/main';
+import { app, BrowserWindow, Menu, nativeImage, Tray } from 'electron';
 import * as Store from 'electron-store';
 
 import * as path from 'path';
@@ -72,7 +72,9 @@ function createWindowTray() {
     width: 900,
     height: 652,
     minWidth: 400,
-    minHeight: 290
+    minHeight: 290,
+    transparent: true,
+    frame: false
   });
 
   splash.loadURL(url.format({
@@ -113,7 +115,7 @@ function createWindowTray() {
     setTimeout(function(){
       splash.close();
       win.show();
-    }, 1000);
+    }, 1500);
   });
 
 
