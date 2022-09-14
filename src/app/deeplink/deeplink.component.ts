@@ -75,7 +75,7 @@ export class DeeplinkComponent implements OnInit {
         return;
       }
       if (deeplinkingUrl.searchParams.has('url')) {
-        this.woleetUrl = deeplinkingUrl.searchParams.get('woleeturl');
+        this.woleetUrl = deeplinkingUrl.searchParams.get('url');
       }
       this.woleetToken = deeplinkingUrl.searchParams.get('token');
       this.isApi = true;

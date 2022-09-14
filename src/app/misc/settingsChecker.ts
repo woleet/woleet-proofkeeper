@@ -127,7 +127,7 @@ export async function checkwIDConnectionGetAvailableKeys(
         http
       );
       for (const key of currentUserKeysObject) {
-        if (key.status === 'active' && key.device === 'server') {
+        if (key.status === 'active' && key.device === 'server' && !key.expired) {
           if (key.id === user.defaultKeyId) {
             currentPubKeyAddressGroup.pubKeyAddress.unshift({
               key: `${key.name}`,
