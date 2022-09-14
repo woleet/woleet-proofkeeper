@@ -77,8 +77,8 @@ const fr: typeof EN_Translations = {
   },
   folders: {
     tabs: {
-      filesToTimestamp: 'Fichiers à horodater',
-      filesToSeal: 'Fichiers à sceller'
+      filesToTimestamp: 'Dossier à horodater',
+      filesToSeal: 'Dossier à sceller'
     },
     errors: {
       folderAlreadyPresent: 'Dossier ou sous-dossier déjà présent',

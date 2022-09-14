@@ -69,8 +69,8 @@ function createWindowTray() {
 
   // Create a splash
   splash = new BrowserWindow({
-    width: 900,
-    height: 652,
+    width: 750,
+    height: 543,
     minWidth: 400,
     minHeight: 290,
     transparent: true,

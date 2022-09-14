@@ -75,8 +75,8 @@ export default {
   },
   folders: {
     tabs: {
-      filesToTimestamp: 'Files to timestamp',
-      filesToSeal: 'Files to seal',
+      filesToTimestamp: 'Folder to timestamp',
+      filesToSeal: 'Folder to seal',
     },
     errors: {
       folderAlreadyPresent: 'Folder or subfolder already present',
